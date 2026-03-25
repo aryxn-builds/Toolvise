@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import Groq from "groq-sdk";
 import { nanoid } from "nanoid";
 import { createServerClient } from "@/lib/supabase-server";
 
@@ -61,9 +62,11 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Check for API key
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      console.error("[advisor] Missing GEMINI_API_KEY environment variable");
+    const geminiKey = process.env.GEMINI_API_KEY;
+    const groqKey = process.env.GROQ_API_KEY;
+    
+    if (!geminiKey && !groqKey) {
+      console.error("[advisor] Missing AI API keys");
       return NextResponse.json(
         { error: "Server configuration error. Please try again later." },
         { status: 500 }
@@ -80,32 +83,62 @@ Goal: ${goal}
 
 Based on this, recommend me the perfect tech stack.`;
 
-    // 4. Call Gemini API
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    // 4. Call Gemini API, fallback to Groq
+    let text = "";
 
-    const result = await model.generateContent({
-      contents: [
-        {
-          role: "user",
-          parts: [{ text: userPrompt }],
-        },
-      ],
-      systemInstruction: SYSTEM_PROMPT,
-    });
+    try {
+      if (!geminiKey) throw new Error("No Gemini key available");
+      
+      const genAI = new GoogleGenerativeAI(geminiKey);
+      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-    const response = result.response;
-    const text = response.text();
+      const result = await model.generateContent({
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: userPrompt }],
+          },
+        ],
+        systemInstruction: SYSTEM_PROMPT,
+      });
 
-    if (!text) {
-      console.error("[advisor] Empty response from Gemini");
-      return NextResponse.json(
-        { error: "AI returned an empty response. Please try again." },
-        { status: 502 }
-      );
+      text = result.response.text();
+
+      if (!text) {
+        throw new Error("AI returned an empty response");
+      }
+    } catch (geminiErr: any) {
+      console.warn("[advisor] Gemini failed, falling back to Groq:", geminiErr.message);
+      
+      try {
+        if (!groqKey) throw new Error("No Groq key available");
+
+        const groq = new Groq({ apiKey: groqKey });
+        const completion = await groq.chat.completions.create({
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            { role: "user", content: userPrompt }
+          ],
+          model: "llama-3.1-8b-instant",
+          response_format: { type: "json_object" },
+          temperature: 0.7,
+        });
+        
+        text = completion.choices[0]?.message?.content || "";
+        
+        if (!text) {
+          throw new Error("Groq returned an empty response");
+        }
+      } catch (groqErr: any) {
+        console.error("[advisor] Groq also failed:", groqErr.message);
+        return NextResponse.json(
+          { error: "Our AI is taking a short break.\nPlease try again in a few minutes. 🚀" },
+          { status: 503 }
+        );
+      }
     }
 
-    // 5. Parse JSON from Gemini response (strip markdown fences if present)
+    // 5. Parse JSON from response (strip markdown fences if present)
     let parsed;
     try {
       const cleaned = text
