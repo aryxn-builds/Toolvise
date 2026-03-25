@@ -20,6 +20,7 @@ interface FormState {
   skillLevel: string
   budget: string
   goal: string
+  buildStyle: string
 }
 
 interface FormErrors {
@@ -27,6 +28,7 @@ interface FormErrors {
   skillLevel?: string
   budget?: string
   goal?: string
+  buildStyle?: string
 }
 
 const BUDGET_OPTIONS = [
@@ -49,6 +51,12 @@ const GOAL_OPTIONS = [
   { value: "startup", label: "Startup Product" },
 ]
 
+const BUILD_STYLE_OPTIONS = [
+  { value: "traditional", label: "Traditional Coding" },
+  { value: "vibe", label: "Vibe Coding ✨" },
+  { value: "nocode", label: "No-Code / Low-Code" },
+]
+
 // ── Main Component ─────────────────────────────────────────────────────────
 export default function AdvisorPage() {
   const router = useRouter()
@@ -58,6 +66,7 @@ export default function AdvisorPage() {
     skillLevel: "",
     budget: "",
     goal: "",
+    buildStyle: "",
   })
 
   const [errors, setErrors] = React.useState<FormErrors>({})
@@ -84,6 +93,10 @@ export default function AdvisorPage() {
 
     if (!form.goal) {
       newErrors.goal = "Please select your goal."
+    }
+
+    if (!form.buildStyle) {
+      newErrors.buildStyle = "Please select how you want to build."
     }
 
     setErrors(newErrors)
@@ -308,6 +321,50 @@ export default function AdvisorPage() {
               </Select>
               {errors.goal && (
                 <FieldError message={errors.goal} />
+              )}
+            </div>
+
+            {/* ── Field 5: Build Style (toggle buttons) ── */}
+            <div className="space-y-2">
+              <Label className="text-white/90">
+                How do you want to build this?
+                <span className="ml-1 text-[#7c3aed]">*</span>
+              </Label>
+              <div
+                className="grid grid-cols-1 gap-2 sm:grid-cols-3"
+                role="group"
+                aria-label="Build style options"
+              >
+                {BUILD_STYLE_OPTIONS.map((o) => {
+                  const selected = form.buildStyle === o.value
+                  return (
+                    <button
+                      key={o.value}
+                      type="button"
+                      onClick={() => setField("buildStyle", o.value)}
+                      aria-pressed={selected}
+                      className={cn(
+                        "relative rounded-xl border px-3 py-3 text-sm font-medium transition-all duration-150 text-center select-none",
+                        selected
+                          ? "border-[#7c3aed] bg-[#7c3aed]/15 text-white shadow-[0_0_0_1px_rgba(124,58,237,0.5)]"
+                          : "border-white/10 bg-white/5 text-white/60 hover:border-white/25 hover:bg-white/8 hover:text-white/85",
+                        errors.buildStyle && !selected && "border-red-500/30"
+                      )}
+                    >
+                      {selected && (
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#7c3aed]">
+                          <svg className="h-2.5 w-2.5 text-white" viewBox="0 0 10 8" fill="none">
+                            <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </span>
+                      )}
+                      {o.label}
+                    </button>
+                  )
+                })}
+              </div>
+              {errors.buildStyle && (
+                <FieldError message={errors.buildStyle} />
               )}
             </div>
 

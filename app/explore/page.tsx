@@ -56,7 +56,7 @@ export default function ExplorePage() {
     setPage(0)
     fetchStacks(0, activeFilter, debouncedSearch, false)
     // check local votes
-    const localVotes = JSON.parse(localStorage.getItem("toolvise_votes") || "[]")
+    const localVotes = JSON.parse(localStorage.getItem("toolvise_voted") || "[]")
     setVotedCache(localVotes)
   }, [activeFilter, debouncedSearch])
 
@@ -128,8 +128,12 @@ export default function ExplorePage() {
     fetchStacks(nextPage, activeFilter, debouncedSearch, true)
   }
 
+  const [toastError, setToastError] = React.useState<string | null>(null)
+
   const handleUpvote = async (stack: StackDB) => {
     if (votedCache.includes(stack.id) || stack._voted) return
+
+    const previousUpvotes = stack.upvotes
 
     // Optimistically update UI
     setStacks(prev => 
@@ -142,17 +146,32 @@ export default function ExplorePage() {
     
     const newVotes = [...votedCache, stack.id]
     setVotedCache(newVotes)
-    localStorage.setItem("toolvise_votes", JSON.stringify(newVotes))
+    localStorage.setItem("toolvise_voted", JSON.stringify(newVotes))
 
-    // Send payload headless
+    // Persist to Supabase via server API (bypasses RLS)
     try {
-      const supabase = createBrowserClient()
-      await supabase
-        .from("stacks")
-        .update({ upvotes: stack.upvotes + 1 })
-        .eq("id", stack.id)
+      const res = await fetch("/api/upvote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ stackId: stack.id }),
+      })
+
+      if (!res.ok) throw new Error("Upvote API failed")
     } catch {
-      // Revert if error (optional refinement)
+      // Revert optimistic update
+      setStacks(prev =>
+        prev.map(s =>
+          s.id === stack.id
+            ? { ...s, upvotes: previousUpvotes, _voted: false }
+            : s
+        )
+      )
+      const revertedVotes = votedCache.filter(id => id !== stack.id)
+      setVotedCache(revertedVotes)
+      localStorage.setItem("toolvise_voted", JSON.stringify(revertedVotes))
+      
+      setToastError("Upvote failed. Please try again.")
+      setTimeout(() => setToastError(null), 3000)
     }
   }
 
@@ -323,6 +342,15 @@ export default function ExplorePage() {
         )}
 
       </main>
+
+      {/* Toast error */}
+      {toastError && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="rounded-xl border border-red-500/30 bg-red-500/10 backdrop-blur-md px-5 py-3 text-sm font-medium text-red-400 shadow-lg">
+            {toastError}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

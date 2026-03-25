@@ -4,8 +4,8 @@ import Groq from "groq-sdk";
 import { nanoid } from "nanoid";
 import { createServerClient } from "@/lib/supabase-server";
 
-// ── System prompt ──────────────────────────────────────────────────────────
-const SYSTEM_PROMPT = `You are Toolvise — an expert AI stack advisor for developers, students and startups.
+// ── System prompt ──────────────────────────────────────────────────────────────────
+const BASE_SYSTEM_PROMPT = `You are Toolvise — an expert AI stack advisor for developers, students and startups.
 Your job is to analyze what someone wants to build and recommend the perfect tools and tech stack.
 
 Always respond in this exact JSON format:
@@ -37,6 +37,26 @@ Rules:
 - Roadmap should have 4-5 clear steps
 - Return ONLY valid JSON, no markdown fences or extra text`;
 
+const VIBE_CODING_ADDON = `
+
+Additionally, since the user selected "Vibe Coding" as their build style, add an extra "vibeCoding" object to your JSON response:
+{
+  "vibeCoding": {
+    "aiTools": [
+      {
+        "name": "string (e.g. Cursor, v0.dev, Bolt, Antigravity)",
+        "purpose": "string (what to use it for in this project)",
+        "tip": "string (pro tip for using it effectively)"
+      }
+    ],
+    "workflow": [
+      "string (step by step vibe coding workflow specific to their project)"
+    ],
+    "starterPrompt": "string (exact first prompt they should give their AI coding tool to start building this project)"
+  }
+}
+Recommend 2-4 AI coding tools. Workflow should have 4-6 steps. The starter prompt should be detailed and actionable.`;
+
 // ── POST /api/advisor ──────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   try {
@@ -46,6 +66,12 @@ export async function POST(req: NextRequest) {
     const skillLevel: string = body.skillLevel || "";
     const budget: string = body.budget || "";
     const goal: string = body.goal || "";
+    const buildStyle: string = body.buildStyle || "traditional";
+
+    // Build system prompt conditionally
+    const SYSTEM_PROMPT = buildStyle === "vibe"
+      ? BASE_SYSTEM_PROMPT + VIBE_CODING_ADDON
+      : BASE_SYSTEM_PROMPT;
 
     if (!userInput || userInput.trim().length < 20) {
       return NextResponse.json(
@@ -74,14 +100,29 @@ export async function POST(req: NextRequest) {
     }
 
     // 3. Build user prompt
+    const vibeAddon = buildStyle === "vibe" ? `
+
+IMPORTANT: Since I selected "Vibe Coding" as my build style, you MUST also include a "vibeCoding" object in your JSON response with this exact structure:
+{
+  "vibeCoding": {
+    "aiTools": [
+      { "name": "AI tool name like Cursor or v0.dev", "purpose": "what to use it for", "tip": "pro tip" }
+    ],
+    "workflow": ["step 1", "step 2", "step 3"],
+    "starterPrompt": "The exact first prompt to give the AI coding tool to start building this project"
+  }
+}
+Include 2-4 AI coding tools, 4-6 workflow steps, and a detailed actionable starter prompt.` : "";
+
     const userPrompt = `Here is the project I want to build:
 
 Project Description: ${userInput.trim()}
 My Skill Level: ${skillLevel}
 Budget: ${budget}
 Goal: ${goal}
+Build Style: ${buildStyle}
 
-Based on this, recommend me the perfect tech stack.`;
+Based on this, recommend me the perfect tech stack.${vibeAddon}`;
 
     // 4. Call Gemini API, fallback to Groq
     let text = "";
@@ -167,11 +208,13 @@ Based on this, recommend me the perfect tech stack.`;
         skill_level: skillLevel,
         budget: budget,
         goal: goal,
+        build_style: buildStyle,
         summary: parsed.summary || null,
         tools: parsed.tools || null,
         roadmap: parsed.roadmap || null,
         estimated_time: parsed.estimatedTime || null,
         pro_tip: parsed.proTip || null,
+        vibe_coding: parsed.vibeCoding || null,
       });
 
       if (dbError) {
@@ -189,6 +232,7 @@ Based on this, recommend me the perfect tech stack.`;
       roadmap: parsed.roadmap,
       estimatedTime: parsed.estimatedTime,
       proTip: parsed.proTip,
+      vibeCoding: parsed.vibeCoding || null,
       shareSlug,
     });
   } catch (err: unknown) {

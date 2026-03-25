@@ -1,12 +1,44 @@
-import Link from "next/link";
-import { ArrowRight, Compass, Layers3, Sparkles } from "lucide-react";
+"use client"
 
-import { StackCard } from "@/components/StackCard";
-import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button-variants";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
+import * as React from "react"
+import Link from "next/link"
+import { ArrowRight, ArrowUpRight, Compass, Layers3, Sparkles } from "lucide-react"
+
+import { Badge } from "@/components/ui/badge"
+import { buttonVariants } from "@/components/ui/button-variants"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+import { cn } from "@/lib/utils"
+import { createBrowserClient } from "@/lib/supabase-client"
+
+// ── Hardcoded fallback cards ───────────────────────────────────────────────
+const FALLBACK_CARDS = [
+  {
+    title: "E-Learning Chemistry Platform",
+    tools: ["Next.js", "Supabase", "Gemini"],
+    goal: "Build MVP Fast",
+    slug: null,
+  },
+  {
+    title: "AI Resume Reviewer",
+    tools: ["React", "Node.js", "OpenAI"],
+    goal: "Startup Product",
+    slug: null,
+  },
+  {
+    title: "Freelance CRM Dashboard",
+    tools: ["Next.js", "Tailwind", "Supabase"],
+    goal: "Freelance Project",
+    slug: null,
+  },
+]
+
+interface CommunityStack {
+  title: string
+  tools: string[]
+  goal: string
+  slug: string | null
+}
 
 function Nav() {
   return (
@@ -45,6 +77,117 @@ function Nav() {
       </div>
     </header>
   );
+}
+
+function CommunityCards() {
+  const [cards, setCards] = React.useState<CommunityStack[]>([])
+  const [loaded, setLoaded] = React.useState(false)
+
+  React.useEffect(() => {
+    async function fetchRecentStacks() {
+      try {
+        const supabase = createBrowserClient()
+        const { data, error } = await supabase
+          .from("stacks")
+          .select("user_input, tools, goal, share_slug")
+          .order("created_at", { ascending: false })
+          .limit(3)
+
+        if (data && !error && data.length > 0) {
+          setCards(
+            data.map((d: any) => ({
+              title: d.user_input,
+              tools: (d.tools || []).slice(0, 3).map((t: any) => typeof t === "string" ? t : t.name),
+              goal: d.goal || "",
+              slug: d.share_slug || null,
+            }))
+          )
+        } else {
+          setCards(FALLBACK_CARDS)
+        }
+      } catch {
+        setCards(FALLBACK_CARDS)
+      } finally {
+        setLoaded(true)
+      }
+    }
+
+    fetchRecentStacks()
+  }, [])
+
+  if (!loaded) {
+    return (
+      <div className="grid gap-4 md:grid-cols-3">
+        {[1, 2, 3].map(n => (
+          <Card key={n} className="h-48 bg-white/5 border-white/10 animate-pulse rounded-2xl" />
+        ))}
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid gap-4 md:grid-cols-3">
+      {cards.map((card, idx) => (
+        <Card
+          key={idx}
+          className="group border-white/10 bg-[#111111]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)] hover:border-white/20 transition-all"
+        >
+          <CardHeader className="space-y-2">
+            <div className="flex items-start justify-between gap-4">
+              <CardTitle className="text-base font-semibold tracking-tight line-clamp-2">
+                {card.title}
+              </CardTitle>
+              <Badge
+                variant="secondary"
+                className="border border-white/10 bg-white/5 text-white/80 shrink-0"
+              >
+                <Sparkles className="mr-1 h-3.5 w-3.5 text-[#7c3aed]" />
+                AI Stack
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex flex-wrap gap-2">
+              {card.tools.map((t) => (
+                <Badge
+                  key={t}
+                  className="border border-white/10 bg-black/35 text-white/80 hover:bg-black/45"
+                >
+                  {t}
+                </Badge>
+              ))}
+            </div>
+
+            {card.goal && (
+              <Badge variant="outline" className="border-[#7c3aed]/30 bg-[#7c3aed]/10 text-[#c4b5fd] text-[10px] uppercase tracking-wider font-bold">
+                {card.goal}
+              </Badge>
+            )}
+
+            <div className="flex items-center justify-end">
+              {card.slug ? (
+                <Link
+                  href={`/result?slug=${card.slug}`}
+                  className="flex items-center gap-1.5 text-sm font-semibold text-[#7c3aed] hover:text-[#9353d3] transition-colors"
+                >
+                  View Stack
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              ) : (
+                <Link
+                  href="/advisor"
+                  className="flex items-center gap-1.5 text-sm font-semibold text-[#7c3aed] hover:text-[#9353d3] transition-colors"
+                >
+                  Build Yours
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )
 }
 
 export default function Home() {
@@ -127,7 +270,7 @@ export default function Home() {
               {
                 n: "01",
                 title: "Describe Your Project",
-                text: "Tell us what you’re building in plain English",
+                text: "Tell us what you're building in plain English",
                 icon: <Sparkles className="h-5 w-5 text-[#7c3aed]" />,
               },
               {
@@ -179,11 +322,7 @@ export default function Home() {
               View All Stacks <ArrowRight className="ml-1.5 h-4 w-4" />
             </Link>
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            <StackCard title="AI Flashcards Generator" />
-            <StackCard title="Startup CRM MVP" />
-            <StackCard title="Design Portfolio + Blog" />
-          </div>
+          <CommunityCards />
           <Separator className="mt-14 bg-white/10" />
         </section>
       </main>

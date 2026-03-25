@@ -13,7 +13,10 @@ import {
   Lightbulb,
   Loader2,
   RefreshCcw,
-  Library
+  Library,
+  Copy,
+  Bot,
+  Zap
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -32,12 +35,25 @@ interface Tool {
   difficulty: string
 }
 
+interface VibeAITool {
+  name: string
+  purpose: string
+  tip: string
+}
+
+interface VibeCodingData {
+  aiTools: VibeAITool[]
+  workflow: string[]
+  starterPrompt: string
+}
+
 interface StackResult {
   summary: string
   tools: Tool[]
   roadmap: string[]
   estimatedTime: string
   proTip: string
+  vibeCoding?: VibeCodingData | null
   shareSlug?: string
   formInput?: {
     description: string
@@ -66,6 +82,7 @@ function ResultContent() {
   const [data, setData] = React.useState<StackResult | null>(null)
   const [loading, setLoading] = React.useState(true)
   const [copied, setCopied] = React.useState(false)
+  const [promptCopied, setPromptCopied] = React.useState(false)
 
   React.useEffect(() => {
     async function loadData() {
@@ -86,6 +103,7 @@ function ResultContent() {
               roadmap: dbData.roadmap,
               estimatedTime: dbData.estimated_time,
               proTip: dbData.pro_tip,
+              vibeCoding: dbData.vibe_coding || null,
               shareSlug: dbData.share_slug,
               formInput: {
                 description: dbData.user_input,
@@ -124,6 +142,12 @@ function ResultContent() {
     navigator.clipboard.writeText(url)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleCopyPrompt = (text: string) => {
+    navigator.clipboard.writeText(text)
+    setPromptCopied(true)
+    setTimeout(() => setPromptCopied(false), 2000)
   }
 
   // Loading state
@@ -316,7 +340,85 @@ function ResultContent() {
         </div>
       </div>
 
-      {/* 5. ACTION BUTTONS */}
+      {/* 5. VIBE CODING SECTION */}
+      {data.vibeCoding && (
+        <div className="mt-16 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "400ms" }}>
+          <div className="mb-8 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#7c3aed]/20">
+              <Bot className="h-5 w-5 text-[#7c3aed]" />
+            </div>
+            <h2 className="text-2xl font-bold text-white">🤖 Your Vibe Coding Workflow</h2>
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
+            {/* AI Tools Cards */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-white/90 flex items-center gap-2">
+                <Zap className="h-4 w-4 text-[#7c3aed]" />
+                AI Coding Tools
+              </h3>
+              <div className="space-y-3">
+                {data.vibeCoding.aiTools?.map((tool, idx) => (
+                  <Card
+                    key={idx}
+                    className="border-[#7c3aed]/20 bg-[#7c3aed]/5 backdrop-blur-md overflow-hidden"
+                  >
+                    <CardContent className="p-5 space-y-2">
+                      <h4 className="text-base font-bold text-white">{tool.name}</h4>
+                      <p className="text-sm text-white/70 leading-relaxed">{tool.purpose}</p>
+                      <div className="flex items-start gap-2 mt-2 pt-2 border-t border-[#7c3aed]/10">
+                        <Lightbulb className="h-3.5 w-3.5 mt-0.5 text-[#c4b5fd] shrink-0" />
+                        <p className="text-xs text-[#c4b5fd]">{tool.tip}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Vibe Workflow Steps */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-white/90">Workflow</h3>
+              <div className="relative border-l-2 border-[#7c3aed]/30 ml-3 pl-8 py-2 space-y-8">
+                {data.vibeCoding.workflow?.map((step, idx) => (
+                  <div key={idx} className="relative group">
+                    <div className="absolute -left-[49px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-[#7c3aed]/30 bg-[#7c3aed]/20 text-sm font-bold text-[#c4b5fd] shadow-[0_0_10px_rgba(124,58,237,0.3)] transition-transform group-hover:scale-110">
+                      {idx + 1}
+                    </div>
+                    <p className="text-sm text-white/80 leading-relaxed pt-1">{step}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Starter Prompt */}
+          {data.vibeCoding.starterPrompt && (
+            <div className="mt-8">
+              <h3 className="text-lg font-semibold text-white/90 mb-3">Starter Prompt</h3>
+              <div className="relative group">
+                <pre className="overflow-x-auto rounded-xl border border-[#7c3aed]/20 bg-[#0d0d0d] p-5 text-sm text-white/80 leading-relaxed whitespace-pre-wrap font-mono">
+                  {data.vibeCoding.starterPrompt}
+                </pre>
+                <button
+                  onClick={() => handleCopyPrompt(data.vibeCoding!.starterPrompt)}
+                  className={cn(
+                    "absolute right-3 top-3 flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all",
+                    promptCopied
+                      ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                      : "bg-white/5 text-white/50 border border-white/10 hover:bg-white/10 hover:text-white"
+                  )}
+                >
+                  <Copy className="h-3.5 w-3.5" />
+                  {promptCopied ? "Copied! ✅" : "Copy"}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 6. ACTION BUTTONS */}
       <div className="mt-20 border-t border-white/10 pt-10 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700" style={{ animationDelay: "500ms" }}>
         <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
           <Button
