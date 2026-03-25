@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
-    "@next/swc-win32-x64-msvc": "^16.2.1",
     "@radix-ui/react-select": "^2.2.6",
     "@supabase/supabase-js": "^2.100.0",
     "class-variance-authority": "^0.7.1",
