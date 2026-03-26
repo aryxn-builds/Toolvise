@@ -187,6 +187,7 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
         .replace(/\s*```$/i, "")
         .trim();
       parsed = JSON.parse(cleaned);
+      console.log("[advisor] FULL PARSED API RESPONSE:", JSON.stringify(parsed, null, 2));
     } catch (parseErr) {
       console.error("[advisor] Failed to parse Gemini response:", parseErr);
       console.error("[advisor] Raw response:", text);
@@ -199,6 +200,38 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
     // 6. Generate share slug
     const shareSlug = nanoid(10);
 
+    // 6.b Normalize AI keys (it might use snake_case or start with capitals)
+    // If the AI returned an array of objects (like [ {summary...}, {vibeCoding...} ]), merge them
+    let mergedPayload: any = {};
+    if (Array.isArray(parsed)) {
+      parsed.forEach(item => {
+        if (typeof item === 'object' && item !== null) {
+          mergedPayload = { ...mergedPayload, ...item };
+        }
+      });
+    } else {
+      mergedPayload = parsed;
+    }
+
+    // Sometimes the AI nests the result inside a property like 'response', 'stack', or 'data'
+    const payload = mergedPayload.summary || mergedPayload.tools || mergedPayload.Tools ? mergedPayload : (mergedPayload.response || mergedPayload.stack || mergedPayload.data || mergedPayload);
+    
+    const normalizedData = {
+      summary: payload.summary || payload.Summary || payload.overview || "",
+      tools: (payload.tools || payload.Tools || payload.recommendedTools || []).map((t: any) => ({
+        name: t.name || t.Name || t.tool || "",
+        category: t.category || t.Category || "Other",
+        reason: t.reason || t.Reason || t.description || "",
+        isFree: t.isFree ?? t.is_free ?? t.IsFree ?? true,
+        learnUrl: t.learnUrl || t.learn_url || t.LearnUrl || t.url || t.link || "#",
+        difficulty: t.difficulty || t.Difficulty || t.level || "Beginner"
+      })),
+      roadmap: payload.roadmap || payload.Roadmap || payload.steps || [],
+      estimatedTime: payload.estimatedTime || payload.estimated_time || payload.EstimatedTime || "",
+      proTip: payload.proTip || payload.pro_tip || payload.ProTip || payload.tip || "",
+      vibeCoding: payload.vibeCoding || payload.vibe_coding || payload.VibeCoding || null,
+    };
+
     // 7. Save to Supabase
     try {
       const supabase = createServerClient();
@@ -209,12 +242,12 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
         budget: budget,
         goal: goal,
         build_style: buildStyle,
-        summary: parsed.summary || null,
-        tools: parsed.tools || null,
-        roadmap: parsed.roadmap || null,
-        estimated_time: parsed.estimatedTime || null,
-        pro_tip: parsed.proTip || null,
-        vibe_coding: parsed.vibeCoding || null,
+        summary: normalizedData.summary || null,
+        tools: normalizedData.tools.length ? normalizedData.tools : null,
+        roadmap: normalizedData.roadmap.length ? normalizedData.roadmap : null,
+        estimated_time: normalizedData.estimatedTime || null,
+        pro_tip: normalizedData.proTip || null,
+        vibe_coding: normalizedData.vibeCoding || null,
       });
 
       if (dbError) {
@@ -227,12 +260,12 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
 
     // 8. Return full result to frontend
     return NextResponse.json({
-      summary: parsed.summary,
-      tools: parsed.tools,
-      roadmap: parsed.roadmap,
-      estimatedTime: parsed.estimatedTime,
-      proTip: parsed.proTip,
-      vibeCoding: parsed.vibeCoding || null,
+      summary: normalizedData.summary,
+      tools: normalizedData.tools,
+      roadmap: normalizedData.roadmap,
+      estimatedTime: normalizedData.estimatedTime,
+      proTip: normalizedData.proTip,
+      vibeCoding: normalizedData.vibeCoding,
       shareSlug,
     });
   } catch (err: unknown) {
