@@ -352,6 +352,9 @@ export default function Home() {
             <Link className="transition-colors hover:text-white" href="/about">
               About
             </Link>
+            <Link className="transition-colors hover:text-white flex items-center gap-1" href="/report">
+              Report a Bug 🐛
+            </Link>
           </div>
         </div>
       </footer>
