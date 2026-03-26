@@ -148,8 +148,8 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
       if (!text) {
         throw new Error("AI returned an empty response");
       }
-    } catch (geminiErr: any) {
-      console.warn("[advisor] Gemini failed, falling back to Groq:", geminiErr.message);
+    } catch (geminiErr: unknown) {
+      console.warn("[advisor] Gemini failed, falling back to Groq:", (geminiErr as Error).message);
       
       try {
         if (!groqKey) throw new Error("No Groq key available");
@@ -170,8 +170,8 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
         if (!text) {
           throw new Error("Groq returned an empty response");
         }
-      } catch (groqErr: any) {
-        console.error("[advisor] Groq also failed:", groqErr.message);
+      } catch (groqErr: unknown) {
+        console.error("[advisor] Groq also failed:", (groqErr as Error).message);
         return NextResponse.json(
           { error: "Our AI is taking a short break.\nPlease try again in a few minutes. 🚀" },
           { status: 503 }
@@ -201,8 +201,17 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
     const shareSlug = nanoid(10);
 
     // 6.b Normalize AI keys (it might use snake_case or start with capitals)
+    interface AITool {
+      name?: string; Name?: string; tool?: string;
+      category?: string; Category?: string;
+      reason?: string; Reason?: string; description?: string;
+      isFree?: boolean; is_free?: boolean; IsFree?: boolean;
+      learnUrl?: string; learn_url?: string; LearnUrl?: string; url?: string; link?: string;
+      difficulty?: string; Difficulty?: string; level?: string;
+    }
+
     // If the AI returned an array of objects (like [ {summary...}, {vibeCoding...} ]), merge them
-    let mergedPayload: any = {};
+    let mergedPayload: Record<string, unknown> = {};
     if (Array.isArray(parsed)) {
       parsed.forEach(item => {
         if (typeof item === 'object' && item !== null) {
@@ -214,11 +223,14 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
     }
 
     // Sometimes the AI nests the result inside a property like 'response', 'stack', or 'data'
-    const payload = mergedPayload.summary || mergedPayload.tools || mergedPayload.Tools ? mergedPayload : (mergedPayload.response || mergedPayload.stack || mergedPayload.data || mergedPayload);
+    const maybePayload = mergedPayload as Record<string, unknown>;
+    const payload = (maybePayload.summary || maybePayload.tools || maybePayload.Tools 
+      ? maybePayload 
+      : (maybePayload.response || maybePayload.stack || maybePayload.data || maybePayload)) as Record<string, unknown>;
     
     const normalizedData = {
       summary: payload.summary || payload.Summary || payload.overview || "",
-      tools: (payload.tools || payload.Tools || payload.recommendedTools || []).map((t: any) => ({
+      tools: ((payload.tools || payload.Tools || payload.recommendedTools || []) as AITool[]).map((t: AITool) => ({
         name: t.name || t.Name || t.tool || "",
         category: t.category || t.Category || "Other",
         reason: t.reason || t.Reason || t.description || "",
@@ -226,10 +238,10 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
         learnUrl: t.learnUrl || t.learn_url || t.LearnUrl || t.url || t.link || "#",
         difficulty: t.difficulty || t.Difficulty || t.level || "Beginner"
       })),
-      roadmap: payload.roadmap || payload.Roadmap || payload.steps || [],
-      estimatedTime: payload.estimatedTime || payload.estimated_time || payload.EstimatedTime || "",
-      proTip: payload.proTip || payload.pro_tip || payload.ProTip || payload.tip || "",
-      vibeCoding: payload.vibeCoding || payload.vibe_coding || payload.VibeCoding || null,
+      roadmap: (payload.roadmap || payload.Roadmap || payload.steps || []) as string[],
+      estimatedTime: (payload.estimatedTime || payload.estimated_time || payload.EstimatedTime || "") as string,
+      proTip: (payload.proTip || payload.pro_tip || payload.ProTip || payload.tip || "") as string,
+      vibeCoding: (payload.vibeCoding || payload.vibe_coding || payload.VibeCoding || null) as Record<string, unknown> | null,
     };
 
     // 7. Save to Supabase

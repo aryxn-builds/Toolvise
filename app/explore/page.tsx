@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { Search, ArrowUpRight, Flame, Layers, Loader2, Sparkles, Inbox } from "lucide-react"
+import { Search, ArrowUpRight, Flame, Layers, Loader2, Inbox } from "lucide-react"
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -104,10 +104,13 @@ export default function ExplorePage() {
       console.error("[explore] Failed to fetch stacks", error)
       if (!isLoadMore) setStacks([])
     } else if (data) {
-      const formatted = data.map((d: any) => ({
-        ...d,
-        upvotes: d.upvotes ?? 0
-      }))
+      const formatted = data.map((d: unknown) => {
+        const row = d as StackDB;
+        return {
+          ...row,
+          upvotes: row.upvotes ?? 0
+        };
+      })
 
       if (isLoadMore) {
         setStacks(prev => [...prev, ...formatted])
@@ -259,7 +262,7 @@ export default function ExplorePage() {
 
                     {/* Description */}
                     <p className="text-sm font-medium text-white/90 leading-relaxed line-clamp-3 mb-4">
-                      "{stack.user_input}"
+                      &quot;{stack.user_input}&quot;
                     </p>
 
                     {/* Tools Preview */}
@@ -315,7 +318,7 @@ export default function ExplorePage() {
             </div>
             <h3 className="text-xl font-bold text-white mb-2">No stacks found</h3>
             <p className="text-white/50 max-w-sm">
-              We couldn't find any generated stacks matching your current filters. Try adjusting your search!
+              We couldn&apos;t find any generated stacks matching your current filters. Try adjusting your search!
             </p>
           </div>
         )}

@@ -191,7 +191,7 @@ function ResultContent() {
             </h1>
             {data.formInput?.description && (
               <p className="text-lg text-white/60 leading-relaxed border-l-2 border-white/20 pl-4">
-                "{data.formInput.description}"
+                &quot;{data.formInput.description}&quot;
               </p>
             )}
           </div>

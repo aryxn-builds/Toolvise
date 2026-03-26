@@ -93,14 +93,26 @@ function CommunityCards() {
           .order("created_at", { ascending: false })
           .limit(3)
 
+  interface Stack {
+    id: string
+    user_input: string
+    tools: { name: string }[]
+    goal: string
+    share_slug: string
+    created_at: string
+  }
+
         if (data && !error && data.length > 0) {
           setCards(
-            data.map((d: any) => ({
-              title: d.user_input,
-              tools: (d.tools || []).slice(0, 3).map((t: any) => typeof t === "string" ? t : t.name),
-              goal: d.goal || "",
-              slug: d.share_slug || null,
-            }))
+            data.map((raw: unknown) => {
+              const d = raw as Stack;
+              return {
+                title: d.user_input,
+                tools: (d.tools || []).slice(0, 3).map((t: { name: string } | string) => typeof t === "string" ? t : t.name),
+                goal: d.goal || "",
+                slug: d.share_slug || null,
+              }
+            })
           )
         } else {
           setCards(FALLBACK_CARDS)
