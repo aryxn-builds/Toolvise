@@ -42,25 +42,25 @@ interface CommunityStack {
 
 function Nav() {
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#111111]/70 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-[#FFD896] bg-white/70 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
           <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#F97316] to-[#FB923C] shadow-[0_10px_30px_rgba(249,115,22,0.25)]">
-            <Sparkles className="h-4 w-4 text-white" />
+            <Sparkles className="h-4 w-4 text-[#111827]" />
           </div>
-          <span className="text-sm font-bold tracking-wide text-white">
+          <span className="text-sm font-bold tracking-wide text-[#111827]">
             Toolvise
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-6 text-sm text-white/70 md:flex">
-          <Link className="transition-colors hover:text-white" href="/">
+        <nav className="hidden items-center gap-6 text-sm text-[#111827]/70 md:flex">
+          <Link className="transition-colors hover:text-[#111827]" href="/">
             Home
           </Link>
-          <Link className="transition-colors hover:text-white" href="/explore">
+          <Link className="transition-colors hover:text-[#111827]" href="/explore">
             Explore
           </Link>
-          <Link className="transition-colors hover:text-white" href="/about">
+          <Link className="transition-colors hover:text-[#111827]" href="/about">
             About
           </Link>
         </nav>
@@ -69,7 +69,7 @@ function Nav() {
           href="/advisor"
           className={cn(
             buttonVariants({ variant: "outline", size: "lg" }),
-            "h-10 border-white/15 bg-transparent text-white/85 transition-all hover:-translate-y-0.5 hover:bg-white/5 hover:text-white active:translate-y-0"
+            "h-10 border-[#FFD896] bg-transparent text-[#111827]/85 transition-all hover:-translate-y-0.5 hover:bg-white hover:text-[#111827] active:translate-y-0"
           )}
         >
           Try Free
@@ -131,7 +131,7 @@ function CommunityCards() {
     return (
       <div className="grid gap-4 md:grid-cols-3">
         {[1, 2, 3].map(n => (
-          <Card key={n} className="h-48 bg-white/5 border-white/10 animate-pulse rounded-2xl" />
+          <Card key={n} className="h-48 bg-white border-[#FFD896] animate-pulse rounded-2xl" />
         ))}
       </div>
     )
@@ -142,7 +142,7 @@ function CommunityCards() {
       {cards.map((card, idx) => (
         <Card
           key={idx}
-          className="group border-white/10 bg-[#1A1A1A]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)] hover:border-white/20 transition-all"
+          className="group border-[#FFD896] bg-white text-[#111827] shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)] hover:border-[#FFD896] transition-all"
         >
           <CardHeader className="space-y-2">
             <div className="flex items-start justify-between gap-4">
@@ -151,7 +151,7 @@ function CommunityCards() {
               </CardTitle>
               <Badge
                 variant="secondary"
-                className="border border-white/10 bg-white/5 text-white/80 shrink-0"
+                className="border border-[#FFD896] bg-white text-[#111827]/80 shrink-0"
               >
                 <Sparkles className="mr-1 h-3.5 w-3.5 text-[#F97316]" />
                 AI Stack
@@ -163,7 +163,7 @@ function CommunityCards() {
               {card.tools.map((t) => (
                 <Badge
                   key={t}
-                  className="border border-white/10 bg-black/35 text-white/80 hover:bg-black/45"
+                  className="border border-[#FFD896] bg-[#fff1d6] text-[#111827]/80 hover:bg-black/45"
                 >
                   {t}
                 </Badge>
@@ -204,7 +204,7 @@ function CommunityCards() {
 
 export default function Home() {
   return (
-    <div className="bg-[#111111] text-white">
+    <div className="bg-white text-[#111827]">
       <Nav />
 
       <main>
@@ -212,13 +212,13 @@ export default function Home() {
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_circle_at_15%_15%,rgba(249,115,22,0.15),transparent_55%),radial-gradient(900px_circle_at_85%_20%,rgba(251,146,60,0.12),transparent_55%)]" />
           <div className="relative mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
             <div className="max-w-2xl space-y-6">
-              <Badge className="w-fit border border-white/10 bg-white/5 text-white/80">
+              <Badge className="w-fit border border-[#FFD896] bg-white text-[#111827]/80">
                 AI-Powered Stack Advisor
               </Badge>
               <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
                 Stop Guessing. Start Building.
               </h1>
-              <p className="text-base leading-relaxed text-white/65 sm:text-lg">
+              <p className="text-base leading-relaxed text-[#111827]/65 sm:text-lg">
                 Tell us what you&apos;re building — Toolvise finds the perfect
                 tools, stack, and learning path for you. Free.
               </p>
@@ -228,39 +228,39 @@ export default function Home() {
                   href="/advisor"
                   className={cn(
                     buttonVariants({ size: "lg" }),
-                    "h-11 bg-[#F97316] px-5 text-white shadow-[0_12px_40px_rgba(249,115,22,0.25)] transition-all hover:-translate-y-0.5 hover:bg-[#EA6C0A] active:translate-y-0"
+                    "h-11 bg-[#F97316] px-5 text-[#111827] shadow-[0_12px_40px_rgba(249,115,22,0.25)] transition-all hover:-translate-y-0.5 hover:bg-[#EA6C0A] active:translate-y-0"
                   )}
                 >
                   Find My Stack <ArrowRight className="ml-1.5 h-4 w-4" />
                 </Link>
               </div>
 
-              <p className="text-xs leading-relaxed text-white/55 sm:text-sm">
+              <p className="text-xs leading-relaxed text-[#111827]/55 sm:text-sm">
                 No signup needed • 100% Free • Powered by Gemini AI
               </p>
             </div>
 
             <div className="mt-12 grid gap-4 md:grid-cols-2 lg:mt-16">
-              <Card className="border-white/10 bg-[#1A1A1A]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)]">
+              <Card className="border-[#FFD896] bg-white text-[#111827] shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)]">
                 <CardHeader className="space-y-3">
-                  <div className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-black/35">
+                  <div className="grid h-10 w-10 place-items-center rounded-xl border border-[#FFD896] bg-[#fff1d6]">
                     <Layers3 className="h-5 w-5 text-[#F97316]" />
                   </div>
                   <CardTitle className="text-base">Clarity, instantly</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/65">
+                <CardContent className="text-sm text-[#111827]/65">
                   A clean, opinionated stack with reasoning and trade-offs — not
                   a list of links.
                 </CardContent>
               </Card>
-              <Card className="border-white/10 bg-[#1A1A1A]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)]">
+              <Card className="border-[#FFD896] bg-white text-[#111827] shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)]">
                 <CardHeader className="space-y-3">
-                  <div className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-black/35">
+                  <div className="grid h-10 w-10 place-items-center rounded-xl border border-[#FFD896] bg-[#fff1d6]">
                     <Compass className="h-5 w-5 text-[#FB923C]" />
                   </div>
                   <CardTitle className="text-base">A path to ship</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/65">
+                <CardContent className="text-sm text-[#111827]/65">
                   Tools plus a learning roadmap so you can build with confidence
                   from day one.
                 </CardContent>
@@ -273,7 +273,7 @@ export default function Home() {
           <div className="mb-8 flex items-end justify-between gap-4">
             <div className="space-y-2">
               <h2 className="text-xl font-semibold tracking-tight">How it works</h2>
-              <p className="text-sm text-white/55">3 steps to a confident stack</p>
+              <p className="text-sm text-[#111827]/55">3 steps to a confident stack</p>
             </div>
           </div>
 
@@ -295,25 +295,25 @@ export default function Home() {
                 n: "03",
                 title: "Build With Confidence",
                 text: "Get tools, resources and roadmap instantly",
-                icon: <ArrowRight className="h-5 w-5 text-white" />,
+                icon: <ArrowRight className="h-5 w-5 text-[#111827]" />,
               },
             ].map((s) => (
               <Card
                 key={s.n}
-                className="border-white/10 bg-[#1A1A1A]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)]"
+                className="border-[#FFD896] bg-white text-[#111827] shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)]"
               >
                 <CardHeader className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <div className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-black/35">
+                    <div className="grid h-10 w-10 place-items-center rounded-xl border border-[#FFD896] bg-[#fff1d6]">
                       {s.icon}
                     </div>
-                    <span className="text-xs font-medium tracking-wider text-white/45">
+                    <span className="text-xs font-medium tracking-wider text-[#111827]/45">
                       {s.n}
                     </span>
                   </div>
                   <CardTitle className="text-base">{s.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/65">{s.text}</CardContent>
+                <CardContent className="text-sm text-[#111827]/65">{s.text}</CardContent>
               </Card>
             ))}
           </div>
@@ -328,31 +328,31 @@ export default function Home() {
               href="/explore"
               className={cn(
                 buttonVariants({ variant: "outline" }),
-                "border-white/15 bg-transparent text-white/85 transition-all hover:-translate-y-0.5 hover:bg-white/5 hover:text-white active:translate-y-0"
+                "border-[#FFD896] bg-transparent text-[#111827]/85 transition-all hover:-translate-y-0.5 hover:bg-white hover:text-[#111827] active:translate-y-0"
               )}
             >
               View All Stacks <ArrowRight className="ml-1.5 h-4 w-4" />
             </Link>
           </div>
           <CommunityCards />
-          <Separator className="mt-14 bg-white/10" />
+          <Separator className="mt-14 bg-white" />
         </section>
       </main>
 
-      <footer className="border-t border-white/10 bg-[#111111]">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-10 text-sm text-white/55 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+      <footer className="border-t border-[#FFD896] bg-white">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-10 text-sm text-[#111827]/55 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>Toolvise © 2025 • Built for builders</p>
           <div className="flex items-center gap-4">
-            <Link className="transition-colors hover:text-white" href="/">
+            <Link className="transition-colors hover:text-[#111827]" href="/">
               Home
             </Link>
-            <Link className="transition-colors hover:text-white" href="/explore">
+            <Link className="transition-colors hover:text-[#111827]" href="/explore">
               Explore
             </Link>
-            <Link className="transition-colors hover:text-white" href="/about">
+            <Link className="transition-colors hover:text-[#111827]" href="/about">
               About
             </Link>
-            <Link className="transition-colors hover:text-white flex items-center gap-1" href="/report">
+            <Link className="transition-colors hover:text-[#111827] flex items-center gap-1" href="/report">
               Report a Bug 🐛
             </Link>
           </div>
