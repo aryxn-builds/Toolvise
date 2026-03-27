@@ -20,6 +20,7 @@ interface FormState {
   skillLevel: string
   budget: string
   goal: string
+  detailLevel: string
   buildStyle: string
 }
 
@@ -28,6 +29,7 @@ interface FormErrors {
   skillLevel?: string
   budget?: string
   goal?: string
+  detailLevel?: string
   buildStyle?: string
 }
 
@@ -51,6 +53,12 @@ const GOAL_OPTIONS = [
   { value: "startup", label: "Startup Product" },
 ]
 
+const DETAIL_LEVEL_OPTIONS = [
+  { value: "quick", label: "⚡ Quick Glance", subtitle: "Core stack, fast results" },
+  { value: "balanced", label: "🎯 Balanced", subtitle: "Clear reasoning included" },
+  { value: "deep", label: "🔬 Deep Dive", subtitle: "Full analysis + alternatives" },
+]
+
 const BUILD_STYLE_OPTIONS = [
   { value: "traditional", label: "Traditional Coding" },
   { value: "vibe", label: "Vibe Coding ✨" },
@@ -66,6 +74,7 @@ export default function AdvisorPage() {
     skillLevel: "",
     budget: "",
     goal: "",
+    detailLevel: "balanced",
     buildStyle: "",
   })
 
@@ -324,7 +333,52 @@ export default function AdvisorPage() {
               )}
             </div>
 
-            {/* ── Field 5: Build Style (toggle buttons) ── */}
+            {/* ── Field 5: Detail Level (toggle buttons) ── */}
+            <div className="space-y-2">
+              <Label className="text-white/90">
+                How deep should we go?
+                <span className="ml-1 text-[#7c3aed]">*</span>
+              </Label>
+              <div
+                className="grid grid-cols-1 gap-2 sm:grid-cols-3"
+                role="group"
+                aria-label="Detail level options"
+              >
+                {DETAIL_LEVEL_OPTIONS.map((o) => {
+                  const selected = form.detailLevel === o.value
+                  return (
+                    <button
+                      key={o.value}
+                      type="button"
+                      onClick={() => setField("detailLevel", o.value)}
+                      aria-pressed={selected}
+                      className={cn(
+                        "relative rounded-xl border px-3 py-3 text-sm font-medium transition-all duration-150 text-center select-none",
+                        selected
+                          ? "border-[#7c3aed] bg-[#7c3aed]/15 text-white shadow-[0_0_0_1px_rgba(124,58,237,0.5)]"
+                          : "border-white/10 bg-white/5 text-white/60 hover:border-white/25 hover:bg-white/8 hover:text-white/85",
+                        errors.detailLevel && !selected && "border-red-500/30"
+                      )}
+                    >
+                      {selected && (
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#7c3aed]">
+                          <svg className="h-2.5 w-2.5 text-white" viewBox="0 0 10 8" fill="none">
+                            <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </span>
+                      )}
+                      {o.label}
+                      <span className="block text-[11px] text-white/40 font-normal mt-0.5">{o.subtitle}</span>
+                    </button>
+                  )
+                })}
+              </div>
+              {errors.detailLevel && (
+                <FieldError message={errors.detailLevel} />
+              )}
+            </div>
+
+            {/* ── Field 6: Build Style (toggle buttons) ── */}
             <div className="space-y-2">
               <Label className="text-white/90">
                 How do you want to build this?

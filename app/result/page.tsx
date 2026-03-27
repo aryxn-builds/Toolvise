@@ -16,7 +16,9 @@ import {
   Library,
   Copy,
   Bot,
-  Zap
+  Zap,
+  Trophy,
+  AlertTriangle,
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -33,6 +35,9 @@ interface Tool {
   isFree: boolean
   learnUrl: string
   difficulty: string
+  alternatives?: string[]
+  warnings?: string
+  bestFor?: string
 }
 
 interface VibeAITool {
@@ -47,6 +52,16 @@ interface VibeCodingData {
   starterPrompt: string
 }
 
+interface ScoreCard {
+  speedToShip: number
+  costEfficiency: number
+  scalability: number
+  beginnerFriendly: number
+  flexibility: number
+  overallScore: number
+  verdict: string
+}
+
 interface StackResult {
   summary: string
   tools: Tool[]
@@ -54,6 +69,8 @@ interface StackResult {
   estimatedTime: string
   proTip: string
   vibeCoding?: VibeCodingData | null
+  scoreCard?: ScoreCard | null
+  architecture?: string
   shareSlug?: string
   formInput?: {
     description: string
@@ -71,6 +88,109 @@ const CATEGORY_COLORS: Record<string, string> = {
   AI: "border-purple-500/40 bg-purple-500/15 text-purple-400",
   Design: "border-pink-500/40 bg-pink-500/15 text-pink-400",
   DevOps: "border-cyan-500/40 bg-cyan-500/15 text-cyan-400",
+}
+
+// ── Score Card Component ───────────────────────────────────────────────────
+function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
+  const [animated, setAnimated] = React.useState(false)
+  const [scoreCopied, setScoreCopied] = React.useState(false)
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setAnimated(true), 300)
+    return () => clearTimeout(timer)
+  }, [])
+
+  const scoreColor = scoreCard.overallScore >= 90
+    ? "text-green-400"
+    : scoreCard.overallScore >= 70
+      ? "text-[#c4b5fd]"
+      : scoreCard.overallScore >= 50
+        ? "text-yellow-400"
+        : "text-red-400"
+
+  const scoreGlow = scoreCard.overallScore >= 90
+    ? "shadow-[0_0_40px_rgba(74,222,128,0.2)]"
+    : scoreCard.overallScore >= 70
+      ? "shadow-[0_0_40px_rgba(124,58,237,0.2)]"
+      : scoreCard.overallScore >= 50
+        ? "shadow-[0_0_40px_rgba(250,204,21,0.2)]"
+        : "shadow-[0_0_40px_rgba(239,68,68,0.2)]"
+
+  const bars = [
+    { label: "Speed to Ship", value: scoreCard.speedToShip, delay: 0 },
+    { label: "Cost Efficiency", value: scoreCard.costEfficiency, delay: 100 },
+    { label: "Scalability", value: scoreCard.scalability, delay: 200 },
+    { label: "Beginner Friendly", value: scoreCard.beginnerFriendly, delay: 300 },
+    { label: "Flexibility", value: scoreCard.flexibility, delay: 400 },
+  ]
+
+  const handleShareScore = () => {
+    const text = `My Toolvise Stack Score: ${scoreCard.overallScore}/100 🏆\nSpeed: ${scoreCard.speedToShip}/10 | Cost: ${scoreCard.costEfficiency}/10 | Scale: ${scoreCard.scalability}/10 | Beginner: ${scoreCard.beginnerFriendly}/10 | Flex: ${scoreCard.flexibility}/10\ntoolvise.vercel.app`
+    navigator.clipboard.writeText(text)
+    setScoreCopied(true)
+    setTimeout(() => setScoreCopied(false), 2000)
+  }
+
+  return (
+    <div className="mb-10 animate-in fade-in slide-in-from-bottom-6 duration-700 fill-mode-both" style={{ animationDelay: "100ms" }}>
+      <Card className={cn("overflow-hidden border-[#7c3aed]/30 bg-[#111111]/80 backdrop-blur-md", scoreGlow)}>
+        <div className="h-1 w-full bg-gradient-to-r from-[#7c3aed] via-[#a78bfa] to-[#7c3aed]" />
+        <CardHeader className="pb-2">
+          <CardTitle className="text-xl font-semibold tracking-tight text-white flex items-center gap-2">
+            <Trophy className="h-5 w-5 text-[#c4b5fd]" />
+            Your Stack Score 🏆
+          </CardTitle>
+          {scoreCard.verdict && (
+            <p className="text-sm text-white/50 italic mt-1">{scoreCard.verdict}</p>
+          )}
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-6 md:grid-cols-[1fr_auto]">
+            {/* Score bars */}
+            <div className="space-y-4">
+              {bars.map((bar) => (
+                <div key={bar.label} className="space-y-1.5">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-white/70 font-medium">{bar.label}</span>
+                    <span className="text-white/90 font-bold tabular-nums">{bar.value}/10</span>
+                  </div>
+                  <div className="h-2.5 w-full rounded-full bg-white/5 overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-[#7c3aed] to-[#a78bfa] transition-all duration-1000 ease-out"
+                      style={{
+                        width: animated ? `${bar.value * 10}%` : "0%",
+                        transitionDelay: `${bar.delay}ms`,
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Overall score circle */}
+            <div className="flex flex-col items-center justify-center px-6">
+              <div className={cn("text-6xl font-black tabular-nums", scoreColor)}>
+                {scoreCard.overallScore}
+              </div>
+              <div className="text-xs font-bold text-white/40 uppercase tracking-widest mt-1">/ 100</div>
+              <button
+                onClick={handleShareScore}
+                className={cn(
+                  "mt-4 flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold transition-all",
+                  scoreCopied
+                    ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                    : "bg-white/5 text-white/50 border border-white/10 hover:bg-white/10 hover:text-white"
+                )}
+              >
+                <Share2 className="h-3.5 w-3.5" />
+                {scoreCopied ? "Copied! ✅" : "Share Score"}
+              </button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
 }
 
 // ── Result Content Core Component ──────────────────────────────────────────
@@ -104,6 +224,7 @@ function ResultContent() {
               estimatedTime: dbData.estimated_time,
               proTip: dbData.pro_tip,
               vibeCoding: dbData.vibe_coding || null,
+              scoreCard: dbData.score_card || null,
               shareSlug: dbData.share_slug,
               formInput: {
                 description: dbData.user_input,
@@ -208,6 +329,9 @@ function ResultContent() {
         </div>
       </header>
 
+      {/* SCORE CARD */}
+      {data.scoreCard && <ScoreCardSection scoreCard={data.scoreCard} />}
+
       <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "150ms" }}>
         
         {/* Left Column: Summary & Roadmap */}
@@ -229,6 +353,16 @@ function ResultContent() {
               <p className="text-base leading-relaxed text-white/80">
                 {data.summary}
               </p>
+
+              {/* Architecture (deep dive only) */}
+              {data.architecture && (
+                <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-4">
+                  <h4 className="font-semibold text-cyan-400 mb-2 text-sm">🏗️ Architecture</h4>
+                  <p className="text-sm leading-relaxed text-cyan-400/80">
+                    {data.architecture}
+                  </p>
+                </div>
+              )}
               
               {data.proTip && (
                 <div className="relative overflow-hidden rounded-xl border border-amber-500/20 bg-amber-500/5 p-4">
@@ -320,9 +454,20 @@ function ResultContent() {
                     </div>
                   </div>
                   
-                  <p className="text-sm text-white/60 leading-relaxed mb-6 flex-1">
+                  <p className="text-sm text-white/60 leading-relaxed mb-4 flex-1">
                     {tool.reason}
                   </p>
+
+                  {/* Deep dive extras */}
+                  {tool.bestFor && (
+                    <p className="text-xs text-emerald-400/80 mb-2">✨ Best for: {tool.bestFor}</p>
+                  )}
+                  {tool.warnings && (
+                    <p className="text-xs text-amber-400/80 mb-2">⚠️ {tool.warnings}</p>
+                  )}
+                  {tool.alternatives && tool.alternatives.length > 0 && (
+                    <p className="text-xs text-white/40 mb-4">Alternatives: {tool.alternatives.join(", ")}</p>
+                  )}
                   
                   <a
                     href={tool.learnUrl}
@@ -341,82 +486,102 @@ function ResultContent() {
       </div>
 
       {/* 5. VIBE CODING SECTION */}
-      {data.vibeCoding && (
-        <div className="mt-16 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "400ms" }}>
-          <div className="mb-8 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#7c3aed]/20">
-              <Bot className="h-5 w-5 text-[#7c3aed]" />
+      {data.vibeCoding ? (
+        data.vibeCoding.aiTools && data.vibeCoding.aiTools.length > 0 ? (
+          <div className="mt-16 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "400ms" }}>
+            <div className="mb-8 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#7c3aed]/20">
+                <Bot className="h-5 w-5 text-[#7c3aed]" />
+              </div>
+              <h2 className="text-2xl font-bold text-white">🤖 Your Vibe Coding Workflow</h2>
             </div>
-            <h2 className="text-2xl font-bold text-white">🤖 Your Vibe Coding Workflow</h2>
-          </div>
 
-          <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
-            {/* AI Tools Cards */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-white/90 flex items-center gap-2">
-                <Zap className="h-4 w-4 text-[#7c3aed]" />
-                AI Coding Tools
-              </h3>
-              <div className="space-y-3">
-                {data.vibeCoding.aiTools?.map((tool, idx) => (
-                  <Card
-                    key={idx}
-                    className="border-[#7c3aed]/20 bg-[#7c3aed]/5 backdrop-blur-md overflow-hidden"
-                  >
-                    <CardContent className="p-5 space-y-2">
-                      <h4 className="text-base font-bold text-white">{tool.name}</h4>
-                      <p className="text-sm text-white/70 leading-relaxed">{tool.purpose}</p>
-                      <div className="flex items-start gap-2 mt-2 pt-2 border-t border-[#7c3aed]/10">
-                        <Lightbulb className="h-3.5 w-3.5 mt-0.5 text-[#c4b5fd] shrink-0" />
-                        <p className="text-xs text-[#c4b5fd]">{tool.tip}</p>
+            <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
+              {/* AI Tools Cards */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-white/90 flex items-center gap-2">
+                  <Zap className="h-4 w-4 text-[#7c3aed]" />
+                  AI Coding Tools
+                </h3>
+                <div className="space-y-3">
+                  {data.vibeCoding.aiTools.map((tool, idx) => (
+                    <Card
+                      key={idx}
+                      className="border-[#7c3aed]/20 bg-[#7c3aed]/5 backdrop-blur-md overflow-hidden"
+                    >
+                      <CardContent className="p-5 space-y-2">
+                        <h4 className="text-base font-bold text-white">{tool.name}</h4>
+                        <p className="text-sm text-white/70 leading-relaxed">{tool.purpose}</p>
+                        <div className="flex items-start gap-2 mt-2 pt-2 border-t border-[#7c3aed]/10">
+                          <Lightbulb className="h-3.5 w-3.5 mt-0.5 text-[#c4b5fd] shrink-0" />
+                          <p className="text-xs text-[#c4b5fd]">{tool.tip}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+
+              {/* Vibe Workflow Steps */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-white/90">Workflow</h3>
+                <div className="relative border-l-2 border-[#7c3aed]/30 ml-3 pl-8 py-2 space-y-8">
+                  {data.vibeCoding.workflow?.map((step, idx) => (
+                    <div key={idx} className="relative group">
+                      <div className="absolute -left-[49px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-[#7c3aed]/30 bg-[#7c3aed]/20 text-sm font-bold text-[#c4b5fd] shadow-[0_0_10px_rgba(124,58,237,0.3)] transition-transform group-hover:scale-110">
+                        {idx + 1}
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            {/* Vibe Workflow Steps */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-white/90">Workflow</h3>
-              <div className="relative border-l-2 border-[#7c3aed]/30 ml-3 pl-8 py-2 space-y-8">
-                {data.vibeCoding.workflow?.map((step, idx) => (
-                  <div key={idx} className="relative group">
-                    <div className="absolute -left-[49px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-[#7c3aed]/30 bg-[#7c3aed]/20 text-sm font-bold text-[#c4b5fd] shadow-[0_0_10px_rgba(124,58,237,0.3)] transition-transform group-hover:scale-110">
-                      {idx + 1}
+                      <p className="text-sm text-white/80 leading-relaxed pt-1">{step}</p>
                     </div>
-                    <p className="text-sm text-white/80 leading-relaxed pt-1">{step}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Starter Prompt */}
-          {data.vibeCoding.starterPrompt && (
-            <div className="mt-8">
-              <h3 className="text-lg font-semibold text-white/90 mb-3">Starter Prompt</h3>
-              <div className="relative group">
-                <pre className="overflow-x-auto rounded-xl border border-[#7c3aed]/20 bg-[#0d0d0d] p-5 text-sm text-white/80 leading-relaxed whitespace-pre-wrap font-mono">
-                  {data.vibeCoding.starterPrompt}
-                </pre>
-                <button
-                  onClick={() => handleCopyPrompt(data.vibeCoding!.starterPrompt)}
-                  className={cn(
-                    "absolute right-3 top-3 flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all",
-                    promptCopied
-                      ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                      : "bg-white/5 text-white/50 border border-white/10 hover:bg-white/10 hover:text-white"
-                  )}
-                >
-                  <Copy className="h-3.5 w-3.5" />
-                  {promptCopied ? "Copied! ✅" : "Copy"}
-                </button>
+            {/* Starter Prompt */}
+            {data.vibeCoding.starterPrompt && (
+              <div className="mt-8">
+                <h3 className="text-lg font-semibold text-white/90 mb-3">Starter Prompt</h3>
+                <div className="relative group">
+                  <pre className="overflow-x-auto rounded-xl border border-[#7c3aed]/20 bg-[#0d0d0d] p-5 text-sm text-white/80 leading-relaxed whitespace-pre-wrap font-mono">
+                    {data.vibeCoding.starterPrompt}
+                  </pre>
+                  <button
+                    onClick={() => handleCopyPrompt(data.vibeCoding!.starterPrompt)}
+                    className={cn(
+                      "absolute right-3 top-3 flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all",
+                      promptCopied
+                        ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                        : "bg-white/5 text-white/50 border border-white/10 hover:bg-white/10 hover:text-white"
+                    )}
+                  >
+                    <Copy className="h-3.5 w-3.5" />
+                    {promptCopied ? "Copied! ✅" : "Copy"}
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-      )}
+            )}
+          </div>
+        ) : (
+          /* Vibe Coding fallback when data exists but aiTools is empty */
+          <div className="mt-16 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "400ms" }}>
+            <Card className="border-amber-500/20 bg-amber-500/5 backdrop-blur-md">
+              <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+                <AlertTriangle className="h-10 w-10 text-amber-400 mb-4" />
+                <h3 className="text-lg font-semibold text-white mb-2">Vibe coding workflow generation failed.</h3>
+                <p className="text-sm text-white/50 mb-6">Try again with the same settings.</p>
+                <Button
+                  onClick={() => router.push("/advisor")}
+                  className="rounded-xl bg-[#7c3aed] text-white hover:bg-[#6d28d9] px-6 font-semibold"
+                >
+                  <RefreshCcw className="mr-2 h-4 w-4" />
+                  Try Again
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        )
+      ) : null}
 
       {/* 6. ACTION BUTTONS */}
       <div className="mt-20 border-t border-white/10 pt-10 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700" style={{ animationDelay: "500ms" }}>
@@ -467,7 +632,7 @@ function ResultContent() {
 export default function ResultPage() {
   return (
     <div className="relative min-h-dvh bg-[#0a0a0a] text-foreground selection:bg-[#7c3aed]/30 overflow-hidden">
-      {/* Background ambient glow isolated to prevent visual popping on suspense boundary */}
+      {/* Background ambient glow */}
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(1200px_circle_at_50%_-20%,rgba(124,58,237,0.15),transparent_60%)]" />
       
       <React.Suspense fallback={
