@@ -17,11 +17,11 @@ export default async function AboutPage() {
   const statsCount = count || 0
 
   return (
-    <div className="min-h-dvh bg-[#0a0a0a] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))] font-sans text-white/90 selection:bg-purple-500/30">
-      <header className="fixed top-0 z-50 w-full border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-md">
+    <div className="min-h-dvh bg-[#111111] bg-[radial-gradient(900px_circle_at_15%_15%,rgba(249,115,22,0.15),transparent_55%),radial-gradient(900px_circle_at_85%_20%,rgba(251,146,60,0.12),transparent_55%)] font-sans text-white/90 selection:bg-amber-500/30">
+      <header className="fixed top-0 z-50 w-full border-b border-white/5 bg-[#111111]/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-purple-500/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/20">
               <span className="text-lg font-bold text-white">T</span>
             </div>
             <span className="text-xl font-bold tracking-tight text-white">Toolvise</span>
@@ -38,7 +38,7 @@ export default async function AboutPage() {
         
         {/* 1. HERO SECTION */}
         <section className="mb-24 text-center mt-12 animate-in slide-in-from-bottom-6 fade-in duration-700">
-          <h1 className="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-white/60 sm:text-6xl mb-6">
+          <h1 className="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-300 sm:text-6xl mb-6">
             About Toolvise
           </h1>
           <p className="mx-auto max-w-2xl text-xl text-white/60 leading-relaxed">
@@ -52,7 +52,7 @@ export default async function AboutPage() {
           <section className="animate-in slide-in-from-bottom-6 fade-in duration-700 delay-150 fill-mode-both">
             <div className="max-w-3xl">
               <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                <Code2 className="h-6 w-6 text-purple-400" /> What is Toolvise?
+                <Code2 className="h-6 w-6 text-amber-400" /> What is Toolvise?
               </h2>
               <p className="text-lg text-white/70 leading-relaxed">
                 Toolvise is a free AI-powered stack advisor that helps developers, students, and startups find the perfect tools for their projects. Just describe what you&apos;re building — we handle the rest.
@@ -64,7 +64,7 @@ export default async function AboutPage() {
           <section className="animate-in slide-in-from-bottom-6 fade-in duration-700 delay-300 fill-mode-both">
             <div className="max-w-3xl ml-auto text-left md:text-right">
               <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3 justify-start md:justify-end">
-                <Users className="h-6 w-6 text-purple-400" /> Why we built this
+                <Users className="h-6 w-6 text-amber-400" /> Why we built this
               </h2>
               <p className="text-lg text-white/70 leading-relaxed">
                 As developers ourselves, we spent hours researching which tools to use for every new project. Stack Overflow threads, Reddit posts, YouTube videos — just to decide on a tech stack. Toolvise fixes that. One prompt. Perfect stack. Instantly.
@@ -78,13 +78,13 @@ export default async function AboutPage() {
             <div className="grid gap-6 sm:grid-cols-2">
               
               <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-8 backdrop-blur-sm transition-colors hover:bg-white/[0.04]">
-                <Target className="h-8 w-8 text-blue-400 mb-5" />
+                <Target className="h-8 w-8 text-orange-400 mb-5" />
                 <h3 className="text-xl font-semibold text-white mb-3">🎯 Personalized Recommendations</h3>
                 <p className="text-white/60">Based on your skill level, budget and goal</p>
               </div>
 
-              <div className="rounded-2xl border border-purple-500/20 bg-purple-500/5 p-8 backdrop-blur-sm shadow-[0_0_30px_-10px_rgba(168,85,247,0.15)] transition-colors hover:bg-purple-500/10">
-                <Bot className="h-8 w-8 text-purple-400 mb-5" />
+              <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-8 backdrop-blur-sm shadow-[0_0_30px_-10px_rgba(168,85,247,0.15)] transition-colors hover:bg-amber-500/10">
+                <Bot className="h-8 w-8 text-amber-400 mb-5" />
                 <h3 className="text-xl font-semibold text-white mb-3">🤖 Vibe Coding Workflow</h3>
                 <p className="text-white/60">AI tools and prompts to build faster</p>
               </div>
@@ -118,7 +118,7 @@ export default async function AboutPage() {
           {/* 6. STATS SECTION */}
           <section className="grid gap-6 sm:grid-cols-3 text-center border-t border-white/10 pt-16 mt-8 animate-in slide-in-from-bottom-6 fade-in duration-700 delay-1000 fill-mode-both">
             <div>
-              <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400 mb-2">
+              <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-indigo-400 mb-2">
                 {statsCount}
               </div>
               <div className="text-sm font-medium text-white/50 uppercase tracking-wider">Stacks Generated</div>
@@ -128,7 +128,7 @@ export default async function AboutPage() {
               <div className="text-sm font-medium text-white/50 uppercase tracking-wider">Free forever</div>
             </div>
             <div>
-              <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mb-2">AI</div>
+              <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400 mb-2">AI</div>
               <div className="text-sm font-medium text-white/50 uppercase tracking-wider">Powered by Gemini</div>
             </div>
           </section>
@@ -136,7 +136,7 @@ export default async function AboutPage() {
         </div>
       </main>
       
-      <footer className="border-t border-white/10 bg-[#0a0a0a] mt-auto">
+      <footer className="border-t border-white/10 bg-[#111111] mt-auto">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-10 text-sm text-white/55 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>Toolvise © 2025 • Built for builders</p>
           <div className="flex items-center gap-4">

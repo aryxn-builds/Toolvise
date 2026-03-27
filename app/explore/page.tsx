@@ -179,18 +179,18 @@ export default function ExplorePage() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#0a0a0a] text-white selection:bg-[#7c3aed]/30 relative pb-24">
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(1200px_circle_at_50%_0%,rgba(124,58,237,0.1),transparent_70%)]" />
+    <div className="min-h-dvh bg-[#111111] text-white selection:bg-[#F97316]/30 relative pb-24">
+      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(900px_circle_at_15%_15%,rgba(249,115,22,0.15),transparent_55%),radial-gradient(900px_circle_at_85%_20%,rgba(251,146,60,0.12),transparent_55%)]" />
 
       <main className="relative mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         
         {/* 1. HEADER */}
         <header className="mb-14 text-center space-y-4 animate-in fade-in slide-in-from-top-4 duration-700">
-          <Badge variant="outline" className="border-[#7c3aed]/30 bg-[#7c3aed]/10 text-[#c4b5fd] px-4 py-1.5 text-sm">
+          <Badge variant="outline" className="border-[#F97316]/30 bg-[#F97316]/10 text-[#c4b5fd] px-4 py-1.5 text-sm">
             <Layers className="mr-2 h-4 w-4" />
             {totalCount.toLocaleString()} Generated Stacks
           </Badge>
-          <h1 className="bg-gradient-to-br from-white to-white/60 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-6xl">
+          <h1 className="bg-gradient-to-br from-amber-400 to-orange-300 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-6xl">
             Explore Stacks
           </h1>
           <p className="text-lg text-white/50 max-w-2xl mx-auto font-medium">
@@ -207,7 +207,7 @@ export default function ExplorePage() {
               placeholder="Search by tech, idea, or tags... (e.g. Next.js, AI CRM)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-12 w-full pl-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-1 focus-visible:ring-[#7c3aed] focus-visible:border-[#7c3aed] transition-all text-base"
+              className="h-12 w-full pl-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-1 focus-visible:ring-[#F97316] focus-visible:border-[#F97316] transition-all text-base"
             />
           </div>
 
@@ -220,7 +220,7 @@ export default function ExplorePage() {
                 className={cn(
                   "rounded-full border-white/10 px-5 transition-all text-sm font-semibold",
                   activeFilter === filter 
-                    ? "bg-[#7c3aed] text-white border-[#7c3aed] shadow-[0_0_15px_rgba(124,58,237,0.4)]" 
+                    ? "bg-[#F97316] text-white border-[#F97316] shadow-[0_0_15px_rgba(249,115,22,0.4)]" 
                     : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
                 )}
               >
@@ -245,7 +245,7 @@ export default function ExplorePage() {
               return (
                 <Card 
                   key={stack.id} 
-                  className="group relative flex flex-col overflow-hidden bg-[#111111]/80 border-white/10 hover:border-white/20 hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all rounded-2xl h-[320px]"
+                  className="group relative flex flex-col overflow-hidden bg-[#1A1A1A]/80 border-white/10 hover:border-white/20 hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all rounded-2xl h-[320px]"
                 >
                   <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none" />
                   
@@ -255,7 +255,7 @@ export default function ExplorePage() {
                       <Badge className="bg-white/10 text-white/80 border-0 uppercase tracking-wider text-[10px] font-bold">
                         {stack.skill_level}
                       </Badge>
-                      <Badge className="bg-[#7c3aed]/20 text-[#c4b5fd] border-0 text-[10px] font-bold uppercase tracking-wider">
+                      <Badge className="bg-[#F97316]/20 text-[#c4b5fd] border-0 text-[10px] font-bold uppercase tracking-wider">
                         {stack.goal}
                       </Badge>
                     </div>
@@ -300,7 +300,7 @@ export default function ExplorePage() {
 
                       <Link
                         href={`/result?slug=${stack.share_slug}`}
-                        className="flex items-center gap-1.5 text-sm font-semibold text-[#7c3aed] hover:text-[#9353d3] transition-colors"
+                        className="flex items-center gap-1.5 text-sm font-semibold text-[#F97316] hover:text-[#9353d3] transition-colors"
                       >
                         View Stack
                         <ArrowUpRight className="h-4 w-4" />
@@ -333,7 +333,7 @@ export default function ExplorePage() {
                 variant="outline"
                 className="h-12 px-8 rounded-full border-white/10 bg-white/5 text-white hover:bg-white/10 gap-2 font-semibold"
               >
-                {loadingMore && <Loader2 className="h-4 w-4 animate-spin text-[#7c3aed]" />}
+                {loadingMore && <Loader2 className="h-4 w-4 animate-spin text-[#F97316]" />}
                 {loadingMore ? "Loading..." : "Load More Stacks"}
               </Button>
             ) : (

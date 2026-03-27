@@ -15,6 +15,11 @@ const config: Config = {
         mono: ["var(--font-mono)", ...defaultTheme.fontFamily.mono],
       },
       colors: {
+        brand: {
+          primary: "#F97316",
+          secondary: "#FB923C", 
+          accent: "#FACC15",
+        },
         background: "var(--background)",
         foreground: "var(--foreground)",
         card: {

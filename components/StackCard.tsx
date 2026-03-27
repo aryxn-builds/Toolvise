@@ -23,7 +23,7 @@ export function StackCard({
   tools?: Tool[];
 }) {
   return (
-    <Card className="break-inside-avoid border-white/10 bg-[#111111]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)]">
+    <Card className="break-inside-avoid border-white/10 bg-[#1A1A1A]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)]">
       <CardHeader className="space-y-2">
         <div className="flex items-start justify-between gap-4">
           <CardTitle className="text-base font-semibold tracking-tight">
@@ -34,7 +34,7 @@ export function StackCard({
               variant="secondary"
               className="border border-white/10 bg-white/5 text-white/80"
             >
-              <Sparkles className="mr-1 h-3.5 w-3.5 text-[#7c3aed]" />
+              <Sparkles className="mr-1 h-3.5 w-3.5 text-[#F97316]" />
               AI Stack
             </Badge>
           </div>
@@ -62,7 +62,7 @@ export function StackCard({
           </Button>
           <Button
             type="button"
-            className="bg-[#2563eb] text-white hover:bg-[#1d4ed8]"
+            className="bg-[#FB923C] text-white hover:bg-[#EA7C28]"
           >
             View
             <ArrowUpRight className="ml-2 h-4 w-4" />

@@ -42,10 +42,10 @@ interface CommunityStack {
 
 function Nav() {
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0a0a0a]/70 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#111111]/70 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#2563eb] shadow-[0_10px_30px_rgba(124,58,237,0.25)]">
+          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#F97316] to-[#FB923C] shadow-[0_10px_30px_rgba(249,115,22,0.25)]">
             <Sparkles className="h-4 w-4 text-white" />
           </div>
           <span className="text-sm font-bold tracking-wide text-white">
@@ -142,7 +142,7 @@ function CommunityCards() {
       {cards.map((card, idx) => (
         <Card
           key={idx}
-          className="group border-white/10 bg-[#111111]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)] hover:border-white/20 transition-all"
+          className="group border-white/10 bg-[#1A1A1A]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)] hover:border-white/20 transition-all"
         >
           <CardHeader className="space-y-2">
             <div className="flex items-start justify-between gap-4">
@@ -153,7 +153,7 @@ function CommunityCards() {
                 variant="secondary"
                 className="border border-white/10 bg-white/5 text-white/80 shrink-0"
               >
-                <Sparkles className="mr-1 h-3.5 w-3.5 text-[#7c3aed]" />
+                <Sparkles className="mr-1 h-3.5 w-3.5 text-[#F97316]" />
                 AI Stack
               </Badge>
             </div>
@@ -171,7 +171,7 @@ function CommunityCards() {
             </div>
 
             {card.goal && (
-              <Badge variant="outline" className="border-[#7c3aed]/30 bg-[#7c3aed]/10 text-[#c4b5fd] text-[10px] uppercase tracking-wider font-bold">
+              <Badge variant="outline" className="border-[#F97316]/30 bg-[#F97316]/10 text-[#c4b5fd] text-[10px] uppercase tracking-wider font-bold">
                 {card.goal}
               </Badge>
             )}
@@ -180,7 +180,7 @@ function CommunityCards() {
               {card.slug ? (
                 <Link
                   href={`/result?slug=${card.slug}`}
-                  className="flex items-center gap-1.5 text-sm font-semibold text-[#7c3aed] hover:text-[#9353d3] transition-colors"
+                  className="flex items-center gap-1.5 text-sm font-semibold text-[#F97316] hover:text-[#9353d3] transition-colors"
                 >
                   View Stack
                   <ArrowUpRight className="h-4 w-4" />
@@ -188,7 +188,7 @@ function CommunityCards() {
               ) : (
                 <Link
                   href="/advisor"
-                  className="flex items-center gap-1.5 text-sm font-semibold text-[#7c3aed] hover:text-[#9353d3] transition-colors"
+                  className="flex items-center gap-1.5 text-sm font-semibold text-[#F97316] hover:text-[#9353d3] transition-colors"
                 >
                   Build Yours
                   <ArrowUpRight className="h-4 w-4" />
@@ -204,12 +204,12 @@ function CommunityCards() {
 
 export default function Home() {
   return (
-    <div className="bg-[#0a0a0a] text-white">
+    <div className="bg-[#111111] text-white">
       <Nav />
 
       <main>
         <section className="relative overflow-hidden">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_circle_at_15%_15%,rgba(124,58,237,0.22),transparent_55%),radial-gradient(900px_circle_at_85%_20%,rgba(37,99,235,0.18),transparent_55%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_circle_at_15%_15%,rgba(249,115,22,0.15),transparent_55%),radial-gradient(900px_circle_at_85%_20%,rgba(251,146,60,0.12),transparent_55%)]" />
           <div className="relative mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
             <div className="max-w-2xl space-y-6">
               <Badge className="w-fit border border-white/10 bg-white/5 text-white/80">
@@ -228,7 +228,7 @@ export default function Home() {
                   href="/advisor"
                   className={cn(
                     buttonVariants({ size: "lg" }),
-                    "h-11 bg-[#7c3aed] px-5 text-white shadow-[0_12px_40px_rgba(124,58,237,0.25)] transition-all hover:-translate-y-0.5 hover:bg-[#6d28d9] active:translate-y-0"
+                    "h-11 bg-[#F97316] px-5 text-white shadow-[0_12px_40px_rgba(249,115,22,0.25)] transition-all hover:-translate-y-0.5 hover:bg-[#EA6C0A] active:translate-y-0"
                   )}
                 >
                   Find My Stack <ArrowRight className="ml-1.5 h-4 w-4" />
@@ -241,10 +241,10 @@ export default function Home() {
             </div>
 
             <div className="mt-12 grid gap-4 md:grid-cols-2 lg:mt-16">
-              <Card className="border-white/10 bg-[#111111]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)]">
+              <Card className="border-white/10 bg-[#1A1A1A]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)]">
                 <CardHeader className="space-y-3">
                   <div className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-black/35">
-                    <Layers3 className="h-5 w-5 text-[#7c3aed]" />
+                    <Layers3 className="h-5 w-5 text-[#F97316]" />
                   </div>
                   <CardTitle className="text-base">Clarity, instantly</CardTitle>
                 </CardHeader>
@@ -253,10 +253,10 @@ export default function Home() {
                   a list of links.
                 </CardContent>
               </Card>
-              <Card className="border-white/10 bg-[#111111]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)]">
+              <Card className="border-white/10 bg-[#1A1A1A]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)]">
                 <CardHeader className="space-y-3">
                   <div className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-black/35">
-                    <Compass className="h-5 w-5 text-[#2563eb]" />
+                    <Compass className="h-5 w-5 text-[#FB923C]" />
                   </div>
                   <CardTitle className="text-base">A path to ship</CardTitle>
                 </CardHeader>
@@ -283,13 +283,13 @@ export default function Home() {
                 n: "01",
                 title: "Describe Your Project",
                 text: "Tell us what you're building in plain English",
-                icon: <Sparkles className="h-5 w-5 text-[#7c3aed]" />,
+                icon: <Sparkles className="h-5 w-5 text-[#F97316]" />,
               },
               {
                 n: "02",
                 title: "AI Analyzes & Recommends",
                 text: "Gemini AI finds your perfect stack",
-                icon: <Layers3 className="h-5 w-5 text-[#2563eb]" />,
+                icon: <Layers3 className="h-5 w-5 text-[#FB923C]" />,
               },
               {
                 n: "03",
@@ -300,7 +300,7 @@ export default function Home() {
             ].map((s) => (
               <Card
                 key={s.n}
-                className="border-white/10 bg-[#111111]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)]"
+                className="border-white/10 bg-[#1A1A1A]/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_24px_70px_rgba(0,0,0,0.55)]"
               >
                 <CardHeader className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -339,7 +339,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-white/10 bg-[#0a0a0a]">
+      <footer className="border-t border-white/10 bg-[#111111]">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-10 text-sm text-white/55 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>Toolvise © 2025 • Built for builders</p>
           <div className="flex items-center gap-4">

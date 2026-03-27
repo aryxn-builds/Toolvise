@@ -67,11 +67,11 @@ export default function ReportBugPage() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#0a0a0a] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))] font-sans text-white/90 selection:bg-purple-500/30">
-      <header className="fixed top-0 z-50 w-full border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-md">
+    <div className="min-h-dvh bg-[#111111] bg-[radial-gradient(900px_circle_at_15%_15%,rgba(249,115,22,0.15),transparent_55%),radial-gradient(900px_circle_at_85%_20%,rgba(251,146,60,0.12),transparent_55%)] font-sans text-white/90 selection:bg-amber-500/30">
+      <header className="fixed top-0 z-50 w-full border-b border-white/5 bg-[#111111]/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-purple-500/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/20">
               <span className="text-lg font-bold text-white">T</span>
             </div>
             <span className="text-xl font-bold tracking-tight text-white">Toolvise</span>
@@ -86,8 +86,8 @@ export default function ReportBugPage() {
 
       <main className="mx-auto max-w-2xl px-4 pt-32 pb-24 sm:px-6 lg:px-8">
         <div className="mb-10 text-center">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-purple-500/10 mb-6">
-            <Bug className="h-6 w-6 text-purple-400" />
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/10 mb-6">
+            <Bug className="h-6 w-6 text-amber-400" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-3">
             Report a Bug 🐛
@@ -122,11 +122,11 @@ export default function ReportBugPage() {
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-white/80">Your Name <span className="text-white/40 font-normal">(optional)</span></Label>
-                  <Input id="name" name="name" placeholder="John Doe" className="h-11 bg-black/40 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-purple-500" />
+                  <Input id="name" name="name" placeholder="John Doe" className="h-11 bg-black/40 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-amber-500" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-white/80">Email <span className="text-white/40 font-normal">(optional)</span></Label>
-                  <Input id="email" name="email" type="email" placeholder="john@example.com" className="h-11 bg-black/40 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-purple-500" />
+                  <Input id="email" name="email" type="email" placeholder="john@example.com" className="h-11 bg-black/40 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-amber-500" />
                 </div>
               </div>
 
@@ -134,7 +134,7 @@ export default function ReportBugPage() {
                 <div className="space-y-2">
                   <Label htmlFor="bug_type" className="text-white/80">Bug Type <span className="text-red-400">*</span></Label>
                   <Select name="bug_type" required>
-                    <SelectTrigger className="h-11 bg-black/40 border-white/10 text-white focus:ring-purple-500">
+                    <SelectTrigger className="h-11 bg-black/40 border-white/10 text-white focus:ring-amber-500">
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#1a1a1a] border-white/10 text-white">
@@ -149,7 +149,7 @@ export default function ReportBugPage() {
                 <div className="space-y-2">
                   <Label htmlFor="page_name" className="text-white/80">Page Where Bug Occurred <span className="text-red-400">*</span></Label>
                   <Select name="page_name" required>
-                    <SelectTrigger className="h-11 bg-black/40 border-white/10 text-white focus:ring-purple-500">
+                    <SelectTrigger className="h-11 bg-black/40 border-white/10 text-white focus:ring-amber-500">
                       <SelectValue placeholder="Select page" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#1a1a1a] border-white/10 text-white">
@@ -171,14 +171,14 @@ export default function ReportBugPage() {
                   required
                   rows={5}
                   placeholder="Describe what happened, what you expected, and steps to reproduce..." 
-                  className="resize-none bg-black/40 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-purple-500" 
+                  className="resize-none bg-black/40 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-amber-500" 
                 />
               </div>
 
               <Button 
                 type="submit" 
                 disabled={loading}
-                className="h-12 w-full rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-lg shadow-purple-500/25 transition-all active:scale-[0.98]"
+                className="h-12 w-full rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-semibold shadow-lg shadow-amber-500/25 transition-all active:scale-[0.98]"
               >
                 {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <Bug className="mr-2 h-5 w-5" />}
                 {loading ? "Submitting..." : "Submit Report 🐛"}
@@ -187,7 +187,7 @@ export default function ReportBugPage() {
           )}
         </div>
       </main>
-      <footer className="border-t border-white/10 bg-[#0a0a0a] mt-auto">
+      <footer className="border-t border-white/10 bg-[#111111] mt-auto">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-10 text-sm text-white/55 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>Toolvise © 2025 • Built for builders</p>
           <div className="flex items-center gap-4">

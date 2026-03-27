@@ -160,12 +160,12 @@ export default function AdvisorPage() {
   const charCount = form.description.length
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#111111] text-white">
       {/* ── Nav ── */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0a0a0a]/80 backdrop-blur">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#111111]/80 backdrop-blur">
         <div className="mx-auto flex h-16 w-full max-w-4xl items-center justify-between px-4 sm:px-6">
           <a href="/" className="flex items-center gap-2">
-            <div className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-[#7c3aed] to-[#2563eb] shadow-[0_8px_24px_rgba(124,58,237,0.3)]">
+            <div className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-[#F97316] to-[#FB923C] shadow-[0_8px_24px_rgba(249,115,22,0.3)]">
               <Sparkles className="h-3.5 w-3.5 text-white" />
             </div>
             <span className="text-sm font-bold tracking-wide">Toolvise</span>
@@ -189,7 +189,7 @@ export default function AdvisorPage() {
         </div>
 
         {/* Form card */}
-        <div className="rounded-2xl border border-white/10 bg-[#111111] p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_32px_80px_rgba(0,0,0,0.6)] sm:p-8">
+        <div className="rounded-2xl border border-white/10 bg-[#1A1A1A] p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_32px_80px_rgba(0,0,0,0.6)] sm:p-8">
           <form onSubmit={handleSubmit} noValidate className="space-y-7">
 
             {/* ── Field 1: Project Description ── */}
@@ -197,7 +197,7 @@ export default function AdvisorPage() {
               <div className="flex items-center justify-between">
                 <Label htmlFor="description" className="text-white/90">
                   Project Description
-                  <span className="ml-1 text-[#7c3aed]">*</span>
+                  <span className="ml-1 text-[#F97316]">*</span>
                 </Label>
                 <span
                   className={cn(
@@ -215,7 +215,7 @@ export default function AdvisorPage() {
                 placeholder="e.g. I want to build a task management app for students..."
                 rows={4}
                 className={cn(
-                  "resize-none bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:border-[#7c3aed] focus-visible:ring-[#7c3aed]/20",
+                  "resize-none bg-white/5 border-white/10 text-white placeholder:text-white/25 focus-visible:border-[#F97316] focus-visible:ring-[#F97316]/20",
                   errors.description && "border-red-500/60 focus-visible:border-red-500 focus-visible:ring-red-500/20"
                 )}
                 aria-describedby={errors.description ? "description-error" : undefined}
@@ -229,7 +229,7 @@ export default function AdvisorPage() {
             <div className="space-y-2">
               <Label htmlFor="skillLevel" className="text-white/90">
                 Skill Level
-                <span className="ml-1 text-[#7c3aed]">*</span>
+                <span className="ml-1 text-[#F97316]">*</span>
               </Label>
               <Select
                 value={form.skillLevel}
@@ -238,7 +238,7 @@ export default function AdvisorPage() {
                 <SelectTrigger
                   id="skillLevel"
                   className={cn(
-                    "w-full h-10 bg-white/5 border-white/10 text-white data-[placeholder]:text-white/30 focus:border-[#7c3aed] focus:ring-[#7c3aed]/20",
+                    "w-full h-10 bg-white/5 border-white/10 text-white data-[placeholder]:text-white/30 focus:border-[#F97316] focus:ring-[#F97316]/20",
                     errors.skillLevel && "border-red-500/60"
                   )}
                 >
@@ -261,7 +261,7 @@ export default function AdvisorPage() {
             <div className="space-y-2">
               <Label className="text-white/90">
                 Budget
-                <span className="ml-1 text-[#7c3aed]">*</span>
+                <span className="ml-1 text-[#F97316]">*</span>
               </Label>
               <div
                 className="grid grid-cols-1 gap-2 sm:grid-cols-3"
@@ -279,13 +279,13 @@ export default function AdvisorPage() {
                       className={cn(
                         "relative rounded-xl border px-3 py-3 text-sm font-medium transition-all duration-150 text-center select-none",
                         selected
-                          ? "border-[#7c3aed] bg-[#7c3aed]/15 text-white shadow-[0_0_0_1px_rgba(124,58,237,0.5)]"
+                          ? "border-[#F97316] bg-[#F97316]/15 text-white shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
                           : "border-white/10 bg-white/5 text-white/60 hover:border-white/25 hover:bg-white/8 hover:text-white/85",
                         errors.budget && !selected && "border-red-500/30"
                       )}
                     >
                       {selected && (
-                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#7c3aed]">
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#F97316]">
                           <svg className="h-2.5 w-2.5 text-white" viewBox="0 0 10 8" fill="none">
                             <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
@@ -305,7 +305,7 @@ export default function AdvisorPage() {
             <div className="space-y-2">
               <Label htmlFor="goal" className="text-white/90">
                 Goal
-                <span className="ml-1 text-[#7c3aed]">*</span>
+                <span className="ml-1 text-[#F97316]">*</span>
               </Label>
               <Select
                 value={form.goal}
@@ -314,7 +314,7 @@ export default function AdvisorPage() {
                 <SelectTrigger
                   id="goal"
                   className={cn(
-                    "w-full h-10 bg-white/5 border-white/10 text-white data-[placeholder]:text-white/30 focus:border-[#7c3aed] focus:ring-[#7c3aed]/20",
+                    "w-full h-10 bg-white/5 border-white/10 text-white data-[placeholder]:text-white/30 focus:border-[#F97316] focus:ring-[#F97316]/20",
                     errors.goal && "border-red-500/60"
                   )}
                 >
@@ -337,7 +337,7 @@ export default function AdvisorPage() {
             <div className="space-y-2">
               <Label className="text-white/90">
                 How deep should we go?
-                <span className="ml-1 text-[#7c3aed]">*</span>
+                <span className="ml-1 text-[#F97316]">*</span>
               </Label>
               <div
                 className="grid grid-cols-1 gap-2 sm:grid-cols-3"
@@ -355,13 +355,13 @@ export default function AdvisorPage() {
                       className={cn(
                         "relative rounded-xl border px-3 py-3 text-sm font-medium transition-all duration-150 text-center select-none",
                         selected
-                          ? "border-[#7c3aed] bg-[#7c3aed]/15 text-white shadow-[0_0_0_1px_rgba(124,58,237,0.5)]"
+                          ? "border-[#F97316] bg-[#F97316]/15 text-white shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
                           : "border-white/10 bg-white/5 text-white/60 hover:border-white/25 hover:bg-white/8 hover:text-white/85",
                         errors.detailLevel && !selected && "border-red-500/30"
                       )}
                     >
                       {selected && (
-                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#7c3aed]">
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#F97316]">
                           <svg className="h-2.5 w-2.5 text-white" viewBox="0 0 10 8" fill="none">
                             <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
@@ -382,7 +382,7 @@ export default function AdvisorPage() {
             <div className="space-y-2">
               <Label className="text-white/90">
                 How do you want to build this?
-                <span className="ml-1 text-[#7c3aed]">*</span>
+                <span className="ml-1 text-[#F97316]">*</span>
               </Label>
               <div
                 className="grid grid-cols-1 gap-2 sm:grid-cols-3"
@@ -400,13 +400,13 @@ export default function AdvisorPage() {
                       className={cn(
                         "relative rounded-xl border px-3 py-3 text-sm font-medium transition-all duration-150 text-center select-none",
                         selected
-                          ? "border-[#7c3aed] bg-[#7c3aed]/15 text-white shadow-[0_0_0_1px_rgba(124,58,237,0.5)]"
+                          ? "border-[#F97316] bg-[#F97316]/15 text-white shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
                           : "border-white/10 bg-white/5 text-white/60 hover:border-white/25 hover:bg-white/8 hover:text-white/85",
                         errors.buildStyle && !selected && "border-red-500/30"
                       )}
                     >
                       {selected && (
-                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#7c3aed]">
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#F97316]">
                           <svg className="h-2.5 w-2.5 text-white" viewBox="0 0 10 8" fill="none">
                             <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
@@ -436,8 +436,8 @@ export default function AdvisorPage() {
               disabled={loading}
               className={cn(
                 "relative w-full rounded-xl px-5 py-3 text-sm font-semibold text-white transition-all duration-150",
-                "bg-[#7c3aed] shadow-[0_12px_40px_rgba(124,58,237,0.28)]",
-                "hover:-translate-y-0.5 hover:bg-[#6d28d9] hover:shadow-[0_16px_48px_rgba(124,58,237,0.38)]",
+                "bg-[#F97316] shadow-[0_12px_40px_rgba(249,115,22,0.28)]",
+                "hover:-translate-y-0.5 hover:bg-[#EA6C0A] hover:shadow-[0_16px_48px_rgba(249,115,22,0.38)]",
                 "active:translate-y-0 active:shadow-none",
                 "disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0",
                 "flex items-center justify-center gap-2"
