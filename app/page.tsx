@@ -9,7 +9,8 @@ import { buttonVariants } from "@/components/ui/button-variants"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-import { createBrowserClient } from "@/lib/supabase-client"
+import { createClient } from "@/lib/supabase/client"
+import { Navbar } from "@/components/Navbar"
 
 // ── Hardcoded fallback cards ───────────────────────────────────────────────
 const FALLBACK_CARDS = [
@@ -40,44 +41,6 @@ interface CommunityStack {
   slug: string | null
 }
 
-function Nav() {
-  return (
-    <header className="sticky top-0 z-50 border-b border-[#FFD896] bg-white/70 backdrop-blur">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#F97316] to-[#FB923C] shadow-[0_10px_30px_rgba(249,115,22,0.25)]">
-            <Sparkles className="h-4 w-4 text-[#111827]" />
-          </div>
-          <span className="text-sm font-bold tracking-wide text-[#111827]">
-            Toolvise
-          </span>
-        </Link>
-
-        <nav className="hidden items-center gap-6 text-sm text-[#111827]/70 md:flex">
-          <Link className="transition-colors hover:text-[#111827]" href="/">
-            Home
-          </Link>
-          <Link className="transition-colors hover:text-[#111827]" href="/explore">
-            Explore
-          </Link>
-          <Link className="transition-colors hover:text-[#111827]" href="/about">
-            About
-          </Link>
-        </nav>
-
-        <Link
-          href="/advisor"
-          className={cn(
-            buttonVariants({ variant: "outline", size: "lg" }),
-            "h-10 border-[#FFD896] bg-transparent text-[#111827]/85 transition-all hover:-translate-y-0.5 hover:bg-white hover:text-[#111827] active:translate-y-0"
-          )}
-        >
-          Try Free
-        </Link>
-      </div>
-    </header>
-  );
-}
 
 function CommunityCards() {
   const [cards, setCards] = React.useState<CommunityStack[]>([])
@@ -86,7 +49,7 @@ function CommunityCards() {
   React.useEffect(() => {
     async function fetchRecentStacks() {
       try {
-        const supabase = createBrowserClient()
+        const supabase = createClient()
         const { data, error } = await supabase
           .from("stacks")
           .select("user_input, tools, goal, share_slug")
@@ -205,7 +168,7 @@ function CommunityCards() {
 export default function Home() {
   return (
     <div className="bg-white text-[#111827]">
-      <Nav />
+      <Navbar />
 
       <main>
         <section className="relative overflow-hidden">

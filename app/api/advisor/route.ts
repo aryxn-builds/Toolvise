@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Groq from "groq-sdk";
 import { nanoid } from "nanoid";
-import { createServerClient } from "@/lib/supabase-server";
+import { createClient } from "@/lib/supabase/server";
 
 // ── Detail level prompt fragments ──────────────────────────────────────────
 const DETAIL_PROMPTS: Record<string, string> = {
@@ -391,7 +391,7 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
 
     // 10. Save to Supabase
     try {
-      const supabase = createServerClient();
+      const supabase = await createClient();
       const { error: dbError } = await supabase.from("stacks").insert({
         share_slug: shareSlug,
         user_input: userInput.trim(),

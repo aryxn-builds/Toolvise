@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { createBrowserClient } from "@/lib/supabase-client"
+import { createClient } from "@/lib/supabase/client"
 import { cn } from "@/lib/utils"
 
 const FILTERS = ["All", "Frontend", "Backend", "AI", "Mobile", "Full Stack"]
@@ -66,7 +66,7 @@ export default function ExplorePage() {
     if (isLoadMore) setLoadingMore(true)
     else setLoading(true)
 
-    const supabase = createBrowserClient()
+    const supabase = createClient()
     let query = supabase.from("stacks").select("*", { count: "exact" })
 
     // Build standard PostgREST matching logic

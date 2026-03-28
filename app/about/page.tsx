@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { ArrowLeft, Target, Bot, Globe, Zap, Code2, Users } from "lucide-react"
-import { createServerClient } from "@/lib/supabase-server"
+import { createClient } from "@/lib/supabase/server"
 
 import { Button } from "@/components/ui/button"
 import { buttonVariants } from "@/components/ui/button-variants"
@@ -8,7 +8,7 @@ import { buttonVariants } from "@/components/ui/button-variants"
 export const revalidate = 60 // Update stats every minute
 
 export default async function AboutPage() {
-  const supabase = createServerClient()
+  const supabase = await createClient()
 
   const { count } = await supabase
     .from("stacks")

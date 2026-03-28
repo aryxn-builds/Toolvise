@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { ArrowLeft, Bug, Loader2, CheckCircle2 } from "lucide-react"
-import { createBrowserClient } from "@/lib/supabase-client"
+import { createClient } from "@/lib/supabase/client"
 
 import { Button } from "@/components/ui/button"
 import { buttonVariants } from "@/components/ui/button-variants"
@@ -43,7 +43,7 @@ export default function ReportBugPage() {
     }
 
     try {
-      const supabase = createBrowserClient()
+      const supabase = createClient()
 
       const { error: dbError } = await supabase.from("bug_reports").insert({
         name: name || null,

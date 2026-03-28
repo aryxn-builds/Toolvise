@@ -25,7 +25,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-import { createBrowserClient } from "@/lib/supabase-client"
+import { createClient } from "@/lib/supabase/client"
 
 // ── Types ──────────────────────────────────────────────────────────────────
 interface Tool {
@@ -209,7 +209,7 @@ function ResultContent() {
       // 1. Try URL Param (Supabase DB Fetch)
       if (slug) {
         try {
-          const supabase = createBrowserClient()
+          const supabase = createClient()
           const { data: dbData, error } = await supabase
             .from("stacks")
             .select("*")
