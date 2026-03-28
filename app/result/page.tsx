@@ -525,10 +525,10 @@ function ResultContent() {
               {/* Vibe Workflow Steps */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-[#111827]/90">Workflow</h3>
-                <div className="relative border-l-2 border-[#F97316]/30 ml-3 pl-8 py-2 space-y-8">
+                <div className="relative border-l-2 border-[#FFD896] ml-3 pl-8 py-2 space-y-8">
                   {data.vibeCoding.workflow?.map((step, idx) => (
                     <div key={idx} className="relative group">
-                      <div className="absolute -left-[49px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-[#F97316]/30 bg-[#F97316]/20 text-sm font-bold text-[#FB923C] shadow-[0_0_10px_rgba(249,115,22,0.3)] transition-transform group-hover:scale-110">
+                      <div className="absolute -left-[49px] top-0 flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#FFD896] bg-[#FFF1D6] text-sm font-bold text-[#F97316] z-10 transition-transform group-hover:scale-110">
                         {idx + 1}
                       </div>
                       <p className="text-sm text-[#111827]/80 leading-relaxed pt-1">{step}</p>
@@ -543,7 +543,7 @@ function ResultContent() {
               <div className="mt-8">
                 <h3 className="text-lg font-semibold text-[#111827]/90 mb-3">Starter Prompt</h3>
                 <div className="relative group">
-                  <pre className="overflow-x-auto rounded-xl border border-[#F97316]/20 bg-[#0d0d0d] p-5 text-sm text-[#111827]/80 leading-relaxed whitespace-pre-wrap font-mono">
+                  <pre className="overflow-x-auto rounded-xl border border-[#FFD896] bg-[#FFE8B6] p-4 text-sm text-[#111827] leading-relaxed whitespace-pre-wrap font-mono">
                     {data.vibeCoding.starterPrompt}
                   </pre>
                   <button
@@ -551,8 +551,8 @@ function ResultContent() {
                     className={cn(
                       "absolute right-3 top-3 flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all",
                       promptCopied
-                        ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                        : "bg-white text-[#111827]/50 border border-[#FFD896] hover:bg-white hover:text-[#111827]"
+                        ? "bg-green-100 text-green-700 border border-green-300"
+                        : "bg-[#F97316] text-white hover:bg-[#EA6C0A]"
                     )}
                   >
                     <Copy className="h-3.5 w-3.5" />
