@@ -79,7 +79,8 @@ Rules:
 - Match difficulty to skill level
 - Be specific not generic
 - Roadmap should have 4-5 clear steps
-- roadmap must be array of plain strings ONLY. NEVER use objects like {name: string, substeps: string[]}. Each roadmap item must be one plain string.
+CRITICAL: roadmap MUST be an array of plain strings ONLY. Never use objects with name/substeps. Each item must be a single plain string like:
+'Set up Next.js project with Tailwind'
 - scoreCard is ALWAYS required — never omit it
 - Return ONLY valid JSON, no markdown fences or extra text`;
 
@@ -208,13 +209,13 @@ function normalizeRoadmap(roadmap: unknown[]): string[] {
       const s = step as Record<string, unknown>;
       if (s.name) {
         let text = String(s.name);
-        if (Array.isArray(s.substeps) && s.substeps.length > 0) {
+        if (Array.isArray(s.substeps)) {
           text += ': ' + (s.substeps as string[]).join(', ');
         }
         return text;
       }
     }
-    return String(step);
+    return String(step ?? '');
   });
 }
 

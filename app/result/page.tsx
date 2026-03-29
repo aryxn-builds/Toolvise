@@ -97,10 +97,30 @@ const CATEGORY_COLORS: Record<string, string> = {
 function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
   const [animated, setAnimated] = React.useState(false)
   const [scoreCopied, setScoreCopied] = React.useState(false)
+  const cardRef = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
-    const timer = setTimeout(() => setAnimated(true), 300)
+    const timer = setTimeout(() => {
+      setAnimated(true)
+    }, 500)
     return () => clearTimeout(timer)
+  }, [])
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setAnimated(true), 200)
+        }
+      },
+      { threshold: 0.3 }
+    )
+    
+    if (cardRef.current) {
+      observer.observe(cardRef.current)
+    }
+    
+    return () => observer.disconnect()
   }, [])
 
   const scoreColor = scoreCard.overallScore >= 90
@@ -135,7 +155,7 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
   }
 
   return (
-    <div className="mb-10 animate-in fade-in slide-in-from-bottom-6 duration-700 fill-mode-both" style={{ animationDelay: "100ms" }}>
+    <div ref={cardRef} className="mb-10 animate-in fade-in slide-in-from-bottom-6 duration-700 fill-mode-both" style={{ animationDelay: "100ms" }}>
       <Card className={cn("overflow-hidden border-[#F97316]/30 bg-[#fff1d6]/80 backdrop-blur-md", scoreGlow)}>
         <div className="h-1 w-full bg-gradient-to-r from-[#F97316] via-[#FB923C] to-[#F97316]" />
         <CardHeader className="pb-2">
@@ -230,7 +250,7 @@ function ResultContent() {
               estimatedTime: dbData.estimated_time,
               proTip: dbData.pro_tip,
               vibeCoding: dbData.vibe_coding || null,
-              scoreCard: dbData.score_card || null,
+              scoreCard: dbData.score_card ?? dbData.scoreCard ?? null,
               shareSlug: dbData.share_slug,
               stackUserId: dbData.user_id,
               formInput: {
@@ -270,7 +290,15 @@ function ResultContent() {
       try {
         const raw = localStorage.getItem("toolvise_result")
         if (raw) {
-          setData(JSON.parse(raw))
+          const parsed = JSON.parse(raw)
+          setData({
+            ...parsed,
+            scoreCard: parsed.scoreCard ?? parsed.score_card ?? null,
+            vibeCoding: parsed.vibeCoding ?? parsed.vibe_coding ?? null,
+            estimatedTime: parsed.estimatedTime ?? parsed.estimated_time ?? "",
+            proTip: parsed.proTip ?? parsed.pro_tip ?? "",
+            shareSlug: parsed.shareSlug ?? parsed.share_slug ?? "",
+          })
         }
       } catch {
         console.error("[result] Failed to parse localStorage data")
@@ -451,12 +479,12 @@ function ResultContent() {
           </Card>
 
           {/* 4. ROADMAP SECTION */}
-          <Card className="border-[#FFD896] bg-white0 backdrop-blur-md pb-4">
+          <Card className="border-[#FFD896] bg-white backdrop-blur-md pb-4">
             <CardHeader>
               <CardTitle className="text-xl font-semibold text-[#111827]">Execution Roadmap</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="py-2">
+              <div className="relative border-l-2 border-[#FFD896] ml-3 pl-8 py-2 space-y-8">
                 {(data.roadmap || []).map((step, idx) => {
                   let stepText: string
                   if (typeof step === 'string') {
@@ -472,23 +500,16 @@ function ResultContent() {
                       stepText = JSON.stringify(step)
                     }
                   } else {
-                    stepText = String(step)
+                    stepText = String(step ?? '')
                   }
                   return (
-                    <div key={idx} className="relative flex gap-4">
-                      <div className="relative flex flex-col items-center">
-                        <div className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#F97316] text-white text-sm font-bold">
-                          {idx + 1}
-                        </div>
-                        {idx < (data.roadmap || []).length - 1 && (
-                          <div className="w-px flex-1 bg-[#FFD896] mt-1" />
-                        )}
+                    <div key={idx} className="relative group">
+                      <div className="absolute -left-[49px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-[#FFD896] bg-[#F97316] text-sm font-bold text-white shadow-[0_0_15px_rgba(249,115,22,0.4)] transition-transform group-hover:scale-110 z-10">
+                        {idx + 1}
                       </div>
-                      <div className="pb-6 pt-1">
-                        <p className="text-[#374151] text-sm leading-relaxed">
-                          {stepText}
-                        </p>
-                      </div>
+                      <p className="text-base text-[#111827]/80 leading-relaxed pt-1">
+                        {stepText}
+                      </p>
                     </div>
                   )
                 })}
@@ -567,7 +588,7 @@ function ResultContent() {
                     href={tool.learnUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white border border-[#FFD896] px-4 py-2.5 text-sm font-semibold text-[#111827]/90 transition-all hover:bg-white hover:text-[#111827] mt-auto group-hover:bg-[#F97316] group-hover:border-[#F97316] group-hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white border border-[#FFD896] px-4 py-2.5 text-sm font-semibold text-[#111827]/90 transition-all mt-auto group-hover:bg-[#F97316] group-hover:border-[#F97316] group-hover:text-white group-hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]"
                   >
                     {tool.isFree ? "Learn Free" : "Learn"}
                     <ArrowUpRight className="h-4 w-4" />
@@ -620,14 +641,32 @@ function ResultContent() {
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-[#111827]/90">Workflow</h3>
                 <div className="relative border-l-2 border-[#FFD896] ml-3 pl-8 py-2 space-y-8">
-                  {data.vibeCoding.workflow?.map((step, idx) => (
-                    <div key={idx} className="relative group">
-                      <div className="absolute -left-[49px] top-0 flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#FFD896] bg-[#FFF1D6] text-sm font-bold text-[#F97316] z-10 transition-transform group-hover:scale-110">
-                        {idx + 1}
+                  {data.vibeCoding.workflow?.map((step, idx) => {
+                    let stepText: string
+                    if (typeof step === 'string') {
+                      stepText = step
+                    } else if (typeof step === 'object' && step !== null) {
+                      const s = step as Record<string, unknown>
+                      if (s.name) {
+                        stepText = String(s.name)
+                        if (Array.isArray(s.substeps) && s.substeps.length > 0) {
+                          stepText += ': ' + (s.substeps as string[]).join(', ')
+                        }
+                      } else {
+                        stepText = JSON.stringify(step)
+                      }
+                    } else {
+                      stepText = String(step ?? '')
+                    }
+                    return (
+                      <div key={idx} className="relative group">
+                        <div className="absolute -left-[49px] top-0 flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#FFD896] bg-[#FFF1D6] text-sm font-bold text-[#F97316] z-10 transition-transform group-hover:scale-110">
+                          {idx + 1}
+                        </div>
+                        <p className="text-sm text-[#111827]/80 leading-relaxed pt-1">{stepText}</p>
                       </div>
-                      <p className="text-sm text-[#111827]/80 leading-relaxed pt-1">{step}</p>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </div>
             </div>
