@@ -3,6 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { Search, ArrowUpRight, Flame, Layers, Loader2, Inbox } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -34,12 +35,14 @@ interface StackDB {
 }
 
 export default function ExplorePage() {
+  const router = useRouter()
   const [stacks, setStacks] = React.useState<StackDB[]>([])
   const [loading, setLoading] = React.useState(true)
   const [loadingMore, setLoadingMore] = React.useState(false)
   const [hasMore, setHasMore] = React.useState(true)
   const [page, setPage] = React.useState(0)
   const [totalCount, setTotalCount] = React.useState(0)
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false)
 
   const [activeFilter, setActiveFilter] = React.useState("All")
   const [searchQuery, setSearchQuery] = React.useState("")
@@ -50,6 +53,15 @@ export default function ExplorePage() {
     const timer = setTimeout(() => setDebouncedSearch(searchQuery), 400)
     return () => clearTimeout(timer)
   }, [searchQuery])
+
+  React.useEffect(() => {
+    async function checkAuth() {
+      const supabase = createClient()
+      const { data: { session } } = await supabase.auth.getSession()
+      setIsLoggedIn(!!session)
+    }
+    checkAuth()
+  }, [])
 
   // Initial Fetch & Filter Changes
   React.useEffect(() => {
@@ -134,6 +146,11 @@ export default function ExplorePage() {
   const [toastError, setToastError] = React.useState<string | null>(null)
 
   const handleUpvote = async (stack: StackDB) => {
+    if (!isLoggedIn) {
+      router.push(`/login?next=/explore`)
+      return
+    }
+
     if (votedCache.includes(stack.id) || stack._voted) return
 
     const previousUpvotes = stack.upvotes
@@ -284,19 +301,26 @@ export default function ExplorePage() {
 
                     {/* Bottom Actions */}
                     <div className="flex items-center justify-between mt-6 pt-4 border-t border-[#FFD896] shrink-0">
-                      <button
-                        onClick={() => handleUpvote(stack)}
-                        disabled={hasVoted}
-                        className={cn(
-                          "flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold transition-all",
-                          hasVoted
-                            ? "bg-orange-500/20 text-orange-500"
-                            : "bg-white text-[#111827]/50 hover:bg-white hover:text-[#111827]"
+                      <div className="relative group/upvote">
+                        <button
+                          onClick={() => handleUpvote(stack)}
+                          disabled={hasVoted}
+                          className={cn(
+                            "flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold transition-all",
+                            hasVoted
+                              ? "bg-orange-500/20 text-orange-500"
+                              : "bg-white text-[#111827]/50 hover:bg-white hover:text-[#111827]"
+                          )}
+                        >
+                          <Flame className={cn("h-4 w-4", hasVoted && "fill-orange-500")} />
+                          {stack.upvotes.toLocaleString()}
+                        </button>
+                        {!isLoggedIn && (
+                          <div className="absolute bottom-full left-0 mb-1.5 hidden group-hover/upvote:block whitespace-nowrap rounded-lg bg-[#111827] px-2.5 py-1.5 text-xs text-white pointer-events-none shadow-lg">
+                            Sign in to upvote
+                          </div>
                         )}
-                      >
-                        <Flame className={cn("h-4 w-4", hasVoted && "fill-orange-500")} />
-                        {stack.upvotes.toLocaleString()}
-                      </button>
+                      </div>
 
                       <Link
                         href={`/result?slug=${stack.share_slug}`}

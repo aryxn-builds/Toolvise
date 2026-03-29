@@ -166,6 +166,17 @@ function CommunityCards() {
 }
 
 export default function Home() {
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false)
+
+  React.useEffect(() => {
+    async function checkSession() {
+      const supabase = createClient()
+      const { data: { session } } = await supabase.auth.getSession()
+      setIsLoggedIn(!!session)
+    }
+    checkSession()
+  }, [])
+
   return (
     <div className="bg-white text-[#111827]">
       <Navbar />
@@ -186,20 +197,54 @@ export default function Home() {
                 tools, stack, and learning path for you. Free.
               </p>
 
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <Link
-                  href="/advisor"
-                  className={cn(
-                    buttonVariants({ size: "lg" }),
-                    "h-11 bg-[#F97316] px-5 text-[#111827] shadow-[0_12px_40px_rgba(249,115,22,0.25)] transition-all hover:-translate-y-0.5 hover:bg-[#EA6C0A] active:translate-y-0"
-                  )}
-                >
-                  Find My Stack <ArrowRight className="ml-1.5 h-4 w-4" />
-                </Link>
-              </div>
+              {isLoggedIn ? (
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <Link
+                    href="/advisor"
+                    className={cn(
+                      buttonVariants({ size: "lg" }),
+                      "h-11 bg-[#F97316] px-5 text-[#111827] shadow-[0_12px_40px_rgba(249,115,22,0.25)] transition-all hover:-translate-y-0.5 hover:bg-[#EA6C0A] active:translate-y-0"
+                    )}
+                  >
+                    Find My Stack <ArrowRight className="ml-1.5 h-4 w-4" />
+                  </Link>
+                  <Link
+                    href="/dashboard"
+                    className={cn(
+                      buttonVariants({ variant: "outline", size: "lg" }),
+                      "h-11 border-[#FFD896] bg-transparent text-[#111827]/85 transition-all hover:-translate-y-0.5 hover:bg-white hover:text-[#111827] active:translate-y-0"
+                    )}
+                  >
+                    My Dashboard
+                  </Link>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <Link
+                    href="/signup"
+                    className={cn(
+                      buttonVariants({ size: "lg" }),
+                      "h-11 bg-[#F97316] px-5 text-[#111827] shadow-[0_12px_40px_rgba(249,115,22,0.25)] transition-all hover:-translate-y-0.5 hover:bg-[#EA6C0A] active:translate-y-0"
+                    )}
+                  >
+                    Get Started Free <ArrowRight className="ml-1.5 h-4 w-4" />
+                  </Link>
+                  <Link
+                    href="/login"
+                    className={cn(
+                      buttonVariants({ variant: "outline", size: "lg" }),
+                      "h-11 border-[#FFD896] bg-transparent text-[#111827]/85 transition-all hover:-translate-y-0.5 hover:bg-white hover:text-[#111827] active:translate-y-0"
+                    )}
+                  >
+                    Sign In
+                  </Link>
+                </div>
+              )}
 
               <p className="text-xs leading-relaxed text-[#111827]/55 sm:text-sm">
-                No signup needed • 100% Free • Powered by Gemini AI
+                {isLoggedIn
+                  ? "Welcome back! Continue building your stack."
+                  : "Free to use • No credit card needed"}
               </p>
             </div>
 
