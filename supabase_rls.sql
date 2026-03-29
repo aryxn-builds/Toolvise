@@ -16,11 +16,34 @@ CREATE POLICY "Users can insert their own stacks" ON public.stacks
   FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
--- 4. Update Policy: Allows users to update only their own stacks (e.g., toggling is_public)
-CREATE POLICY "Users can update their own stacks" ON public.stacks
+-- 4. Update Policy: Allows users to update only their own stacks, OR to claim unclaimed stacks
+DROP POLICY IF EXISTS "Users can update their own stacks" ON public.stacks;
+DROP POLICY IF EXISTS "Users update own stacks" ON public.stacks;
+
+CREATE POLICY "Users can claim stacks" ON public.stacks
   FOR UPDATE
-  USING (auth.uid() = user_id)
+  USING (user_id IS NULL)
   WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users update own stacks" ON public.stacks
+  FOR UPDATE
+  USING (
+    auth.uid() = user_id 
+    OR user_id IS NULL
+  );
+
+-- Increment stacks_count function
+CREATE OR REPLACE FUNCTION increment_stacks_count(user_id uuid)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+  UPDATE profiles
+  SET stacks_count = stacks_count + 1
+  WHERE id = user_id;
+END;
+$$;
 
 -- 5. Delete Policy: Allows users to delete their own stacks
 CREATE POLICY "Users can delete their own stacks" ON public.stacks

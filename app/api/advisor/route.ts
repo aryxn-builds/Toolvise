@@ -416,6 +416,10 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
 
       if (dbError) {
         console.error("[advisor] Supabase insert error:", dbError);
+      } else if (user?.id) {
+        await supabase.rpc('increment_stacks_count', {
+          user_id: user.id
+        });
       }
     } catch (dbErr) {
       console.error("[advisor] Supabase connection error:", dbErr);

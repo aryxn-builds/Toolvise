@@ -19,6 +19,7 @@ import {
   Zap,
   Trophy,
   AlertTriangle,
+  CheckCircle2,
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -280,26 +281,31 @@ function ResultContent() {
   }
 
   const handleSaveStack = async () => {
-    if (!data?.shareSlug) return
+    if (saved || saving || !data?.shareSlug) return
     setSaving(true)
     
-    const supabase = createClient()
-    const { data: { session } } = await supabase.auth.getSession()
-    
-    if (!session) {
-      router.push(`/signup?next=/result?slug=${data.shareSlug}`)
-      return
-    }
+    try {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (!user) {
+        router.push(`/login?next=/result?slug=${data.shareSlug}`)
+        return
+      }
 
-    const { error } = await supabase
-      .from("stacks")
-      .update({ user_id: session.user.id })
-      .eq("share_slug", data.shareSlug)
+      const { error } = await supabase
+        .from("stacks")
+        .update({ user_id: user.id })
+        .eq("share_slug", data.shareSlug)
 
-    if (!error) {
-      setSaved(true)
+      if (!error) {
+        setSaved(true)
+      } else {
+        console.error('Save error:', error)
+      }
+    } finally {
+      setSaving(false)
     }
-    setSaving(false)
   }
 
 
@@ -621,11 +627,41 @@ function ResultContent() {
           <Button
             onClick={handleSaveStack}
             disabled={saving || saved}
-            className="h-12 px-8 rounded-xl bg-[#F97316] text-[#111827] hover:bg-[#EA6C0A] shadow-[0_0_20px_rgba(249,115,22,0.3)] font-semibold w-full sm:w-auto text-base disabled:opacity-50"
+            className={cn(
+               "h-12 px-8 rounded-xl font-semibold w-full sm:w-auto text-base shadow-[0_0_20px_rgba(249,115,22,0.3)]",
+               saved
+                 ? "bg-green-500 hover:bg-green-500 text-white cursor-default shadow-none"
+                 : "bg-[#F97316] text-[#111827] hover:bg-[#EA6C0A]"
+            )}
           >
-            <Bookmark className={cn("mr-2 h-5 w-5", saved && "fill-[#111827]")} />
-            {saving ? "Saving..." : saved ? "Saved!" : "Save My Stack"}
+            {saving ? (
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                Saving...
+              </>
+            ) : saved ? (
+              <>
+                <CheckCircle2 className="mr-2 h-5 w-5" />
+                Saved to Dashboard ✅
+              </>
+            ) : (
+              <>
+                <Bookmark className="mr-2 h-5 w-5" />
+                Save My Stack
+              </>
+            )}
           </Button>
+
+          {saved && (
+            <Link href="/dashboard" className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                className="w-full sm:w-auto h-12 px-8 rounded-xl border-[#FFD896] text-[#111827] hover:bg-[#fff1d6] font-semibold text-base"
+              >
+                View in Dashboard →
+              </Button>
+            </Link>
+          )}
           
           <Button
             onClick={handleShare}
