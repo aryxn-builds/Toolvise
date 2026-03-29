@@ -392,8 +392,14 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
     // 10. Save to Supabase
     try {
       const supabase = await createClient();
+
+      // Get current user (null if not logged in — that's fine)
+      const { data: { user } } = await supabase.auth.getUser();
+
       const { error: dbError } = await supabase.from("stacks").insert({
         share_slug: shareSlug,
+        user_id: user?.id ?? null,
+        is_public: true,
         user_input: userInput.trim(),
         skill_level: skillLevel,
         budget: budget,
