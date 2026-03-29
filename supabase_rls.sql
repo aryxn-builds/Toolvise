@@ -49,3 +49,5 @@ $$;
 CREATE POLICY "Users can delete their own stacks" ON public.stacks
   FOR DELETE
   USING (auth.uid() = user_id);
+
+NOTIFY pgrst, 'reload schema';
