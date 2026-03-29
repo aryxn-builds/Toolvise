@@ -20,6 +20,7 @@ import {
   ChevronDown,
   X,
   AlertTriangle,
+  Bookmark,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -65,6 +66,7 @@ interface Profile {
 
 type SortKey = "newest" | "score" | "upvotes";
 type FilterKey = "all" | "public" | "private";
+type TabKey = "my" | "saved";
 
 // ── Confirm Delete Dialog ─────────────────────────────────────────────────
 function DeleteDialog({
@@ -117,7 +119,7 @@ function DeleteDialog({
   );
 }
 
-// ── Stack Card ────────────────────────────────────────────────────────────
+// ── My Stack Card (full control) ──────────────────────────────────────────
 function StackCard({
   stack,
   onDelete,
@@ -158,12 +160,10 @@ function StackCard({
       </div>
 
       <CardContent className="flex flex-col flex-1 p-5 pt-4 space-y-3">
-        {/* Description */}
         <p className="text-sm font-medium text-[#111827] line-clamp-2 pr-20 leading-relaxed">
           &quot;{stack.user_input}&quot;
         </p>
 
-        {/* Tools */}
         <div className="flex flex-wrap gap-1.5">
           {(stack.tools || []).slice(0, 3).map((t, idx) => (
             <Badge
@@ -180,7 +180,6 @@ function StackCard({
           )}
         </div>
 
-        {/* Meta row */}
         <div className="flex items-center gap-3 text-xs text-[#111827]/40 flex-wrap">
           <span className="flex items-center gap-1">
             <CalendarDays className="h-3 w-3" />
@@ -200,7 +199,6 @@ function StackCard({
           )}
         </div>
 
-        {/* Divider + actions */}
         <div className="flex items-center justify-between pt-2 border-t border-[#FFD896]/60">
           <button
             onClick={() => onDelete(stack)}
@@ -222,6 +220,73 @@ function StackCard({
   );
 }
 
+// ── Saved Stack Card (read-only) ──────────────────────────────────────────
+function SavedStackCard({
+  stack,
+  onRemove,
+}: {
+  stack: Stack;
+  onRemove: (stackId: string) => void;
+}) {
+  return (
+    <Card className="group relative flex flex-col border-[#FFD896] bg-white hover:shadow-[0_8px_30px_rgba(249,115,22,0.1)] transition-all duration-200 rounded-2xl overflow-hidden">
+      {/* Read-only badge */}
+      <div className="absolute top-3 right-3 z-10">
+        <span className="flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-500 border border-blue-100">
+          <Bookmark className="h-3 w-3 fill-blue-500" />
+          Saved
+        </span>
+      </div>
+
+      <CardContent className="flex flex-col flex-1 p-5 pt-4 space-y-3">
+        <p className="text-sm font-medium text-[#111827] line-clamp-2 pr-20 leading-relaxed">
+          &quot;{stack.user_input}&quot;
+        </p>
+
+        <div className="flex flex-wrap gap-1.5">
+          {(stack.tools || []).slice(0, 3).map((t, idx) => (
+            <Badge
+              key={idx}
+              className="border border-[#FFD896] bg-[#fff1d6] text-[#111827]/70 text-xs"
+            >
+              {t.name}
+            </Badge>
+          ))}
+          {(stack.tools || []).length > 3 && (
+            <Badge className="border border-[#FFD896] bg-white text-[#111827]/40 text-xs">
+              +{stack.tools.length - 3}
+            </Badge>
+          )}
+        </div>
+
+        {stack.score_card?.overallScore != null && (
+          <div className="flex items-center gap-1 text-xs text-[#111827]/40">
+            <BarChart3 className="h-3 w-3 text-[#F97316]" />
+            Score: {stack.score_card.overallScore}/100
+          </div>
+        )}
+
+        <div className="flex items-center justify-between pt-2 border-t border-[#FFD896]/60">
+          <button
+            onClick={() => onRemove(stack.id)}
+            className="flex items-center gap-1 text-xs text-[#111827]/30 hover:text-red-500 transition-colors"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+            Remove
+          </button>
+          <Link
+            href={`/result?slug=${stack.share_slug}`}
+            className="flex items-center gap-1 text-sm font-semibold text-[#F97316] hover:text-[#EA6C0A] transition-colors"
+          >
+            View Stack
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 // ── Main Dashboard ────────────────────────────────────────────────────────
 export default function DashboardPage() {
   const router = useRouter();
@@ -229,9 +294,13 @@ export default function DashboardPage() {
   const [user, setUser] = React.useState<{ id: string; email: string } | null>(null);
   const [profile, setProfile] = React.useState<Profile | null>(null);
   const [stacks, setStacks] = React.useState<Stack[]>([]);
+  const [savedStacks, setSavedStacks] = React.useState<Stack[]>([]);
   const [loading, setLoading] = React.useState(true);
 
-  // Filters & sort
+  // Tab
+  const [activeTab, setActiveTab] = React.useState<TabKey>("my");
+
+  // Filters & sort (My Stacks only)
   const [search, setSearch] = React.useState("");
   const [filter, setFilter] = React.useState<FilterKey>("all");
   const [sort, setSort] = React.useState<SortKey>("newest");
@@ -248,7 +317,7 @@ export default function DashboardPage() {
     setTimeout(() => setToast(null), 3000);
   }, []);
 
-  // ── Load user + data ─────────────────────────────────────────────────
+  // ── Load user + data in parallel ──────────────────────────────────────
   React.useEffect(() => {
     async function load() {
       const supabase = createClient();
@@ -261,7 +330,12 @@ export default function DashboardPage() {
 
       setUser({ id: u.id, email: u.email ?? "" });
 
-      const [{ data: profileData }, { data: stacksData }] = await Promise.all([
+      // Fetch profile, my stacks, and bookmarked stacks all in parallel
+      const [
+        { data: profileData },
+        { data: myStacksData },
+        { data: bookmarksData },
+      ] = await Promise.all([
         supabase.from("profiles").select("*").eq("id", u.id).maybeSingle(),
         supabase
           .from("stacks")
@@ -269,10 +343,26 @@ export default function DashboardPage() {
           .eq("user_id", u.id)
           .order("created_at", { ascending: false })
           .limit(50),
+        supabase
+          .from("bookmarks")
+          .select("stack_id, stacks(*)")
+          .eq("user_id", u.id)
+          .order("created_at", { ascending: false })
+          .limit(50),
       ]);
 
       setProfile(profileData);
-      setStacks(stacksData ?? []);
+      setStacks(myStacksData ?? []);
+
+      // bookmarksData rows have shape { stack_id, stacks: Stack }
+      const saved = (bookmarksData ?? [])
+        .map((b: { stack_id: string; stacks: Stack | Stack[] }) => {
+          const s = b.stacks;
+          return Array.isArray(s) ? s[0] : s;
+        })
+        .filter(Boolean) as Stack[];
+
+      setSavedStacks(saved);
       setLoading(false);
     }
 
@@ -293,11 +383,10 @@ export default function DashboardPage() {
     [stacks]
   );
 
-  // ── Filtered + sorted stacks ──────────────────────────────────────────
+  // ── Filtered + sorted my stacks ───────────────────────────────────────
   const filteredStacks = React.useMemo(() => {
     let result = [...stacks];
 
-    // search
     if (search.trim()) {
       const q = search.toLowerCase();
       result = result.filter(
@@ -307,22 +396,19 @@ export default function DashboardPage() {
       );
     }
 
-    // visibility filter
     if (filter === "public") result = result.filter((s) => s.is_public);
     if (filter === "private") result = result.filter((s) => !s.is_public);
 
-    // sort
     if (sort === "score") {
       result.sort((a, b) => (b.score_card?.overallScore ?? 0) - (a.score_card?.overallScore ?? 0));
     } else if (sort === "upvotes") {
       result.sort((a, b) => (b.upvotes ?? 0) - (a.upvotes ?? 0));
     }
-    // newest is already default order from DB
 
     return result;
   }, [stacks, search, filter, sort]);
 
-  // ── Delete handler ────────────────────────────────────────────────────
+  // ── Delete my stack ───────────────────────────────────────────────────
   const handleDelete = async () => {
     if (!deletingStack) return;
     setDeleteLoading(true);
@@ -344,11 +430,10 @@ export default function DashboardPage() {
     setDeletingStack(null);
   };
 
-  // ── Toggle visibility handler ─────────────────────────────────────────
+  // ── Toggle visibility ─────────────────────────────────────────────────
   const handleToggleVisibility = async (stack: Stack) => {
     const newVal = !stack.is_public;
 
-    // Optimistic update
     setStacks((prev) =>
       prev.map((s) => (s.id === stack.id ? { ...s, is_public: newVal } : s))
     );
@@ -362,11 +447,30 @@ export default function DashboardPage() {
     if (res.ok) {
       showToast(newVal ? "Stack made public" : "Stack set to private");
     } else {
-      // Revert on failure
       setStacks((prev) =>
         prev.map((s) => (s.id === stack.id ? { ...s, is_public: !newVal } : s))
       );
       showToast("Failed to update visibility", false);
+    }
+  };
+
+  // ── Remove bookmark ───────────────────────────────────────────────────
+  const handleRemoveBookmark = async (stackId: string) => {
+    const supabase = createClient();
+    const { data: { user: u } } = await supabase.auth.getUser();
+    if (!u) return;
+
+    const { error } = await supabase
+      .from("bookmarks")
+      .delete()
+      .eq("user_id", u.id)
+      .eq("stack_id", stackId);
+
+    if (!error) {
+      setSavedStacks((prev) => prev.filter((s) => s.id !== stackId));
+      showToast("Removed from saved stacks");
+    } else {
+      showToast("Failed to remove bookmark", false);
     }
   };
 
@@ -476,16 +580,16 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               {
-                label: "Total Stacks",
+                label: "My Stacks",
                 value: stacks.length,
                 icon: <Layers className="h-5 w-5 text-[#F97316]" />,
-                sub: "All time",
+                sub: "Generated by you",
               },
               {
-                label: "This Month",
-                value: thisMonthCount,
-                icon: <CalendarDays className="h-5 w-5 text-[#F97316]" />,
-                sub: new Date().toLocaleString("default", { month: "long" }),
+                label: "Saved Stacks",
+                value: savedStacks.length,
+                icon: <Bookmark className="h-5 w-5 text-[#F97316]" />,
+                sub: "Bookmarked from others",
               },
               {
                 label: "Top Score",
@@ -538,118 +642,169 @@ export default function DashboardPage() {
           </Link>
         </section>
 
-        {/* ── My Stacks ── */}
-        <section className="space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <h2 className="text-xl font-semibold">
-              My Stacks
-              {filteredStacks.length > 0 && (
-                <span className="ml-2 text-sm font-normal text-[#111827]/40">
-                  ({filteredStacks.length})
-                </span>
+        {/* ── Tab Switcher ── */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-1 p-1 bg-white border border-[#FFD896] rounded-xl w-fit">
+            <button
+              onClick={() => setActiveTab("my")}
+              className={cn(
+                "px-5 py-2 rounded-lg text-sm font-semibold transition-all",
+                activeTab === "my"
+                  ? "bg-[#F97316] text-white shadow-sm"
+                  : "text-[#111827]/60 hover:text-[#111827]"
               )}
-            </h2>
+            >
+              My Stacks
+              <span className="ml-2 text-xs opacity-70">({stacks.length})</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab("saved")}
+              className={cn(
+                "px-5 py-2 rounded-lg text-sm font-semibold transition-all",
+                activeTab === "saved"
+                  ? "bg-[#F97316] text-white shadow-sm"
+                  : "text-[#111827]/60 hover:text-[#111827]"
+              )}
+            >
+              Saved Stacks
+              <span className="ml-2 text-xs opacity-70">({savedStacks.length})</span>
+            </button>
           </div>
 
-          {/* Search + Filter + Sort bar */}
-          {stacks.length > 0 && (
-            <div className="flex flex-col sm:flex-row gap-3">
-              {/* Search */}
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#111827]/40" />
-                <Input
-                  placeholder="Search stacks…"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="pl-9 h-10 bg-white border-[#FFD896] text-[#111827] placeholder:text-[#111827]/30 focus-visible:ring-[#F97316] rounded-xl"
-                />
-                {search && (
-                  <button
-                    onClick={() => setSearch("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#111827]/30 hover:text-[#111827]"
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </button>
-                )}
-              </div>
-
-              {/* Filter pills */}
-              <div className="flex items-center gap-2 shrink-0">
-                {(["all", "public", "private"] as FilterKey[]).map((f) => (
-                  <button
-                    key={f}
-                    onClick={() => setFilter(f)}
-                    className={cn(
-                      "px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all",
-                      filter === f
-                        ? "bg-[#F97316] text-white shadow-sm"
-                        : "bg-white border border-[#FFD896] text-[#111827]/60 hover:text-[#111827]"
+          {/* ── MY STACKS TAB ── */}
+          {activeTab === "my" && (
+            <div className="space-y-5 animate-in fade-in duration-300">
+              {/* Search + Filter + Sort bar */}
+              {stacks.length > 0 && (
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#111827]/40" />
+                    <Input
+                      placeholder="Search stacks…"
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      className="pl-9 h-10 bg-white border-[#FFD896] text-[#111827] placeholder:text-[#111827]/30 focus-visible:ring-[#F97316] rounded-xl"
+                    />
+                    {search && (
+                      <button
+                        onClick={() => setSearch("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#111827]/30 hover:text-[#111827]"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
                     )}
-                  >
-                    {f}
-                  </button>
-                ))}
-              </div>
+                  </div>
 
-              {/* Sort dropdown */}
-              <div className="relative shrink-0">
-                <select
-                  value={sort}
-                  onChange={(e) => setSort(e.target.value as SortKey)}
-                  className="appearance-none h-10 pl-3 pr-8 rounded-xl border border-[#FFD896] bg-white text-[#111827] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#F97316]/40 cursor-pointer"
-                >
-                  <option value="newest">Newest First</option>
-                  <option value="score">Highest Score</option>
-                  <option value="upvotes">Most Upvoted</option>
-                </select>
-                <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#111827]/40" />
-              </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    {(["all", "public", "private"] as FilterKey[]).map((f) => (
+                      <button
+                        key={f}
+                        onClick={() => setFilter(f)}
+                        className={cn(
+                          "px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all",
+                          filter === f
+                            ? "bg-[#F97316] text-white shadow-sm"
+                            : "bg-white border border-[#FFD896] text-[#111827]/60 hover:text-[#111827]"
+                        )}
+                      >
+                        {f}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="relative shrink-0">
+                    <select
+                      value={sort}
+                      onChange={(e) => setSort(e.target.value as SortKey)}
+                      className="appearance-none h-10 pl-3 pr-8 rounded-xl border border-[#FFD896] bg-white text-[#111827] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#F97316]/40 cursor-pointer"
+                    >
+                      <option value="newest">Newest First</option>
+                      <option value="score">Highest Score</option>
+                      <option value="upvotes">Most Upvoted</option>
+                    </select>
+                    <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#111827]/40" />
+                  </div>
+                </div>
+              )}
+
+              {filteredStacks.length > 0 ? (
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 animate-in fade-in duration-300">
+                  {filteredStacks.map((stack) => (
+                    <StackCard
+                      key={stack.id}
+                      stack={stack}
+                      onDelete={setDeletingStack}
+                      onToggleVisibility={handleToggleVisibility}
+                    />
+                  ))}
+                </div>
+              ) : stacks.length === 0 ? (
+                <div className="rounded-2xl border border-[#FFD896] bg-white p-14 text-center animate-in fade-in duration-300">
+                  <div className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl bg-[#fff1d6] border border-[#FFD896]">
+                    <Layers className="h-8 w-8 text-[#F97316]" />
+                  </div>
+                  <h3 className="text-lg font-bold text-[#111827] mb-2">
+                    You haven&apos;t generated any stacks yet
+                  </h3>
+                  <p className="text-sm text-[#111827]/50 mb-6 max-w-sm mx-auto">
+                    Describe your project and our AI will recommend the perfect tech stack, tools, and learning path.
+                  </p>
+                  <Link href="/advisor">
+                    <Button className="bg-[#F97316] text-white hover:bg-[#EA6C0A] rounded-xl shadow-lg shadow-amber-500/20 gap-2">
+                      <Sparkles className="h-4 w-4" />
+                      Generate Your First Stack →
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="rounded-2xl border border-[#FFD896] bg-white p-10 text-center animate-in fade-in duration-300">
+                  <Search className="h-8 w-8 text-[#111827]/20 mx-auto mb-3" />
+                  <h3 className="text-base font-semibold text-[#111827] mb-1">No stacks match</h3>
+                  <p className="text-sm text-[#111827]/50">Try adjusting your search or filter</p>
+                  <button
+                    onClick={() => { setSearch(""); setFilter("all"); }}
+                    className="mt-4 text-sm font-semibold text-[#F97316] hover:underline"
+                  >
+                    Clear filters
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
-          {/* Grid */}
-          {filteredStacks.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 animate-in fade-in duration-300">
-              {filteredStacks.map((stack) => (
-                <StackCard
-                  key={stack.id}
-                  stack={stack}
-                  onDelete={setDeletingStack}
-                  onToggleVisibility={handleToggleVisibility}
-                />
-              ))}
-            </div>
-          ) : stacks.length === 0 ? (
-            /* Empty state — no stacks at all */
-            <div className="rounded-2xl border border-[#FFD896] bg-white p-14 text-center animate-in fade-in duration-300">
-              <div className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl bg-[#fff1d6] border border-[#FFD896]">
-                <Layers className="h-8 w-8 text-[#F97316]" />
-              </div>
-              <h3 className="text-lg font-bold text-[#111827] mb-2">
-                You haven&apos;t generated any stacks yet
-              </h3>
-              <p className="text-sm text-[#111827]/50 mb-6 max-w-sm mx-auto">
-                Describe your project and our AI will recommend the perfect tech stack, tools, and learning path.
-              </p>
-              <Link href="/advisor">
-                <Button className="bg-[#F97316] text-white hover:bg-[#EA6C0A] rounded-xl shadow-lg shadow-amber-500/20 gap-2">
-                  <Sparkles className="h-4 w-4" />
-                  Generate Your First Stack →
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            /* Empty state — search/filter returned nothing */
-            <div className="rounded-2xl border border-[#FFD896] bg-white p-10 text-center animate-in fade-in duration-300">
-              <Search className="h-8 w-8 text-[#111827]/20 mx-auto mb-3" />
-              <h3 className="text-base font-semibold text-[#111827] mb-1">No stacks match</h3>
-              <p className="text-sm text-[#111827]/50">Try adjusting your search or filter</p>
-              <button
-                onClick={() => { setSearch(""); setFilter("all"); }}
-                className="mt-4 text-sm font-semibold text-[#F97316] hover:underline"
-              >
-                Clear filters
-              </button>
+          {/* ── SAVED STACKS TAB ── */}
+          {activeTab === "saved" && (
+            <div className="space-y-5 animate-in fade-in duration-300">
+              {savedStacks.length > 0 ? (
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {savedStacks.map((stack) => (
+                    <SavedStackCard
+                      key={stack.id}
+                      stack={stack}
+                      onRemove={handleRemoveBookmark}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-2xl border border-[#FFD896] bg-white p-14 text-center animate-in fade-in duration-300">
+                  <div className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl bg-[#fff1d6] border border-[#FFD896]">
+                    <Bookmark className="h-8 w-8 text-[#F97316]" />
+                  </div>
+                  <h3 className="text-lg font-bold text-[#111827] mb-2">
+                    You haven&apos;t saved any stacks yet
+                  </h3>
+                  <p className="text-sm text-[#111827]/50 mb-6 max-w-sm mx-auto">
+                    Browse the explore page and save stacks that inspire you.
+                  </p>
+                  <Link href="/explore">
+                    <Button className="bg-[#F97316] text-white hover:bg-[#EA6C0A] rounded-xl shadow-lg shadow-amber-500/20 gap-2">
+                      <Layers className="h-4 w-4" />
+                      Explore Stacks →
+                    </Button>
+                  </Link>
+                </div>
+              )}
             </div>
           )}
         </section>

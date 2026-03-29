@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { Search, ArrowUpRight, Flame, Layers, Loader2, Inbox } from "lucide-react"
+import { Search, ArrowUpRight, Flame, Layers, Loader2, Inbox, Bookmark } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 import { Input } from "@/components/ui/input"
@@ -46,8 +46,8 @@ export default function ExplorePage() {
 
   const [activeFilter, setActiveFilter] = React.useState("All")
   const [searchQuery, setSearchQuery] = React.useState("")
-  // Debounce search state
   const [debouncedSearch, setDebouncedSearch] = React.useState("")
+  const [bookmarked, setBookmarked] = React.useState<Set<string>>(new Set())
 
   React.useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(searchQuery), 400)
@@ -57,8 +57,16 @@ export default function ExplorePage() {
   React.useEffect(() => {
     async function checkAuth() {
       const supabase = createClient()
-      const { data: { session } } = await supabase.auth.getSession()
-      setIsLoggedIn(!!session)
+      const { data: { user } } = await supabase.auth.getUser()
+      setIsLoggedIn(!!user)
+
+      if (user) {
+        const { data: userBookmarks } = await supabase
+          .from('bookmarks')
+          .select('stack_id')
+          .eq('user_id', user.id)
+        setBookmarked(new Set(userBookmarks?.map((b: { stack_id: string }) => b.stack_id) || []))
+      }
     }
     checkAuth()
   }, [])
@@ -155,7 +163,6 @@ export default function ExplorePage() {
 
     const previousUpvotes = stack.upvotes
 
-    // Optimistically update UI
     setStacks(prev => 
       prev.map(s => 
         s.id === stack.id 
@@ -168,7 +175,6 @@ export default function ExplorePage() {
     setVotedCache(newVotes)
     localStorage.setItem("toolvise_voted", JSON.stringify(newVotes))
 
-    // Persist to Supabase via server API (bypasses RLS)
     try {
       const res = await fetch("/api/upvote", {
         method: "POST",
@@ -178,7 +184,6 @@ export default function ExplorePage() {
 
       if (!res.ok) throw new Error("Upvote API failed")
     } catch {
-      // Revert optimistic update
       setStacks(prev =>
         prev.map(s =>
           s.id === stack.id
@@ -192,6 +197,28 @@ export default function ExplorePage() {
       
       setToastError("Upvote failed. Please try again.")
       setTimeout(() => setToastError(null), 3000)
+    }
+  }
+
+  const handleBookmark = async (stackId: string) => {
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+      router.push('/login?next=/explore')
+      return
+    }
+
+    if (bookmarked.has(stackId)) {
+      await supabase.from('bookmarks').delete().eq('user_id', user.id).eq('stack_id', stackId)
+      setBookmarked(prev => {
+        const next = new Set(prev)
+        next.delete(stackId)
+        return next
+      })
+    } else {
+      await supabase.from('bookmarks').insert({ user_id: user.id, stack_id: stackId })
+      setBookmarked(prev => new Set(Array.from(prev).concat(stackId)))
     }
   }
 
@@ -301,25 +328,40 @@ export default function ExplorePage() {
 
                     {/* Bottom Actions */}
                     <div className="flex items-center justify-between mt-6 pt-4 border-t border-[#FFD896] shrink-0">
-                      <div className="relative group/upvote">
+                      <div className="flex items-center gap-3">
+                        <div className="relative group/upvote">
+                          <button
+                            onClick={() => handleUpvote(stack)}
+                            disabled={hasVoted}
+                            className={cn(
+                              "flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold transition-all",
+                              hasVoted
+                                ? "bg-orange-500/20 text-orange-500"
+                                : "bg-white text-[#111827]/50 hover:bg-white hover:text-[#111827]"
+                            )}
+                          >
+                            <Flame className={cn("h-4 w-4", hasVoted && "fill-orange-500")} />
+                            {stack.upvotes.toLocaleString()}
+                          </button>
+                          {!isLoggedIn && (
+                            <div className="absolute bottom-full left-0 mb-1.5 hidden group-hover/upvote:block whitespace-nowrap rounded-lg bg-[#111827] px-2.5 py-1.5 text-xs text-white pointer-events-none shadow-lg">
+                              Sign in to upvote
+                            </div>
+                          )}
+                        </div>
+
                         <button
-                          onClick={() => handleUpvote(stack)}
-                          disabled={hasVoted}
+                          onClick={() => handleBookmark(stack.id)}
                           className={cn(
-                            "flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold transition-all",
-                            hasVoted
-                              ? "bg-orange-500/20 text-orange-500"
-                              : "bg-white text-[#111827]/50 hover:bg-white hover:text-[#111827]"
+                            "flex items-center gap-1 text-xs transition-colors",
+                            bookmarked.has(stack.id)
+                              ? "text-[#F97316] font-semibold"
+                              : "text-[#111827]/30 hover:text-[#F97316]"
                           )}
                         >
-                          <Flame className={cn("h-4 w-4", hasVoted && "fill-orange-500")} />
-                          {stack.upvotes.toLocaleString()}
+                          <Bookmark className={cn("h-3.5 w-3.5", bookmarked.has(stack.id) && "fill-[#F97316]")} />
+                          {bookmarked.has(stack.id) ? "Saved" : "Save"}
                         </button>
-                        {!isLoggedIn && (
-                          <div className="absolute bottom-full left-0 mb-1.5 hidden group-hover/upvote:block whitespace-nowrap rounded-lg bg-[#111827] px-2.5 py-1.5 text-xs text-white pointer-events-none shadow-lg">
-                            Sign in to upvote
-                          </div>
-                        )}
                       </div>
 
                       <Link

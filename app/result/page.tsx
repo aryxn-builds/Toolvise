@@ -64,6 +64,7 @@ interface ScoreCard {
 }
 
 interface StackResult {
+  id?: string
   summary: string
   tools: Tool[]
   roadmap: string[]
@@ -73,6 +74,7 @@ interface StackResult {
   scoreCard?: ScoreCard | null
   architecture?: string
   shareSlug?: string
+  stackUserId?: string | null
   formInput?: {
     description: string
     skillLevel: string
@@ -221,6 +223,7 @@ function ResultContent() {
 
           if (dbData && !error) {
             setData({
+              id: dbData.id,
               summary: dbData.summary,
               tools: dbData.tools,
               roadmap: dbData.roadmap,
@@ -229,6 +232,7 @@ function ResultContent() {
               vibeCoding: dbData.vibe_coding || null,
               scoreCard: dbData.score_card || null,
               shareSlug: dbData.share_slug,
+              stackUserId: dbData.user_id,
               formInput: {
                 description: dbData.user_input,
                 skillLevel: dbData.skill_level,
@@ -237,9 +241,21 @@ function ResultContent() {
               },
             })
             
-            const { data: { session } } = await supabase.auth.getSession()
-            if (session && dbData.user_id === session.user.id) {
-              setSaved(true)
+            const { data: { user } } = await supabase.auth.getUser()
+            if (user) {
+              // Already owns this stack
+              if (dbData.user_id === user.id) {
+                setSaved(true)
+              } else if (dbData.id) {
+                // Check if bookmarked
+                const { data: bm } = await supabase
+                  .from('bookmarks')
+                  .select('id')
+                  .eq('user_id', user.id)
+                  .eq('stack_id', dbData.id)
+                  .maybeSingle()
+                if (bm) setSaved(true)
+              }
             }
             
             setTimeout(() => setLoading(false), 800)
@@ -293,15 +309,28 @@ function ResultContent() {
         return
       }
 
-      const { error } = await supabase
-        .from("stacks")
-        .update({ user_id: user.id })
-        .eq("share_slug", data.shareSlug)
+      // Fetch the latest stack ownership state
+      const { data: stack } = await supabase
+        .from('stacks')
+        .select('id, user_id')
+        .eq('share_slug', data.shareSlug)
+        .single()
 
-      if (!error) {
-        setSaved(true)
+      if (!stack?.user_id || stack.user_id === user.id) {
+        // Unclaimed or own stack → claim it
+        const { error } = await supabase
+          .from('stacks')
+          .update({ user_id: user.id })
+          .eq('share_slug', data.shareSlug)
+        if (!error) setSaved(true)
+        else console.error('Claim error:', error)
       } else {
-        console.error('Save error:', error)
+        // Someone else's stack → bookmark it
+        const { error } = await supabase
+          .from('bookmarks')
+          .upsert({ user_id: user.id, stack_id: stack.id })
+        if (!error) setSaved(true)
+        else console.error('Bookmark error:', error)
       }
     } finally {
       setSaving(false)
