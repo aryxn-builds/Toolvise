@@ -456,17 +456,42 @@ function ResultContent() {
               <CardTitle className="text-xl font-semibold text-[#111827]">Execution Roadmap</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="relative border-l-2 border-[#FFD896] ml-3 pl-8 py-2 space-y-10">
-                {data.roadmap?.map((step, idx) => (
-                  <div key={idx} className="relative group">
-                    <div className="absolute -left-[49px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-[#FFD896] bg-[#F97316] text-sm font-bold text-[#111827] shadow-[0_0_15px_rgba(249,115,22,0.4)] transition-transform group-hover:scale-110">
-                      {idx + 1}
+              <div className="py-2">
+                {(data.roadmap || []).map((step, idx) => {
+                  let stepText: string
+                  if (typeof step === 'string') {
+                    stepText = step
+                  } else if (typeof step === 'object' && step !== null) {
+                    const s = step as Record<string, unknown>
+                    if (s.name) {
+                      stepText = String(s.name)
+                      if (Array.isArray(s.substeps) && s.substeps.length > 0) {
+                        stepText += ': ' + (s.substeps as string[]).join(', ')
+                      }
+                    } else {
+                      stepText = JSON.stringify(step)
+                    }
+                  } else {
+                    stepText = String(step)
+                  }
+                  return (
+                    <div key={idx} className="relative flex gap-4">
+                      <div className="relative flex flex-col items-center">
+                        <div className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#F97316] text-white text-sm font-bold">
+                          {idx + 1}
+                        </div>
+                        {idx < (data.roadmap || []).length - 1 && (
+                          <div className="w-px flex-1 bg-[#FFD896] mt-1" />
+                        )}
+                      </div>
+                      <div className="pb-6 pt-1">
+                        <p className="text-[#374151] text-sm leading-relaxed">
+                          {stepText}
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-base text-[#111827]/80 leading-relaxed pt-1">
-                      {step}
-                    </p>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </CardContent>
           </Card>
@@ -482,9 +507,11 @@ function ResultContent() {
           </h3>
           
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-            {data.tools?.map((tool, index) => (
+            {(data.tools || []).map((tool, index) => {
+              if (!tool || typeof tool !== 'object') return null;
+              return (
               <Card
-                key={tool.name}
+                key={tool.name || index}
                 className="group relative overflow-hidden border-[#FFD896] bg-white backdrop-blur-xl transition-all hover:border-[#FFD896] hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] flex flex-col h-full animate-in fade-in zoom-in-95 duration-700 fill-mode-both"
                 style={{ animationDelay: `${300 + index * 100}ms` }}
               >
@@ -493,7 +520,7 @@ function ResultContent() {
                 <CardContent className="flex flex-1 flex-col p-6">
                   <div className="mb-4 flex items-start justify-between gap-3">
                     <div className="space-y-2">
-                      <h4 className="text-lg font-bold text-[#111827] tracking-tight">{tool.name}</h4>
+                      <h4 className="text-lg font-bold text-[#111827] tracking-tight">{String(tool.name || 'Unknown')}</h4>
                       <Badge
                         className={cn(
                           "text-[10px] uppercase font-bold tracking-wider rounded-md",
@@ -547,7 +574,7 @@ function ResultContent() {
                   </a>
                 </CardContent>
               </Card>
-            ))}
+            )})}
           </div>
         </div>
       </div>

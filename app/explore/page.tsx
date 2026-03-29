@@ -61,11 +61,15 @@ export default function ExplorePage() {
       setIsLoggedIn(!!user)
 
       if (user) {
-        const { data: userBookmarks } = await supabase
-          .from('bookmarks')
-          .select('stack_id')
-          .eq('user_id', user.id)
-        setBookmarked(new Set(userBookmarks?.map((b: { stack_id: string }) => b.stack_id) || []))
+        try {
+          const { data: userBookmarks } = await supabase
+            .from('bookmarks')
+            .select('stack_id')
+            .eq('user_id', user.id)
+          setBookmarked(new Set(userBookmarks?.map((b: { stack_id: string }) => b.stack_id) || []))
+        } catch {
+          setBookmarked(new Set())
+        }
       }
     }
     checkAuth()

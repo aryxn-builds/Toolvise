@@ -330,11 +330,10 @@ export default function DashboardPage() {
 
       setUser({ id: u.id, email: u.email ?? "" });
 
-      // Fetch profile, my stacks, and bookmarked stacks all in parallel
+      // Fetch profile, my stacks, and bookmarked stacks
       const [
         { data: profileData },
         { data: myStacksData },
-        { data: bookmarksData },
       ] = await Promise.all([
         supabase.from("profiles").select("*").eq("id", u.id).maybeSingle(),
         supabase
@@ -343,13 +342,20 @@ export default function DashboardPage() {
           .eq("user_id", u.id)
           .order("created_at", { ascending: false })
           .limit(50),
-        supabase
+      ]);
+
+      let bookmarksData: any = null;
+      try {
+        const { data } = await supabase
           .from("bookmarks")
           .select("stack_id, stacks(*)")
           .eq("user_id", u.id)
           .order("created_at", { ascending: false })
-          .limit(50),
-      ]);
+          .limit(50);
+        bookmarksData = data;
+      } catch {
+        bookmarksData = [];
+      }
 
       setProfile(profileData);
       setStacks(myStacksData ?? []);

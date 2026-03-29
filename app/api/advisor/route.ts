@@ -78,8 +78,8 @@ Rules:
 - Prioritize free tools if budget is Free Only
 - Match difficulty to skill level
 - Be specific not generic
-- Always include a learning resource URL
 - Roadmap should have 4-5 clear steps
+- roadmap must be array of plain strings ONLY. NEVER use objects like {name: string, substeps: string[]}. Each roadmap item must be one plain string.
 - scoreCard is ALWAYS required — never omit it
 - Return ONLY valid JSON, no markdown fences or extra text`;
 
@@ -199,6 +199,23 @@ function parseAIResponse(text: string): Record<string, unknown> {
   return (m.summary || m.tools || m.Tools
     ? m
     : (m.response || m.stack || m.data || m)) as Record<string, unknown>;
+}
+
+function normalizeRoadmap(roadmap: unknown[]): string[] {
+  return (roadmap || []).map((step) => {
+    if (typeof step === 'string') return step;
+    if (typeof step === 'object' && step !== null) {
+      const s = step as Record<string, unknown>;
+      if (s.name) {
+        let text = String(s.name);
+        if (Array.isArray(s.substeps) && s.substeps.length > 0) {
+          text += ': ' + (s.substeps as string[]).join(', ');
+        }
+        return text;
+      }
+    }
+    return String(step);
+  });
 }
 
 function normalizeScoreCard(raw: ScoreCardRaw | null | undefined) {
@@ -371,7 +388,7 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
           bestFor: t.bestFor || t.best_for || "",
         } : {}),
       })),
-      roadmap: (payload.roadmap || payload.Roadmap || payload.steps || []) as string[],
+      roadmap: normalizeRoadmap((payload.roadmap || payload.Roadmap || payload.steps || []) as unknown[]),
       estimatedTime: (payload.estimatedTime || payload.estimated_time || payload.EstimatedTime || "") as string,
       proTip: (payload.proTip || payload.pro_tip || payload.ProTip || payload.tip || "") as string,
       vibeCoding: (payload.vibeCoding || payload.vibe_coding || payload.VibeCoding || null) as Record<string, unknown> | null,
