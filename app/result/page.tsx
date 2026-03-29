@@ -203,6 +203,8 @@ function ResultContent() {
   const [loading, setLoading] = React.useState(true)
   const [copied, setCopied] = React.useState(false)
   const [promptCopied, setPromptCopied] = React.useState(false)
+  const [saved, setSaved] = React.useState(false)
+  const [saving, setSaving] = React.useState(false)
 
   React.useEffect(() => {
     async function loadData() {
@@ -233,6 +235,12 @@ function ResultContent() {
                 goal: dbData.goal,
               },
             })
+            
+            const { data: { session } } = await supabase.auth.getSession()
+            if (session && dbData.user_id === session.user.id) {
+              setSaved(true)
+            }
+            
             setTimeout(() => setLoading(false), 800)
             return
           }
@@ -270,6 +278,30 @@ function ResultContent() {
     setPromptCopied(true)
     setTimeout(() => setPromptCopied(false), 2000)
   }
+
+  const handleSaveStack = async () => {
+    if (!data?.shareSlug) return
+    setSaving(true)
+    
+    const supabase = createClient()
+    const { data: { session } } = await supabase.auth.getSession()
+    
+    if (!session) {
+      router.push(`/signup?next=/result?slug=${data.shareSlug}`)
+      return
+    }
+
+    const { error } = await supabase
+      .from("stacks")
+      .update({ user_id: session.user.id })
+      .eq("share_slug", data.shareSlug)
+
+    if (!error) {
+      setSaved(true)
+    }
+    setSaving(false)
+  }
+
 
   // Loading state
   if (loading) {
@@ -587,13 +619,12 @@ function ResultContent() {
       <div className="mt-20 border-t border-[#FFD896] pt-10 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700" style={{ animationDelay: "500ms" }}>
         <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
           <Button
-            onClick={() => {
-              console.log("Saving functionality... UUID:", data.shareSlug)
-            }}
-            className="h-12 px-8 rounded-xl bg-[#F97316] text-[#111827] hover:bg-[#EA6C0A] shadow-[0_0_20px_rgba(249,115,22,0.3)] font-semibold w-full sm:w-auto text-base"
+            onClick={handleSaveStack}
+            disabled={saving || saved}
+            className="h-12 px-8 rounded-xl bg-[#F97316] text-[#111827] hover:bg-[#EA6C0A] shadow-[0_0_20px_rgba(249,115,22,0.3)] font-semibold w-full sm:w-auto text-base disabled:opacity-50"
           >
-            <Bookmark className="mr-2 h-5 w-5" />
-            Save My Stack
+            <Bookmark className={cn("mr-2 h-5 w-5", saved && "fill-[#111827]")} />
+            {saving ? "Saving..." : saved ? "Saved!" : "Save My Stack"}
           </Button>
           
           <Button

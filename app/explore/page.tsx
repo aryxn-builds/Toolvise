@@ -79,7 +79,7 @@ export default function ExplorePage() {
     else setLoading(true)
 
     const supabase = createClient()
-    let query = supabase.from("stacks").select("*", { count: "exact" })
+    let query = supabase.from("stacks").select("*", { count: "exact" }).eq("is_public", true)
 
     // Build standard PostgREST matching logic
     if (search.trim()) {

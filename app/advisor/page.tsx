@@ -170,7 +170,6 @@ export default function AdvisorPage() {
             </div>
             <span className="text-sm font-bold tracking-wide">Toolvise</span>
           </a>
-          <span className="text-xs text-[#111827]/40">No signup needed</span>
         </div>
       </header>
 

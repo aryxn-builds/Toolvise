@@ -53,6 +53,7 @@ function CommunityCards() {
         const { data, error } = await supabase
           .from("stacks")
           .select("user_input, tools, goal, share_slug")
+          .eq("is_public", true)
           .order("created_at", { ascending: false })
           .limit(3)
 
