@@ -138,10 +138,20 @@ export default function AdvisorPage() {
       // Store result + form inputs in localStorage for the result page
       localStorage.setItem(
         "toolvise_result",
-        JSON.stringify({ ...data, formInput: form })
+        JSON.stringify({ 
+          ...data, 
+          formInput: form 
+        })
       )
 
-      router.push("/result")
+      // Always redirect with slug so result
+      // page can fetch fresh from Supabase
+      if (data.shareSlug) {
+        router.push(`/result?slug=${data.shareSlug}`)
+      } else {
+        // Fallback to localStorage if no slug
+        router.push("/result")
+      }
     } catch (err: unknown) {
       setSubmitError(
         err instanceof Error ? err.message : "Something went wrong. Please try again."

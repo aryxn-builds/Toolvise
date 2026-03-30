@@ -305,6 +305,10 @@ function ResultContent() {
               }
             }
             
+            // Clear localStorage since we have
+            // fresh data from DB
+            localStorage.removeItem("toolvise_result")
+            
             setTimeout(() => setLoading(false), 800)
             return
           }
@@ -315,20 +319,64 @@ function ResultContent() {
 
       // 2. Fallback to LocalStorage
       try {
-        const raw = localStorage.getItem("toolvise_result")
+        const raw = localStorage.getItem(
+          "toolvise_result"
+        )
         if (raw) {
           const parsed = JSON.parse(raw)
+          
+          // Validate minimum required fields
+          if (!parsed.summary && 
+              !parsed.tools?.length) {
+            // Stale or corrupt data
+            localStorage.removeItem(
+              "toolvise_result"
+            )
+            setData(null)
+            setLoading(false)
+            return
+          }
+          
+          // Normalize all possible key names
           setData({
-            ...parsed,
-            scoreCard: parsed.scoreCard ?? parsed.score_card ?? null,
-            vibeCoding: parsed.vibeCoding ?? parsed.vibe_coding ?? null,
-            estimatedTime: parsed.estimatedTime ?? parsed.estimated_time ?? "",
-            proTip: parsed.proTip ?? parsed.pro_tip ?? "",
-            shareSlug: parsed.shareSlug ?? parsed.share_slug ?? "",
+            id: parsed.id,
+            summary: parsed.summary || 
+              parsed.Summary || "",
+            tools: parsed.tools || 
+              parsed.Tools || [],
+            roadmap: parsed.roadmap || 
+              parsed.Roadmap || [],
+            estimatedTime: parsed.estimatedTime || 
+              parsed.estimated_time || "",
+            proTip: parsed.proTip || 
+              parsed.pro_tip || "",
+            vibeCoding: parsed.vibeCoding || 
+              parsed.vibe_coding || null,
+            scoreCard: parsed.scoreCard || 
+              parsed.score_card || null,
+            architecture: parsed.architecture || 
+              null,
+            shareSlug: parsed.shareSlug || 
+              parsed.share_slug || "",
+            stackUserId: parsed.stackUserId || 
+              parsed.user_id || null,
+            formInput: parsed.formInput || {
+              description: parsed.user_input || "",
+              skillLevel: parsed.skill_level || "",
+              budget: parsed.budget || "",
+              goal: parsed.goal || "",
+            }
           })
+        } else {
+          // No data at all
+          setData(null)
         }
       } catch {
-        console.error("[result] Failed to parse localStorage data")
+        console.error(
+          "[result] Failed to parse localStorage"
+        )
+        localStorage.removeItem("toolvise_result")
+        setData(null)
       } finally {
         setTimeout(() => setLoading(false), 800)
       }
@@ -403,18 +451,41 @@ function ResultContent() {
     )
   }
 
-  // No data state
   if (!data) {
     return (
-      <div className="flex min-h-[80vh] flex-col items-center justify-center gap-4">
-        <p className="text-[#111827]/60">No stack result found.</p>
-        <Link
-          href="/advisor"
-          className="flex items-center gap-2 rounded-lg bg-white border border-[#FFD896] px-4 py-2 text-sm text-[#F97316] transition-colors hover:bg-white"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Go to advisor
-        </Link>
+      <div className="flex min-h-[80vh] 
+        flex-col items-center justify-center 
+        gap-6 px-4 text-center">
+        <div className="text-5xl">🤔</div>
+        <div>
+          <h2 className="text-2xl font-bold 
+            text-[#111827] mb-2">
+            No stack result found
+          </h2>
+          <p className="text-[#6B7280] 
+            max-w-md">
+            This could happen if the result 
+            expired or the link is invalid.
+            Generate a new stack to get 
+            your recommendations.
+          </p>
+        </div>
+        <div className="flex gap-3">
+          <Link href="/advisor">
+            <Button className="bg-[#F97316] 
+              text-white hover:bg-[#EA6C0A] 
+              rounded-xl px-6">
+              Generate New Stack →
+            </Button>
+          </Link>
+          <Link href="/explore">
+            <Button variant="outline"
+              className="border-[#FFD896] 
+              rounded-xl px-6">
+              Browse Stacks
+            </Button>
+          </Link>
+        </div>
       </div>
     )
   }
