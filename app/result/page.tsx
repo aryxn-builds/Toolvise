@@ -99,6 +99,25 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
   const [scoreCopied, setScoreCopied] = React.useState(false)
   const cardRef = React.useRef<HTMLDivElement>(null)
 
+  // Recalculate overall score from individual scores as safety net
+  const individualSum = (
+    (scoreCard.speedToShip || 0) +
+    (scoreCard.costEfficiency || 0) +
+    (scoreCard.scalability || 0) +
+    (scoreCard.beginnerFriendly || 0) +
+    (scoreCard.flexibility || 0)
+  )
+  const calculatedScore = Math.round((individualSum / 5) * 10)
+
+  // Use calculated score if AI returned wrong value (e.g. raw sum instead of average)
+  const displayScore = (
+    scoreCard.overallScore > 100 || 
+    scoreCard.overallScore < 10 ||
+    scoreCard.overallScore === individualSum
+  )
+    ? calculatedScore
+    : scoreCard.overallScore
+
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setAnimated(true)
@@ -123,19 +142,19 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
     return () => observer.disconnect()
   }, [])
 
-  const scoreColor = scoreCard.overallScore >= 90
-    ? "text-green-400"
-    : scoreCard.overallScore >= 70
+  const scoreColor = displayScore >= 90
+    ? "text-green-500"
+    : displayScore >= 70
       ? "text-[#F97316]"
-      : scoreCard.overallScore >= 50
-        ? "text-yellow-400"
-        : "text-red-400"
+      : displayScore >= 50
+        ? "text-yellow-500"
+        : "text-red-500"
 
-  const scoreGlow = scoreCard.overallScore >= 90
+  const scoreGlow = displayScore >= 90
     ? "shadow-[0_0_40px_rgba(74,222,128,0.2)]"
-    : scoreCard.overallScore >= 70
+    : displayScore >= 70
       ? "shadow-[0_0_40px_rgba(249,115,22,0.2)]"
-      : scoreCard.overallScore >= 50
+      : displayScore >= 50
         ? "shadow-[0_0_40px_rgba(250,204,21,0.2)]"
         : "shadow-[0_0_40px_rgba(239,68,68,0.2)]"
 
@@ -148,7 +167,15 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
   ]
 
   const handleShareScore = () => {
-    const text = `My Toolvise Stack Score: ${scoreCard.overallScore}/100 🏆\nSpeed: ${scoreCard.speedToShip}/10 | Cost: ${scoreCard.costEfficiency}/10 | Scale: ${scoreCard.scalability}/10 | Beginner: ${scoreCard.beginnerFriendly}/10 | Flex: ${scoreCard.flexibility}/10\ntoolvise.vercel.app`
+    const text = 
+      `My Toolvise Stack Score: ` +
+      `${displayScore}/100 🏆\n` +
+      `Speed: ${scoreCard.speedToShip}/10` +
+      ` | Cost: ${scoreCard.costEfficiency}/10` +
+      ` | Scale: ${scoreCard.scalability}/10` +
+      ` | Beginner: ${scoreCard.beginnerFriendly}/10` +
+      ` | Flex: ${scoreCard.flexibility}/10\n` +
+      `toolvise.vercel.app`
     navigator.clipboard.writeText(text)
     setScoreCopied(true)
     setTimeout(() => setScoreCopied(false), 2000)
@@ -193,7 +220,7 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
             {/* Overall score circle */}
             <div className="flex flex-col items-center justify-center px-6">
               <div className={cn("text-6xl font-black tabular-nums", scoreColor)}>
-                {scoreCard.overallScore}
+                {displayScore}
               </div>
               <div className="text-xs font-bold text-[#111827]/40 uppercase tracking-widest mt-1">/ 100</div>
               <button

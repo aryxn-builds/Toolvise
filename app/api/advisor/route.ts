@@ -62,15 +62,15 @@ Always respond in this exact JSON format:
   ],
   "estimatedTime": "string (realistic time to build MVP)",
   "proTip": "string (one expert advice for their project)",
-  "scoreCard": {
-    "speedToShip": number (1-10, how fast can someone build with this stack),
-    "costEfficiency": number (1-10, how many tools are free/cheap),
-    "scalability": number (1-10, how well stack scales to 1M users),
-    "beginnerFriendly": number (1-10, based on user skill level),
-    "flexibility": number (1-10, how customizable the stack is),
-    "overallScore": number (sum of all 5 scores multiplied by 2, out of 100),
-    "verdict": "string (one line summary like 'Perfect for indie hackers shipping fast on a budget')"
-  }
+    "scoreCard": {
+      "speedToShip": "number between 1-10",
+      "costEfficiency": "number between 1-10",
+      "scalability": "number between 1-10",
+      "beginnerFriendly": "number between 1-10",
+      "flexibility": "number between 1-10",
+      "overallScore": "number calculated as: Math.round((speedToShip + costEfficiency + scalability + beginnerFriendly + flexibility) / 5 * 10). Example: if scores are 8,9,8,7,8, average = 8.0, overallScore = 80. IMPORTANT: overallScore MUST be between 1-100. NEVER return overallScore below 50 if individual scores are above 7. NEVER return overallScore as raw sum.",
+      "verdict": "one line summary string"
+    }
 }
 
 Rules:
@@ -226,7 +226,15 @@ function normalizeScoreCard(raw: ScoreCardRaw | null | undefined) {
   const scale = raw.scalability ?? raw.Scalability ?? 0;
   const beginner = raw.beginnerFriendly ?? raw.beginner_friendly ?? raw.BeginnerFriendly ?? 0;
   const flex = raw.flexibility ?? raw.Flexibility ?? 0;
-  const overall = raw.overallScore ?? raw.overall_score ?? raw.OverallScore ?? ((speed + cost + scale + beginner + flex) * 2);
+  
+  let overall = raw.overallScore ?? raw.overall_score ?? raw.OverallScore ?? 0;
+  const sum = speed + cost + scale + beginner + flex;
+  
+  // Fix wrong overall score (e.g. raw sum, out of range, etc)
+  if (overall > 100 || overall < 10 || overall === sum) {
+    overall = Math.round((sum / 5) * 10);
+  }
+
   return {
     speedToShip: speed,
     costEfficiency: cost,
