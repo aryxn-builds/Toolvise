@@ -74,6 +74,7 @@ Always respond in this exact JSON format:
 }
 
 Rules:
+- estimatedTime: must be a SHORT string like '2-3 weeks' or '1 month'. NEVER return an object for estimatedTime. NEVER return a long sentence. Maximum 30 characters.
 - Recommend 4-6 tools maximum
 - Prioritize free tools if budget is Free Only
 - Match difficulty to skill level
@@ -217,6 +218,22 @@ function normalizeRoadmap(roadmap: unknown[]): string[] {
     }
     return String(step ?? '');
   });
+}
+
+function normalizeEstimatedTime(time: unknown): string {
+  if (!time) return "TBD"
+  if (typeof time === 'string') {
+    if (time.length > 50) {
+      return time.split(',')[0].split(':').pop()?.trim() || time.substring(0, 30)
+    }
+    return time
+  }
+  if (typeof time === 'object') {
+    const values = Object.values(time as Record<string, string>)
+    if (values.length === 0) return "TBD"
+    return values.join(' – ')
+  }
+  return String(time)
 }
 
 function normalizeScoreCard(raw: ScoreCardRaw | null | undefined) {
@@ -398,7 +415,7 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
         } : {}),
       })),
       roadmap: normalizeRoadmap((payload.roadmap || payload.Roadmap || payload.steps || []) as unknown[]),
-      estimatedTime: (payload.estimatedTime || payload.estimated_time || payload.EstimatedTime || "") as string,
+      estimatedTime: normalizeEstimatedTime(payload.estimatedTime || payload.estimated_time || payload.EstimatedTime || ""),
       proTip: (payload.proTip || payload.pro_tip || payload.ProTip || payload.tip || "") as string,
       vibeCoding: (payload.vibeCoding || payload.vibe_coding || payload.VibeCoding || null) as Record<string, unknown> | null,
       scoreCard: normalizeScoreCard(

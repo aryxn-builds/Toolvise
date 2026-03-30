@@ -28,6 +28,37 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { createClient } from "@/lib/supabase/client"
 
+function formatEstimatedTime(time: unknown): string {
+  if (!time) return "TBD"
+  
+  if (typeof time === 'string') {
+    if (time.trim().startsWith('{')) {
+      try {
+        const obj = JSON.parse(time)
+        const values = Object.values(obj) as string[]
+        if (values.length === 1) return values[0]
+        return values[0] + ' – ' + values[values.length - 1]
+      } catch {
+        // Not valid JSON, truncate
+      }
+    }
+    if (time.length > 30) {
+      return time.split(',')[0].trim()
+    }
+    return time
+  }
+  
+  if (typeof time === 'object') {
+    const obj = time as Record<string, string>
+    const values = Object.values(obj)
+    if (values.length === 0) return "TBD"
+    if (values.length === 1) return String(values[0])
+    return String(values[0]) + ' – ' + String(values[values.length - 1])
+  }
+  
+  return String(time)
+}
+
 // ── Types ──────────────────────────────────────────────────────────────────
 interface Tool {
   name: string
@@ -274,7 +305,7 @@ function ResultContent() {
               summary: dbData.summary,
               tools: dbData.tools,
               roadmap: dbData.roadmap,
-              estimatedTime: dbData.estimated_time,
+              estimatedTime: formatEstimatedTime(dbData.estimated_time || dbData.estimatedTime),
               proTip: dbData.pro_tip,
               vibeCoding: dbData.vibe_coding || null,
               scoreCard: dbData.score_card ?? dbData.scoreCard ?? null,
@@ -346,8 +377,11 @@ function ResultContent() {
               parsed.Tools || [],
             roadmap: parsed.roadmap || 
               parsed.Roadmap || [],
-            estimatedTime: parsed.estimatedTime || 
-              parsed.estimated_time || "",
+            estimatedTime: formatEstimatedTime(
+              parsed.estimatedTime || 
+              parsed.estimated_time || 
+              ""
+            ),
             proTip: parsed.proTip || 
               parsed.pro_tip || "",
             vibeCoding: parsed.vibeCoding || 
@@ -491,7 +525,7 @@ function ResultContent() {
   }
 
   return (
-    <main className="relative mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+    <main className="relative mx-auto w-full max-w-5xl px-4 py-12 sm:px-6 lg:px-8 overflow-hidden">
       {/* 1. HEADER */}
       <header className="mb-12 animate-in fade-in slide-in-from-top-4 duration-700">
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
@@ -525,9 +559,10 @@ function ResultContent() {
       {/* SCORE CARD */}
       {data.scoreCard && <ScoreCardSection scoreCard={data.scoreCard} />}
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "150ms" }}>
+      {/* Main 2-col grid: Overview + Tools */}
+      <div className="grid gap-8 xl:grid-cols-[1fr_1fr] mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "150ms" }}>
         
-        {/* Left Column: Summary & Roadmap */}
+        {/* Left: Summary only */}
         <div className="space-y-8">
           
           {/* 2. SUMMARY CARD */}
@@ -536,9 +571,9 @@ function ResultContent() {
             <CardHeader className="pb-4">
               <CardTitle className="text-xl font-semibold tracking-tight text-[#111827] flex items-center justify-between">
                 Overview
-                <Badge variant="outline" className="border-[#F97316]/40 bg-[#F97316]/10 text-[#FB923C] px-3 py-1 text-xs">
-                  <Clock className="mr-1.5 h-3.5 w-3.5" />
-                  {data.estimatedTime}
+                <Badge variant="outline" className="border-[#F97316]/40 bg-[#F97316]/10 text-[#FB923C] px-3 py-1 text-xs max-w-[200px] truncate">
+                  <Clock className="mr-1.5 h-3.5 w-3.5 shrink-0" />
+                  <span className="truncate">{formatEstimatedTime(data.estimatedTime)}</span>
                 </Badge>
               </CardTitle>
             </CardHeader>
@@ -576,44 +611,6 @@ function ResultContent() {
             </CardContent>
           </Card>
 
-          {/* 4. ROADMAP SECTION */}
-          <Card className="border-[#FFD896] bg-white backdrop-blur-md pb-4">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold text-[#111827]">Execution Roadmap</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="relative border-l-2 border-[#FFD896] ml-3 pl-8 py-2 space-y-8">
-                {(data.roadmap || []).map((step, idx) => {
-                  let stepText: string
-                  if (typeof step === 'string') {
-                    stepText = step
-                  } else if (typeof step === 'object' && step !== null) {
-                    const s = step as Record<string, unknown>
-                    if (s.name) {
-                      stepText = String(s.name)
-                      if (Array.isArray(s.substeps) && s.substeps.length > 0) {
-                        stepText += ': ' + (s.substeps as string[]).join(', ')
-                      }
-                    } else {
-                      stepText = JSON.stringify(step)
-                    }
-                  } else {
-                    stepText = String(step ?? '')
-                  }
-                  return (
-                    <div key={idx} className="relative group">
-                      <div className="absolute -left-[49px] top-0 flex h-8 w-8 items-center justify-center rounded-full border border-[#FFD896] bg-[#F97316] text-sm font-bold text-white shadow-[0_0_15px_rgba(249,115,22,0.4)] transition-transform group-hover:scale-110 z-10">
-                        {idx + 1}
-                      </div>
-                      <p className="text-base text-[#111827]/80 leading-relaxed pt-1">
-                        {stepText}
-                      </p>
-                    </div>
-                  )
-                })}
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Right Column: 3. TOOLS GRID */}
@@ -625,13 +622,13 @@ function ResultContent() {
             </span>
           </h3>
           
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2">
             {(data.tools || []).map((tool, index) => {
               if (!tool || typeof tool !== 'object') return null;
               return (
               <Card
                 key={tool.name || index}
-                className="group relative overflow-hidden border-[#FFD896] bg-white backdrop-blur-xl transition-all hover:border-[#FFD896] hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] flex flex-col h-full animate-in fade-in zoom-in-95 duration-700 fill-mode-both"
+                className="group relative overflow-hidden border-[#FFD896] bg-white backdrop-blur-xl transition-all hover:border-[#FFD896] hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] flex flex-col h-full min-h-[280px] animate-in fade-in zoom-in-95 duration-700 fill-mode-both"
                 style={{ animationDelay: `${300 + index * 100}ms` }}
               >
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
@@ -642,7 +639,7 @@ function ResultContent() {
                       <h4 className="text-lg font-bold text-[#111827] tracking-tight">{String(tool.name || 'Unknown')}</h4>
                       <Badge
                         className={cn(
-                          "text-[10px] uppercase font-bold tracking-wider rounded-md",
+                          "text-[10px] uppercase font-bold tracking-wider rounded-md whitespace-nowrap",
                           CATEGORY_COLORS[tool.category] || "border-[#FFD896] bg-white text-[#111827]/60"
                         )}
                       >
@@ -667,7 +664,7 @@ function ResultContent() {
                     </div>
                   </div>
                   
-                  <p className="text-sm text-[#111827]/60 leading-relaxed mb-4 flex-1">
+                  <p className="text-sm text-[#111827]/60 leading-relaxed mb-4 flex-1 line-clamp-4">
                     {tool.reason}
                   </p>
 
@@ -696,6 +693,42 @@ function ResultContent() {
             )})}
           </div>
         </div>
+      </div>
+
+      {/* Full width Roadmap below */}
+      <div className="mt-4 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "250ms" }}>
+        <Card className="border-[#FFD896] bg-white pb-4">
+          <CardHeader>
+            <CardTitle className="text-xl font-semibold text-[#111827]">
+              Execution Roadmap
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {(data.roadmap || []).map((step, idx) => {
+                let stepText: string
+                if (typeof step === 'string') {
+                  stepText = step
+                } else if (typeof step === 'object' && step !== null) {
+                  const s = step as Record<string, unknown>
+                  stepText = s.name ? String(s.name) : JSON.stringify(step)
+                } else {
+                  stepText = String(step ?? '')
+                }
+                return (
+                  <div key={idx} className="flex items-start gap-3 p-4 rounded-xl border border-[#FFD896] bg-[#fff1d6]/50">
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#F97316] text-white text-xs font-bold">
+                      {idx + 1}
+                    </div>
+                    <p className="text-sm text-[#111827]/80 leading-relaxed pt-0.5">
+                      {stepText}
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* 5. VIBE CODING SECTION */}
@@ -891,7 +924,7 @@ function ResultContent() {
 // ── Main Page Wrap ─────────────────────────────────────────────────────────
 export default function ResultPage() {
   return (
-    <div className="relative min-h-dvh bg-white text-foreground selection:bg-[#F97316]/30 overflow-hidden">
+    <div className="relative min-h-dvh bg-[#fff1d6] text-[#111827] selection:bg-[#F97316]/30 overflow-hidden">
       {/* Background ambient glow */}
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(900px_circle_at_15%_15%,rgba(249,115,22,0.15),transparent_55%),radial-gradient(900px_circle_at_85%_20%,rgba(251,146,60,0.12),transparent_55%)]" />
       
