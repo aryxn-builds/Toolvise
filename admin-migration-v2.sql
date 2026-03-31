@@ -15,14 +15,17 @@ CREATE TABLE IF NOT EXISTS api_usage_logs (
 -- Turn on RLS but allow insert for anon/authenticated and select for admins
 ALTER TABLE api_usage_logs ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Enable insert for all API calls" ON api_usage_logs;
 CREATE POLICY "Enable insert for all API calls"
 ON api_usage_logs FOR INSERT
 WITH CHECK (true);
 
 -- Allow admins to see all logs
+DROP POLICY IF EXISTS "Enable read access for admins" ON api_usage_logs;
 CREATE POLICY "Enable read access for admins"
 ON api_usage_logs FOR SELECT
 USING (
+  (auth.jwt() ->> 'email' = 'ay6033756@gmail.com') OR
   EXISTS (
     SELECT 1 FROM profiles 
     WHERE profiles.id = auth.uid() 
@@ -49,10 +52,4 @@ ALTER TABLE bookmarks
   REFERENCES profiles(id) 
   ON DELETE CASCADE;
 
--- Same for upvotes
-ALTER TABLE upvotes 
-  DROP CONSTRAINT IF EXISTS upvotes_user_id_fkey,
-  ADD CONSTRAINT upvotes_user_id_fkey 
-  FOREIGN KEY (user_id) 
-  REFERENCES profiles(id) 
-  ON DELETE CASCADE;
+
