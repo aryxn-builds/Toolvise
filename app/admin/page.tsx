@@ -16,6 +16,7 @@ import {
   TrendingUp,
   Users,
   Star,
+  Eye,
   EyeOff,
   X,
   Activity,
