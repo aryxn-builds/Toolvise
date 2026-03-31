@@ -16,9 +16,10 @@ import {
   TrendingUp,
   Users,
   Star,
-  Eye,
   EyeOff,
   X,
+  Activity,
+  AlertTriangle,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 import { cn } from "@/lib/utils"
@@ -67,12 +68,22 @@ interface Announcement {
   created_at: string
 }
 
+interface ApiLog {
+  id: string
+  provider: string
+  model: string | null
+  success: boolean
+  is_fallback: boolean
+  response_time_ms: number | null
+  created_at: string
+}
+
 interface ToastState {
   msg: string
   ok: boolean
 }
 
-type TabKey = "overview" | "users" | "stacks" | "bugs" | "announcements"
+type TabKey = "overview" | "users" | "stacks" | "bugs" | "announcements" | "api"
 
 const TABS: { key: TabKey; label: string; icon: React.ReactNode }[] = [
   { key: "overview", label: "Overview", icon: <TrendingUp className="h-4 w-4" /> },
@@ -80,6 +91,7 @@ const TABS: { key: TabKey; label: string; icon: React.ReactNode }[] = [
   { key: "stacks", label: "Stacks", icon: <Layers className="h-4 w-4" /> },
   { key: "bugs", label: "Bug Reports", icon: <Bug className="h-4 w-4" /> },
   { key: "announcements", label: "Announcements", icon: <Megaphone className="h-4 w-4" /> },
+  { key: "api", label: "API Monitor", icon: <Activity className="h-4 w-4" /> },
 ]
 
 // ── Main Component ──────────────────────────────────────────────────────────
@@ -120,6 +132,9 @@ export default function AdminDashboard() {
   // Announcements
   const [announcements, setAnnouncements] = React.useState<Announcement[]>([])
   const [newMessage, setNewMessage] = React.useState("")
+
+  // API Logs
+  const [apiLogs, setApiLogs] = React.useState<ApiLog[]>([])
 
   // Toast
   const [toast, setToast] = React.useState<ToastState | null>(null)
@@ -183,6 +198,7 @@ export default function AdminDashboard() {
         stacksData,
         bugsData,
         announcementsData,
+        apiLogsData,
       ] = await Promise.all([
         supabase.from("profiles").select("*", { count: "exact", head: true }),
         supabase.from("stacks").select("*", { count: "exact", head: true }),
@@ -195,6 +211,7 @@ export default function AdminDashboard() {
         supabase.from("stacks").select("id, user_input, build_style, goal, is_public, is_featured, upvotes, score_card, created_at, share_slug, user_id").order("created_at", { ascending: false }).limit(50),
         supabase.from("bug_reports").select("*").order("created_at", { ascending: false }),
         supabase.from("announcements").select("*").order("created_at", { ascending: false }),
+        supabase.from('api_usage_logs').select('*').order('created_at', { ascending: false }).limit(100),
       ])
 
       setTotalUsers(usersCount.count ?? 0)
@@ -207,6 +224,7 @@ export default function AdminDashboard() {
       setStacks((stacksData.data as Stack[]) || [])
       setBugs((bugsData.data as BugReport[]) || [])
       setAnnouncements((announcementsData.data as Announcement[]) || [])
+      setApiLogs((apiLogsData?.data as ApiLog[]) || [])
     } catch (err) {
       console.error("Failed to load data:", err)
       showToast("Failed to load data", false)
@@ -1052,6 +1070,295 @@ export default function AdminDashboard() {
                   </div>
                 ))
               )}
+            </div>
+          </div>
+        )}
+
+        {/* ── API MONITOR TAB ──────────────────────────────────────────────── */}
+        {activeTab === "api" && (
+          <div className="space-y-6 animate-in fade-in duration-300">
+            {/* API Stats Cards */}
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              <div className="rounded-xl border border-[#FFD896] bg-white p-5">
+                <p className="text-xs font-medium text-[#6B7280] mb-1">
+                  Total API Calls
+                </p>
+                <p className="text-3xl font-black text-[#111827]">
+                  {apiLogs.length}
+                </p>
+              </div>
+              <div className="rounded-xl border border-blue-100 bg-blue-50 p-5">
+                <p className="text-xs font-medium text-blue-600 mb-1">
+                  Gemini Calls
+                </p>
+                <p className="text-3xl font-black text-blue-700">
+                  {apiLogs.filter(l => l.provider === 'gemini').length}
+                </p>
+              </div>
+              <div className="rounded-xl border border-amber-100 bg-amber-50 p-5">
+                <p className="text-xs font-medium text-amber-600 mb-1">
+                  Groq Fallbacks
+                </p>
+                <p className="text-3xl font-black text-amber-700">
+                  {apiLogs.filter(l => l.is_fallback).length}
+                </p>
+              </div>
+              <div className="rounded-xl border border-red-100 bg-red-50 p-5">
+                <p className="text-xs font-medium text-red-500 mb-1">
+                  Failed Calls
+                </p>
+                <p className="text-3xl font-black text-red-600">
+                  {apiLogs.filter(l => !l.success).length}
+                </p>
+              </div>
+            </div>
+
+            {/* Health + Daily Usage */}
+            <div className="grid gap-6 lg:grid-cols-2">
+
+              {/* API Health */}
+              <div className="rounded-xl border border-[#FFD896] bg-white p-6">
+                <h3 className="font-semibold text-[#111827] mb-4">
+                  API Health
+                </h3>
+                {(() => {
+                  const total = apiLogs.length || 1
+                  const success = apiLogs.filter(l => l.success).length
+                  const rate = Math.round(success / total * 100)
+                  const geminiTotal = apiLogs.filter(l => l.provider === 'gemini').length || 1
+                  const geminiSuccess = apiLogs.filter(l => l.provider === 'gemini' && l.success).length
+                  const geminiRate = Math.round(geminiSuccess / geminiTotal * 100)
+                  const timeLogs = apiLogs.filter(l => l.response_time_ms)
+                  const avgTime = timeLogs.length
+                    ? Math.round(timeLogs.reduce((s, l) => s + (l.response_time_ms||0), 0) / timeLogs.length)
+                    : 0
+                  return (
+                    <div className="space-y-4">
+                      <div className="space-y-1.5">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-[#6B7280]">
+                            Overall Success Rate
+                          </span>
+                          <span className={cn(
+                            "font-bold",
+                            rate >= 90 ? "text-green-600" : rate >= 70 ? "text-amber-600" : "text-red-600"
+                          )}>
+                            {rate}%
+                          </span>
+                        </div>
+                        <div className="h-3 rounded-full bg-[#FFD896]/50">
+                          <div
+                            className={cn(
+                              "h-full rounded-full",
+                              rate >= 90 ? "bg-green-500" : rate >= 70 ? "bg-amber-500" : "bg-red-500"
+                            )}
+                            style={{ width:`${rate}%` }}
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-1.5">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-[#6B7280]">
+                            Gemini Reliability
+                          </span>
+                          <span className="font-bold text-blue-600">
+                            {geminiRate}%
+                          </span>
+                        </div>
+                        <div className="h-3 rounded-full bg-blue-100">
+                          <div
+                            className="h-full rounded-full bg-blue-500"
+                            style={{ width:`${geminiRate}%` }}
+                          />
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between pt-2 border-t border-[#FFD896]">
+                        <span className="text-sm text-[#6B7280]">
+                          Avg Response Time
+                        </span>
+                        <span className="font-bold text-[#111827]">
+                          {avgTime > 0 ? `${avgTime}ms` : "—"}
+                        </span>
+                      </div>
+                    </div>
+                  )
+                })()}
+              </div>
+
+              {/* Daily Usage */}
+              <div className="rounded-xl border border-[#FFD896] bg-white p-6">
+                <h3 className="font-semibold text-[#111827] mb-4">
+                  Usage Last 7 Days
+                </h3>
+                {(() => {
+                  const last7 = Array.from({ length: 7 }, (_, i) => {
+                    const d = new Date()
+                    d.setDate(d.getDate() - (6 - i))
+                    return d.toISOString().split('T')[0]
+                  })
+                  const counts = last7.map(day => 
+                    apiLogs.filter(l => l.created_at.startsWith(day)).length
+                  )
+                  const maxCount = Math.max(...counts, 1)
+                  return (
+                    <div className="space-y-2">
+                      {last7.map((day, i) => {
+                        const count = counts[i]
+                        const pct = Math.round(count / maxCount * 100)
+                        const label = new Date(day).toLocaleDateString('en-US', {
+                          weekday: 'short',
+                          month: 'short',
+                          day: 'numeric'
+                        })
+                        return (
+                          <div key={day} className="flex items-center gap-3">
+                            <span className="text-xs text-[#6B7280] w-24 shrink-0 truncate">
+                              {label}
+                            </span>
+                            <div className="flex-1 h-6 rounded-lg bg-[#FFD896]/30 overflow-hidden">
+                              <div
+                                className="h-full rounded-lg bg-[#F97316] transition-all duration-500"
+                                style={{ width:`${pct}%` }}
+                              />
+                            </div>
+                            <span className="text-xs font-semibold text-[#111827] w-5 text-right">
+                              {count}
+                            </span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )
+                })()}
+              </div>
+            </div>
+
+            {/* Free Tier Warning */}
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold text-amber-800 mb-2">
+                    Free Tier Limits
+                  </p>
+                  <div className="grid gap-2 sm:grid-cols-2 text-sm text-amber-700">
+                    <div className="rounded-lg bg-white/60 px-3 py-2">
+                      <p className="font-semibold text-blue-700">
+                        🔵 Gemini (Free)
+                      </p>
+                      <p className="text-xs mt-1">
+                        1,500 req/day • 15 req/min
+                      </p>
+                      <p className="text-xs font-bold text-blue-600 mt-1">
+                        Today: {apiLogs.filter(
+                          l => l.provider === 'gemini' && 
+                          l.created_at.startsWith(new Date().toISOString().split('T')[0])
+                        ).length} / 1,500 used
+                      </p>
+                    </div>
+                    <div className="rounded-lg bg-white/60 px-3 py-2">
+                      <p className="font-semibold text-amber-700">
+                        🟡 Groq (Free)
+                      </p>
+                      <p className="text-xs mt-1">
+                        14,400 req/day • 30 req/min
+                      </p>
+                      <p className="text-xs font-bold text-amber-600 mt-1">
+                        Today: {apiLogs.filter(
+                          l => l.provider === 'groq' && 
+                          l.created_at.startsWith(new Date().toISOString().split('T')[0])
+                        ).length} / 14,400 used
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Recent Logs Table */}
+            <div className="rounded-xl border border-[#FFD896] bg-white overflow-hidden">
+              <div className="p-4 border-b border-[#FFD896] flex items-center justify-between">
+                <h3 className="font-semibold text-[#111827]">
+                  Recent API Calls
+                </h3>
+                <span className="text-xs text-[#6B7280]">
+                  Last 100 calls
+                </span>
+              </div>
+              <div className="max-w-full overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-[#FFD896] bg-[#fff1d6]/40">
+                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Provider</th>
+                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Model</th>
+                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Status</th>
+                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Type</th>
+                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Time</th>
+                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {apiLogs.length === 0 ? (
+                      <tr>
+                        <td colSpan={6} className="py-12 text-center text-[#6B7280]">
+                          No API calls logged yet. Generate a stack to see logs here.
+                        </td>
+                      </tr>
+                    ) : (
+                      apiLogs.map(log => (
+                        <tr key={log.id} className="border-b border-[#FFD896]/50 hover:bg-[#fff1d6]/30 transition-colors">
+                          <td className="py-3 px-4">
+                            <span className={cn(
+                              "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                              log.provider === 'gemini'
+                                ? "bg-blue-50 text-blue-600"
+                                : "bg-amber-50 text-amber-600"
+                            )}>
+                              {log.provider === 'gemini'
+                                ? '🔵 Gemini'
+                                : '🟡 Groq'
+                              }
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 text-xs text-[#6B7280]">
+                            {log.model || '—'}
+                          </td>
+                          <td className="py-3 px-4">
+                            <span className={cn(
+                              "rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                              log.success
+                                ? "bg-green-50 text-green-600"
+                                : "bg-red-50 text-red-600"
+                            )}>
+                              {log.success
+                                ? "✓ Success"
+                                : "✕ Failed"
+                              }
+                            </span>
+                          </td>
+                          <td className="py-3 px-4">
+                            <span className="text-xs text-[#6B7280]">
+                              {log.is_fallback
+                                ? "⚡ Fallback"
+                                : "Primary"
+                              }
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 text-xs text-[#6B7280]">
+                            {log.response_time_ms
+                              ? `${log.response_time_ms}ms`
+                              : '—'
+                            }
+                          </td>
+                          <td className="py-3 px-4 text-xs text-[#6B7280]">
+                            {formatDate(log.created_at)}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}
