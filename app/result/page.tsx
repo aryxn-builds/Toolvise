@@ -274,6 +274,96 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
   )
 }
 
+// ── Budget Section Component ───────────────────────────────────────────────
+function BudgetSection({ tools, userBudget }: { tools: Tool[], userBudget: string }) {
+  const freeTools = tools.filter(t => t.isFree)
+  const paidTools = tools.filter(t => !t.isFree)
+  const allFree = paidTools.length === 0
+
+  return (
+    <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "300ms" }}>
+      <h2 className="text-xl font-bold text-[#111827] flex items-center gap-2">
+        💰 Approx. Budget
+      </h2>
+
+      <Card className="border-[#FFD896] bg-white">
+        <CardContent className="p-6 space-y-5">
+          
+          <div className={cn(
+            "rounded-xl p-4 flex items-center gap-4",
+            allFree ? "bg-green-50 border border-green-200" : "bg-amber-50 border border-amber-200"
+          )}>
+            <div className="text-4xl">{allFree ? "🎉" : "💳"}</div>
+            <div>
+              <p className="font-bold text-lg text-[#111827]">
+                {allFree ? "100% Free Stack!" : "Mostly Free Stack"}
+              </p>
+              <p className="text-sm text-[#6B7280]">
+                {allFree 
+                  ? "All recommended tools have free tiers. Perfect for students and indie builders!" 
+                  : `${freeTools.length} free tools + ${paidTools.length} paid tools in your stack`}
+              </p>
+            </div>
+          </div>
+
+          {freeTools.length > 0 && (
+            <div className="space-y-2">
+              <p className="font-semibold text-green-700 text-sm flex items-center gap-2">
+                ✅ Free Tools ({freeTools.length})
+              </p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {freeTools.map((t, i) => (
+                  <div key={i} className="flex items-center gap-2 rounded-lg bg-green-50 border border-green-100 px-3 py-2">
+                    <span className="h-2 w-2 rounded-full bg-green-400 shrink-0" />
+                    <span className="text-sm font-medium text-green-800">{t.name}</span>
+                    <span className="text-xs text-green-600 ml-auto">$0/mo</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {paidTools.length > 0 && (
+            <div className="space-y-2">
+              <p className="font-semibold text-amber-700 text-sm flex items-center gap-2">
+                💳 Paid Tools ({paidTools.length})
+              </p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {paidTools.map((t, i) => (
+                  <div key={i} className="flex items-center gap-2 rounded-lg bg-amber-50 border border-amber-100 px-3 py-2">
+                    <span className="h-2 w-2 rounded-full bg-amber-400 shrink-0" />
+                    <span className="text-sm font-medium text-amber-800">{t.name}</span>
+                    <span className="text-xs text-amber-600 ml-auto">Paid</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="rounded-xl bg-blue-50 border border-blue-100 p-4">
+            <p className="text-sm font-semibold text-blue-700 mb-1">
+              💡 Budget Tip for Beginners
+            </p>
+            <p className="text-sm text-blue-600 leading-relaxed">
+              {allFree 
+                ? "Start with the free tiers — they're more than enough to build and launch your MVP. Upgrade only when you have real users."
+                : "Most paid tools have free tiers or trials. Start free, validate your idea, then pay only when you need to scale."}
+            </p>
+          </div>
+
+          <div className="flex items-center justify-between rounded-xl bg-[#fff1d6] border border-[#FFD896] px-5 py-4">
+            <span className="font-semibold text-[#111827]">Estimated Monthly Cost</span>
+            <span className="text-2xl font-black text-[#F97316]">
+              {allFree ? "$0 / month" : paidTools.length === 1 ? "~$10-30 / month" : "~$30-100 / month"}
+            </span>
+          </div>
+
+        </CardContent>
+      </Card>
+    </section>
+  )
+}
+
 // ── Result Content Core Component ──────────────────────────────────────────
 function ResultContent() {
   const router = useRouter()
@@ -525,9 +615,9 @@ function ResultContent() {
   }
 
   return (
-    <main className="relative mx-auto w-full max-w-5xl px-4 py-12 sm:px-6 lg:px-8 overflow-hidden">
+    <main className="relative mx-auto w-full max-w-4xl px-4 py-12 sm:px-6 lg:px-8 space-y-8 overflow-hidden">
       {/* 1. HEADER */}
-      <header className="mb-12 animate-in fade-in slide-in-from-top-4 duration-700">
+      <header className="animate-in fade-in slide-in-from-top-4 duration-700">
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div className="space-y-4 max-w-2xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#F97316]/30 bg-[#F97316]/10 px-3 py-1 text-sm font-medium text-[#FB923C]">
@@ -556,185 +646,246 @@ function ResultContent() {
         </div>
       </header>
 
-      {/* SCORE CARD */}
+      {/* 2. SCORE CARD */}
       {data.scoreCard && <ScoreCardSection scoreCard={data.scoreCard} />}
 
-      {/* Main 2-col grid: Overview + Tools */}
-      <div className="grid gap-8 xl:grid-cols-[1fr_1fr] mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "150ms" }}>
-        
-        {/* Left: Summary only */}
-        <div className="space-y-8">
-          
-          {/* 2. SUMMARY CARD */}
-          <Card className="overflow-hidden border-[#FFD896] bg-[#fff1d6]/80 backdrop-blur-md shadow-2xl">
-            <div className="h-1 w-full bg-gradient-to-r from-[#F97316] to-[#FB923C]" />
-            <CardHeader className="pb-4">
-              <CardTitle className="text-xl font-semibold tracking-tight text-[#111827] flex items-center justify-between">
-                Overview
-                <Badge variant="outline" className="border-[#F97316]/40 bg-[#F97316]/10 text-[#FB923C] px-3 py-1 text-xs max-w-[200px] truncate">
-                  <Clock className="mr-1.5 h-3.5 w-3.5 shrink-0" />
-                  <span className="truncate">{formatEstimatedTime(data.estimatedTime)}</span>
+      {/* 3. OVERVIEW */}
+      <Card className="border-[#FFD896] bg-white shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "150ms" }}>
+        <div className="h-1 w-full bg-gradient-to-r from-[#F97316] to-[#FB923C]" />
+        <CardHeader>
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <CardTitle className="text-xl font-bold text-[#111827] flex items-center gap-2">
+              📋 Overview
+            </CardTitle>
+            <div className="flex items-center gap-2 flex-wrap">
+              {/* Estimated Time Badge */}
+              <Badge className="bg-[#F97316]/10 border-[#F97316]/30 text-[#F97316] px-3 py-1">
+                ⏱ {formatEstimatedTime(data.estimatedTime)}
+              </Badge>
+              {/* Skill level badge */}
+              {data.formInput?.skillLevel && (
+                <Badge className="bg-blue-50 border-blue-200 text-blue-600 px-3 py-1 capitalize">
+                  👤 {data.formInput.skillLevel}
                 </Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <p className="text-base leading-relaxed text-[#111827]/80">
-                {data.summary}
-              </p>
+              )}
+              {/* Goal badge */}
+              {data.formInput?.goal && (
+                <Badge className="bg-green-50 border-green-200 text-green-600 px-3 py-1 capitalize">
+                  🎯 {data.formInput.goal.replace(/_/g, ' ')}
+                </Badge>
+              )}
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-5">
+          {/* Main summary */}
+          <p className="text-base leading-relaxed text-[#111827]/80 lg:text-lg">
+            {data.summary}
+          </p>
 
-              {/* Architecture (deep dive only) */}
-              {data.architecture && (
-                <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-4">
-                  <h4 className="font-semibold text-cyan-400 mb-2 text-sm">🏗️ Architecture</h4>
-                  <p className="text-sm leading-relaxed text-cyan-400/80">
-                    {data.architecture}
+          {/* What this stack means for beginners */}
+          <div className="rounded-xl bg-blue-50 border border-blue-100 p-4">
+            <p className="text-sm font-semibold text-blue-700 mb-1">
+              💡 What does this mean?
+            </p>
+            <p className="text-sm text-blue-600 leading-relaxed">
+              This is a curated set of tools that work well together for your project. Each tool has a specific role — like a team where everyone has a job.
+            </p>
+          </div>
+
+          {/* Architecture if deep dive */}
+          {data.architecture && (
+            <div className="rounded-xl border border-[#FFD896] bg-[#fff1d6] p-4">
+              <h4 className="font-semibold text-[#111827] mb-2 text-sm flex items-center gap-2">
+                🏗️ Architecture Overview
+              </h4>
+              <p className="text-sm leading-relaxed text-[#111827]/70">
+                {data.architecture}
+              </p>
+            </div>
+          )}
+
+          {/* Pro Tip */}
+          {data.proTip && (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+              <div className="flex items-start gap-3">
+                <Lightbulb className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold text-amber-700 mb-1 text-sm">
+                    Pro Tip
+                  </p>
+                  <p className="text-sm leading-relaxed text-amber-700/80">
+                    {data.proTip}
                   </p>
                 </div>
-              )}
-              
-              {data.proTip && (
-                <div className="relative overflow-hidden rounded-xl border border-amber-500/20 bg-amber-500/5 p-4">
-                  <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-amber-500/10 blur-xl" />
-                  <div className="relative flex items-start gap-4">
-                    <div className="mt-1 rounded-full bg-amber-500/20 p-2">
-                      <Lightbulb className="h-5 w-5 text-amber-500" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-amber-500 mb-1">Pro Tip</h4>
-                      <p className="text-sm leading-relaxed text-amber-500/80">
-                        {data.proTip}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
+      {/* 4. RECOMMENDED TOOLS */}
+      <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "200ms" }}>
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold text-[#111827] flex items-center gap-2">
+            🛠️ Recommended Tools
+            <span className="text-sm font-normal text-[#6B7280]">
+              ({data.tools?.length || 0} tools)
+            </span>
+          </h2>
+          {/* Legend */}
+          <div className="flex items-center gap-3 text-xs text-[#6B7280]">
+            <span className="flex items-center gap-1">
+              <span className="h-2 w-2 rounded-full bg-green-400" />
+              Free
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="h-2 w-2 rounded-full bg-yellow-400" />
+              Paid
+            </span>
+          </div>
         </div>
 
-        {/* Right Column: 3. TOOLS GRID */}
-        <div className="space-y-6">
-          <h3 className="text-xl font-semibold text-[#111827] mb-4 px-1 flex items-center gap-2">
-            Recommended Tools
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs text-[#111827]/60">
-              {data.tools?.length || 0}
-            </span>
-          </h3>
-          
-          <div className="grid gap-4 sm:grid-cols-2">
-            {(data.tools || []).map((tool, index) => {
-              if (!tool || typeof tool !== 'object') return null;
-              return (
-              <Card
-                key={tool.name || index}
-                className="group relative overflow-hidden border-[#FFD896] bg-white backdrop-blur-xl transition-all hover:border-[#FFD896] hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] flex flex-col h-full min-h-[280px] animate-in fade-in zoom-in-95 duration-700 fill-mode-both"
-                style={{ animationDelay: `${300 + index * 100}ms` }}
-              >
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-                
-                <CardContent className="flex flex-1 flex-col p-6">
-                  <div className="mb-4 flex items-start justify-between gap-3">
-                    <div className="space-y-2">
-                      <h4 className="text-lg font-bold text-[#111827] tracking-tight">{String(tool.name || 'Unknown')}</h4>
-                      <Badge
-                        className={cn(
-                          "text-[10px] uppercase font-bold tracking-wider rounded-md whitespace-nowrap",
-                          CATEGORY_COLORS[tool.category] || "border-[#FFD896] bg-white text-[#111827]/60"
-                        )}
-                      >
+        {/* Beginner explanation */}
+        <p className="text-sm text-[#6B7280] bg-white border border-[#FFD896] rounded-xl px-4 py-3">
+          💬 These are the tools we recommend for your project. Each has a role — hover or read below to understand what each one does and why.
+        </p>
+
+        {/* Tools grid - 2 cols on tablet, 3 on desktop */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {data.tools?.map((tool, index) => {
+            if (!tool || typeof tool !== 'object') return null
+            return (
+              <Card key={index} className="border-[#FFD896] bg-white hover:shadow-md hover:border-[#F97316]/40 transition-all duration-200 flex flex-col">
+                <CardContent className="p-5 flex flex-col flex-1 gap-3">
+                  
+                  {/* Tool header */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <h3 className="font-bold text-[#111827] text-base">
+                        {String(tool.name || '')}
+                      </h3>
+                      <Badge className={cn(
+                        "text-[10px] uppercase font-bold mt-1 whitespace-nowrap",
+                        CATEGORY_COLORS[tool.category] || "border-[#FFD896] bg-[#fff1d6] text-[#111827]/60"
+                      )}>
                         {tool.category}
                       </Badge>
                     </div>
-                    <div className="flex flex-col items-end gap-2 shrink-0">
-                      <Badge
-                        variant="outline"
-                        className={cn(
-                          "text-[11px] font-bold border-0 bg-opacity-20 px-2.5 py-0.5",
-                          tool.isFree 
-                            ? "bg-green-500/20 text-green-400" 
-                            : "bg-yellow-500/20 text-yellow-500"
-                        )}
-                      >
-                        {tool.isFree ? "Free" : "Paid"}
-                      </Badge>
-                      <span className="text-[10px] font-medium text-[#111827]/40 uppercase tracking-widest">
-                        {tool.difficulty}
-                      </span>
-                    </div>
+                    <Badge className={cn(
+                      "shrink-0 text-xs font-semibold px-2 py-0.5",
+                      tool.isFree ? "bg-green-50 text-green-600 border-green-200" : "bg-yellow-50 text-yellow-600 border-yellow-200"
+                    )}>
+                      {tool.isFree ? "✅ Free" : "💳 Paid"}
+                    </Badge>
                   </div>
-                  
-                  <p className="text-sm text-[#111827]/60 leading-relaxed mb-4 flex-1 line-clamp-4">
-                    {tool.reason}
-                  </p>
+
+                  {/* What it does */}
+                  <div className="bg-[#fff1d6]/60 rounded-lg p-3">
+                    <p className="text-xs font-semibold text-[#F97316] mb-1">
+                      🔧 What it does
+                    </p>
+                    <p className="text-sm text-[#111827]/70 leading-relaxed line-clamp-3">
+                      {String(tool.reason || '')}
+                    </p>
+                  </div>
+
+                  {/* Difficulty */}
+                  <div className="flex items-center gap-2 text-xs text-[#6B7280]">
+                    <span>Difficulty:</span>
+                    <span className={cn(
+                      "font-semibold",
+                      tool.difficulty === 'Beginner' ? "text-green-500" : tool.difficulty === 'Intermediate' ? "text-yellow-500" : "text-red-500"
+                    )}>
+                      {tool.difficulty === 'Beginner' && "🟢 "}
+                      {tool.difficulty === 'Intermediate' && "🟡 "}
+                      {tool.difficulty === 'Advanced' && "🔴 "}
+                      {tool.difficulty}
+                    </span>
+                  </div>
 
                   {/* Deep dive extras */}
                   {tool.bestFor && (
-                    <p className="text-xs text-emerald-400/80 mb-2">✨ Best for: {tool.bestFor}</p>
+                    <p className="text-xs text-emerald-600 bg-emerald-50 rounded-lg px-3 py-2">
+                      ✨ Best for: {tool.bestFor}
+                    </p>
                   )}
                   {tool.warnings && (
-                    <p className="text-xs text-amber-400/80 mb-2">⚠️ {tool.warnings}</p>
+                    <p className="text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2">
+                      ⚠️ {tool.warnings}
+                    </p>
                   )}
                   {tool.alternatives && tool.alternatives.length > 0 && (
-                    <p className="text-xs text-[#111827]/40 mb-4">Alternatives: {tool.alternatives.join(", ")}</p>
+                    <p className="text-xs text-[#6B7280]">
+                      Alternatives: {tool.alternatives.join(", ")}
+                    </p>
                   )}
-                  
-                  <a
-                    href={tool.learnUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white border border-[#FFD896] px-4 py-2.5 text-sm font-semibold text-[#111827]/90 transition-all mt-auto group-hover:bg-[#F97316] group-hover:border-[#F97316] group-hover:text-white group-hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]"
-                  >
-                    {tool.isFree ? "Learn Free" : "Learn"}
+
+                  {/* Learn button */}
+                  <a href={tool.learnUrl} target="_blank" rel="noreferrer" className="mt-auto flex items-center justify-center gap-2 rounded-lg bg-[#F97316] text-white px-4 py-2.5 text-sm font-semibold hover:bg-[#EA6C0A] transition-colors">
+                    {tool.isFree ? "Learn Free 📚" : "Learn More 📚"}
                     <ArrowUpRight className="h-4 w-4" />
                   </a>
                 </CardContent>
               </Card>
-            )})}
-          </div>
+            )
+          })}
         </div>
-      </div>
+      </section>
 
-      {/* Full width Roadmap below */}
-      <div className="mt-4 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "250ms" }}>
-        <Card className="border-[#FFD896] bg-white pb-4">
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold text-[#111827]">
-              Execution Roadmap
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {(data.roadmap || []).map((step, idx) => {
-                let stepText: string
-                if (typeof step === 'string') {
-                  stepText = step
-                } else if (typeof step === 'object' && step !== null) {
-                  const s = step as Record<string, unknown>
-                  stepText = s.name ? String(s.name) : JSON.stringify(step)
-                } else {
-                  stepText = String(step ?? '')
-                }
-                return (
-                  <div key={idx} className="flex items-start gap-3 p-4 rounded-xl border border-[#FFD896] bg-[#fff1d6]/50">
-                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#F97316] text-white text-xs font-bold">
-                      {idx + 1}
-                    </div>
-                    <p className="text-sm text-[#111827]/80 leading-relaxed pt-0.5">
-                      {stepText}
-                    </p>
-                  </div>
-                )
-              })}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      {/* 5. EXECUTION ROADMAP */}
+      <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "250ms" }}>
+        <h2 className="text-xl font-bold text-[#111827] flex items-center gap-2">
+          🗺️ Execution Roadmap
+        </h2>
+        
+        <p className="text-sm text-[#6B7280] bg-white border border-[#FFD896] rounded-xl px-4 py-3">
+          📌 Follow these steps in order to build your project. Each step builds on the previous one.
+        </p>
 
-      {/* 5. VIBE CODING SECTION */}
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {data.roadmap?.map((step, idx) => {
+            let stepText: string
+            if (typeof step === 'string') {
+              stepText = step
+            } else if (typeof step === 'object' && step !== null) {
+              const s = step as Record<string, unknown>
+              stepText = s.name ? String(s.name) : JSON.stringify(step)
+            } else {
+              stepText = String(step ?? '')
+            }
+            return (
+              <div key={idx} className="flex items-start gap-3 p-4 rounded-xl border border-[#FFD896] bg-white hover:border-[#F97316]/40 hover:bg-[#fff1d6]/50 transition-all">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#F97316] text-white text-sm font-bold">
+                  {idx + 1}
+                </div>
+                <p className="text-sm text-[#111827]/80 leading-relaxed pt-1">
+                  {stepText}
+                </p>
+              </div>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* 6. APPROX. BUDGET */}
+      {data.tools && data.tools.length > 0 && (
+        <BudgetSection tools={data.tools} userBudget={data.formInput?.budget || 'free'} />
+      )}
+
+      {/* 7. VIBE CODING */}
       {data.vibeCoding ? (
         data.vibeCoding.aiTools && data.vibeCoding.aiTools.length > 0 ? (
-          <div className="mt-16 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "400ms" }}>
+          <section className="animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "400ms" }}>
+            <div className="rounded-xl bg-[#F97316]/5 border border-[#F97316]/20 p-4 mb-6">
+              <p className="text-sm text-[#F97316] font-semibold mb-1">
+                🤖 What is Vibe Coding?
+              </p>
+              <p className="text-sm text-[#111827]/70 leading-relaxed">
+                Vibe coding means using AI tools like Cursor, v0.dev, and Antigravity to build your project faster — instead of writing every line of code yourself. Think of it as having an AI co-pilot.
+              </p>
+            </div>
+
             <div className="mb-8 flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F97316]/20">
                 <Bot className="h-5 w-5 text-[#F97316]" />
@@ -825,10 +976,10 @@ function ResultContent() {
                 </div>
               </div>
             )}
-          </div>
+          </section>
         ) : (
           /* Vibe Coding fallback when data exists but aiTools is empty */
-          <div className="mt-16 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "400ms" }}>
+          <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "400ms" }}>
             <Card className="border-amber-500/20 bg-amber-500/5 backdrop-blur-md">
               <CardContent className="flex flex-col items-center justify-center py-12 text-center">
                 <AlertTriangle className="h-10 w-10 text-amber-400 mb-4" />
@@ -847,9 +998,14 @@ function ResultContent() {
         )
       ) : null}
 
-      {/* 6. ACTION BUTTONS */}
-      <div className="mt-20 border-t border-[#FFD896] pt-10 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700" style={{ animationDelay: "500ms" }}>
-        <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
+      {/* 8. ACTION BUTTONS */}
+      <section className="border-t border-[#FFD896] pt-8 pb-16 animate-in fade-in slide-in-from-bottom-4 duration-700" style={{ animationDelay: "500ms" }}>
+        
+        <p className="text-center text-sm text-[#6B7280] mb-6">
+          Happy with your stack? Save it to your dashboard or share it with your team.
+        </p>
+        
+        <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3">
           <Button
             onClick={handleSaveStack}
             disabled={saving || saved}
@@ -916,7 +1072,7 @@ function ResultContent() {
             View All Stacks
           </Button>
         </div>
-      </div>
+      </section>
     </main>
   )
 }
