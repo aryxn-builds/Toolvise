@@ -274,7 +274,7 @@ async function logApiUsage(
 ) {
   try {
     const supabase = await createClient();
-    await supabase.from("api_usage_logs").insert({
+    const { error } = await supabase.from("api_usage_logs").insert({
       provider,
       model,
       duration_ms: durationMs,
@@ -282,6 +282,10 @@ async function logApiUsage(
       error_message: errorMessage || null,
       tokens_used: tokensUsed || 0,
     });
+    
+    if (error) {
+      console.error("[advisor] Supabase API log insert error:", error);
+    }
   } catch (err) {
     console.error("[advisor] Failed to log API usage:", err);
   }
