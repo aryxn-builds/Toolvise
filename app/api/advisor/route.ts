@@ -263,6 +263,30 @@ function normalizeScoreCard(raw: ScoreCardRaw | null | undefined) {
   };
 }
 
+// ── API Usage Logging ────────────────────────────────────────────────────────
+async function logApiUsage(
+  provider: string,
+  model: string,
+  durationMs: number,
+  success: boolean,
+  errorMessage?: string,
+  tokensUsed?: number
+) {
+  try {
+    const supabase = await createClient();
+    await supabase.from("api_usage_logs").insert({
+      provider,
+      model,
+      duration_ms: durationMs,
+      success,
+      error_message: errorMessage || null,
+      tokens_used: tokensUsed || 0,
+    });
+  } catch (err) {
+    console.error("[advisor] Failed to log API usage:", err);
+  }
+}
+
 // ── POST /api/advisor ──────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   try {
@@ -336,20 +360,35 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
 
     // 5. Call AI (Gemini primary, Groq fallback)
     let text = "";
+    const startTime = Date.now();
 
     try {
       if (!geminiKey) throw new Error("No Gemini key available");
       text = await callGemini(geminiKey, SYSTEM_PROMPT, userPrompt);
       if (!text) throw new Error("AI returned an empty response");
+      
+      const durationMs = Date.now() - startTime;
+      await logApiUsage("gemini", "gemini-2.0-flash", durationMs, true);
     } catch (geminiErr: unknown) {
       console.warn("[advisor] Gemini failed, falling back to Groq:", (geminiErr as Error).message);
+      
+      const geminiDuration = Date.now() - startTime;
+      await logApiUsage("gemini", "gemini-2.0-flash", geminiDuration, false, (geminiErr as Error).message);
 
+      const groqStartTime = Date.now();
       try {
         if (!groqKey) throw new Error("No Groq key available");
         text = await callGroq(groqKey, SYSTEM_PROMPT, userPrompt);
         if (!text) throw new Error("Groq returned an empty response");
+        
+        const groqDuration = Date.now() - groqStartTime;
+        await logApiUsage("groq", "llama-3.1-8b-instant", groqDuration, true);
       } catch (groqErr: unknown) {
         console.error("[advisor] Groq also failed:", (groqErr as Error).message);
+        
+        const groqDuration = Date.now() - groqStartTime;
+        await logApiUsage("groq", "llama-3.1-8b-instant", groqDuration, false, (groqErr as Error).message);
+
         return NextResponse.json(
           { error: "Our AI is taking a short break.\nPlease try again in a few minutes. 🚀" },
           { status: 503 }
