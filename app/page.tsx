@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { createClient } from "@/lib/supabase/client"
 import { Navbar } from "@/components/Navbar"
+import { AnnouncementBanner } from "@/components/AnnouncementBanner"
 
 // ── Hardcoded fallback cards ───────────────────────────────────────────────
 const FALLBACK_CARDS = [
@@ -181,6 +182,7 @@ export default function Home() {
   return (
     <div className="bg-white text-[#111827]">
       <Navbar />
+      <AnnouncementBanner />
 
       <main>
         <section className="relative overflow-hidden">

@@ -50,6 +50,21 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // Admin route protection — verify is_admin in profiles
+  if (pathname.startsWith("/admin") && user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("is_admin")
+      .eq("id", user.id)
+      .single();
+
+    if (!profile?.is_admin) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
+  }
+
   // Redirect logged-in users away from /login and /signup only
   // (not from forgot-password, reset-password, auth/callback)
   const authOnlyPaths = ["/login", "/signup"];
