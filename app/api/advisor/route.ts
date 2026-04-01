@@ -155,7 +155,7 @@ function buildDefaultVibeCoding(userInput: string) {
 
 async function callGemini(geminiKey: string, systemPrompt: string, userPrompt: string): Promise<string> {
   const genAI = new GoogleGenerativeAI(geminiKey);
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   const result = await model.generateContent({
     contents: [{ role: "user", parts: [{ text: userPrompt }] }],
     systemInstruction: systemPrompt,
@@ -372,12 +372,12 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
       if (!text) throw new Error("AI returned an empty response");
       
       const durationMs = Date.now() - startTime;
-      await logApiUsage("gemini", "gemini-2.0-flash", durationMs, true, false);
+      await logApiUsage("gemini", "gemini-1.5-flash", durationMs, true, false);
     } catch (geminiErr: unknown) {
       console.warn("[advisor] Gemini failed, falling back to Groq:", (geminiErr as Error).message);
       
       const geminiDuration = Date.now() - startTime;
-      await logApiUsage("gemini", "gemini-2.0-flash", geminiDuration, false, false, (geminiErr as Error).message);
+      await logApiUsage("gemini", "gemini-1.5-flash", geminiDuration, false, false, (geminiErr as Error).message);
 
       const groqStartTime = Date.now();
       try {
