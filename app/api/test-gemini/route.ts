@@ -15,6 +15,10 @@ export async function GET() {
     const genAI = new GoogleGenerativeAI(key)
     const model = genAI.getGenerativeModel({ 
       model: "gemini-1.5-flash" 
+    }, {
+      customHeaders: {
+        "Referer": "https://toolvise.vercel.app/"
+      }
     })
     const result = await model.generateContent(
       "Say hello in one word"
