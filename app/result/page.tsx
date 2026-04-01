@@ -141,13 +141,14 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
   const calculatedScore = Math.round((individualSum / 5) * 10)
 
   // Use calculated score if AI returned wrong value (e.g. raw sum instead of average)
+  // Use calculated score if overallScore is missing, not a number, or out of 0-100 range
   const displayScore = (
-    scoreCard.overallScore > 100 || 
-    scoreCard.overallScore < 10 ||
-    scoreCard.overallScore === individualSum
+    typeof scoreCard.overallScore === "number" &&
+    scoreCard.overallScore >= 0 &&
+    scoreCard.overallScore <= 100
   )
-    ? calculatedScore
-    : scoreCard.overallScore
+    ? scoreCard.overallScore
+    : calculatedScore;
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
