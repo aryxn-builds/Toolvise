@@ -8,20 +8,23 @@ export async function GET() {
 
   try {
     const genAI = new GoogleGenerativeAI(key)
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" })
-    const result = await model.generateContent("Say hello in one word")
+    // List models to see what's actually available
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`)
+    const data = await response.json()
     
     return NextResponse.json({ 
       success: true,
-      model: "gemini-2.0-flash",
-      response: result.response.text(),
-      keyPrefix: key.substring(0, 8) + "..."
+      keyPrefix: key.substring(0, 8) + "...",
+      models: data.models?.map((m: any) => ({
+        name: m.name,
+        methods: m.supportedGenerationMethods,
+        displayName: m.displayName
+      })) || []
     })
   } catch (err: unknown) {
     return NextResponse.json({ 
       success: false,
-      error: (err as Error).message,
-      keyPrefix: key.substring(0, 8) + "..."
+      error: (err as Error).message
     })
   }
 }
