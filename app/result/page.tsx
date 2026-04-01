@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { CommentsSection } from "@/components/CommentsSection"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import {
@@ -1072,8 +1073,26 @@ function ResultContent() {
             <Library className="mr-2 h-5 w-5" />
             View All Stacks
           </Button>
+
+          {data.shareSlug && (
+            <Button
+              onClick={() => router.push(`/compare?a=${data.shareSlug}`)}
+              variant="outline"
+              className="h-12 px-8 rounded-xl border-[#FFD896] bg-white text-[#111827] hover:bg-[#fff1d6] font-semibold w-full sm:w-auto text-base"
+            >
+              ⚡ Compare with another stack →
+            </Button>
+          )}
         </div>
       </section>
+
+      {/* 9. COMMENTS */}
+      {data.id && (
+        <CommentsSection
+          stackId={data.id}
+          shareSlug={data.shareSlug ?? ""}
+        />
+      )}
     </main>
   )
 }

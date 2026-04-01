@@ -360,6 +360,9 @@ export default function Home() {
             <Link className="transition-colors hover:text-[#111827]" href="/explore">
               Explore
             </Link>
+            <Link className="transition-colors hover:text-[#111827]" href="/leaderboard">
+              Leaderboard
+            </Link>
             <Link className="transition-colors hover:text-[#111827]" href="/about">
               About
             </Link>

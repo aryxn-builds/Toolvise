@@ -115,6 +115,12 @@ export function Navbar() {
           </Link>
           <Link
             className="transition-colors hover:text-[#111827]"
+            href="/leaderboard"
+          >
+            Leaderboard
+          </Link>
+          <Link
+            className="transition-colors hover:text-[#111827]"
             href="/about"
           >
             About

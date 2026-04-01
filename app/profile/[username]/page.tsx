@@ -14,6 +14,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { FollowButton } from "@/components/FollowButton";
 
 interface ProfilePageProps {
   params: Promise<{ username: string }>;
@@ -34,11 +35,23 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
     notFound();
   }
 
-  // Check if this is the current user's profile
+  // Get current user
   const {
     data: { user },
   } = await supabase.auth.getUser();
   const isOwnProfile = user?.id === profile.id;
+
+  // Check if current user is following this profile
+  let initialIsFollowing = false;
+  if (user && !isOwnProfile) {
+    const { data: followData } = await supabase
+      .from("follows")
+      .select("follower_id")
+      .eq("follower_id", user.id)
+      .eq("following_id", profile.id)
+      .maybeSingle();
+    initialIsFollowing = !!followData;
+  }
 
   // Fetch public stacks
   const { data: stacks } = await supabase
@@ -76,7 +89,13 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             </div>
             <span className="text-lg font-bold tracking-tight">Toolvise</span>
           </Link>
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center gap-4">
+            <Link
+              href="/leaderboard"
+              className="text-sm text-[#111827]/50 hover:text-[#111827] transition-colors hidden sm:block"
+            >
+              Leaderboard
+            </Link>
             <Link
               href="/dashboard"
               className="text-sm font-medium text-[#111827]/60 hover:text-[#111827] flex items-center gap-2 transition-colors"
@@ -105,26 +124,75 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             )}
 
             {/* Info */}
-            <div className="flex-1 space-y-2">
-              <div className="flex items-center gap-3 flex-wrap">
-                <h1 className="text-2xl font-bold">
-                  {profile.display_name || profile.username}
-                </h1>
-                {profile.skill_level && (
-                  <Badge className="border border-[#FFD896] bg-[#fff1d6] text-[#111827]/70 text-xs">
-                    {profile.skill_level}
-                  </Badge>
+            <div className="flex-1 space-y-3">
+              <div className="flex items-start justify-between flex-wrap gap-3">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <h1 className="text-2xl font-bold">
+                      {profile.display_name || profile.username}
+                    </h1>
+                    {profile.skill_level && (
+                      <Badge className="border border-[#FFD896] bg-[#fff1d6] text-[#111827]/70 text-xs">
+                        {profile.skill_level}
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="text-sm text-[#111827]/50">@{profile.username}</p>
+                </div>
+
+                {/* Follow button (only for other profiles) */}
+                {!isOwnProfile && (
+                  <FollowButton
+                    profileUserId={profile.id}
+                    currentUserId={user?.id ?? null}
+                    initialIsFollowing={initialIsFollowing}
+                    initialFollowersCount={profile.followers_count ?? 0}
+                  />
+                )}
+
+                {/* Edit button (own profile) */}
+                {isOwnProfile && (
+                  <Link href="/settings">
+                    <Button
+                      variant="outline"
+                      className="border-[#FFD896] text-[#111827]/70 hover:bg-[#fff1d6] hover:text-[#111827] rounded-xl"
+                    >
+                      <Pencil className="mr-2 h-4 w-4" />
+                      Edit Profile
+                    </Button>
+                  </Link>
                 )}
               </div>
-              <p className="text-sm text-[#111827]/50">@{profile.username}</p>
 
               {profile.bio && (
-                <p className="text-sm text-[#111827]/70 leading-relaxed max-w-xl mt-2">
+                <p className="text-sm text-[#111827]/70 leading-relaxed max-w-xl">
                   {profile.bio}
                 </p>
               )}
 
-              <div className="flex items-center gap-4 pt-2 flex-wrap">
+              {/* Stats: Stacks / Followers / Following */}
+              <div className="flex gap-6 text-sm pt-1">
+                <div>
+                  <span className="font-bold text-[#111827]">
+                    {profile.stacks_count ?? 0}
+                  </span>
+                  <span className="text-[#6B7280] ml-1">Stacks</span>
+                </div>
+                <div>
+                  <span className="font-bold text-[#111827]">
+                    {profile.followers_count ?? 0}
+                  </span>
+                  <span className="text-[#6B7280] ml-1">Followers</span>
+                </div>
+                <div>
+                  <span className="font-bold text-[#111827]">
+                    {profile.following_count ?? 0}
+                  </span>
+                  <span className="text-[#6B7280] ml-1">Following</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 flex-wrap">
                 {profile.website && (
                   <a
                     href={
@@ -150,19 +218,6 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                 </span>
               </div>
             </div>
-
-            {/* Edit button */}
-            {isOwnProfile && (
-              <Link href="/settings">
-                <Button
-                  variant="outline"
-                  className="border-[#FFD896] text-[#111827]/70 hover:bg-[#fff1d6] hover:text-[#111827] rounded-xl"
-                >
-                  <Pencil className="mr-2 h-4 w-4" />
-                  Edit Profile
-                </Button>
-              </Link>
-            )}
           </div>
         </section>
 
@@ -183,19 +238,14 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                     <div className="flex flex-wrap gap-1.5">
                       {((stack.tools as { name: string }[]) || [])
                         .slice(0, 3)
-                        .map(
-                          (
-                            t: { name: string },
-                            idx: number
-                          ) => (
-                            <Badge
-                              key={idx}
-                              className="border border-[#FFD896] bg-[#fff1d6] text-[#111827]/70 text-xs"
-                            >
-                              {t.name}
-                            </Badge>
-                          )
-                        )}
+                        .map((t: { name: string }, idx: number) => (
+                          <Badge
+                            key={idx}
+                            className="border border-[#FFD896] bg-[#fff1d6] text-[#111827]/70 text-xs"
+                          >
+                            {t.name}
+                          </Badge>
+                        ))}
                     </div>
                     <Link
                       href={`/result?slug=${stack.share_slug}`}
