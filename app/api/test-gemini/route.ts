@@ -1,19 +1,27 @@
 import { NextResponse } from "next/server"
+import { GoogleGenerativeAI } from "@google/generative-ai"
 
 export async function GET() {
   const key = process.env.GEMINI_API_KEY
+  
   if (!key) return NextResponse.json({ error: "No key found" })
-    
+
   try {
-    // Probe models list via REST so we see what's actually there
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`)
-    const data = await res.json()
+    const genAI = new GoogleGenerativeAI(key)
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" })
+    const result = await model.generateContent("Say hello in one word")
+    
     return NextResponse.json({ 
       success: true,
-      keyPrefix: key.substring(0, 8) + "...",
-      models: data
+      model: "gemini-2.0-flash",
+      response: result.response.text(),
+      keyPrefix: key.substring(0, 8) + "..."
     })
-  } catch (err) {
-    return NextResponse.json({ success: false, error: (err as Error).message })
+  } catch (err: unknown) {
+    return NextResponse.json({ 
+      success: false,
+      error: (err as Error).message,
+      keyPrefix: key.substring(0, 8) + "..."
+    })
   }
 }
