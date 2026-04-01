@@ -74,8 +74,10 @@ interface ApiLog {
   provider: string
   model: string | null
   success: boolean
-  is_fallback: boolean
-  response_time_ms: number | null
+  is_fallback: boolean | null
+  duration_ms: number | null
+  error_message: string | null
+  tokens_used: number | null
   created_at: string
 }
 
@@ -1129,9 +1131,9 @@ export default function AdminDashboard() {
                   const geminiTotal = apiLogs.filter(l => l.provider === 'gemini').length || 1
                   const geminiSuccess = apiLogs.filter(l => l.provider === 'gemini' && l.success).length
                   const geminiRate = Math.round(geminiSuccess / geminiTotal * 100)
-                  const timeLogs = apiLogs.filter(l => l.response_time_ms)
+                  const timeLogs = apiLogs.filter(l => l.duration_ms)
                   const avgTime = timeLogs.length
-                    ? Math.round(timeLogs.reduce((s, l) => s + (l.response_time_ms||0), 0) / timeLogs.length)
+                    ? Math.round(timeLogs.reduce((s, l) => s + (l.duration_ms || 0), 0) / timeLogs.length)
                     : 0
                   return (
                     <div className="space-y-4">
@@ -1346,8 +1348,8 @@ export default function AdminDashboard() {
                             </span>
                           </td>
                           <td className="py-3 px-4 text-xs text-[#6B7280]">
-                            {log.response_time_ms
-                              ? `${log.response_time_ms}ms`
+                            {log.duration_ms
+                              ? `${log.duration_ms}ms`
                               : '—'
                             }
                           </td>

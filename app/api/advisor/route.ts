@@ -269,8 +269,8 @@ async function logApiUsage(
   model: string,
   durationMs: number,
   success: boolean,
+  isFallback: boolean = false,
   errorMessage?: string,
-  tokensUsed?: number
 ) {
   try {
     const supabase = await createClient();
@@ -279,8 +279,8 @@ async function logApiUsage(
       model,
       duration_ms: durationMs,
       success,
+      is_fallback: isFallback,
       error_message: errorMessage || null,
-      tokens_used: tokensUsed || 0,
     });
     
     if (error) {
@@ -372,12 +372,12 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
       if (!text) throw new Error("AI returned an empty response");
       
       const durationMs = Date.now() - startTime;
-      await logApiUsage("gemini", "gemini-2.0-flash", durationMs, true);
+      await logApiUsage("gemini", "gemini-2.0-flash", durationMs, true, false);
     } catch (geminiErr: unknown) {
       console.warn("[advisor] Gemini failed, falling back to Groq:", (geminiErr as Error).message);
       
       const geminiDuration = Date.now() - startTime;
-      await logApiUsage("gemini", "gemini-2.0-flash", geminiDuration, false, (geminiErr as Error).message);
+      await logApiUsage("gemini", "gemini-2.0-flash", geminiDuration, false, false, (geminiErr as Error).message);
 
       const groqStartTime = Date.now();
       try {
@@ -386,12 +386,12 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
         if (!text) throw new Error("Groq returned an empty response");
         
         const groqDuration = Date.now() - groqStartTime;
-        await logApiUsage("groq", "llama-3.1-8b-instant", groqDuration, true);
+        await logApiUsage("groq", "llama-3.1-8b-instant", groqDuration, true, true);
       } catch (groqErr: unknown) {
         console.error("[advisor] Groq also failed:", (groqErr as Error).message);
         
         const groqDuration = Date.now() - groqStartTime;
-        await logApiUsage("groq", "llama-3.1-8b-instant", groqDuration, false, (groqErr as Error).message);
+        await logApiUsage("groq", "llama-3.1-8b-instant", groqDuration, false, true, (groqErr as Error).message);
 
         return NextResponse.json(
           { error: "Our AI is taking a short break.\nPlease try again in a few minutes. 🚀" },
