@@ -50,7 +50,8 @@ CREATE TABLE IF NOT EXISTS public.follows (
 ALTER TABLE public.follows ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Public read follows"        ON public.follows;
-DROP POLICY IF EXISTS "Users manage own follows"   ON public.follows;
+DROP POLICY IF EXISTS "Users insert own follows"    ON public.follows;
+DROP POLICY IF EXISTS "Users delete own follows"    ON public.follows;
 
 CREATE POLICY "Public read follows"
   ON public.follows FOR SELECT USING (true);
