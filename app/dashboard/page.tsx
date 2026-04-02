@@ -344,6 +344,7 @@ export default function DashboardPage() {
           .limit(50),
       ]);
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let bookmarksData: any = null;
       try {
         const { data } = await supabase
@@ -376,13 +377,7 @@ export default function DashboardPage() {
   }, [router]);
 
   // ── Derived stats ─────────────────────────────────────────────────────
-  const thisMonthCount = React.useMemo(() => {
-    const now = new Date();
-    return stacks.filter((s) => {
-      const d = new Date(s.created_at);
-      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-    }).length;
-  }, [stacks]);
+  // thisMonthCount previously here
 
   const topScore = React.useMemo(
     () => Math.max(0, ...stacks.map((s) => s.score_card?.overallScore ?? 0)),
@@ -538,11 +533,14 @@ export default function DashboardPage() {
               className="flex items-center gap-2 text-sm font-medium text-[#111827]/60 hover:text-[#111827] transition-colors"
             >
               {profile?.avatar_url ? (
-                <img
-                  src={profile.avatar_url}
-                  alt={displayName}
-                  className="h-7 w-7 rounded-full object-cover border border-[#FFD896]"
-                />
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={profile.avatar_url}
+                    alt={displayName}
+                    className="h-7 w-7 rounded-full object-cover border border-[#FFD896]"
+                  />
+                </>
               ) : (
                 <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#F97316] to-[#FB923C] flex items-center justify-center text-white text-xs font-bold">
                   {initials}

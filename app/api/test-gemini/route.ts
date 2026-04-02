@@ -25,7 +25,7 @@ export async function GET() {
     return NextResponse.json({ 
       success: false,
       error: (err as Error).message,
-      models: modelsData.models?.map((m: any) => m.name) || [],
+      models: modelsData.models?.map((m: { name: string }) => m.name) || [],
       keyPrefix: key.substring(0, 8) + "..."
     })
   }

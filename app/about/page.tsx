@@ -1,9 +1,9 @@
 import Link from "next/link"
-import { ArrowLeft, Target, Bot, Globe, Zap, Code2, Users } from "lucide-react"
+import { Target, Bot, Globe, Zap, Code2, Users } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
 
-import { Button } from "@/components/ui/button"
 import { buttonVariants } from "@/components/ui/button-variants"
+import { Navbar } from "@/components/Navbar"
 
 export const revalidate = 60 // Update stats every minute
 
@@ -18,23 +18,9 @@ export default async function AboutPage() {
 
   return (
     <div className="min-h-dvh bg-white bg-[radial-gradient(900px_circle_at_15%_15%,rgba(249,115,22,0.15),transparent_55%),radial-gradient(900px_circle_at_85%_20%,rgba(251,146,60,0.12),transparent_55%)] font-sans text-[#111827]/90 selection:bg-amber-500/30">
-      <header className="fixed top-0 z-50 w-full border-b border-[#FFD896] bg-[#fff1d6]/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/20">
-              <span className="text-lg font-bold text-[#111827]">T</span>
-            </div>
-            <span className="text-xl font-bold tracking-tight text-[#111827]">Toolvise</span>
-          </Link>
-          <div className="ml-auto">
-            <Link href="/" className="text-sm font-medium text-[#111827]/60 hover:text-[#111827] flex items-center gap-2 transition-colors">
-              <ArrowLeft className="h-4 w-4" /> Back to Home
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
-      <main className="mx-auto max-w-5xl px-4 pt-32 pb-24 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-5xl px-4 pt-24 pb-24 sm:px-6 lg:px-8">
         
         {/* 1. HERO SECTION */}
         <section className="mb-24 text-center mt-12 animate-in slide-in-from-bottom-6 fade-in duration-700">

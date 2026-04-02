@@ -7,11 +7,9 @@ import {
   ArrowRight,
   ArrowUpRight,
   Check,
-  Copy,
   GitCompare,
   Loader2,
   Share2,
-  Sparkles,
   Trophy,
   Zap,
 } from "lucide-react";
@@ -20,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { Navbar } from "@/components/Navbar";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface ScoreCard {
@@ -238,21 +237,7 @@ function CompareContent() {
 
   return (
     <div className="min-h-dvh bg-[#fff1d6] text-[#111827]">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-[#FFD896] bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#F97316] to-[#FB923C] shadow-lg shadow-amber-500/20">
-              <Sparkles className="h-4 w-4 text-white" />
-            </div>
-            <span className="text-sm font-bold tracking-wide text-[#111827]">Toolvise</span>
-          </Link>
-          <nav className="flex items-center gap-4 text-sm text-[#111827]/60">
-            <Link href="/explore" className="hover:text-[#111827] transition-colors">Explore</Link>
-            <Link href="/leaderboard" className="hover:text-[#111827] transition-colors">Leaderboard</Link>
-          </nav>
-        </div>
-      </header>
+      <Navbar />
 
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 space-y-8">
         {/* Page title */}

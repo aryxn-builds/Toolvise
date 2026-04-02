@@ -2,11 +2,12 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { ArrowLeft, Bug, Loader2, CheckCircle2 } from "lucide-react"
+import { Bug, Loader2, CheckCircle2 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
 import { Button } from "@/components/ui/button"
 import { buttonVariants } from "@/components/ui/button-variants"
+import { Navbar } from "@/components/Navbar"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -68,23 +69,9 @@ export default function ReportBugPage() {
 
   return (
     <div className="min-h-dvh bg-white bg-[radial-gradient(900px_circle_at_15%_15%,rgba(249,115,22,0.15),transparent_55%),radial-gradient(900px_circle_at_85%_20%,rgba(251,146,60,0.12),transparent_55%)] font-sans text-[#111827]/90 selection:bg-amber-500/30">
-      <header className="fixed top-0 z-50 w-full border-b border-[#FFD896] bg-[#fff1d6]/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/20">
-              <span className="text-lg font-bold text-[#111827]">T</span>
-            </div>
-            <span className="text-xl font-bold tracking-tight text-[#111827]">Toolvise</span>
-          </Link>
-          <div className="ml-auto">
-            <Link href="/" className="text-sm font-medium text-[#111827]/60 hover:text-[#111827] flex items-center gap-2 transition-colors">
-              <ArrowLeft className="h-4 w-4" /> Back to Home
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
-      <main className="mx-auto max-w-2xl px-4 pt-32 pb-24 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-2xl px-4 pt-24 pb-24 sm:px-6 lg:px-8">
         <div className="mb-10 text-center">
           <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/10 mb-6">
             <Bug className="h-6 w-6 text-amber-400" />
@@ -93,7 +80,7 @@ export default function ReportBugPage() {
             Report a Bug 🐛
           </h1>
           <p className="text-lg text-[#111827]/60">
-            Found something broken? Tell us and we'll fix it fast.
+            Found something broken? Tell us and we&apos;ll fix it fast.
           </p>
         </div>
 

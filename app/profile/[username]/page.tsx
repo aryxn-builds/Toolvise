@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FollowButton } from "@/components/FollowButton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface ProfilePageProps {
   params: Promise<{ username: string }>;
@@ -111,17 +112,18 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         <section className="rounded-2xl border border-[#FFD896] bg-white p-8 mb-10">
           <div className="flex flex-col sm:flex-row items-start gap-6">
             {/* Avatar */}
-            {profile.avatar_url ? (
-              <img
-                src={profile.avatar_url}
-                alt={profile.display_name || profile.username}
-                className="h-20 w-20 rounded-full object-cover border-2 border-[#FFD896]"
-              />
-            ) : (
-              <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#F97316] to-[#FB923C] flex items-center justify-center text-white text-2xl font-bold">
+            <Avatar className="h-20 w-20 border-2 border-[#FFD896]">
+              {profile.avatar_url && (
+                <AvatarImage
+                  src={profile.avatar_url}
+                  alt={profile.display_name || profile.username || ""}
+                  className="object-cover"
+                />
+              )}
+              <AvatarFallback className="bg-gradient-to-br from-[#F97316] to-[#FB923C] text-white text-2xl font-bold">
                 {initials}
-              </div>
-            )}
+              </AvatarFallback>
+            </Avatar>
 
             {/* Info */}
             <div className="flex-1 space-y-3">

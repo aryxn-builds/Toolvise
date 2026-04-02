@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Loader2, Send, Trash2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface CommentProfile {
@@ -203,17 +204,18 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
             return (
               <div key={comment.id} className="flex gap-3 py-4">
                 {/* Avatar */}
-                {profile?.avatar_url ? (
-                  <img
-                    src={profile.avatar_url}
-                    alt={profile.display_name ?? profile.username ?? ""}
-                    className="h-9 w-9 rounded-full object-cover border border-[#FFD896] shrink-0"
-                  />
-                ) : (
-                  <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[#F97316] to-[#FB923C] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                <Avatar className="h-9 w-9 border border-[#FFD896] shrink-0">
+                  {profile?.avatar_url && (
+                    <AvatarImage
+                      src={profile.avatar_url}
+                      alt={profile.display_name ?? profile.username ?? ""}
+                      className="object-cover"
+                    />
+                  )}
+                  <AvatarFallback className="bg-gradient-to-br from-[#F97316] to-[#FB923C] text-white text-xs font-bold">
                     {getInitials(profile)}
-                  </div>
-                )}
+                  </AvatarFallback>
+                </Avatar>
 
                 <div className="flex-1 min-w-0 space-y-1">
                   <div className="flex items-center gap-2 flex-wrap">

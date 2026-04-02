@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { ArrowRight, Loader2, Sparkles, AlertCircle } from "lucide-react"
+import { ArrowRight, Loader2, AlertCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Navbar } from "@/components/Navbar"
 
 // ── Types ──────────────────────────────────────────────────────────────────
 interface FormState {
@@ -171,17 +172,7 @@ export default function AdvisorPage() {
 
   return (
     <div className="min-h-screen bg-white text-[#111827]">
-      {/* ── Nav ── */}
-      <header className="sticky top-0 z-50 border-b border-[#FFD896] bg-white backdrop-blur">
-        <div className="mx-auto flex h-16 w-full max-w-4xl items-center justify-between px-4 sm:px-6">
-          <a href="/" className="flex items-center gap-2">
-            <div className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-[#F97316] to-[#FB923C] shadow-[0_8px_24px_rgba(249,115,22,0.3)]">
-              <Sparkles className="h-3.5 w-3.5 text-[#111827]" />
-            </div>
-            <span className="text-sm font-bold tracking-wide">Toolvise</span>
-          </a>
-        </div>
-      </header>
+      <Navbar />
 
       {/* ── Main ── */}
       <main className="mx-auto w-full max-w-2xl px-4 py-12 sm:px-6 sm:py-16">

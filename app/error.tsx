@@ -24,7 +24,7 @@ export default function Error({
       </h2>
       <p className="text-[#6B7280] mb-8 
         max-w-md">
-        Don't worry — your data is safe.
+        Don&apos;t worry — your data is safe.
         Try refreshing or go back home.
       </p>
       <div className="flex gap-3">

@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { createClient } from "@/lib/supabase/client"
 import { cn } from "@/lib/utils"
+import { Navbar } from "@/components/Navbar"
 
 const FILTERS = ["All", "Frontend", "Backend", "AI", "Mobile", "Full Stack"]
 
@@ -228,6 +229,7 @@ export default function ExplorePage() {
 
   return (
     <div className="min-h-dvh bg-white text-[#111827] selection:bg-[#F97316]/30 relative pb-24">
+      <Navbar />
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(900px_circle_at_15%_15%,rgba(249,115,22,0.15),transparent_55%),radial-gradient(900px_circle_at_85%_20%,rgba(251,146,60,0.12),transparent_55%)]" />
 
       <main className="relative mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">

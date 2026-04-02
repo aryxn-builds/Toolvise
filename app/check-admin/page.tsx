@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 
 export default function CheckAdminPage() {
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<{ is_admin?: boolean, email?: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -58,17 +58,17 @@ export default function CheckAdminPage() {
           <div className="space-y-4">
             <div className="p-4 bg-gray-50 rounded-lg border-2 border-black">
               <p className="text-sm text-gray-500">Logged in email:</p>
-              <p className="font-bold">{profile.email || "No email in profile"}</p>
+              <p className="font-bold">{profile?.email || "No email in profile"}</p>
             </div>
 
-            <div className={`p-6 rounded-xl border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center ${profile.is_admin ? 'bg-green-100' : 'bg-red-100'}`}>
+            <div className={`p-6 rounded-xl border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center ${profile?.is_admin ? 'bg-green-100' : 'bg-red-100'}`}>
               <p className="text-sm uppercase font-black mb-1">Admin Status</p>
-              <p className={`text-4xl font-black ${profile.is_admin ? 'text-green-700' : 'text-red-700'}`}>
-                {profile.is_admin ? 'VERIFIED ✅' : 'DENIED ❌'}
+              <p className={`text-4xl font-black ${profile?.is_admin ? 'text-green-700' : 'text-red-700'}`}>
+                {profile?.is_admin ? 'VERIFIED ✅' : 'DENIED ❌'}
               </p>
             </div>
 
-            {profile.is_admin ? (
+            {profile?.is_admin ? (
               <Link 
                 href="/admin" 
                 className="block w-full bg-orange-500 text-white text-center py-4 rounded-xl font-black border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
@@ -77,7 +77,7 @@ export default function CheckAdminPage() {
               </Link>
             ) : (
               <p className="text-sm text-gray-600 italic">
-                If this says "DENIED", your SQL command didn't update this specific user. Check your email spelling in the SQL!
+                If this says &quot;DENIED&quot;, your SQL command didn&apos;t update this specific user. Check your email spelling in the SQL!
               </p>
             )}
           </div>

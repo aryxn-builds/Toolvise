@@ -18,7 +18,6 @@ import {
   Star,
   Eye,
   EyeOff,
-  X,
   Activity,
   AlertTriangle,
 } from "lucide-react"
@@ -195,7 +194,6 @@ export default function AdminDashboard() {
         todayCount,
         bugsCount,
         recent,
-        buildStyles,
         goals,
         usersData,
         stacksData,
@@ -208,7 +206,6 @@ export default function AdminDashboard() {
         supabase.from("stacks").select("*", { count: "exact", head: true }).gte("created_at", todayISO),
         supabase.from("bug_reports").select("*", { count: "exact", head: true }).eq("status", "open"),
         supabase.from("stacks").select("build_style").order("created_at", { ascending: false }).limit(100),
-        supabase.from("stacks").select("build_style"),
         supabase.from("stacks").select("goal"),
         supabase.from("profiles").select("id, username, display_name, avatar_url, is_admin, stacks_count, created_at").order("created_at", { ascending: false }).limit(50),
         supabase.from("stacks").select("id, user_input, build_style, goal, is_public, is_featured, upvotes, score_card, created_at, share_slug, user_id").order("created_at", { ascending: false }).limit(50),
@@ -664,7 +661,10 @@ export default function AdminDashboard() {
                             <div className="flex items-center gap-3">
                               <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#F97316] to-[#FB923C] flex items-center justify-center text-white text-xs font-bold shrink-0 overflow-hidden">
                                 {user.avatar_url ? (
-                                  <img src={user.avatar_url} alt="" className="h-full w-full object-cover" />
+                                  <>
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img src={user.avatar_url} alt="" className="h-full w-full object-cover" />
+                                  </>
                                 ) : (
                                   (user.display_name || user.username || "?").charAt(0).toUpperCase()
                                 )}

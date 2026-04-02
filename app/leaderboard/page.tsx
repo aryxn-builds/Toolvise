@@ -3,12 +3,9 @@
 import * as React from "react";
 import Link from "next/link";
 import {
-  ArrowLeft,
   ArrowUpRight,
   Flame,
   Layers,
-  Loader2,
-  Sparkles,
   Trophy,
   Users,
 } from "lucide-react";
@@ -16,6 +13,8 @@ import { createClient } from "@/lib/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { Navbar } from "@/components/Navbar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface Builder {
@@ -79,7 +78,7 @@ function RankBadge({ rank }: { rank: number }) {
 }
 
 // ── Avatar ────────────────────────────────────────────────────────────────────
-function Avatar({
+function UserAvatar({
   url,
   name,
 }: {
@@ -93,19 +92,13 @@ function Avatar({
     .toUpperCase()
     .slice(0, 2);
 
-  if (url) {
-    return (
-      <img
-        src={url}
-        alt={name ?? ""}
-        className="h-10 w-10 rounded-full object-cover border border-[#FFD896]"
-      />
-    );
-  }
   return (
-    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#F97316] to-[#FB923C] flex items-center justify-center text-white text-sm font-bold shrink-0">
-      {initials}
-    </div>
+    <Avatar className="h-10 w-10 border border-[#FFD896]">
+      {url && <AvatarImage src={url} alt={name ?? ""} className="object-cover" />}
+      <AvatarFallback className="bg-gradient-to-br from-[#F97316] to-[#FB923C] text-white text-sm font-bold">
+        {initials}
+      </AvatarFallback>
+    </Avatar>
   );
 }
 
@@ -197,26 +190,7 @@ export default function LeaderboardPage() {
 
   return (
     <div className="min-h-dvh bg-[#fff1d6] text-[#111827]">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-[#FFD896] bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#F97316] to-[#FB923C] shadow-lg shadow-amber-500/20">
-              <Sparkles className="h-4 w-4 text-white" />
-            </div>
-            <span className="text-sm font-bold tracking-wide text-[#111827]">
-              Toolvise
-            </span>
-          </Link>
-          <Link
-            href="/explore"
-            className="flex items-center gap-1.5 text-sm text-[#111827]/50 hover:text-[#111827] transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Explore
-          </Link>
-        </div>
-      </header>
+      <Navbar />
 
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8 space-y-8">
         {/* Page title */}
@@ -296,7 +270,7 @@ export default function LeaderboardPage() {
                   <CardContent className="p-4 flex items-center gap-4">
                     <RankBadge rank={idx + 1} />
 
-                    <Avatar
+                    <UserAvatar
                       url={builder.avatar_url}
                       name={builder.display_name || builder.username}
                     />
@@ -373,7 +347,7 @@ export default function LeaderboardPage() {
                           {/* Builder info */}
                           {profile && (
                             <div className="flex items-center gap-1.5">
-                              <Avatar
+                              <UserAvatar
                                 url={profile.avatar_url}
                                 name={profile.display_name || profile.username}
                               />

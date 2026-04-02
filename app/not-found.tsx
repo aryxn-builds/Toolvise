@@ -11,8 +11,8 @@ export default function NotFound() {
         Page not found
       </h2>
       <p className="text-[#6B7280] mb-8">
-        The page you're looking for 
-        doesn't exist.
+        The page you&apos;re looking for 
+        doesn&apos;t exist.
       </p>
       <Link href="/">
         <button className="px-6 py-3 

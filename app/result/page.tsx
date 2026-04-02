@@ -9,8 +9,6 @@ import {
   Bookmark,
   Share2,
   Sparkles,
-  ArrowLeft,
-  Clock,
   Lightbulb,
   Loader2,
   RefreshCcw,
@@ -28,6 +26,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { createClient } from "@/lib/supabase/client"
+import { Navbar } from "@/components/Navbar"
 
 function formatEstimatedTime(time: unknown): string {
   if (!time) return "TBD"
@@ -277,7 +276,7 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
 }
 
 // ── Budget Section Component ───────────────────────────────────────────────
-function BudgetSection({ tools, userBudget }: { tools: Tool[], userBudget: string }) {
+function BudgetSection({ tools }: { tools: Tool[] }) {
   const freeTools = tools.filter(t => t.isFree)
   const paidTools = tools.filter(t => !t.isFree)
   const allFree = paidTools.length === 0
@@ -872,7 +871,7 @@ function ResultContent() {
 
       {/* 6. APPROX. BUDGET */}
       {data.tools && data.tools.length > 0 && (
-        <BudgetSection tools={data.tools} userBudget={data.formInput?.budget || 'free'} />
+        <BudgetSection tools={data.tools} />
       )}
 
       {/* 7. VIBE CODING */}
@@ -1101,6 +1100,7 @@ function ResultContent() {
 export default function ResultPage() {
   return (
     <div className="relative min-h-dvh bg-[#fff1d6] text-[#111827] selection:bg-[#F97316]/30 overflow-hidden">
+      <Navbar />
       {/* Background ambient glow */}
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(900px_circle_at_15%_15%,rgba(249,115,22,0.15),transparent_55%),radial-gradient(900px_circle_at_85%_20%,rgba(251,146,60,0.12),transparent_55%)]" />
       
