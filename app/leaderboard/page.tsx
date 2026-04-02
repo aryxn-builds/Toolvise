@@ -71,7 +71,7 @@ function RankBadge({ rank }: { rank: number }) {
       </span>
     );
   return (
-    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#fff1d6] border border-[#FFD896] text-[#111827]/60 text-xs font-bold">
+    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-background border border-border text-foreground/60 text-xs font-bold">
       {rank}
     </span>
   );
@@ -93,9 +93,9 @@ function UserAvatar({
     .slice(0, 2);
 
   return (
-    <Avatar className="h-10 w-10 border border-[#FFD896]">
+    <Avatar className="h-10 w-10 border border-border">
       {url && <AvatarImage src={url} alt={name ?? ""} className="object-cover" />}
-      <AvatarFallback className="bg-gradient-to-br from-[#F97316] to-[#FB923C] text-white text-sm font-bold">
+      <AvatarFallback className="bg-gradient-to-br from-amber-500 to-amber-400 text-white text-sm font-bold">
         {initials}
       </AvatarFallback>
     </Avatar>
@@ -109,7 +109,7 @@ function LeaderboardSkeleton() {
       {[1, 2, 3, 4, 5].map((n) => (
         <div
           key={n}
-          className="h-16 rounded-xl bg-white border border-[#FFD896]"
+          className="h-16 rounded-xl bg-white border border-border"
         />
       ))}
     </div>
@@ -189,7 +189,7 @@ export default function LeaderboardPage() {
   ];
 
   return (
-    <div className="min-h-dvh bg-[#fff1d6] text-[#111827]">
+    <div className="min-h-dvh bg-background text-foreground">
       <Navbar />
 
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8 space-y-8">
@@ -199,13 +199,13 @@ export default function LeaderboardPage() {
             <Trophy className="h-6 w-6 text-yellow-500" />
             <h1 className="text-2xl font-bold">Leaderboard</h1>
           </div>
-          <p className="text-sm text-[#111827]/50">
+          <p className="text-sm text-foreground/50">
             Top builders and most-upvoted stacks on Toolvise.
           </p>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 rounded-xl bg-white border border-[#FFD896] p-1 w-fit">
+        <div className="flex gap-1 rounded-xl bg-white border border-border p-1 w-fit">
           {(
             [
               { key: "builders", label: "🏆 Top Builders", icon: Users },
@@ -218,8 +218,8 @@ export default function LeaderboardPage() {
               className={cn(
                 "px-5 py-2 rounded-lg text-sm font-semibold transition-all",
                 tab === key
-                  ? "bg-[#F97316] text-white shadow-sm"
-                  : "text-[#111827]/60 hover:text-[#111827] hover:bg-[#fff1d6]"
+                  ? "bg-amber-500 text-white shadow-sm"
+                  : "text-foreground/60 hover:text-amber-300 hover:bg-background"
               )}
             >
               {label}
@@ -237,8 +237,8 @@ export default function LeaderboardPage() {
                 className={cn(
                   "px-4 py-1.5 rounded-full text-xs font-semibold border transition-all",
                   timeFilter === key
-                    ? "bg-[#111827] text-white border-[#111827]"
-                    : "bg-white border-[#FFD896] text-[#111827]/60 hover:border-[#111827]/30"
+                    ? "bg-neutral-900 text-white border-neutral-900"
+                    : "bg-white border-border text-foreground/60 hover:border-neutral-900/30"
                 )}
               >
                 {label}
@@ -254,7 +254,7 @@ export default function LeaderboardPage() {
           /* ── Top Builders ──────────────────────────── */
           <div className="space-y-2">
             {builders.length === 0 ? (
-              <div className="text-center py-16 text-[#111827]/40">
+              <div className="text-center py-16 text-foreground/40">
                 <Users className="h-10 w-10 mx-auto mb-3 opacity-30" />
                 <p className="text-sm">No builders yet. Be the first!</p>
               </div>
@@ -263,8 +263,8 @@ export default function LeaderboardPage() {
                 <Card
                   key={builder.id}
                   className={cn(
-                    "border-[#FFD896] bg-white hover:shadow-md transition-all",
-                    idx < 3 && "border-[#FFD896] ring-1 ring-[#FFD896]/60"
+                    "border-border bg-white hover:shadow-md transition-all",
+                    idx < 3 && "border-border ring-1 ring-amber-200/60"
                   )}
                 >
                   <CardContent className="p-4 flex items-center gap-4">
@@ -276,11 +276,11 @@ export default function LeaderboardPage() {
                     />
 
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm text-[#111827] truncate">
+                      <p className="font-semibold text-sm text-foreground truncate">
                         {builder.display_name || builder.username || "Anonymous"}
                       </p>
                       {builder.username && (
-                        <p className="text-xs text-[#111827]/40 truncate">
+                        <p className="text-xs text-foreground/40 truncate">
                           @{builder.username}
                         </p>
                       )}
@@ -288,22 +288,22 @@ export default function LeaderboardPage() {
 
                     <div className="flex items-center gap-4 shrink-0">
                       <div className="text-center hidden sm:block">
-                        <p className="text-sm font-bold text-[#111827]">
+                        <p className="text-sm font-bold text-foreground">
                           {builder.stacks_count ?? 0}
                         </p>
-                        <p className="text-xs text-[#111827]/40">Stacks</p>
+                        <p className="text-xs text-foreground/40">Stacks</p>
                       </div>
                       <div className="text-center hidden sm:block">
-                        <p className="text-sm font-bold text-[#111827]">
+                        <p className="text-sm font-bold text-foreground">
                           {builder.followers_count ?? 0}
                         </p>
-                        <p className="text-xs text-[#111827]/40">Followers</p>
+                        <p className="text-xs text-foreground/40">Followers</p>
                       </div>
 
                       {builder.username && (
                         <Link
                           href={`/profile/${builder.username}`}
-                          className="flex items-center gap-1 text-xs font-semibold text-[#F97316] hover:text-[#EA6C0A] transition-colors whitespace-nowrap"
+                          className="flex items-center gap-1 text-xs font-semibold text-amber-500 hover:text-amber-600 transition-colors whitespace-nowrap"
                         >
                           View Profile
                           <ArrowUpRight className="h-3.5 w-3.5" />
@@ -319,7 +319,7 @@ export default function LeaderboardPage() {
           /* ── Top Stacks ────────────────────────────── */
           <div className="space-y-2">
             {stacks.length === 0 ? (
-              <div className="text-center py-16 text-[#111827]/40">
+              <div className="text-center py-16 text-foreground/40">
                 <Layers className="h-10 w-10 mx-auto mb-3 opacity-30" />
                 <p className="text-sm">No stacks found for this time period.</p>
               </div>
@@ -332,15 +332,15 @@ export default function LeaderboardPage() {
                   <Card
                     key={stack.id}
                     className={cn(
-                      "border-[#FFD896] bg-white hover:shadow-md transition-all",
-                      idx < 3 && "ring-1 ring-[#FFD896]/60"
+                      "border-border bg-white hover:shadow-md transition-all",
+                      idx < 3 && "ring-1 ring-amber-200/60"
                     )}
                   >
                     <CardContent className="p-4 flex items-start gap-4">
                       <RankBadge rank={idx + 1} />
 
                       <div className="flex-1 min-w-0 space-y-1.5">
-                        <p className="text-sm font-semibold text-[#111827] line-clamp-2">
+                        <p className="text-sm font-semibold text-foreground line-clamp-2">
                           &quot;{stack.user_input}&quot;
                         </p>
                         <div className="flex items-center gap-2 flex-wrap">
@@ -351,13 +351,13 @@ export default function LeaderboardPage() {
                                 url={profile.avatar_url}
                                 name={profile.display_name || profile.username}
                               />
-                              <span className="text-xs text-[#111827]/50">
+                              <span className="text-xs text-foreground/50">
                                 {profile.display_name || profile.username || "Anonymous"}
                               </span>
                             </div>
                           )}
                           {stack.build_style && (
-                            <Badge className="text-[10px] border-[#FFD896] bg-[#fff1d6] text-[#111827]/60">
+                            <Badge className="text-[10px] border-border bg-background text-foreground/60">
                               {stack.build_style}
                             </Badge>
                           )}
@@ -368,19 +368,19 @@ export default function LeaderboardPage() {
                         {/* Upvotes */}
                         <div className="text-center">
                           <div className="flex items-center gap-1 justify-center">
-                            <Flame className="h-3.5 w-3.5 text-[#F97316]" />
-                            <span className="text-sm font-bold text-[#111827]">
+                            <Flame className="h-3.5 w-3.5 text-amber-500" />
+                            <span className="text-sm font-bold text-foreground">
                               {stack.upvotes ?? 0}
                             </span>
                           </div>
-                          <p className="text-xs text-[#111827]/40">upvotes</p>
+                          <p className="text-xs text-foreground/40">upvotes</p>
                         </div>
 
                         {/* Score intentionally hidden from public leaderboard */}
 
                         <Link
                           href={`/result?slug=${stack.share_slug}`}
-                          className="flex items-center gap-1 text-xs font-semibold text-[#F97316] hover:text-[#EA6C0A] transition-colors whitespace-nowrap"
+                          className="flex items-center gap-1 text-xs font-semibold text-amber-500 hover:text-amber-600 transition-colors whitespace-nowrap"
                         >
                           View Stack
                           <ArrowUpRight className="h-3.5 w-3.5" />

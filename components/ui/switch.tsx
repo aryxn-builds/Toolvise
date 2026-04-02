@@ -33,9 +33,9 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         data-state={current ? "checked" : "unchecked"}
         onClick={handleClick}
         className={cn(
-          "peer relative inline-flex shrink-0 cursor-pointer items-center rounded-full border border-transparent transition-all outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50",
+          "peer relative inline-flex shrink-0 cursor-pointer items-center rounded-full border border-transparent transition-all outline-none focus-visible:border-amber-500 focus-visible:ring-2 focus-visible:ring-amber-500/30 disabled:cursor-not-allowed disabled:opacity-50 shadow-sm hover:shadow-card-hover duration-300",
           size === "default" ? "h-[18px] w-[32px]" : "h-[14px] w-[24px]",
-          current ? "bg-primary" : "bg-input dark:bg-input/80",
+          current ? "bg-amber-500" : "bg-neutral-300",
           className
         )}
         {...props}
@@ -43,7 +43,7 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         <span
           data-slot="switch-thumb"
           className={cn(
-            "pointer-events-none block rounded-full bg-background ring-0 transition-transform",
+            "pointer-events-none block rounded-full bg-white ring-0 transition-transform shadow-sm",
             size === "default" ? "size-4" : "size-3",
             current
               ? "translate-x-[calc(100%-2px)]"

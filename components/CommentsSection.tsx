@@ -181,25 +181,25 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
   }
 
   return (
-    <section className="rounded-2xl border border-[#FFD896] bg-white p-6 space-y-5">
+    <section className="rounded-2xl border border-border bg-white p-6 space-y-5">
       {/* Header */}
       <div className="flex items-center gap-2">
-        <h3 className="text-lg font-bold text-[#111827]">
+        <h3 className="text-lg font-bold text-foreground">
           💬 Discussion
         </h3>
-        <span className="text-sm text-[#111827]/40">
+        <span className="text-sm text-foreground/40">
           ({comments.length})
         </span>
       </div>
 
       {/* Comments list */}
       {loadingComments ? (
-        <div className="flex items-center gap-2 text-sm text-[#111827]/40 py-4">
+        <div className="flex items-center gap-2 text-sm text-foreground/40 py-4">
           <Loader2 className="h-4 w-4 animate-spin" />
           Loading comments...
         </div>
       ) : comments.length === 0 ? (
-        <div className="text-center py-10 text-[#111827]/40 space-y-1">
+        <div className="text-center py-10 text-foreground/40 space-y-1">
           <p className="text-2xl">💬</p>
           <p className="text-sm">No comments yet. Be the first to share your thoughts!</p>
         </div>
@@ -212,7 +212,7 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
             return (
               <div key={comment.id} className="flex gap-3 py-4">
                 {/* Avatar */}
-                <Avatar className="h-9 w-9 border border-[#FFD896] shrink-0">
+                <Avatar className="h-9 w-9 border border-border shrink-0">
                   {profile?.avatar_url && (
                     <AvatarImage
                       src={profile.avatar_url}
@@ -220,26 +220,26 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
                       className="object-cover"
                     />
                   )}
-                  <AvatarFallback className="bg-gradient-to-br from-[#F97316] to-[#FB923C] text-white text-xs font-bold">
+                  <AvatarFallback className="bg-gradient-to-br from-amber-500 to-amber-400 text-white text-xs font-bold">
                     {getInitials(profile)}
                   </AvatarFallback>
                 </Avatar>
 
                 <div className="flex-1 min-w-0 space-y-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-semibold text-[#111827]">
+                    <span className="text-sm font-semibold text-foreground">
                       {profile?.display_name || profile?.username || "Anonymous"}
                     </span>
                     {profile?.username && (
-                      <span className="text-xs text-[#111827]/40">
+                      <span className="text-xs text-foreground/40">
                         @{profile.username}
                       </span>
                     )}
-                    <span className="text-xs text-[#6B7280]">
+                    <span className="text-xs text-amber-600/70">
                       {timeAgo(comment.created_at)}
                     </span>
                   </div>
-                  <p className="text-sm text-[#111827]/80 leading-relaxed break-words">
+                  <p className="text-sm text-foreground/80 leading-relaxed break-words">
                     {comment.content}
                   </p>
                 </div>
@@ -249,7 +249,7 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
                   <button
                     onClick={() => deleteComment(comment.id)}
                     disabled={deletingId === comment.id}
-                    className="shrink-0 p-1.5 rounded-lg text-[#111827]/30 hover:text-red-500 hover:bg-red-50 transition-colors"
+                    className="shrink-0 p-1.5 rounded-lg text-foreground/30 hover:text-red-500 hover:bg-red-50 transition-colors"
                     title="Delete comment"
                   >
                     {deletingId === comment.id ? (
@@ -267,14 +267,14 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
 
       {/* Comment input or login prompt */}
       {currentUser ? (
-        <div className="space-y-2 pt-2 border-t border-[#FFD896]/50">
+        <div className="space-y-2 pt-2 border-t border-border/50">
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value.slice(0, MAX_CHARS))}
             onKeyDown={handleKeyDown}
             placeholder="Share your thoughts... (Ctrl+Enter to post)"
             rows={3}
-            className="w-full resize-none rounded-xl border border-[#FFD896] bg-[#fff1d6]/30 px-4 py-3 text-sm text-[#111827] placeholder:text-[#111827]/30 outline-none focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/20 transition-all"
+            className="w-full resize-none rounded-xl border border-border bg-background/30 px-4 py-3 text-sm text-foreground placeholder:text-foreground/30 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all"
           />
           <div className="flex items-center justify-between">
             <span
@@ -284,7 +284,7 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
                   ? remaining < 10
                     ? "text-red-500"
                     : "text-amber-500"
-                  : "text-[#111827]/30"
+                  : "text-foreground/30"
               )}
             >
               {remaining} characters left
@@ -292,7 +292,7 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
             <button
               onClick={postComment}
               disabled={posting || !newComment.trim() || remaining < 0}
-              className="flex items-center gap-2 rounded-xl bg-[#F97316] px-5 py-2 text-sm font-semibold text-white hover:bg-[#EA6C0A] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex items-center gap-2 rounded-xl bg-amber-500 px-5 py-2 text-sm font-semibold text-white hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {posting ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -304,10 +304,10 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
           </div>
         </div>
       ) : (
-        <div className="pt-2 border-t border-[#FFD896]/50">
+        <div className="pt-2 border-t border-border/50">
           <Link
             href={`/login?next=/result?slug=${shareSlug}`}
-            className="inline-flex items-center gap-2 text-sm text-[#F97316] font-semibold hover:text-[#EA6C0A] transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-amber-500 font-semibold hover:text-amber-600 transition-colors"
           >
             Sign in to join the discussion →
           </Link>

@@ -600,11 +600,11 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-dvh bg-[#fff1d6]">
-        <header className="sticky top-0 z-50 border-b border-[#FFD896] bg-white/80 backdrop-blur-md">
+      <div className="min-h-dvh bg-background">
+        <header className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur-md">
           <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[#F97316] to-[#FB923C] flex items-center justify-center">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-400 flex items-center justify-center">
                 <Shield className="h-4 w-4 text-white" />
               </div>
               <div>
@@ -617,12 +617,12 @@ export default function AdminDashboard() {
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[1, 2, 3, 4].map(i => (
-              <div key={i} className="h-28 rounded-xl bg-white border border-[#FFD896] animate-pulse" />
+              <div key={i} className="h-28 rounded-xl bg-white border border-border animate-pulse" />
             ))}
           </div>
           <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
             {[1, 2].map(i => (
-              <div key={i} className="h-64 rounded-xl bg-white border border-[#FFD896] animate-pulse" />
+              <div key={i} className="h-64 rounded-xl bg-white border border-border animate-pulse" />
             ))}
           </div>
         </div>
@@ -635,17 +635,17 @@ export default function AdminDashboard() {
   // ── Render ──────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-dvh bg-[#fff1d6]">
+    <div className="min-h-dvh bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-[#FFD896] bg-white/80 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[#F97316] to-[#FB923C] flex items-center justify-center">
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-400 flex items-center justify-center">
               <Shield className="h-4 w-4 text-white" />
             </div>
             <div>
-              <h1 className="font-bold text-[#111827]">Admin Dashboard</h1>
-              <p className="text-xs text-[#6B7280]">Toolvise Control Center</p>
+              <h1 className="font-bold text-foreground">Admin Dashboard</h1>
+              <p className="text-xs text-amber-600/70">Toolvise Control Center</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -654,14 +654,14 @@ export default function AdminDashboard() {
                 setLoading(true)
                 loadAllData().finally(() => setLoading(false))
               }}
-              className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm text-[#6B7280] hover:bg-[#fff1d6] hover:text-[#111827] transition-colors"
+              className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm text-amber-600/70 hover:bg-background hover:text-amber-300 transition-colors"
             >
               <RefreshCw className="h-3.5 w-3.5" />
               Refresh
             </button>
             <Link
               href="/"
-              className="text-sm text-[#6B7280] hover:text-[#111827] flex items-center gap-1 transition-colors"
+              className="text-sm text-amber-600/70 hover:text-amber-300 flex items-center gap-1 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to Site
@@ -671,7 +671,7 @@ export default function AdminDashboard() {
       </header>
 
       {/* Tab Navigation */}
-      <div className="border-b border-[#FFD896] bg-white/50 backdrop-blur-sm">
+      <div className="border-b border-border bg-white/50 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <nav className="flex gap-1 overflow-x-auto py-2 scrollbar-hide" aria-label="Admin tabs">
             {TABS.map(tab => (
@@ -681,8 +681,8 @@ export default function AdminDashboard() {
                 className={cn(
                   "flex items-center gap-2 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition-all",
                   activeTab === tab.key
-                    ? "bg-[#F97316] text-white shadow-md shadow-[#F97316]/20"
-                    : "text-[#6B7280] hover:bg-[#fff1d6] hover:text-[#111827]"
+                    ? "bg-amber-500 text-white shadow-md shadow-[#F97316]/20"
+                    : "text-amber-600/70 hover:bg-background hover:text-amber-300"
                 )}
               >
                 {tab.icon}
@@ -718,14 +718,14 @@ export default function AdminDashboard() {
               ].map(card => (
                 <div
                   key={card.label}
-                  className="rounded-xl border border-[#FFD896] bg-white p-6 transition-all hover:shadow-md hover:shadow-[#F97316]/5"
+                  className="rounded-xl border border-border bg-white p-6 transition-all hover:shadow-md hover:shadow-[#F97316]/5"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-[#6B7280] font-medium">{card.label}</p>
+                      <p className="text-sm text-amber-600/70 font-medium">{card.label}</p>
                       <p className={cn(
                         "text-3xl font-black mt-1",
-                        card.label === "Open Bug Reports" && openBugs > 0 ? "text-red-600" : "text-[#111827]"
+                        card.label === "Open Bug Reports" && openBugs > 0 ? "text-red-600" : "text-foreground"
                       )}>
                         {card.value}
                       </p>
@@ -741,8 +741,8 @@ export default function AdminDashboard() {
             {/* Build Style + Goals */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               {/* Build Style Distribution */}
-              <div className="rounded-xl border border-[#FFD896] bg-white p-6">
-                <h3 className="font-semibold text-[#111827] mb-6">Build Style Distribution</h3>
+              <div className="rounded-xl border border-border bg-white p-6">
+                <h3 className="font-semibold text-foreground mb-6">Build Style Distribution</h3>
                 <div className="flex items-center gap-6">
                   {(() => {
                     const total = recentStacks?.length || 1;
@@ -759,7 +759,7 @@ export default function AdminDashboard() {
                         <div className="relative h-32 w-32 rounded-full flex flex-col items-center justify-center shrink-0 transition-all duration-1000 animate-in zoom-in-50"
                              style={{ background: `conic-gradient(#A855F7 0% ${vibePct}%, #3B82F6 ${vibePct}% ${vibePct + nocodePct}%, #9CA3AF ${vibePct + nocodePct}% 100%)` }}>
                           <div className="absolute inset-[20%] bg-white rounded-full flex flex-col items-center justify-center shadow-inner">
-                            <span className="text-xl font-black text-[#111827]">{total}</span>
+                            <span className="text-xl font-black text-foreground">{total}</span>
                           </div>
                         </div>
                         <div className="w-full space-y-3">
@@ -789,14 +789,14 @@ export default function AdminDashboard() {
                     )
                   })()}
                 </div>
-                <p className="mt-6 text-xs text-[#6B7280] text-center">Based on last 100 stacks</p>
+                <p className="mt-6 text-xs text-amber-600/70 text-center">Based on last 100 stacks</p>
               </div>
 
               {/* Top Goals */}
-              <div className="rounded-xl border border-[#FFD896] bg-white p-6">
-                <h3 className="font-semibold text-[#111827] mb-4">Top Project Goals</h3>
+              <div className="rounded-xl border border-border bg-white p-6">
+                <h3 className="font-semibold text-foreground mb-4">Top Project Goals</h3>
                 {topGoals.length === 0 ? (
-                  <p className="text-sm text-[#6B7280]">No data yet</p>
+                  <p className="text-sm text-amber-600/70">No data yet</p>
                 ) : (
                   <div className="space-y-3">
                     {topGoals.map(([goal, count], idx) => {
@@ -805,20 +805,20 @@ export default function AdminDashboard() {
                       return (
                         <div key={goal} className="space-y-1.5">
                           <div className="flex justify-between text-sm">
-                            <span className="text-[#111827]/70 font-medium flex items-center gap-2">
+                            <span className="text-foreground/70 font-medium flex items-center gap-2">
                               <span className={cn(
                                 "inline-flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold",
-                                idx === 0 ? "bg-[#F97316] text-white" : "bg-[#fff1d6] text-[#111827]/60"
+                                idx === 0 ? "bg-amber-500 text-white" : "bg-background text-foreground/60"
                               )}>
                                 {idx + 1}
                               </span>
                               {goal}
                             </span>
-                            <span className="font-semibold text-[#111827]">{count} ({pct}%)</span>
+                            <span className="font-semibold text-foreground">{count} ({pct}%)</span>
                           </div>
-                          <div className="h-2 rounded-full bg-[#FFD896]/60 overflow-hidden">
+                          <div className="h-2 rounded-full bg-amber-200/60 overflow-hidden">
                             <div
-                              className="h-full bg-gradient-to-r from-[#FB923C] to-[#F97316] rounded-full transition-all duration-700 ease-out"
+                              className="h-full bg-gradient-to-r from-[#FB923C] to-amber-500 rounded-full transition-all duration-700 ease-out"
                               style={{ width: `${pct}%` }}
                             />
                           </div>
@@ -838,47 +838,47 @@ export default function AdminDashboard() {
             {/* Search */}
             <div className="flex items-center gap-3">
               <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6B7280]" />
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-amber-600/70" />
                 <input
                   type="text"
                   placeholder="Search users by name or username..."
                   value={userSearch}
                   onChange={e => setUserSearch(e.target.value)}
-                  className="h-10 w-full rounded-lg border border-[#FFD896] bg-white pl-10 pr-4 text-sm text-[#111827] placeholder:text-[#6B7280]/60 focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316]"
+                  className="h-10 w-full rounded-lg border border-border bg-white pl-10 pr-4 text-sm text-foreground placeholder:text-amber-600/70/60 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500"
                 />
               </div>
-              <span className="text-sm text-[#6B7280]">{filteredUsers.length} users</span>
+              <span className="text-sm text-amber-600/70">{filteredUsers.length} users</span>
             </div>
 
             {/* Table */}
-            <div className="rounded-xl border border-[#FFD896] bg-white overflow-hidden">
+            <div className="rounded-xl border border-border bg-white overflow-hidden">
               <div className="max-w-full overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-[#FFD896] bg-[#fff1d6]/40">
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">User</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Username</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold text-center">Stacks</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold text-center">Followers</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Joined</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Role</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Actions</th>
+                    <tr className="border-b border-border bg-background/40">
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">User</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Username</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold text-center">Stacks</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold text-center">Followers</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Joined</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Role</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredUsers.length === 0 ? (
                       <tr>
-                        <td colSpan={7} className="py-12 text-center text-[#6B7280]">
+                        <td colSpan={7} className="py-12 text-center text-amber-600/70">
                           {userSearch ? "No users match your search" : "No users found"}
                         </td>
                       </tr>
                     ) : (
                       filteredUsers.map(user => (
                         <React.Fragment key={user.id}>
-                        <tr className={cn("border-b border-[#FFD896]/50 hover:bg-[#fff1d6]/30 transition-colors cursor-pointer", expandedUser === user.id && "bg-[#fff1d6]/40")} onClick={() => loadUserStacks(user.id)}>
+                        <tr className={cn("border-b border-border/50 hover:bg-background/30 transition-colors cursor-pointer", expandedUser === user.id && "bg-background/40")} onClick={() => loadUserStacks(user.id)}>
                           <td className="py-3 px-4">
                             <div className="flex items-center gap-3">
-                              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#F97316] to-[#FB923C] flex items-center justify-center text-white text-xs font-bold shrink-0 overflow-hidden">
+                              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-amber-500 to-amber-400 flex items-center justify-center text-white text-xs font-bold shrink-0 overflow-hidden">
                                 {user.avatar_url ? (
                                   <>
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -888,15 +888,15 @@ export default function AdminDashboard() {
                                   (user.display_name || user.username || "?").charAt(0).toUpperCase()
                                 )}
                               </div>
-                              <span className="font-medium text-[#111827] truncate max-w-[150px]">
+                              <span className="font-medium text-foreground truncate max-w-[150px]">
                                 {user.display_name || user.username || "Unknown"}
                               </span>
                             </div>
                           </td>
-                          <td className="py-3 px-4 text-[#6B7280]">@{user.username || "—"}</td>
+                          <td className="py-3 px-4 text-amber-600/70">@{user.username || "—"}</td>
                           <td className="py-3 px-4 text-center">
-                            <span className="inline-flex items-center gap-1 rounded-full bg-[#fff1d6] px-2.5 py-0.5 text-xs font-semibold text-[#111827]">
-                              <Layers className="h-3 w-3 text-[#F97316]" />
+                            <span className="inline-flex items-center gap-1 rounded-full bg-background px-2.5 py-0.5 text-xs font-semibold text-foreground">
+                              <Layers className="h-3 w-3 text-amber-500" />
                               {user.stacks_count ?? 0}
                             </span>
                           </td>
@@ -906,15 +906,15 @@ export default function AdminDashboard() {
                               {user.followers_count ?? 0}
                             </span>
                           </td>
-                          <td className="py-3 px-4 text-[#6B7280] text-xs">{formatDate(user.created_at)}</td>
+                          <td className="py-3 px-4 text-amber-600/70 text-xs">{formatDate(user.created_at)}</td>
                           <td className="py-3 px-4" onClick={e => e.stopPropagation()}>
                             <button
                               onClick={() => handleToggleAdmin(user.id, !!user.is_admin, user.username || 'unknown')}
                               className={cn(
                                 "group inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold transition-all",
                                 user.is_admin 
-                                  ? "bg-[#F97316]/10 text-[#F97316] hover:bg-red-50 hover:text-red-600" 
-                                  : "text-[#6B7280] bg-gray-100 hover:bg-[#F97316]/10 hover:text-[#F97316]"
+                                  ? "bg-amber-500/10 text-amber-500 hover:bg-red-50 hover:text-red-600" 
+                                  : "text-amber-600/70 bg-gray-100 hover:bg-amber-500/10 hover:text-amber-500"
                               )}
                               title={user.is_admin ? "Remove admin rights" : "Make admin"}
                             >
@@ -926,7 +926,7 @@ export default function AdminDashboard() {
                             <div className="flex items-center gap-3">
                               <Link
                                 href={`/profile/${user.username}`}
-                                className="text-xs font-medium text-[#F97316] hover:text-[#EA6C0A] transition-colors"
+                                className="text-xs font-medium text-amber-500 hover:text-amber-600 transition-colors"
                               >
                                 View Profile
                               </Link>
@@ -936,8 +936,8 @@ export default function AdminDashboard() {
                                 className={cn(
                                   "p-1.5 rounded-lg transition-colors",
                                   user.is_admin
-                                    ? "opacity-30 cursor-not-allowed text-[#6B7280]"
-                                    : "text-[#6B7280] hover:bg-red-50 hover:text-red-600"
+                                    ? "opacity-30 cursor-not-allowed text-amber-600/70"
+                                    : "text-amber-600/70 hover:bg-red-50 hover:text-red-600"
                                 )}
                                 title={user.is_admin ? "Cannot delete admin" : "Delete user"}
                               >
@@ -947,21 +947,21 @@ export default function AdminDashboard() {
                           </td>
                         </tr>
                         {expandedUser === user.id && (
-                          <tr className="bg-[#fff1d6]/20">
+                          <tr className="bg-background/20">
                             <td colSpan={7} className="px-6 py-4">
-                              <div className="rounded-lg bg-white border border-[#FFD896] p-4">
-                                <p className="text-sm font-semibold text-[#111827] mb-3">
+                              <div className="rounded-lg bg-white border border-border p-4">
+                                <p className="text-sm font-semibold text-foreground mb-3">
                                   Recent Stacks by @{user.username}
                                 </p>
                                 {(userStacks[user.id] || []).length === 0 ? (
-                                  <p className="text-sm text-[#6B7280]">No stacks yet</p>
+                                  <p className="text-sm text-amber-600/70">No stacks yet</p>
                                 ) : (
                                   <div className="space-y-2">
                                     {(userStacks[user.id] || []).map(s => (
-                                      <div key={s.id} className="flex items-center justify-between gap-4 rounded-lg bg-[#fff1d6]/50 px-4 py-2">
-                                        <p className="text-sm text-[#111827] truncate flex-1">{s.user_input || '—'}</p>
+                                      <div key={s.id} className="flex items-center justify-between gap-4 rounded-lg bg-background/50 px-4 py-2">
+                                        <p className="text-sm text-foreground truncate flex-1">{s.user_input || '—'}</p>
                                         {s.share_slug && (
-                                          <Link href={`/result?slug=${s.share_slug}`} className="text-xs text-[#F97316] hover:underline shrink-0">
+                                          <Link href={`/result?slug=${s.share_slug}`} className="text-xs text-amber-500 hover:underline shrink-0">
                                             View →
                                           </Link>
                                         )}
@@ -989,19 +989,19 @@ export default function AdminDashboard() {
             {/* Filters */}
             <div className="flex flex-wrap items-center gap-3">
               <div className="relative flex-1 min-w-[200px] max-w-md">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6B7280]" />
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-amber-600/70" />
                 <input
                   type="text"
                   placeholder="Search stacks..."
                   value={stackSearch}
                   onChange={e => setStackSearch(e.target.value)}
-                  className="h-10 w-full rounded-lg border border-[#FFD896] bg-white pl-10 pr-4 text-sm text-[#111827] placeholder:text-[#6B7280]/60 focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316]"
+                  className="h-10 w-full rounded-lg border border-border bg-white pl-10 pr-4 text-sm text-foreground placeholder:text-amber-600/70/60 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500"
                 />
               </div>
               <select
                 value={stackBuildFilter}
                 onChange={e => setStackBuildFilter(e.target.value)}
-                className="h-10 rounded-lg border border-[#FFD896] bg-white px-3 text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#F97316]/30"
+                className="h-10 rounded-lg border border-border bg-white px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-amber-500/30"
               >
                 <option value="all">All Styles</option>
                 <option value="traditional">Traditional</option>
@@ -1011,34 +1011,34 @@ export default function AdminDashboard() {
               <select
                 value={stackPublicFilter}
                 onChange={e => setStackPublicFilter(e.target.value)}
-                className="h-10 rounded-lg border border-[#FFD896] bg-white px-3 text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#F97316]/30"
+                className="h-10 rounded-lg border border-border bg-white px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-amber-500/30"
               >
                 <option value="all">All Visibility</option>
                 <option value="public">Public</option>
                 <option value="private">Private</option>
               </select>
-              <span className="text-sm text-[#6B7280]">{filteredStacks.length} stacks</span>
+              <span className="text-sm text-amber-600/70">{filteredStacks.length} stacks</span>
             </div>
 
             {/* Table */}
-            <div className="rounded-xl border border-[#FFD896] bg-white overflow-hidden">
+            <div className="rounded-xl border border-border bg-white overflow-hidden">
               <div className="max-w-full overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-[#FFD896] bg-[#fff1d6]/40">
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Project</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Style</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Score</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Visibility</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Upvotes</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Date</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Actions</th>
+                    <tr className="border-b border-border bg-background/40">
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Project</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Style</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Score</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Visibility</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Upvotes</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Date</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredStacks.length === 0 ? (
                       <tr>
-                        <td colSpan={7} className="py-12 text-center text-[#6B7280]">
+                        <td colSpan={7} className="py-12 text-center text-amber-600/70">
                           No stacks found
                         </td>
                       </tr>
@@ -1046,12 +1046,12 @@ export default function AdminDashboard() {
                       filteredStacks.map(stack => {
                         const score = stack.score_card?.overallScore
                         return (
-                          <tr key={stack.id} className="border-b border-[#FFD896]/50 hover:bg-[#fff1d6]/30 transition-colors">
+                          <tr key={stack.id} className="border-b border-border/50 hover:bg-background/30 transition-colors">
                             <td className="py-3 px-4">
                               <div className="max-w-[250px]">
-                                <p className="font-medium text-[#111827] truncate">{truncate(stack.user_input, 50)}</p>
+                                <p className="font-medium text-foreground truncate">{truncate(stack.user_input, 50)}</p>
                                 {stack.goal && (
-                                  <p className="text-xs text-[#6B7280] mt-0.5">{stack.goal}</p>
+                                  <p className="text-xs text-amber-600/70 mt-0.5">{stack.goal}</p>
                                 )}
                               </div>
                             </td>
@@ -1076,7 +1076,7 @@ export default function AdminDashboard() {
                                   {score}/100
                                 </span>
                               ) : (
-                                <span className="text-xs text-[#6B7280]">—</span>
+                                <span className="text-xs text-amber-600/70">—</span>
                               )}
                             </td>
                             <td className="py-3 px-4">
@@ -1092,14 +1092,14 @@ export default function AdminDashboard() {
                                 </span>
                               )}
                             </td>
-                            <td className="py-3 px-4 text-[#111827] font-medium">{stack.upvotes ?? 0}</td>
-                            <td className="py-3 px-4 text-[#6B7280] text-xs">{formatDate(stack.created_at)}</td>
+                            <td className="py-3 px-4 text-foreground font-medium">{stack.upvotes ?? 0}</td>
+                            <td className="py-3 px-4 text-amber-600/70 text-xs">{formatDate(stack.created_at)}</td>
                             <td className="py-3 px-4">
                               <div className="flex items-center gap-2">
                                 {stack.share_slug && (
                                   <Link
                                     href={`/result?slug=${stack.share_slug}`}
-                                    className="text-xs font-medium text-[#F97316] hover:text-[#EA6C0A] transition-colors"
+                                    className="text-xs font-medium text-amber-500 hover:text-amber-600 transition-colors"
                                   >
                                     View
                                   </Link>
@@ -1110,7 +1110,7 @@ export default function AdminDashboard() {
                                     "p-1.5 rounded-lg transition-colors",
                                     stack.is_featured
                                       ? "bg-amber-100 text-amber-600 hover:bg-amber-200"
-                                      : "text-[#6B7280] hover:bg-[#fff1d6] hover:text-[#F97316]"
+                                      : "text-amber-600/70 hover:bg-background hover:text-amber-500"
                                   )}
                                   title={stack.is_featured ? "Unfeature" : "Feature"}
                                 >
@@ -1118,7 +1118,7 @@ export default function AdminDashboard() {
                                 </button>
                                 <button
                                   onClick={() => handleDeleteStack(stack.id)}
-                                  className="p-1.5 rounded-lg text-[#6B7280] hover:bg-red-50 hover:text-red-600 transition-colors"
+                                  className="p-1.5 rounded-lg text-amber-600/70 hover:bg-red-50 hover:text-red-600 transition-colors"
                                   title="Delete"
                                 >
                                   <Trash2 className="h-3.5 w-3.5" />
@@ -1133,11 +1133,11 @@ export default function AdminDashboard() {
                 </table>
               </div>
               {filteredStacks.length > 0 && !stackSearch && stackBuildFilter === "all" && stackPublicFilter === "all" && (
-                <div className="p-4 border-t border-[#FFD896] bg-white flex justify-center">
+                <div className="p-4 border-t border-border bg-white flex justify-center">
                   <button
                     onClick={loadMoreStacks}
                     disabled={loadingMoreStacks}
-                    className="flex items-center gap-2 rounded-lg px-6 py-2.5 text-sm font-semibold text-[#111827] bg-[#fff1d6] border border-[#FFD896] hover:bg-[#FFD896]/50 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-2 rounded-lg px-6 py-2.5 text-sm font-semibold text-foreground bg-background border border-border hover:bg-amber-200/50 transition-colors disabled:opacity-50"
                   >
                     {loadingMoreStacks ? (
                       <><Loader2 className="h-4 w-4 animate-spin" /> Loading...</>
@@ -1168,34 +1168,34 @@ export default function AdminDashboard() {
                   className={cn(
                     "rounded-lg px-4 py-2 text-sm font-medium transition-all",
                     bugFilter === f.key
-                      ? "bg-[#F97316] text-white shadow-md shadow-[#F97316]/20"
-                      : "bg-white text-[#6B7280] border border-[#FFD896] hover:bg-[#fff1d6] hover:text-[#111827]"
+                      ? "bg-amber-500 text-white shadow-md shadow-[#F97316]/20"
+                      : "bg-white text-amber-600/70 border border-border hover:bg-background hover:text-amber-300"
                   )}
                 >
                   {f.label}
                 </button>
               ))}
-              <span className="ml-auto text-sm text-[#6B7280]">{filteredBugs.length} reports</span>
+              <span className="ml-auto text-sm text-amber-600/70">{filteredBugs.length} reports</span>
             </div>
 
             {/* Table */}
-            <div className="rounded-xl border border-[#FFD896] bg-white overflow-hidden">
+            <div className="rounded-xl border border-border bg-white overflow-hidden">
               <div className="max-w-full overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-[#FFD896] bg-[#fff1d6]/40">
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Type</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Page</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Description</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Reporter</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Status</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Date</th>
+                    <tr className="border-b border-border bg-background/40">
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Type</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Page</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Description</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Reporter</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Status</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Date</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredBugs.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="py-12 text-center text-[#6B7280]">
+                        <td colSpan={6} className="py-12 text-center text-amber-600/70">
                           {bugFilter === "all" ? "No bug reports yet 🎉" : `No ${bugFilter.replace("_", " ")} bugs`}
                         </td>
                       </tr>
@@ -1204,13 +1204,13 @@ export default function AdminDashboard() {
                         <React.Fragment key={bug.id}>
                           <tr
                             className={cn(
-                              "border-b border-[#FFD896]/50 hover:bg-[#fff1d6]/30 transition-colors cursor-pointer",
-                              expandedBug === bug.id && "bg-[#fff1d6]/40"
+                              "border-b border-border/50 hover:bg-background/30 transition-colors cursor-pointer",
+                              expandedBug === bug.id && "bg-background/40"
                             )}
                             onClick={() => setExpandedBug(expandedBug === bug.id ? null : bug.id)}
                           >
                             <td className="py-3 px-4">
-                              <span className="inline-flex items-center rounded-full bg-[#fff1d6] px-2.5 py-0.5 text-xs font-semibold text-[#111827]">
+                              <span className="inline-flex items-center rounded-full bg-background px-2.5 py-0.5 text-xs font-semibold text-foreground">
                                 {bug.bug_type || "Unknown"}
                               </span>
                             </td>
@@ -1222,13 +1222,13 @@ export default function AdminDashboard() {
                             <td className="py-3 px-4">
                               <div className="flex items-center gap-2 max-w-[300px]">
                                 <ChevronDown className={cn(
-                                  "h-3.5 w-3.5 text-[#6B7280] transition-transform shrink-0",
+                                  "h-3.5 w-3.5 text-amber-600/70 transition-transform shrink-0",
                                   expandedBug === bug.id && "rotate-180"
                                 )} />
-                                <span className="text-[#111827] truncate">{truncate(bug.description, 60)}</span>
+                                <span className="text-foreground truncate">{truncate(bug.description, 60)}</span>
                               </div>
                             </td>
-                            <td className="py-3 px-4 text-[#6B7280] text-xs">
+                            <td className="py-3 px-4 text-amber-600/70 text-xs">
                               {bug.name || bug.email || "Anonymous"}
                             </td>
                             <td className="py-3 px-4" onClick={e => e.stopPropagation()}>
@@ -1236,7 +1236,7 @@ export default function AdminDashboard() {
                                 value={bug.status}
                                 onChange={e => updateBugStatus(bug.id, e.target.value)}
                                 className={cn(
-                                  "rounded-full px-3 py-1 text-xs font-semibold border-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#F97316]/30",
+                                  "rounded-full px-3 py-1 text-xs font-semibold border-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500/30",
                                   bug.status === "open" ? "bg-red-50 text-red-600" :
                                     bug.status === "in_progress" ? "bg-amber-50 text-amber-600" :
                                       "bg-green-50 text-green-600"
@@ -1247,17 +1247,17 @@ export default function AdminDashboard() {
                                 <option value="resolved">Resolved</option>
                               </select>
                             </td>
-                            <td className="py-3 px-4 text-[#6B7280] text-xs">{formatDate(bug.created_at)}</td>
+                            <td className="py-3 px-4 text-amber-600/70 text-xs">{formatDate(bug.created_at)}</td>
                           </tr>
                           {expandedBug === bug.id && (
-                            <tr className="bg-[#fff1d6]/20">
+                            <tr className="bg-background/20">
                               <td colSpan={6} className="px-6 py-4">
-                                <div className="rounded-lg bg-white border border-[#FFD896] p-4">
-                                  <p className="text-sm font-medium text-[#111827] mb-2">Full Description</p>
-                                  <p className="text-sm text-[#6B7280] whitespace-pre-wrap">{bug.description || "No description provided"}</p>
+                                <div className="rounded-lg bg-white border border-border p-4">
+                                  <p className="text-sm font-medium text-foreground mb-2">Full Description</p>
+                                  <p className="text-sm text-amber-600/70 whitespace-pre-wrap">{bug.description || "No description provided"}</p>
                                   {bug.email && (
-                                    <p className="mt-3 text-xs text-[#6B7280]">
-                                      Contact: <a href={`mailto:${bug.email}`} className="text-[#F97316] hover:underline">{bug.email}</a>
+                                    <p className="mt-3 text-xs text-amber-600/70">
+                                      Contact: <a href={`mailto:${bug.email}`} className="text-amber-500 hover:underline">{bug.email}</a>
                                     </p>
                                   )}
                                 </div>
@@ -1278,9 +1278,9 @@ export default function AdminDashboard() {
         {activeTab === "announcements" && (
           <div className="space-y-6 animate-in fade-in duration-300">
             {/* New Announcement */}
-            <div className="rounded-xl border border-[#FFD896] bg-white p-6">
-              <h3 className="font-semibold text-[#111827] mb-3">Post New Announcement</h3>
-              <p className="text-xs text-[#6B7280] mb-4">
+            <div className="rounded-xl border border-border bg-white p-6">
+              <h3 className="font-semibold text-foreground mb-3">Post New Announcement</h3>
+              <p className="text-xs text-amber-600/70 mb-4">
                 This will appear as a banner on the landing page. Only one announcement can be active at a time.
               </p>
               <div className="flex gap-3">
@@ -1289,7 +1289,7 @@ export default function AdminDashboard() {
                   onChange={e => setNewMessage(e.target.value)}
                   placeholder="Write your announcement message..."
                   rows={2}
-                  className="flex-1 resize-none rounded-lg border border-[#FFD896] bg-[#fff1d6]/30 px-4 py-3 text-sm text-[#111827] placeholder:text-[#6B7280]/60 focus:outline-none focus:ring-2 focus:ring-[#F97316]/30 focus:border-[#F97316]"
+                  className="flex-1 resize-none rounded-lg border border-border bg-background/30 px-4 py-3 text-sm text-foreground placeholder:text-amber-600/70/60 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500"
                 />
                 <button
                   onClick={postAnnouncement}
@@ -1297,7 +1297,7 @@ export default function AdminDashboard() {
                   className={cn(
                     "shrink-0 rounded-lg px-5 py-2 text-sm font-semibold transition-all self-end",
                     newMessage.trim()
-                      ? "bg-[#F97316] text-white hover:bg-[#EA6C0A] shadow-md shadow-[#F97316]/20"
+                      ? "bg-amber-500 text-white hover:bg-amber-400 shadow-md shadow-[#F97316]/20"
                       : "bg-gray-100 text-gray-400 cursor-not-allowed"
                   )}
                 >
@@ -1310,7 +1310,7 @@ export default function AdminDashboard() {
             {/* Announcements List */}
             <div className="space-y-3">
               {(announcements || []).length === 0 ? (
-                <div className="rounded-xl border border-[#FFD896] bg-white p-12 text-center text-[#6B7280]">
+                <div className="rounded-xl border border-border bg-white p-12 text-center text-amber-600/70">
                   No announcements yet
                 </div>
               ) : (
@@ -1319,7 +1319,7 @@ export default function AdminDashboard() {
                     key={a.id}
                     className={cn(
                       "rounded-xl border bg-white p-5 transition-all",
-                      a.is_active ? "border-[#F97316] shadow-md shadow-[#F97316]/10" : "border-[#FFD896]"
+                      a.is_active ? "border-amber-500 shadow-md shadow-[#F97316]/10" : "border-border"
                     )}
                   >
                     <div className="flex items-start justify-between gap-4">
@@ -1334,9 +1334,9 @@ export default function AdminDashboard() {
                               Inactive
                             </span>
                           )}
-                          <span className="text-xs text-[#6B7280]">{formatDate(a.created_at)}</span>
+                          <span className="text-xs text-amber-600/70">{formatDate(a.created_at)}</span>
                         </div>
-                        <p className="text-sm text-[#111827]">{a.message}</p>
+                        <p className="text-sm text-foreground">{a.message}</p>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <button
@@ -1345,14 +1345,14 @@ export default function AdminDashboard() {
                             "rounded-lg px-3 py-1.5 text-xs font-medium transition-colors",
                             a.is_active
                               ? "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                              : "bg-[#F97316]/10 text-[#F97316] hover:bg-[#F97316]/20"
+                              : "bg-amber-500/10 text-amber-500 hover:bg-amber-500/20"
                           )}
                         >
                           {a.is_active ? "Deactivate" : "Activate"}
                         </button>
                         <button
                           onClick={() => deleteAnnouncement(a.id)}
-                          className="p-1.5 rounded-lg text-[#6B7280] hover:bg-red-50 hover:text-red-600 transition-colors"
+                          className="p-1.5 rounded-lg text-amber-600/70 hover:bg-red-50 hover:text-red-600 transition-colors"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
                         </button>
@@ -1370,12 +1370,12 @@ export default function AdminDashboard() {
           <div className="space-y-6 animate-in fade-in duration-300">
             {/* API Stats Cards */}
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <div className="rounded-xl border border-[#FFD896] bg-white p-5">
-                <p className="text-xs font-medium text-[#6B7280] mb-1">
+              <div className="rounded-xl border border-border bg-white p-5">
+                <p className="text-xs font-medium text-amber-600/70 mb-1">
                   Total API Calls
                 </p>
                 <div className="flex items-end gap-2">
-                  <p className="text-3xl font-black text-[#111827]">
+                  <p className="text-3xl font-black text-foreground">
                     {totalApiLogs}
                   </p>
                 </div>
@@ -1411,8 +1411,8 @@ export default function AdminDashboard() {
             <div className="grid gap-6 lg:grid-cols-3">
 
               {/* API Health */}
-              <div className="rounded-xl border border-[#FFD896] bg-white p-6 lg:col-span-1">
-                <h3 className="font-semibold text-[#111827] mb-4">
+              <div className="rounded-xl border border-border bg-white p-6 lg:col-span-1">
+                <h3 className="font-semibold text-foreground mb-4">
                   API Health
                 </h3>
                 {(() => {
@@ -1430,7 +1430,7 @@ export default function AdminDashboard() {
                     <div className="space-y-4">
                       <div className="space-y-1.5">
                         <div className="flex justify-between text-sm">
-                          <span className="text-[#6B7280]">
+                          <span className="text-amber-600/70">
                             Overall Success Rate
                           </span>
                           <span className={cn(
@@ -1440,7 +1440,7 @@ export default function AdminDashboard() {
                             {rate}%
                           </span>
                         </div>
-                        <div className="h-3 rounded-full bg-[#FFD896]/50">
+                        <div className="h-3 rounded-full bg-amber-200/50">
                           <div
                             className={cn(
                               "h-full rounded-full",
@@ -1452,7 +1452,7 @@ export default function AdminDashboard() {
                       </div>
                       <div className="space-y-1.5">
                         <div className="flex justify-between text-sm">
-                          <span className="text-[#6B7280]">
+                          <span className="text-amber-600/70">
                             Gemini Reliability
                           </span>
                           <span className="font-bold text-blue-600">
@@ -1466,11 +1466,11 @@ export default function AdminDashboard() {
                           />
                         </div>
                       </div>
-                      <div className="flex items-center justify-between pt-2 border-t border-[#FFD896]">
-                        <span className="text-sm text-[#6B7280]">
+                      <div className="flex items-center justify-between pt-2 border-t border-border">
+                        <span className="text-sm text-amber-600/70">
                           Avg Response Time
                         </span>
-                        <span className="font-bold text-[#111827]">
+                        <span className="font-bold text-foreground">
                           {avgTime > 0 ? `${avgTime}ms` : "—"}
                         </span>
                       </div>
@@ -1480,8 +1480,8 @@ export default function AdminDashboard() {
               </div>
 
               {/* Provider Split Donut Chart */}
-              <div className="rounded-xl border border-[#FFD896] bg-white p-6 lg:col-span-1 flex flex-col items-center">
-                <h3 className="font-semibold text-[#111827] mb-6 self-start">
+              <div className="rounded-xl border border-border bg-white p-6 lg:col-span-1 flex flex-col items-center">
+                <h3 className="font-semibold text-foreground mb-6 self-start">
                   Provider Split
                 </h3>
                 {(() => {
@@ -1496,8 +1496,8 @@ export default function AdminDashboard() {
                       <div className="relative h-36 w-36 rounded-full flex items-center justify-center transition-all duration-1000 animate-in zoom-in-50"
                            style={{ background: `conic-gradient(#3B82F6 0% ${geminiPct}%, #F59E0B ${geminiPct}% 100%)` }}>
                         <div className="absolute inset-[18%] bg-white rounded-full flex flex-col items-center justify-center shadow-inner">
-                          <span className="text-xl font-black text-[#111827]">{total}</span>
-                          <span className="text-[10px] uppercase tracking-widest text-[#6B7280] font-semibold">Calls</span>
+                          <span className="text-xl font-black text-foreground">{total}</span>
+                          <span className="text-[10px] uppercase tracking-widest text-amber-600/70 font-semibold">Calls</span>
                         </div>
                       </div>
                       
@@ -1523,8 +1523,8 @@ export default function AdminDashboard() {
               </div>
 
               {/* Daily Usage */}
-              <div className="rounded-xl border border-[#FFD896] bg-white p-6 lg:col-span-1 flex flex-col justify-between">
-                <h3 className="font-semibold text-[#111827] mb-4">
+              <div className="rounded-xl border border-border bg-white p-6 lg:col-span-1 flex flex-col justify-between">
+                <h3 className="font-semibold text-foreground mb-4">
                   Usage Last 7 Days
                 </h3>
                 {(() => {
@@ -1537,16 +1537,16 @@ export default function AdminDashboard() {
                   const maxCount = Math.max(...dailyUsage, 1)
                   return (
                     <div className="space-y-3 mt-auto">
-                      <div className="flex items-end justify-between h-32 gap-1.5 border-b border-[#FFD896]/50 pb-2">
+                      <div className="flex items-end justify-between h-32 gap-1.5 border-b border-border/50 pb-2">
                         {last7.map((day, i) => {
                           const count = dailyUsage[i] || 0
                           const pct = Math.round(count / maxCount * 100)
                           const label = new Date(day).toLocaleDateString('en-US', { weekday: 'narrow' })
                           return (
                             <div key={day} className="flex flex-col items-center gap-2 flex-1 group">
-                              <div className="w-full relative flex items-end justify-center h-full rounded-t-sm overflow-hidden bg-[#FFD896]/20 group-hover:bg-[#FFD896]/40 transition-[background]">
+                              <div className="w-full relative flex items-end justify-center h-full rounded-t-sm overflow-hidden bg-amber-200/20 group-hover:bg-amber-200/40 transition-[background]">
                                 <div 
-                                  className="w-full bg-[#F97316] rounded-t-sm transition-all duration-1000 ease-out animate-in slide-in-from-bottom"
+                                  className="w-full bg-amber-500 rounded-t-sm transition-all duration-1000 ease-out animate-in slide-in-from-bottom"
                                   style={{ height: `${pct}%` }} 
                                 />
                                 {count > 0 && (
@@ -1555,7 +1555,7 @@ export default function AdminDashboard() {
                                   </div>
                                 )}
                               </div>
-                              <span className="text-[10px] font-semibold text-[#6B7280]">{label}</span>
+                              <span className="text-[10px] font-semibold text-amber-600/70">{label}</span>
                             </div>
                           )
                         })}
@@ -1621,37 +1621,37 @@ export default function AdminDashboard() {
             </div>
 
             {/* Recent Logs Table */}
-            <div className="rounded-xl border border-[#FFD896] bg-white overflow-hidden">
-              <div className="p-4 border-b border-[#FFD896] flex items-center justify-between">
-                <h3 className="font-semibold text-[#111827]">
+            <div className="rounded-xl border border-border bg-white overflow-hidden">
+              <div className="p-4 border-b border-border flex items-center justify-between">
+                <h3 className="font-semibold text-foreground">
                   Recent API Calls
                 </h3>
-                <span className="text-xs text-[#6B7280]">
+                <span className="text-xs text-amber-600/70">
                   Last 100 calls
                 </span>
               </div>
               <div className="max-w-full overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-[#FFD896] bg-[#fff1d6]/40">
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Provider</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Model</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Status</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Type</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Time</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Date</th>
+                    <tr className="border-b border-border bg-background/40">
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Provider</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Model</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Status</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Type</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Time</th>
+                      <th className="text-left py-3 px-4 text-amber-600/70 font-semibold">Date</th>
                     </tr>
                   </thead>
                   <tbody>
                     {apiLogs.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="py-12 text-center text-[#6B7280]">
+                        <td colSpan={6} className="py-12 text-center text-amber-600/70">
                           No API calls logged yet. Generate a stack to see logs here.
                         </td>
                       </tr>
                     ) : (
                       apiLogs.map(log => (
-                        <tr key={log.id} className="border-b border-[#FFD896]/50 hover:bg-[#fff1d6]/30 transition-colors">
+                        <tr key={log.id} className="border-b border-border/50 hover:bg-background/30 transition-colors">
                           <td className="py-3 px-4">
                             <span className={cn(
                               "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold",
@@ -1665,7 +1665,7 @@ export default function AdminDashboard() {
                               }
                             </span>
                           </td>
-                          <td className="py-3 px-4 text-xs text-[#6B7280]">
+                          <td className="py-3 px-4 text-xs text-amber-600/70">
                             {log.model || '—'}
                           </td>
                           <td className="py-3 px-4">
@@ -1682,20 +1682,20 @@ export default function AdminDashboard() {
                             </span>
                           </td>
                           <td className="py-3 px-4">
-                            <span className="text-xs text-[#6B7280]">
+                            <span className="text-xs text-amber-600/70">
                               {log.is_fallback
                                 ? "⚡ Fallback"
                                 : "Primary"
                               }
                             </span>
                           </td>
-                          <td className="py-3 px-4 text-xs text-[#6B7280]">
+                          <td className="py-3 px-4 text-xs text-amber-600/70">
                             {log.duration_ms
                               ? `${log.duration_ms}ms`
                               : '—'
                             }
                           </td>
-                          <td className="py-3 px-4 text-xs text-[#6B7280]">
+                          <td className="py-3 px-4 text-xs text-amber-600/70">
                             {formatDate(log.created_at)}
                           </td>
                         </tr>
@@ -1712,17 +1712,17 @@ export default function AdminDashboard() {
         {activeTab === "admins" && (
           <div className="space-y-6 animate-in fade-in zoom-in-95 duration-200">
             <div className="flex flex-col gap-1">
-              <h2 className="text-2xl font-black tracking-tight text-[#111827]">
+              <h2 className="text-2xl font-black tracking-tight text-foreground">
                 Admins
               </h2>
-              <p className="text-sm text-[#6B7280]">
+              <p className="text-sm text-amber-600/70">
                 Manage administrator privileges across the platform.
               </p>
             </div>
 
-            <div className="rounded-xl border border-[#FFD896] bg-white overflow-hidden p-6 space-y-8">
+            <div className="rounded-xl border border-border bg-white overflow-hidden p-6 space-y-8">
               <div className="max-w-md">
-                <label className="block text-sm font-semibold text-[#111827] mb-2">
+                <label className="block text-sm font-semibold text-foreground mb-2">
                   Add Administrator
                 </label>
                 <div className="flex gap-2">
@@ -1730,7 +1730,7 @@ export default function AdminDashboard() {
                     type="text"
                     placeholder="Email or Username"
                     id="newAdminInput"
-                    className="flex-1 px-3 py-2 rounded-lg border border-[#FFD896] bg-[#fff1d6]/20 focus:outline-none focus:ring-2 focus:ring-[#FFD896] text-sm"
+                    className="flex-1 px-3 py-2 rounded-lg border border-border bg-background/20 focus:outline-none focus:ring-2 focus:ring-amber-200 text-sm"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         document.getElementById("addAdminBtn")?.click();
@@ -1821,35 +1821,35 @@ export default function AdminDashboard() {
                         showToast("Failed to add admin. Make sure the email column exists in profiles.", false)
                       }
                     }}
-                    className="px-6 py-2 bg-[#F97316] text-white text-sm font-bold rounded-lg hover:bg-[#EA6C0A] shadow-md hover:shadow-orange-200 transition-all flex items-center gap-2"
+                    className="px-6 py-2 bg-amber-500 text-white text-sm font-bold rounded-lg hover:bg-amber-400 shadow-md hover:shadow-orange-200 transition-all flex items-center gap-2"
                   >
                     <Plus className="h-4 w-4" />
                     Add
                   </button>
                 </div>
-                <p className="text-xs text-[#6B7280] mt-2">
+                <p className="text-xs text-amber-600/70 mt-2">
                   The user must already have signed into Toolvise once.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-[#111827] mb-4">Current Administrators</h3>
+                <h3 className="font-semibold text-foreground mb-4">Current Administrators</h3>
                 <div className="space-y-3">
                   {users.filter(u => u.is_admin).map(admin => (
-                    <div key={admin.id} className="flex items-center justify-between p-3 rounded-lg border border-[#FFD896]/50 bg-[#fff1d6]/20">
+                    <div key={admin.id} className="flex items-center justify-between p-3 rounded-lg border border-border/50 bg-background/20">
                       <div className="flex items-center gap-3">
                         {admin.avatar_url ? (
                           <img src={admin.avatar_url} alt="" className="h-10 w-10 rounded-full" />
                         ) : (
-                          <div className="h-10 w-10 rounded-full bg-[#111827] flex items-center justify-center text-white font-bold uppercase text-sm">
+                          <div className="h-10 w-10 rounded-full bg-neutral-900 flex items-center justify-center text-white font-bold uppercase text-sm">
                             {admin.display_name?.charAt(0) || admin.username?.charAt(0) || '?'}
                           </div>
                         )}
                         <div>
-                          <p className="font-semibold text-sm text-[#111827] flex items-center gap-2">
+                          <p className="font-semibold text-sm text-foreground flex items-center gap-2">
                             {admin.display_name || admin.username || 'Unnamed User'}
                           </p>
-                          <p className="text-xs text-[#6B7280]">@{admin.username || 'unknown'}</p>
+                          <p className="text-xs text-amber-600/70">@{admin.username || 'unknown'}</p>
                         </div>
                       </div>
 
@@ -1890,7 +1890,7 @@ export default function AdminDashboard() {
                     </div>
                   ))}
                   {users.filter(u => u.is_admin).length === 0 && (
-                    <p className="text-sm text-[#6B7280] italic">No active administrators found.</p>
+                    <p className="text-sm text-amber-600/70 italic">No active administrators found.</p>
                   )}
                 </div>
               </div>
@@ -1916,25 +1916,25 @@ export default function AdminDashboard() {
       {/* Confirm Dialog */}
       {confirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="w-full max-w-sm rounded-2xl border border-[#FFD896] bg-white p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+          <div className="w-full max-w-sm rounded-2xl border border-border bg-white p-6 shadow-2xl animate-in zoom-in-95 duration-200">
             <div className="flex items-center gap-3 mb-4">
               <div className={cn(
                 "grid h-10 w-10 place-items-center rounded-xl",
-                confirm.danger ? "bg-red-50 border border-red-100" : "bg-[#fff1d6] border border-[#FFD896]"
+                confirm.danger ? "bg-red-50 border border-red-100" : "bg-background border border-border"
               )}>
-                <AlertTriangle className={cn("h-5 w-5", confirm.danger ? "text-red-500" : "text-[#F97316]")} />
+                <AlertTriangle className={cn("h-5 w-5", confirm.danger ? "text-red-500" : "text-amber-500")} />
               </div>
               <div>
-                <h3 className="font-semibold text-[#111827]">{confirm.title}</h3>
+                <h3 className="font-semibold text-foreground">{confirm.title}</h3>
               </div>
             </div>
-            <p className="text-sm text-[#111827]/70 mb-6 leading-relaxed">
+            <p className="text-sm text-foreground/70 mb-6 leading-relaxed">
               {confirm.message}
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setConfirm(null)}
-                className="flex-1 rounded-xl border border-[#FFD896] bg-white py-2.5 text-sm font-medium text-[#111827]/70 hover:bg-[#fff1d6] transition-colors"
+                className="flex-1 rounded-xl border border-border bg-white py-2.5 text-sm font-medium text-foreground/70 hover:bg-background transition-colors"
               >
                 Cancel
               </button>
@@ -1942,7 +1942,7 @@ export default function AdminDashboard() {
                 onClick={confirm.onConfirm}
                 className={cn(
                   "flex-1 rounded-xl py-2.5 text-sm font-semibold text-white transition-colors",
-                  confirm.danger ? "bg-red-500 hover:bg-red-600" : "bg-[#F97316] hover:bg-[#EA6C0A]"
+                  confirm.danger ? "bg-red-500 hover:bg-red-600" : "bg-amber-500 hover:bg-amber-400"
                 )}
               >
                 {confirm.confirmText}

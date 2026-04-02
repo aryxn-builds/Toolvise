@@ -65,21 +65,21 @@ function LoginForm() {
       {/* Logo */}
       <div className="flex flex-col items-center gap-3">
         <Link href="/" className="flex items-center gap-2">
-          <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#F97316] to-[#FB923C] shadow-lg shadow-amber-500/20">
+          <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-400 shadow-lg shadow-amber-500/20">
             <Sparkles className="h-5 w-5 text-white" />
           </div>
-          <span className="text-xl font-bold tracking-tight text-[#111827]">
+          <span className="text-xl font-bold tracking-tight text-foreground">
             Toolvise
           </span>
         </Link>
       </div>
 
       {/* Card */}
-      <div className="rounded-2xl border border-[#FFD896] bg-white p-8 shadow-sm">
-        <h1 className="text-2xl font-bold text-[#111827] text-center mb-2">
+      <div className="rounded-2xl border border-border bg-white p-8 shadow-sm">
+        <h1 className="text-2xl font-bold text-foreground text-center mb-2">
           Welcome back
         </h1>
-        <p className="text-sm text-[#111827]/50 text-center mb-8">
+        <p className="text-sm text-foreground/50 text-center mb-8">
           Sign in to your Toolvise account
         </p>
 
@@ -88,10 +88,10 @@ function LoginForm() {
           type="button"
           onClick={handleGoogleSignIn}
           disabled={oauthLoading}
-          className="w-full flex items-center justify-center gap-3 h-11 rounded-xl border border-[#FFD896] bg-white hover:bg-[#fff1d6] text-[#111827] font-medium transition-all mb-6 disabled:opacity-60"
+          className="w-full flex items-center justify-center gap-3 h-11 rounded-xl border border-border bg-white hover:bg-background text-foreground font-medium transition-all mb-6 disabled:opacity-60"
         >
           {oauthLoading ? (
-            <Loader2 className="h-5 w-5 animate-spin text-[#111827]/50" />
+            <Loader2 className="h-5 w-5 animate-spin text-foreground/50" />
           ) : (
             <svg viewBox="0 0 24 24" className="w-5 h-5">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -106,10 +106,10 @@ function LoginForm() {
         {/* Divider */}
         <div className="relative mb-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[#FFD896]" />
+            <div className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="bg-white px-3 text-[#111827]/40 font-medium">or</span>
+            <span className="bg-white px-3 text-foreground/40 font-medium">or</span>
           </div>
         </div>
 
@@ -123,7 +123,7 @@ function LoginForm() {
         {/* Email form */}
         <form onSubmit={handleEmailLogin} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-[#111827]/80">
+            <Label htmlFor="email" className="text-foreground/80">
               Email
             </Label>
             <Input
@@ -133,12 +133,12 @@ function LoginForm() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
-              className="h-11 bg-white border-[#FFD896] text-[#111827] placeholder:text-[#111827]/30 focus-visible:ring-[#F97316] focus-visible:border-[#F97316]"
+              className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500 focus-visible:border-amber-500"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-[#111827]/80">
+            <Label htmlFor="password" className="text-foreground/80">
               Password
             </Label>
             <div className="relative">
@@ -149,12 +149,12 @@ function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="h-11 bg-white border-[#FFD896] text-[#111827] placeholder:text-[#111827]/30 focus-visible:ring-[#F97316] focus-visible:border-[#F97316] pr-12"
+                className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500 focus-visible:border-amber-500 pr-12"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280] hover:text-[#111827] transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-600/70 hover:text-amber-300 transition-colors"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
@@ -167,7 +167,7 @@ function LoginForm() {
             <div className="flex justify-end">
               <Link
                 href="/forgot-password"
-                className="text-sm text-[#F97316] hover:underline"
+                className="text-sm text-amber-500 hover:underline"
               >
                 Forgot password?
               </Link>
@@ -177,7 +177,7 @@ function LoginForm() {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full h-11 rounded-xl bg-[#F97316] text-white hover:bg-[#EA6C0A] font-semibold shadow-lg shadow-amber-500/20 transition-all"
+            className="w-full h-11 rounded-xl bg-amber-500 text-white hover:bg-amber-400 font-semibold shadow-lg shadow-amber-500/20 transition-all"
           >
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Sign In
@@ -186,11 +186,11 @@ function LoginForm() {
       </div>
 
       {/* Sign up link */}
-      <p className="text-center text-sm text-[#111827]/50">
+      <p className="text-center text-sm text-foreground/50">
         Don&apos;t have an account?{" "}
         <Link
           href="/signup"
-          className="font-semibold text-[#F97316] hover:underline"
+          className="font-semibold text-amber-500 hover:underline"
         >
           Sign up
         </Link>
@@ -201,11 +201,11 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-dvh bg-[#fff1d6] flex items-center justify-center px-4">
+    <div className="min-h-dvh bg-background flex items-center justify-center px-4">
       <Suspense
         fallback={
           <div className="flex items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-[#F97316]" />
+            <Loader2 className="h-8 w-8 animate-spin text-amber-500" />
           </div>
         }
       >

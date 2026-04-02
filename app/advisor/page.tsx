@@ -171,7 +171,7 @@ export default function AdvisorPage() {
   const charCount = form.description.length
 
   return (
-    <div className="min-h-screen bg-white text-[#111827]">
+    <div className="min-h-screen bg-white text-foreground">
       <Navbar />
 
       {/* ── Main ── */}
@@ -182,27 +182,27 @@ export default function AdvisorPage() {
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             Find Your Perfect Stack
           </h1>
-          <p className="text-sm leading-relaxed text-[#111827]/55">
+          <p className="text-sm leading-relaxed text-neutral-300">
             Tell us about your project and we&apos;ll recommend the best tools,
             frameworks, and resources — tailored just for you.
           </p>
         </div>
 
         {/* Form card */}
-        <div className="rounded-2xl border border-[#FFD896] bg-white p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_32px_80px_rgba(0,0,0,0.6)] sm:p-8">
+        <div className="rounded-2xl border border-border bg-white p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_32px_80px_rgba(0,0,0,0.6)] sm:p-8">
           <form onSubmit={handleSubmit} noValidate className="space-y-7">
 
             {/* ── Field 1: Project Description ── */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="description" className="text-[#111827]/90">
+                <Label htmlFor="description" className="text-foreground/90">
                   Project Description
-                  <span className="ml-1 text-[#F97316]">*</span>
+                  <span className="ml-1 text-amber-500">*</span>
                 </Label>
                 <span
                   className={cn(
                     "text-xs tabular-nums transition-colors",
-                    charCount < 20 ? "text-[#111827]/30" : "text-[#111827]/50"
+                    charCount < 20 ? "text-foreground/30" : "text-foreground/50"
                   )}
                 >
                   {charCount} chars {charCount < 20 && charCount > 0 && `(${20 - charCount} more)`}
@@ -215,7 +215,7 @@ export default function AdvisorPage() {
                 placeholder="e.g. I want to build a task management app for students..."
                 rows={4}
                 className={cn(
-                  "resize-none bg-white border-[#FFD896] text-[#111827] placeholder:text-[#111827]/25 focus-visible:border-[#F97316] focus-visible:ring-[#F97316]/20",
+                  "resize-none bg-white border-border text-foreground placeholder:text-foreground/25 focus-visible:border-amber-500 focus-visible:ring-amber-500/20",
                   errors.description && "border-red-500/60 focus-visible:border-red-500 focus-visible:ring-red-500/20"
                 )}
                 aria-describedby={errors.description ? "description-error" : undefined}
@@ -227,9 +227,9 @@ export default function AdvisorPage() {
 
             {/* ── Field 2: Skill Level ── */}
             <div className="space-y-2">
-              <Label htmlFor="skillLevel" className="text-[#111827]/90">
+              <Label htmlFor="skillLevel" className="text-foreground/90">
                 Skill Level
-                <span className="ml-1 text-[#F97316]">*</span>
+                <span className="ml-1 text-amber-500">*</span>
               </Label>
               <Select
                 value={form.skillLevel}
@@ -238,15 +238,15 @@ export default function AdvisorPage() {
                 <SelectTrigger
                   id="skillLevel"
                   className={cn(
-                    "w-full h-10 bg-white border-[#FFD896] text-[#111827] data-[placeholder]:text-[#111827]/30 focus:border-[#F97316] focus:ring-[#F97316]/20",
+                    "w-full h-10 bg-white border-border text-foreground data-[placeholder]:text-foreground/30 focus:border-amber-500 focus:ring-amber-500/20",
                     errors.skillLevel && "border-red-500/60"
                   )}
                 >
                   <SelectValue placeholder="Select your skill level…" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-[#FFD896] text-[#111827]">
+                <SelectContent className="bg-white border-border text-foreground">
                   {SKILL_OPTIONS.map((o) => (
-                    <SelectItem key={o.value} value={o.value} className="focus:bg-white focus:text-[#111827]">
+                    <SelectItem key={o.value} value={o.value} className="focus:bg-white focus:text-foreground">
                       {o.label}
                     </SelectItem>
                   ))}
@@ -259,9 +259,9 @@ export default function AdvisorPage() {
 
             {/* ── Field 3: Budget (toggle buttons) ── */}
             <div className="space-y-2">
-              <Label className="text-[#111827]/90">
+              <Label className="text-foreground/90">
                 Budget
-                <span className="ml-1 text-[#F97316]">*</span>
+                <span className="ml-1 text-amber-500">*</span>
               </Label>
               <div
                 className="grid grid-cols-1 gap-2 sm:grid-cols-3"
@@ -279,14 +279,14 @@ export default function AdvisorPage() {
                       className={cn(
                         "relative rounded-xl border px-3 py-3 text-sm font-medium transition-all duration-150 text-center select-none",
                         selected
-                          ? "border-[#F97316] bg-[#F97316]/15 text-[#111827] shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
-                          : "border-[#FFD896] bg-white text-[#111827]/60 hover:border-[#FFD896] hover:bg-white hover:text-[#111827]/85",
+                          ? "border-amber-500 bg-amber-500/15 text-foreground shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
+                          : "border-border bg-white text-foreground/60 hover:border-border hover:bg-white hover:text-amber-300/85",
                         errors.budget && !selected && "border-red-500/30"
                       )}
                     >
                       {selected && (
-                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#F97316]">
-                          <svg className="h-2.5 w-2.5 text-[#111827]" viewBox="0 0 10 8" fill="none">
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-amber-500">
+                          <svg className="h-2.5 w-2.5 text-foreground" viewBox="0 0 10 8" fill="none">
                             <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         </span>
@@ -303,9 +303,9 @@ export default function AdvisorPage() {
 
             {/* ── Field 4: Goal ── */}
             <div className="space-y-2">
-              <Label htmlFor="goal" className="text-[#111827]/90">
+              <Label htmlFor="goal" className="text-foreground/90">
                 Goal
-                <span className="ml-1 text-[#F97316]">*</span>
+                <span className="ml-1 text-amber-500">*</span>
               </Label>
               <Select
                 value={form.goal}
@@ -314,15 +314,15 @@ export default function AdvisorPage() {
                 <SelectTrigger
                   id="goal"
                   className={cn(
-                    "w-full h-10 bg-white border-[#FFD896] text-[#111827] data-[placeholder]:text-[#111827]/30 focus:border-[#F97316] focus:ring-[#F97316]/20",
+                    "w-full h-10 bg-white border-border text-foreground data-[placeholder]:text-foreground/30 focus:border-amber-500 focus:ring-amber-500/20",
                     errors.goal && "border-red-500/60"
                   )}
                 >
                   <SelectValue placeholder="What are you building towards?" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-[#FFD896] text-[#111827]">
+                <SelectContent className="bg-white border-border text-foreground">
                   {GOAL_OPTIONS.map((o) => (
-                    <SelectItem key={o.value} value={o.value} className="focus:bg-white focus:text-[#111827]">
+                    <SelectItem key={o.value} value={o.value} className="focus:bg-white focus:text-foreground">
                       {o.label}
                     </SelectItem>
                   ))}
@@ -335,9 +335,9 @@ export default function AdvisorPage() {
 
             {/* ── Field 5: Detail Level (toggle buttons) ── */}
             <div className="space-y-2">
-              <Label className="text-[#111827]/90">
+              <Label className="text-foreground/90">
                 How deep should we go?
-                <span className="ml-1 text-[#F97316]">*</span>
+                <span className="ml-1 text-amber-500">*</span>
               </Label>
               <div
                 className="grid grid-cols-1 gap-2 sm:grid-cols-3"
@@ -355,20 +355,20 @@ export default function AdvisorPage() {
                       className={cn(
                         "relative rounded-xl border px-3 py-3 text-sm font-medium transition-all duration-150 text-center select-none",
                         selected
-                          ? "border-[#F97316] bg-[#F97316]/15 text-[#111827] shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
-                          : "border-[#FFD896] bg-white text-[#111827]/60 hover:border-[#FFD896] hover:bg-white hover:text-[#111827]/85",
+                          ? "border-amber-500 bg-amber-500/15 text-foreground shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
+                          : "border-border bg-white text-foreground/60 hover:border-border hover:bg-white hover:text-amber-300/85",
                         errors.detailLevel && !selected && "border-red-500/30"
                       )}
                     >
                       {selected && (
-                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#F97316]">
-                          <svg className="h-2.5 w-2.5 text-[#111827]" viewBox="0 0 10 8" fill="none">
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-amber-500">
+                          <svg className="h-2.5 w-2.5 text-foreground" viewBox="0 0 10 8" fill="none">
                             <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         </span>
                       )}
                       {o.label}
-                      <span className="block text-[11px] text-[#111827]/40 font-normal mt-0.5">{o.subtitle}</span>
+                      <span className="block text-[11px] text-foreground/40 font-normal mt-0.5">{o.subtitle}</span>
                     </button>
                   )
                 })}
@@ -380,9 +380,9 @@ export default function AdvisorPage() {
 
             {/* ── Field 6: Build Style (toggle buttons) ── */}
             <div className="space-y-2">
-              <Label className="text-[#111827]/90">
+              <Label className="text-foreground/90">
                 How do you want to build this?
-                <span className="ml-1 text-[#F97316]">*</span>
+                <span className="ml-1 text-amber-500">*</span>
               </Label>
               <div
                 className="grid grid-cols-1 gap-2 sm:grid-cols-3"
@@ -400,14 +400,14 @@ export default function AdvisorPage() {
                       className={cn(
                         "relative rounded-xl border px-3 py-3 text-sm font-medium transition-all duration-150 text-center select-none",
                         selected
-                          ? "border-[#F97316] bg-[#F97316]/15 text-[#111827] shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
-                          : "border-[#FFD896] bg-white text-[#111827]/60 hover:border-[#FFD896] hover:bg-white hover:text-[#111827]/85",
+                          ? "border-amber-500 bg-amber-500/15 text-foreground shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
+                          : "border-border bg-white text-foreground/60 hover:border-border hover:bg-white hover:text-amber-300/85",
                         errors.buildStyle && !selected && "border-red-500/30"
                       )}
                     >
                       {selected && (
-                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#F97316]">
-                          <svg className="h-2.5 w-2.5 text-[#111827]" viewBox="0 0 10 8" fill="none">
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-amber-500">
+                          <svg className="h-2.5 w-2.5 text-foreground" viewBox="0 0 10 8" fill="none">
                             <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         </span>
@@ -435,9 +435,9 @@ export default function AdvisorPage() {
               type="submit"
               disabled={loading}
               className={cn(
-                "relative w-full rounded-xl px-5 py-3 text-sm font-semibold text-[#111827] transition-all duration-150",
-                "bg-[#F97316] shadow-[0_12px_40px_rgba(249,115,22,0.28)]",
-                "hover:-translate-y-0.5 hover:bg-[#EA6C0A] hover:shadow-[0_16px_48px_rgba(249,115,22,0.38)]",
+                "relative w-full rounded-xl px-5 py-3 text-sm font-semibold text-foreground transition-all duration-150",
+                "bg-amber-500 shadow-[0_12px_40px_rgba(249,115,22,0.28)]",
+                "hover:-translate-y-0.5 hover:bg-amber-400 hover:shadow-[0_16px_48px_rgba(249,115,22,0.38)]",
                 "active:translate-y-0 active:shadow-none",
                 "disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0",
                 "flex items-center justify-center gap-2"
@@ -456,7 +456,7 @@ export default function AdvisorPage() {
               )}
             </button>
 
-            <p className="text-center text-xs text-[#111827]/30">
+            <p className="text-center text-xs text-foreground/30">
               Powered by Gemini AI · Usually takes 5–10 seconds
             </p>
           </form>
