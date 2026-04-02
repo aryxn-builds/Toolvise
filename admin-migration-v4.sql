@@ -23,14 +23,20 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- Function to revoke admin rights (bypasses RLS but checks privileges)
 CREATE OR REPLACE FUNCTION revoke_admin(target_user_id UUID)
 RETURNS void AS $$
+DECLARE
+  target_email TEXT;
 BEGIN
   -- Security check: ensure the caller is an admin
   IF public.is_admin_user() = FALSE THEN
     RAISE EXCEPTION 'Unauthorized: Only admins can revoke admin privileges';
   END IF;
 
-  -- Ensure we aren't removing the absolute owner or something if desired, 
-  -- but skipping hardcoded checks here.
+  -- Ensure we aren't removing the absolute owner
+  SELECT email INTO target_email FROM auth.users WHERE id = target_user_id;
+  
+  IF target_email = 'ay6033756@gmail.com' THEN
+    RAISE EXCEPTION 'Unauthorized: Cannot revoke privileges from the primary owner';
+  END IF;
 
   UPDATE public.profiles
   SET is_admin = FALSE

@@ -1747,28 +1747,46 @@ export default function AdminDashboard() {
                       try {
                         const supabase = createClient()
                         
-                        // First attempt: Search by email or username (requires migration)
+                        let searchValue = value;
+                        if (searchValue.startsWith('@')) {
+                          searchValue = searchValue.substring(1);
+                        }
+                        
                         let foundUser = null;
                         
-                        const { data, error: searchError } = await supabase
+                        // First try email
+                        const { data: emailData, error: emailError } = await supabase
                           .from('profiles')
                           .select('*')
-                          .or(`email.ilike.${value},username.ilike.${value}`)
-                          .maybeSingle()
-                        
-                        if (searchError) {
-                          // Fallback: If email column doesn't exist yet, search only by username
-                          console.log("Searching by email failed, falling back to username search...");
-                          const { data: fallbackData, error: fallbackError } = await supabase
+                          .eq('email', searchValue)
+                          .limit(1);
+                          
+                        if (emailData && emailData.length > 0) {
+                          foundUser = emailData[0];
+                        } else {
+                          // Fallback try username
+                          const { data: usernameData, error: usernameError } = await supabase
                             .from('profiles')
                             .select('*')
-                            .ilike('username', value)
-                            .maybeSingle()
+                            .eq('username', searchValue)
+                            .limit(1);
                             
-                          if (fallbackError) throw fallbackError
-                          foundUser = fallbackData
-                        } else {
-                          foundUser = data
+                          if (usernameData && usernameData.length > 0) {
+                            foundUser = usernameData[0];
+                          }
+                        }
+
+                        if (!foundUser) {
+                          // Try ilike fallback for username just in case
+                          const { data: fallbackData } = await supabase
+                            .from('profiles')
+                            .select('*')
+                            .ilike('username', `%${searchValue}%`)
+                            .limit(1);
+                            
+                          if (fallbackData && fallbackData.length > 0) {
+                            foundUser = fallbackData[0];
+                          }
                         }
 
                         if (!foundUser) {
@@ -1837,8 +1855,8 @@ export default function AdminDashboard() {
 
                       {/* Role Management Actions */}
                       <div className="flex items-center gap-2">
-                        {admin.is_owner ? (
-                           <span className="text-xs font-semibold text-gray-400 px-3">Protected</span>
+                        {admin.is_owner || admin.email === 'ay6033756@gmail.com' ? (
+                           <span className="text-xs font-semibold text-gray-400 px-3">Primary Owner</span>
                         ) : admin.id === currentUserId ? (
                            <span className="text-xs font-semibold text-gray-400 px-3">Current Session</span>
                         ) : (
