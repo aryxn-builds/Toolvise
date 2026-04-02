@@ -22,6 +22,7 @@ import {
   AlertTriangle,
   Bookmark,
   Trophy,
+  Plus,
   Loader2,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
@@ -248,7 +249,7 @@ export default function AdminDashboard() {
         supabase.from("bug_reports").select("*", { count: "exact", head: true }).eq("status", "open"),
         supabase.from("stacks").select("build_style").order("created_at", { ascending: false }).limit(100),
         supabase.from("stacks").select("goal"),
-        supabase.from("profiles").select("id, username, display_name, avatar_url, is_admin, created_at, stacks_count, followers_count, following_count").order("created_at", { ascending: false }).limit(50),
+        supabase.from("profiles").select("id, username, display_name, email, avatar_url, is_admin, created_at, stacks_count, followers_count, following_count").order("created_at", { ascending: false }).limit(50),
         supabase.from("stacks").select("id, user_input, build_style, goal, is_public, is_featured, upvotes, score_card, created_at, share_slug, user_id").order("created_at", { ascending: false }).limit(50),
         supabase.from("bug_reports").select("*").order("created_at", { ascending: false }),
         supabase.from("announcements").select("*").order("created_at", { ascending: false }),
@@ -1726,40 +1727,88 @@ export default function AdminDashboard() {
                 </label>
                 <div className="flex gap-2">
                   <input
-                    type="email"
-                    placeholder="User email"
-                    id="newAdminEmail"
+                    type="text"
+                    placeholder="Email or Username"
+                    id="newAdminInput"
                     className="flex-1 px-3 py-2 rounded-lg border border-[#FFD896] bg-[#fff1d6]/20 focus:outline-none focus:ring-2 focus:ring-[#FFD896] text-sm"
-                  />
-                  <button
-                    onClick={async () => {
-                      const emailInput = document.getElementById("newAdminEmail") as HTMLInputElement
-                      const email = emailInput?.value
-                      if (!email) return
-                      try {
-                        const supabase = createClient()
-                        const targetUser = users.find(u => (u.username || "").toLowerCase() === email.toLowerCase())
-                        if (!targetUser) {
-                          showToast("User not found by username.", false)
-                          return
-                        }
-                        if (targetUser.is_admin) {
-                          showToast("User is already an admin.", false)
-                          return
-                        }
-                        const { error } = await supabase.from('profiles').update({ is_admin: true }).eq('id', targetUser.id)
-                        if (error) throw error
-                        setUsers(prev => prev.map(u => u.id === targetUser.id ? { ...u, is_admin: true } : u))
-                        showToast("Admin access granted.", true)
-                        emailInput.value = ""
-                      } catch (err) {
-                        console.error(err)
-                        showToast("Failed to add admin", false)
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        document.getElementById("addAdminBtn")?.click();
                       }
                     }}
-                    className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition"
+                  />
+                  <button
+                    id="addAdminBtn"
+                    onClick={async () => {
+                      const inputElement = document.getElementById("newAdminInput") as HTMLInputElement
+                      const value = inputElement?.value?.trim()
+                      if (!value) return
+                      
+                      try {
+                        const supabase = createClient()
+                        
+                        // First attempt: Search by email or username (requires migration)
+                        let foundUser = null;
+                        
+                        const { data, error: searchError } = await supabase
+                          .from('profiles')
+                          .select('*')
+                          .or(`email.ilike.${value},username.ilike.${value}`)
+                          .maybeSingle()
+                        
+                        if (searchError) {
+                          // Fallback: If email column doesn't exist yet, search only by username
+                          console.log("Searching by email failed, falling back to username search...");
+                          const { data: fallbackData, error: fallbackError } = await supabase
+                            .from('profiles')
+                            .select('*')
+                            .ilike('username', value)
+                            .maybeSingle()
+                            
+                          if (fallbackError) throw fallbackError
+                          foundUser = fallbackData
+                        } else {
+                          foundUser = data
+                        }
+
+                        if (!foundUser) {
+                          showToast("User not found.", false)
+                          return
+                        }
+                        
+                        if (foundUser.is_admin) {
+                          showToast(`${foundUser.username || foundUser.email} is already an admin.`, false)
+                          return
+                        }
+
+                        const { error: updateError } = await supabase
+                          .from('profiles')
+                          .update({ is_admin: true })
+                          .eq('id', foundUser.id)
+                        
+                        if (updateError) throw updateError
+                        
+                        // Refresh local state if the user was in the current list
+                        setUsers(prev => {
+                          const exists = prev.find(p => p.id === foundUser.id)
+                          if (exists) {
+                            return prev.map(u => u.id === foundUser.id ? { ...u, is_admin: true } : u)
+                          }
+                          // If not in list, we might want to reload or just append if they are new admin
+                          return [...prev, { ...foundUser, is_admin: true }] as Profile[]
+                        })
+                        
+                        showToast(`Admin access granted to ${foundUser.username || foundUser.email}.`, true)
+                        inputElement.value = ""
+                      } catch (err) {
+                        console.error(err)
+                        showToast("Failed to add admin. Make sure the email column exists in profiles.", false)
+                      }
+                    }}
+                    className="px-6 py-2 bg-[#F97316] text-white text-sm font-bold rounded-lg hover:bg-[#EA6C0A] shadow-md hover:shadow-orange-200 transition-all flex items-center gap-2"
                   >
-                    Add Admin
+                    <Plus className="h-4 w-4" />
+                    Add
                   </button>
                 </div>
                 <p className="text-xs text-[#6B7280] mt-2">
