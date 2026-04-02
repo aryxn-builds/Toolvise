@@ -1782,9 +1782,7 @@ export default function AdminDashboard() {
                         }
 
                         const { error: updateError } = await supabase
-                          .from('profiles')
-                          .update({ is_admin: true })
-                          .eq('id', foundUser.id)
+                          .rpc('grant_admin', { target_user_id: foundUser.id })
                         
                         if (updateError) throw updateError
                         
@@ -1854,7 +1852,7 @@ export default function AdminDashboard() {
                                 onConfirm: async () => {
                                   try {
                                     const supabase = createClient()
-                                    const { error } = await supabase.from('profiles').update({ is_admin: false }).eq('id', admin.id)
+                                    const { error } = await supabase.rpc('revoke_admin', { target_user_id: admin.id })
                                     if (error) throw error
                                     setUsers(prev => prev.map(u => u.id === admin.id ? { ...u, is_admin: false } : u))
                                     showToast("Admin access removed", true)
