@@ -287,36 +287,61 @@ function CompareContent() {
             <h2 className="font-semibold text-[#111827]">Select Stacks to Compare</h2>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-4 relative">
-            <div className="space-y-1.5 w-full">
-              <label className="text-xs font-bold text-[#F97316] uppercase tracking-wider">Stack A</label>
-              <input
-                id="slug-a"
-                value={slugA}
-                onChange={(e) => setSlugA(e.target.value)}
-                placeholder="Search or paste Stack A URL"
-                className="w-full rounded-xl border border-[#FFD896] bg-[#fff1d6]/40 px-4 py-3 text-sm outline-none focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/20 transition-all font-mono"
-              />
+          <div className="flex flex-col sm:flex-row items-stretch gap-6 relative">
+            <div className="space-y-2 flex-1">
+              <label className="text-xs font-bold text-[#F97316] uppercase tracking-wider flex items-center gap-1.5">
+                <Badge className="h-2 w-2 rounded-full bg-[#F97316] p-0" /> Stack A
+              </label>
+              <div className="relative group">
+                <input
+                  id="slug-a"
+                  value={slugA}
+                  onChange={(e) => setSlugA(e.target.value)}
+                  placeholder="Paste URL or select from below"
+                  className="w-full rounded-xl border border-[#FFD896] bg-[#fff1d6]/20 px-4 py-3.5 text-sm outline-none focus:border-[#F97316] focus:ring-4 focus:ring-[#F97316]/10 transition-all font-mono"
+                />
+                {slugA && (
+                  <button 
+                    onClick={() => setSlugA("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#111827]/20 hover:text-[#111827]/60"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                  </button>
+                )}
+              </div>
             </div>
             
-            <button 
-              onClick={handleSwap}
-              className="mt-6 shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-[#fff1d6] border border-[#FFD896] hover:bg-[#FFE8B6] hover:border-[#F97316]/50 text-[#F97316] transition-all shadow-sm z-10"
-              title="Swap stacks"
-            >
-              <ArrowRight className="h-4 w-4" style={{ transform: 'rotate(180deg) rotateX(180deg)', display: 'none' }} />
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
-            </button>
+            <div className="flex items-center justify-center pt-6">
+              <button 
+                onClick={handleSwap}
+                className="h-10 w-10 flex items-center justify-center rounded-full bg-white border border-[#FFD896] hover:border-[#F97316] hover:scale-110 active:scale-95 text-[#F97316] transition-all shadow-md z-10 group"
+                title="Swap stacks"
+              >
+                <GitCompare className="h-5 w-5 group-hover:rotate-180 transition-transform duration-500" />
+              </button>
+            </div>
             
-            <div className="space-y-1.5 w-full">
-              <label className="text-xs font-bold text-blue-600 uppercase tracking-wider">Stack B</label>
-              <input
-                id="slug-b"
-                value={slugB}
-                onChange={(e) => setSlugB(e.target.value)}
-                placeholder="Search or paste Stack B URL"
-                className="w-full rounded-xl border border-[#FFD896] bg-[#fff1d6]/40 px-4 py-3 text-sm outline-none focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/20 transition-all font-mono"
-              />
+            <div className="space-y-2 flex-1">
+              <label className="text-xs font-bold text-blue-600 uppercase tracking-wider flex items-center gap-1.5">
+                <Badge className="h-2 w-2 rounded-full bg-blue-600 p-0" /> Stack B
+              </label>
+              <div className="relative group">
+                <input
+                  id="slug-b"
+                  value={slugB}
+                  onChange={(e) => setSlugB(e.target.value)}
+                  placeholder="Paste URL or select from below"
+                  className="w-full rounded-xl border border-[#FFD896] bg-[#fff1d6]/20 px-4 py-3.5 text-sm outline-none focus:border-[#F97316] focus:ring-4 focus:ring-[#F97316]/10 transition-all font-mono"
+                />
+                {slugB && (
+                  <button 
+                    onClick={() => setSlugB("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#111827]/20 hover:text-[#111827]/60"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
@@ -346,16 +371,20 @@ function CompareContent() {
 
           {/* Recent stacks quick-picks */}
           {recentSlugs.length > 0 && (
-            <div className="space-y-2 pt-2 border-t border-[#FFD896]/50">
-              <p className="text-xs font-medium text-[#111827]/40">Recent stacks:</p>
-              <div className="flex flex-wrap gap-2">
+            <div className="space-y-3 pt-4 border-t border-[#FFD896]/50">
+              <p className="text-xs font-bold text-[#111827]/30 uppercase tracking-widest">Your Recent Generations</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                 {recentSlugs.map((r) => (
                   <button
                     key={r.slug}
-                    onClick={() => setSlugA(r.slug)}
-                    className="text-xs px-3 py-1 rounded-full border border-[#FFD896] bg-[#fff1d6] text-[#111827]/70 hover:border-[#F97316]/50 hover:text-[#F97316] transition-colors"
+                    onClick={() => {
+                      if (!slugA) setSlugA(r.slug);
+                      else if (!slugB && r.slug !== slugA) setSlugB(r.slug);
+                    }}
+                    className="group text-left text-xs p-3 rounded-xl border border-[#FFD896] bg-[#fff1d6]/20 text-[#111827] hover:border-[#F97316] hover:bg-white transition-all flex items-center justify-between"
                   >
-                    {r.label || r.slug}
+                    <span className="truncate pr-2 font-medium">{r.label || r.slug}</span>
+                    <Badge className="bg-[#FFD896]/40 text-[#111827]/40 p-0 px-1.5 group-hover:bg-[#F97316]/10 group-hover:text-[#F97316] transition-colors">Select</Badge>
                   </button>
                 ))}
               </div>
@@ -393,27 +422,53 @@ function CompareContent() {
 
             {/* Score Card Comparison */}
             {(stackA.scoreCard || stackB.scoreCard) && (
-              <Card className="border-[#FFD896] bg-white overflow-hidden">
-                <div className="h-1 bg-gradient-to-r from-[#F97316] to-[#FB923C]" />
-                <CardHeader>
-                  <CardTitle className="text-base font-bold flex items-center gap-2">
-                    📊 Score Card Comparison
+              <Card className="border-[#FFD896] bg-white overflow-hidden shadow-sm">
+                <div className="h-1.5 bg-gradient-to-r from-[#F97316] to-[#FB923C]" />
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg font-bold flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Trophy className="h-5 w-5 text-[#F97316]" />
+                      Performance Metrics
+                    </div>
+                    <Badge variant="outline" className="text-[10px] uppercase font-bold text-[#F97316] border-[#F97316]/20 bg-[#F97316]/5">
+                      {verdictData?.winner === 'Tie' ? 'Tie Matchup' : 'Side-by-Side'}
+                    </Badge>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-6 pt-4">
                   {scoreRows.map(({ label, keyA }) => {
                     const vA = Number(stackA.scoreCard?.[keyA] ?? 0);
                     const vB = Number(stackB.scoreCard?.[keyA] ?? 0);
                     const aWins = vA > vB;
                     const bWins = vB > vA;
+                    const isTie = vA === vB;
+                    
                     return (
-                      <div key={label} className="space-y-1">
-                        <p className="text-xs font-semibold text-[#111827]/60">{label}</p>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className={cn("rounded-lg px-3 py-2", aWins && "bg-[#F97316]/5 border border-[#F97316]/20")}>
+                      <div key={label} className="space-y-2">
+                        <div className="flex justify-between items-center px-1">
+                          <p className="text-xs font-bold text-[#111827] uppercase tracking-wider">{label}</p>
+                          {isTie ? (
+                            <span className="text-[10px] font-bold text-[#111827]/30">TIE</span>
+                          ) : (
+                            <span className={cn(
+                              "text-[10px] font-bold uppercase",
+                              aWins ? "text-[#F97316]" : "text-blue-600"
+                            )}>
+                              {aWins ? "Stack A favored" : "Stack B favored"}
+                            </span>
+                          )}
+                        </div>
+                        <div className="grid grid-cols-2 gap-6">
+                          <div className={cn(
+                            "rounded-xl px-4 py-3 transition-all",
+                            aWins ? "bg-[#F97316]/5 border-2 border-[#F97316]/20" : "bg-gray-50/50 border border-transparent"
+                          )}>
                             <ScoreBar value={vA} isWinner={aWins} />
                           </div>
-                          <div className={cn("rounded-lg px-3 py-2", bWins && "bg-[#F97316]/5 border border-[#F97316]/20")}>
+                          <div className={cn(
+                            "rounded-xl px-4 py-3 transition-all",
+                            bWins ? "bg-blue-50 border-2 border-blue-200" : "bg-gray-50/50 border border-transparent"
+                          )}>
                             <ScoreBar value={vB} isWinner={bWins} />
                           </div>
                         </div>
@@ -421,68 +476,115 @@ function CompareContent() {
                     );
                   })}
 
-                  {/* Overall */}
-                  <div className="pt-2 border-t border-[#FFD896]/50 grid grid-cols-2 gap-4">
-                    {[stackA, stackB].map((stack, i) => (
-                      <div key={i} className="text-center rounded-xl bg-[#fff1d6] border border-[#FFD896] py-3">
-                        <p className="text-xs text-[#111827]/50 mb-1">Overall Score</p>
-                        <p className="text-2xl font-bold text-[#F97316]">
-                          {stack.scoreCard?.overallScore ?? "—"}
-                          <span className="text-sm text-[#111827]/40 font-normal">/10</span>
-                        </p>
-                      </div>
-                    ))}
+                  {/* Overall Summary Row */}
+                  <div className="pt-6 border-t border-[#FFD896]/50 grid grid-cols-2 gap-6">
+                    {[stackA, stackB].map((stack, i) => {
+                      const isWinner = verdictData?.winner === (i === 0 ? "A" : "B");
+                      return (
+                        <div key={i} className={cn(
+                          "relative text-center rounded-2xl p-6 transition-all duration-500",
+                          i === 0 
+                            ? (isWinner ? "bg-orange-50 border-2 border-orange-400 shadow-[0_0_20px_rgba(249,115,22,0.15)] ring-1 ring-orange-400/50" : "bg-[#fff1d6] border-2 border-[#FFD896]") 
+                            : (isWinner ? "bg-blue-50 border-2 border-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.15)] ring-1 ring-blue-400/50" : "bg-blue-50/50 border-2 border-blue-100")
+                        )}>
+                          {isWinner && (
+                            <div className={cn(
+                              "absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest shadow-sm",
+                              i === 0 ? "bg-orange-500 border-orange-400 text-white" : "bg-blue-600 border-blue-400 text-white"
+                            )}>
+                              Overall Winner
+                            </div>
+                          )}
+                          {!isWinner && (
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white border border-inherit text-[10px] font-bold uppercase tracking-widest text-[#111827]/40">
+                              Final Weight
+                            </div>
+                          )}
+                          <p className={cn(
+                            "text-4xl font-black mb-1",
+                            isWinner ? (i === 0 ? "text-orange-600" : "text-blue-700") : "text-[#111827]"
+                          )}>
+                            {stack.scoreCard?.overallScore ?? "—"}
+                            <span className="text-lg font-normal opacity-30">/10</span>
+                          </p>
+                          <p className={cn(
+                            "text-xs font-bold uppercase tracking-wider",
+                            i === 0 ? "text-[#F97316]" : "text-blue-600"
+                          )}>
+                            Stack {i === 0 ? "A" : "B"}
+                          </p>
+                        </div>
+                      );
+                    })}
                   </div>
                 </CardContent>
               </Card>
             )}
 
             {/* Tools Comparison */}
-            <Card className="border-[#FFD896] bg-white">
-              <CardHeader>
+            <Card className="border-[#FFD896] bg-white shadow-sm overflow-hidden">
+              <CardHeader className="bg-[#fff1d6]/20 border-b border-[#FFD896]/30">
                 <CardTitle className="text-base font-bold flex items-center gap-2">
-                  🛠️ Tools Comparison
+                  <Zap className="h-4 w-4 text-[#F97316]" />
+                  Architecture Comparison
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-6">
                 {(() => {
                   const toolNamesA = new Set(stackA.tools.map((t) => t.name.toLowerCase()));
                   const toolNamesB = new Set(stackB.tools.map((t) => t.name.toLowerCase()));
+                  
                   return (
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-8 relative">
+                      {/* Divider line */}
+                      <div className="absolute left-1/2 top-0 bottom-0 w-px bg-[#FFD896]/50 hidden sm:block" />
+                      
                       {[
-                        { stack: stackA, otherSet: toolNamesB, label: "A" },
-                        { stack: stackB, otherSet: toolNamesA, label: "B" },
-                      ].map(({ stack, otherSet, label }) => (
-                        <div key={label} className="space-y-2">
-                          <p className="text-xs font-semibold text-[#111827]/50">Stack {label}</p>
-                          <div className="flex flex-wrap gap-1.5">
-                            {stack.tools.map((tool) => {
-                              const inCommon = otherSet.has(tool.name.toLowerCase());
-                              return (
-                                <Badge
-                                  key={tool.name}
-                                  className={cn(
-                                    "text-xs",
-                                    inCommon
-                                      ? "bg-green-50 border-green-200 text-green-700"
-                                      : "border-[#FFD896] bg-[#fff1d6] text-[#111827]/70"
-                                  )}
-                                >
-                                  {inCommon && <Check className="mr-1 h-3 w-3" />}
-                                  {tool.name}
-                                </Badge>
-                              );
-                            })}
+                        { stack: stackA, otherSet: toolNamesB, label: "A", color: "text-[#F97316]" },
+                        { stack: stackB, otherSet: toolNamesA, label: "B", color: "text-blue-600" },
+                      ].map(({ stack, otherSet, label, color }) => (
+                        <div key={label} className="space-y-4">
+                          <p className={cn("text-sm font-black uppercase tracking-widest", color)}>Stack {label}</p>
+                          <div className="space-y-4">
+                            {getGroupedTools(stack.tools).map((group) => (
+                              <div key={group.category} className="space-y-1.5">
+                                <p className="text-[10px] font-bold text-[#111827]/40 uppercase tracking-tighter">{group.category}</p>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {group.tools.map((tool) => {
+                                    const inCommon = otherSet.has(tool.name.toLowerCase());
+                                    return (
+                                      <Badge
+                                        key={tool.name}
+                                        variant="outline"
+                                        className={cn(
+                                          "px-2 py-1 text-xs font-medium transition-all",
+                                          inCommon
+                                            ? "bg-green-50 border-green-200 text-green-700 font-bold"
+                                            : "border-[#FFD896] bg-white text-[#111827]/70"
+                                        )}
+                                      >
+                                        {inCommon && <Check className="mr-1 h-3 w-3 stroke-[3]" />}
+                                        {tool.name}
+                                      </Badge>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            ))}
                           </div>
                         </div>
                       ))}
                     </div>
                   );
                 })()}
-                <p className="text-xs text-green-600 mt-3 flex items-center gap-1">
-                  <Check className="h-3 w-3" /> Green = shared tools between both stacks
-                </p>
+                <div className="mt-8 flex items-center justify-center">
+                  <div className="bg-green-50 border border-green-100 rounded-full px-4 py-1.5 flex items-center gap-2">
+                    <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                    <p className="text-[10px] font-bold text-green-700 uppercase tracking-wider">
+                      Shared tools are highlighted in bold green
+                    </p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 

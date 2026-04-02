@@ -81,7 +81,7 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
       }
 
       try {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from("comments")
           .select(
             `id, content, created_at, user_id,
@@ -90,18 +90,26 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
           .eq("stack_id", stackId)
           .order("created_at", { ascending: true });
 
+        if (error) {
+          console.error("Comments fetch error:", error);
+          if (error.code === "PGRST116" || error.code === "42P01") {
+            // Table doesn't exist or relation missing
+            setComments([]);
+          }
+          return;
+        }
+
         // Supabase returns profiles as array with joins — normalize
-        const normalized: Comment[] = ((data as unknown[]) || []).map((row: unknown) => {
-          const r = row as Record<string, unknown>;
-          const profilesRaw = r.profiles;
-          const profile: CommentProfile = Array.isArray(profilesRaw)
+        const normalized: Comment[] = ((data as any[]) || []).map((row: any) => {
+          const profilesRaw = row.profiles;
+          const profile: CommentProfile | null = Array.isArray(profilesRaw)
             ? (profilesRaw[0] as CommentProfile) ?? null
             : (profilesRaw as CommentProfile) ?? null;
-          return { ...r, profiles: profile } as Comment;
+          return { ...row, profiles: profile } as Comment;
         });
         setComments(normalized);
-      } catch {
-        // ignore fetch errors
+      } catch (err) {
+        console.error("Comments error:", err);
       } finally {
         setLoadingComments(false);
       }

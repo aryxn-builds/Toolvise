@@ -36,6 +36,8 @@ interface Profile {
   avatar_url: string | null
   is_admin: boolean
   stacks_count: number
+  followers_count: number
+  following_count: number
   created_at: string
   email?: string
   profile_picture_url?: string
@@ -143,6 +145,7 @@ export default function AdminDashboard() {
 
   // API
   const [apiLogs, setApiLogs] = React.useState<ApiLog[]>([])
+  const [dailyUsage, setDailyUsage] = React.useState<number[]>([])
   const [totalApiLogs, setTotalApiLogs] = React.useState(0)
   const [totalGemini, setTotalGemini] = React.useState(0)
   const [totalGroq, setTotalGroq] = React.useState(0)
@@ -245,7 +248,7 @@ export default function AdminDashboard() {
         supabase.from("bug_reports").select("*", { count: "exact", head: true }).eq("status", "open"),
         supabase.from("stacks").select("build_style").order("created_at", { ascending: false }).limit(100),
         supabase.from("stacks").select("goal"),
-        supabase.from("profiles").select("id, username, display_name, avatar_url, is_admin, stacks_count, created_at, email, profile_picture_url, is_owner").order("created_at", { ascending: false }).limit(50),
+        supabase.from("profiles").select("id, username, display_name, avatar_url, is_admin, created_at, stacks_count, followers_count, following_count").order("created_at", { ascending: false }).limit(50),
         supabase.from("stacks").select("id, user_input, build_style, goal, is_public, is_featured, upvotes, score_card, created_at, share_slug, user_id").order("created_at", { ascending: false }).limit(50),
         supabase.from("bug_reports").select("*").order("created_at", { ascending: false }),
         supabase.from("announcements").select("*").order("created_at", { ascending: false }),
@@ -255,6 +258,24 @@ export default function AdminDashboard() {
         supabase.from('api_usage_logs').select('id', { count: 'exact', head: true }).eq('provider', 'groq'),
         supabase.from('api_usage_logs').select('id', { count: 'exact', head: true }).eq('success', false),
       ])
+
+      // Fetch last 7 days daily counts
+      const last7Days = Array.from({ length: 7 }, (_, i) => {
+        const d = new Date()
+        d.setUTCDate(d.getUTCDate() - (6 - i))
+        return d.toISOString().split("T")[0]
+      })
+
+      const dailyCounts = await Promise.all(
+        last7Days.map(date => 
+          supabase
+            .from('api_usage_logs')
+            .select('id', { count: 'exact', head: true })
+            .gte('created_at', `${date}T00:00:00Z`)
+            .lte('created_at', `${date}T23:59:59Z`)
+        )
+      )
+      setDailyUsage(dailyCounts.map(res => res.count || 0))
 
       setTotalUsers(usersCount.count ?? 0)
       setTotalStacks(stacksCount.count ?? 0)
@@ -533,7 +554,9 @@ export default function AdminDashboard() {
   const filteredUsers = (users || []).filter(u => {
     if (!userSearch) return true
     const q = userSearch.toLowerCase()
-    return (u.username?.toLowerCase().includes(q)) || (u.display_name?.toLowerCase().includes(q))
+    const username = (u.username || "").toLowerCase()
+    const displayName = (u.display_name || "").toLowerCase()
+    return username.includes(q) || displayName.includes(q)
   })
 
   const filteredStacks = (stacks || []).filter(s => {
@@ -834,7 +857,8 @@ export default function AdminDashboard() {
                     <tr className="border-b border-[#FFD896] bg-[#fff1d6]/40">
                       <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">User</th>
                       <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Username</th>
-                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Stacks</th>
+                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold text-center">Stacks</th>
+                      <th className="text-left py-3 px-4 text-[#6B7280] font-semibold text-center">Followers</th>
                       <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Joined</th>
                       <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Role</th>
                       <th className="text-left py-3 px-4 text-[#6B7280] font-semibold">Actions</th>
@@ -843,7 +867,7 @@ export default function AdminDashboard() {
                   <tbody>
                     {filteredUsers.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="py-12 text-center text-[#6B7280]">
+                        <td colSpan={7} className="py-12 text-center text-[#6B7280]">
                           {userSearch ? "No users match your search" : "No users found"}
                         </td>
                       </tr>
@@ -869,10 +893,16 @@ export default function AdminDashboard() {
                             </div>
                           </td>
                           <td className="py-3 px-4 text-[#6B7280]">@{user.username || "—"}</td>
-                          <td className="py-3 px-4">
+                          <td className="py-3 px-4 text-center">
                             <span className="inline-flex items-center gap-1 rounded-full bg-[#fff1d6] px-2.5 py-0.5 text-xs font-semibold text-[#111827]">
                               <Layers className="h-3 w-3 text-[#F97316]" />
                               {user.stacks_count ?? 0}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 text-center">
+                            <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-600">
+                              <Star className="h-3 w-3 text-blue-500" />
+                              {user.followers_count ?? 0}
                             </span>
                           </td>
                           <td className="py-3 px-4 text-[#6B7280] text-xs">{formatDate(user.created_at)}</td>
@@ -1499,18 +1529,16 @@ export default function AdminDashboard() {
                 {(() => {
                   const last7 = Array.from({ length: 7 }, (_, i) => {
                     const d = new Date()
+                    // Use local date to match dailyUsage calculated in loadAllData
                     d.setDate(d.getDate() - (6 - i))
-                    return d.toLocaleDateString('en-CA')
+                    return d.toISOString().split("T")[0]
                   })
-                  const counts = last7.map(day => 
-                    apiLogs.filter(l => new Date(l.created_at).toLocaleDateString('en-CA') === day).length
-                  )
-                  const maxCount = Math.max(...counts, 1)
+                  const maxCount = Math.max(...dailyUsage, 1)
                   return (
                     <div className="space-y-3 mt-auto">
                       <div className="flex items-end justify-between h-32 gap-1.5 border-b border-[#FFD896]/50 pb-2">
                         {last7.map((day, i) => {
-                          const count = counts[i]
+                          const count = dailyUsage[i] || 0
                           const pct = Math.round(count / maxCount * 100)
                           const label = new Date(day).toLocaleDateString('en-US', { weekday: 'narrow' })
                           return (
@@ -1710,9 +1738,9 @@ export default function AdminDashboard() {
                       if (!email) return
                       try {
                         const supabase = createClient()
-                        const targetUser = users.find(u => u.email?.toLowerCase() === email.toLowerCase())
+                        const targetUser = users.find(u => (u.username || "").toLowerCase() === email.toLowerCase())
                         if (!targetUser) {
-                          showToast("User not found by email.", false)
+                          showToast("User not found by username.", false)
                           return
                         }
                         if (targetUser.is_admin) {
@@ -1745,24 +1773,18 @@ export default function AdminDashboard() {
                   {users.filter(u => u.is_admin).map(admin => (
                     <div key={admin.id} className="flex items-center justify-between p-3 rounded-lg border border-[#FFD896]/50 bg-[#fff1d6]/20">
                       <div className="flex items-center gap-3">
-                        {admin.profile_picture_url ? (
-                          <img src={admin.profile_picture_url} alt="" className="h-10 w-10 rounded-full" />
+                        {admin.avatar_url ? (
+                          <img src={admin.avatar_url} alt="" className="h-10 w-10 rounded-full" />
                         ) : (
                           <div className="h-10 w-10 rounded-full bg-[#111827] flex items-center justify-center text-white font-bold uppercase text-sm">
-                            {admin.name?.charAt(0) || '?'}
+                            {admin.display_name?.charAt(0) || admin.username?.charAt(0) || '?'}
                           </div>
                         )}
                         <div>
                           <p className="font-semibold text-sm text-[#111827] flex items-center gap-2">
-                            {admin.name || 'Unnamed User'}
-                            {admin.is_owner && (
-                              <span className="text-[10px] font-bold text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded uppercase">Owner</span>
-                            )}
-                            {admin.id === currentUserId && !admin.is_owner && (
-                              <span className="text-[10px] font-bold text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded uppercase">You</span>
-                            )}
+                            {admin.display_name || admin.username || 'Unnamed User'}
                           </p>
-                          <p className="text-xs text-[#6B7280]">{admin.email}</p>
+                          <p className="text-xs text-[#6B7280]">@{admin.username || 'unknown'}</p>
                         </div>
                       </div>
 

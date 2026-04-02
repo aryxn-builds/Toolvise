@@ -62,7 +62,17 @@ Always respond in this exact JSON format:
   ],
   "estimatedTime": "string (realistic time to build MVP)",
   "proTip": "string (one expert advice for their project)",
-    "scoreCard": {
+  "comparisonEngine": [
+    {
+      "category": "string (e.g. Database)",
+      "recommended": "string (the tool you picked)",
+      "alternatives": ["string (alt 1)", "string (alt 2)"],
+      "pros": ["string (pro 1 - specific to why it's better than alts in this context)", "string (pro 2)"],
+      "cons": ["string (con 1 - realistic trade-off)", "string (con 2)"],
+      "whenToUse": "string (precise scenario for each option. e.g. Use MongoDB if you need fast iteration and flexible schema, use PostgreSQL if you need ACID compliance and complex relationships)"
+    }
+  ],
+  "scoreCard": {
       "speedToShip": "number between 1-10",
       "costEfficiency": "number between 1-10",
       "scalability": "number between 1-10",
@@ -473,6 +483,7 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
       architecture: detailLevel === "deep"
         ? ((payload.architecture || payload.Architecture || "") as string)
         : undefined,
+      comparisonEngine: (payload.comparisonEngine || payload.comparison_engine || payload.ComparisonEngine || []) as any[],
     };
 
     // 9. If vibe coding is STILL null and buildStyle is vibe, inject default
@@ -504,6 +515,7 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
         pro_tip: normalizedData.proTip || null,
         vibe_coding: normalizedData.vibeCoding || null,
         score_card: normalizedData.scoreCard || null,
+        comparison_engine: normalizedData.comparisonEngine || null,
       });
 
       if (dbError) {
@@ -523,6 +535,7 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
       vibeCoding: normalizedData.vibeCoding,
       scoreCard: normalizedData.scoreCard,
       architecture: normalizedData.architecture,
+      comparisonEngine: normalizedData.comparisonEngine,
       shareSlug,
     });
   } catch (err: unknown) {

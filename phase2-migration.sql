@@ -8,7 +8,11 @@ ALTER TABLE public.profiles
   ADD COLUMN IF NOT EXISTS followers_count integer DEFAULT 0,
   ADD COLUMN IF NOT EXISTS following_count integer DEFAULT 0;
 
--- ── 2. Comments table ─────────────────────────────────────────
+-- ── 2. Add comparison_engine to stacks ────────────────────────
+ALTER TABLE public.stacks
+  ADD COLUMN IF NOT EXISTS comparison_engine jsonb DEFAULT '[]'::jsonb;
+
+-- ── 3. Comments table ─────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS public.comments (
   id          uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   stack_id    uuid REFERENCES public.stacks(id) ON DELETE CASCADE NOT NULL,
@@ -34,7 +38,7 @@ CREATE POLICY "Users delete own comment"
   ON public.comments FOR DELETE
   USING (auth.uid() = user_id);
 
--- ── 3. Follows table ──────────────────────────────────────────
+-- ── 4. Follows table ──────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS public.follows (
   follower_id  uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
   following_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
@@ -59,7 +63,7 @@ CREATE POLICY "Users delete own follows"
   ON public.follows FOR DELETE
   USING (auth.uid() = follower_id);
 
--- ── 4. stacks_count auto-sync trigger ─────────────────────────
+-- ── 5. stacks_count auto-sync trigger ─────────────────────────
 CREATE OR REPLACE FUNCTION public.sync_stacks_count()
 RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN
@@ -91,7 +95,7 @@ CREATE TRIGGER on_stack_change
   AFTER INSERT OR UPDATE OR DELETE ON public.stacks
   FOR EACH ROW EXECUTE FUNCTION public.sync_stacks_count();
 
--- ── 5. follows count auto-sync trigger ────────────────────────
+-- ── 6. follows count auto-sync trigger ────────────────────────
 CREATE OR REPLACE FUNCTION public.sync_follows_count()
 RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $$
 BEGIN
@@ -111,5 +115,5 @@ CREATE TRIGGER on_follow_change
   AFTER INSERT OR DELETE ON public.follows
   FOR EACH ROW EXECUTE FUNCTION public.sync_follows_count();
 
--- ── 6. Reload schema cache ────────────────────────────────────
+-- ── 7. Reload schema cache ────────────────────────────────────
 NOTIFY pgrst, 'reload schema';

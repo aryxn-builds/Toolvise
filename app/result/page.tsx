@@ -75,6 +75,15 @@ interface Tool {
   bestFor?: string
 }
 
+interface Comparison {
+  category: string
+  recommended: string
+  alternatives: string[]
+  pros: string[]
+  cons: string[]
+  whenToUse: string
+}
+
 interface VibeAITool {
   name: string
   purpose: string
@@ -107,6 +116,7 @@ interface StackResult {
   vibeCoding?: VibeCodingData | null
   scoreCard?: ScoreCard | null
   architecture?: string
+  comparisonEngine?: Comparison[] | null
   shareSlug?: string
   stackUserId?: string | null
   formInput?: {
@@ -278,6 +288,84 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
   )
 }
 
+// ── Comparison Engine Component ──────────────────────────────────────────
+function ComparisonEngineSection({ comparisons }: { comparisons: Comparison[] }) {
+  return (
+    <section className="space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "250ms" }}>
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 border border-orange-200">
+          <RefreshCcw className="h-5 w-5 text-orange-600" />
+        </div>
+        <div>
+          <h2 className="text-xl font-bold text-[#111827] flex items-center gap-2">
+            🚀 Tool Comparison Engine
+          </h2>
+          <p className="text-sm text-[#6B7280]">Detailed breakdown of why we chose these specific tools for your project</p>
+        </div>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        {comparisons.map((comp, idx) => (
+          <Card key={idx} className="border-[#FFD896]/50 bg-white/80 backdrop-blur-sm overflow-hidden hover:shadow-xl transition-all duration-300 group">
+            <CardHeader className="bg-gradient-to-br from-[#fff1d6]/50 to-white border-b border-[#FFD896]/30 pb-3">
+              <div className="flex items-center justify-between">
+                <Badge variant="outline" className="bg-white border-[#FFD896] text-[#F97316] font-bold shadow-sm">
+                  {comp.category}
+                </Badge>
+              </div>
+              <CardTitle className="text-lg mt-2 flex flex-wrap items-center gap-2">
+                <span className="text-[#111827] bg-[#F97316]/5 px-2 py-0.5 rounded-lg border border-[#F97316]/10">{comp.recommended}</span>
+                <span className="text-[#6B7280] font-normal text-sm italic">vs</span>
+                <span className="text-[#6B7280] font-normal text-sm">{comp.alternatives.join(" / ")}</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-5 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <p className="text-[10px] font-bold text-green-600 uppercase tracking-wider flex items-center gap-1">
+                    <CheckCircle2 className="h-3 w-3" /> Pros
+                  </p>
+                  <ul className="space-y-1">
+                    {comp.pros.map((p, i) => (
+                      <li key={i} className="text-xs text-[#111827]/70 flex items-start gap-1.5">
+                        <span className="text-green-500 mt-0.5">•</span>
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-[10px] font-bold text-red-500 uppercase tracking-wider flex items-center gap-1">
+                    <AlertTriangle className="h-3 w-3" /> Cons
+                  </p>
+                  <ul className="space-y-1">
+                    {comp.cons.map((c, i) => (
+                      <li key={i} className="text-xs text-[#111827]/70 flex items-start gap-1.5">
+                        <span className="text-red-400 mt-0.5">•</span>
+                        {c}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-[#FFD896]/30">
+                <p className="text-xs font-bold text-[#111827] mb-1 flex items-center gap-1">
+                  <Lightbulb className="h-3 w-3 text-orange-500" />
+                  When to use what?
+                </p>
+                <p className="text-xs text-[#111827]/60 leading-relaxed italic">
+                  {comp.whenToUse}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 // ── Budget Section Component ───────────────────────────────────────────────
 function BudgetSection({ tools }: { tools: Tool[] }) {
   const freeTools = tools.filter(t => t.isFree)
@@ -431,6 +519,7 @@ function ResultContent() {
               proTip: dbData.pro_tip,
               vibeCoding: dbData.vibe_coding || null,
               scoreCard: dbData.score_card ?? dbData.scoreCard ?? null,
+              comparisonEngine: dbData.comparison_engine || null,
               shareSlug: dbData.share_slug,
               stackUserId: dbData.user_id,
               formInput: {
@@ -925,6 +1014,11 @@ function ResultContent() {
         </div>
       </section>
 
+      {/* 4.1 TOOL COMPARISON ENGINE */}
+      {data.comparisonEngine && data.comparisonEngine.length > 0 && (
+        <ComparisonEngineSection comparisons={data.comparisonEngine} />
+      )}
+
       {/* 4.5 ARCHITECTURE DIAGRAM */}
       <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "200ms" }}>
         <h2 className="text-xl font-bold text-[#111827] flex items-center gap-2">
@@ -1042,6 +1136,11 @@ function ResultContent() {
       {/* 6. APPROX. BUDGET */}
       {data.tools && data.tools.length > 0 && (
         <BudgetSection tools={data.tools} />
+      )}
+
+      {/* 6.5 TOOL COMPARISON ENGINE */}
+      {data.comparisonEngine && data.comparisonEngine.length > 0 && (
+        <ComparisonEngineSection comparisons={data.comparisonEngine} />
       )}
 
       {/* 7. VIBE CODING */}
