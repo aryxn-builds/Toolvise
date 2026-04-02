@@ -1,0 +1,12 @@
+﻿ M app/admin/page.tsx
+ M app/compare/page.tsx
+ M app/dashboard/page.tsx
+ M app/leaderboard/page.tsx
+ M app/result/page.tsx
+ M app/settings/page.tsx
+?? app/api/critic/
+?? git_status.txt
+?? git_status_short.txt
+?? migrations/
+?? supabase-migration-phase3.sql
+?? supabase-migration-phase4.sql

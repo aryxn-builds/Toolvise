@@ -376,15 +376,7 @@ export default function LeaderboardPage() {
                           <p className="text-xs text-[#111827]/40">upvotes</p>
                         </div>
 
-                        {/* Score */}
-                        {score !== undefined && (
-                          <div className="text-center hidden sm:block">
-                            <p className="text-sm font-bold text-[#F97316]">
-                              {score}/10
-                            </p>
-                            <p className="text-xs text-[#111827]/40">score</p>
-                          </div>
-                        )}
+                        {/* Score intentionally hidden from public leaderboard */}
 
                         <Link
                           href={`/result?slug=${stack.share_slug}`}

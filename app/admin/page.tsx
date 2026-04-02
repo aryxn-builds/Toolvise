@@ -20,6 +20,9 @@ import {
   EyeOff,
   Activity,
   AlertTriangle,
+  Bookmark,
+  Trophy,
+  Loader2,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 import { cn } from "@/lib/utils"
@@ -34,6 +37,10 @@ interface Profile {
   is_admin: boolean
   stacks_count: number
   created_at: string
+  email?: string
+  profile_picture_url?: string
+  name?: string
+  is_owner?: boolean
 }
 
 interface Stack {
@@ -85,7 +92,7 @@ interface ToastState {
   ok: boolean
 }
 
-type TabKey = "overview" | "users" | "stacks" | "bugs" | "announcements" | "api"
+type TabKey = "overview" | "users" | "stacks" | "bugs" | "announcements" | "api" | "admins"
 
 const TABS: { key: TabKey; label: string; icon: React.ReactNode }[] = [
   { key: "overview", label: "Overview", icon: <TrendingUp className="h-4 w-4" /> },
@@ -94,6 +101,7 @@ const TABS: { key: TabKey; label: string; icon: React.ReactNode }[] = [
   { key: "bugs", label: "Bug Reports", icon: <Bug className="h-4 w-4" /> },
   { key: "announcements", label: "Announcements", icon: <Megaphone className="h-4 w-4" /> },
   { key: "api", label: "API Monitor", icon: <Activity className="h-4 w-4" /> },
+  { key: "admins", label: "Admins", icon: <Shield className="h-4 w-4" /> },
 ]
 
 // ── Main Component ──────────────────────────────────────────────────────────
@@ -111,6 +119,8 @@ export default function AdminDashboard() {
   // Overview
   const [totalUsers, setTotalUsers] = React.useState(0)
   const [totalStacks, setTotalStacks] = React.useState(0)
+  const [totalBookmarks, setTotalBookmarks] = React.useState(0)
+  const [avgScore, setAvgScore] = React.useState(0)
   const [todayStacks, setTodayStacks] = React.useState(0)
   const [openBugs, setOpenBugs] = React.useState(0)
   const [recentStacks, setRecentStacks] = React.useState<{ build_style: string | null }[]>([])
@@ -119,12 +129,38 @@ export default function AdminDashboard() {
   // Users
   const [users, setUsers] = React.useState<Profile[]>([])
   const [userSearch, setUserSearch] = React.useState("")
+  const [deletingUserId, setDeletingUserId] = React.useState<string | null>(null)
+  const [expandedUser, setExpandedUser] = React.useState<string | null>(null)
+  const [userStacks, setUserStacks] = React.useState<Record<string, Stack[]>>({})
 
   // Stacks
   const [stacks, setStacks] = React.useState<Stack[]>([])
   const [stackSearch, setStackSearch] = React.useState("")
   const [stackBuildFilter, setStackBuildFilter] = React.useState("all")
   const [stackPublicFilter, setStackPublicFilter] = React.useState("all")
+  const [stacksPage, setStacksPage] = React.useState(0)
+  const [loadingMoreStacks, setLoadingMoreStacks] = React.useState(false)
+
+  // API
+  const [apiLogs, setApiLogs] = React.useState<ApiLog[]>([])
+  const [totalApiLogs, setTotalApiLogs] = React.useState(0)
+  const [totalGemini, setTotalGemini] = React.useState(0)
+  const [totalGroq, setTotalGroq] = React.useState(0)
+  const [totalFailed, setTotalFailed] = React.useState(0)
+  const [currentUserId, setCurrentUserId] = React.useState<string | null>(null)
+
+  // Confirm
+  const [confirm, setConfirm] = React.useState<{
+    title: string
+    message: string
+    confirmText: string
+    danger: boolean
+    onConfirm: () => void
+  } | null>(null)
+
+  function openConfirm(title: string, message: string, onConfirm: () => void, confirmText = "Delete", danger = true) {
+    setConfirm({ title, message, onConfirm, confirmText, danger })
+  }
 
   // Bugs
   const [bugs, setBugs] = React.useState<BugReport[]>([])
@@ -134,9 +170,6 @@ export default function AdminDashboard() {
   // Announcements
   const [announcements, setAnnouncements] = React.useState<Announcement[]>([])
   const [newMessage, setNewMessage] = React.useState("")
-
-  // API Logs
-  const [apiLogs, setApiLogs] = React.useState<ApiLog[]>([])
 
   // Toast
   const [toast, setToast] = React.useState<ToastState | null>(null)
@@ -171,6 +204,7 @@ export default function AdminDashboard() {
         }
 
         setIsAdmin(true)
+        setCurrentUserId(user.id)
         await loadAllData()
       } catch (err) {
         console.error("Admin check failed:", err)
@@ -200,6 +234,10 @@ export default function AdminDashboard() {
         bugsData,
         announcementsData,
         apiLogsData,
+        totalApiLogsData,
+        totalGeminiData,
+        totalGroqData,
+        totalFailedData,
       ] = await Promise.all([
         supabase.from("profiles").select("*", { count: "exact", head: true }),
         supabase.from("stacks").select("*", { count: "exact", head: true }),
@@ -207,11 +245,15 @@ export default function AdminDashboard() {
         supabase.from("bug_reports").select("*", { count: "exact", head: true }).eq("status", "open"),
         supabase.from("stacks").select("build_style").order("created_at", { ascending: false }).limit(100),
         supabase.from("stacks").select("goal"),
-        supabase.from("profiles").select("id, username, display_name, avatar_url, is_admin, stacks_count, created_at").order("created_at", { ascending: false }).limit(50),
+        supabase.from("profiles").select("id, username, display_name, avatar_url, is_admin, stacks_count, created_at, email, profile_picture_url, is_owner").order("created_at", { ascending: false }).limit(50),
         supabase.from("stacks").select("id, user_input, build_style, goal, is_public, is_featured, upvotes, score_card, created_at, share_slug, user_id").order("created_at", { ascending: false }).limit(50),
         supabase.from("bug_reports").select("*").order("created_at", { ascending: false }),
         supabase.from("announcements").select("*").order("created_at", { ascending: false }),
         supabase.from('api_usage_logs').select('*').order('created_at', { ascending: false }).limit(100),
+        supabase.from('api_usage_logs').select('id', { count: 'exact', head: true }),
+        supabase.from('api_usage_logs').select('id', { count: 'exact', head: true }).eq('provider', 'gemini'),
+        supabase.from('api_usage_logs').select('id', { count: 'exact', head: true }).eq('provider', 'groq'),
+        supabase.from('api_usage_logs').select('id', { count: 'exact', head: true }).eq('success', false),
       ])
 
       setTotalUsers(usersCount.count ?? 0)
@@ -225,6 +267,10 @@ export default function AdminDashboard() {
       setBugs((bugsData.data as BugReport[]) || [])
       setAnnouncements((announcementsData.data as Announcement[]) || [])
       setApiLogs((apiLogsData?.data as ApiLog[]) || [])
+      setTotalApiLogs(totalApiLogsData?.count ?? 0)
+      setTotalGemini(totalGeminiData?.count ?? 0)
+      setTotalGroq(totalGroqData?.count ?? 0)
+      setTotalFailed(totalFailedData?.count ?? 0)
     } catch (err) {
       console.error("Failed to load data:", err)
       showToast("Failed to load data", false)
@@ -234,17 +280,135 @@ export default function AdminDashboard() {
   // ── Stack Actions ───────────────────────────────────────────────────────
 
   async function handleDeleteStack(stackId: string) {
-    if (!window.confirm("Are you sure you want to delete this stack? This cannot be undone.")) return
+    openConfirm(
+      "Delete Stack?",
+      "This will permanently remove this stack. Cannot be undone.",
+      async () => {
+        setConfirm(null)
+        try {
+          const supabase = createClient()
+          const { error } = await supabase.from("stacks").delete().eq("id", stackId)
+          if (error) throw error
+          setStacks(prev => prev.filter(s => s.id !== stackId))
+          setTotalStacks(prev => prev - 1)
+          showToast("Stack deleted successfully")
+        } catch (err) {
+          console.error("Delete stack failed:", err)
+          showToast("Failed to delete stack", false)
+        }
+      }
+    )
+  }
+
+  async function handleDeleteUser(userId: string, username: string) {
+    openConfirm(
+      `Delete user @${username}?`,
+      "This will delete their account and all their stacks permanently.",
+      async () => {
+        setConfirm(null)
+        setDeletingUserId(userId)
+        try {
+          const supabase = createClient()
+          
+          await supabase.from('stacks').delete().eq('user_id', userId)
+          await supabase.from('bookmarks').delete().eq('user_id', userId)
+          await supabase.from('profiles').delete().eq('id', userId)
+          
+          setUsers(prev => prev.filter(u => u.id !== userId))
+          setTotalUsers(prev => prev - 1)
+          showToast(`User @${username} deleted`)
+        } catch (err) {
+          console.error('Delete user failed:', err)
+          showToast('Failed to delete user', false)
+        } finally {
+          setDeletingUserId(null)
+        }
+      }
+    )
+  }
+
+  async function handleToggleAdmin(userId: string, currentStatus: boolean, username: string) {
+    if (users.filter(u => u.is_admin).length === 1 && currentStatus) {
+      showToast("Cannot remove the last admin", false)
+      return
+    }
+    openConfirm(
+      currentStatus ? `Remove admin rights for @${username}?` : `Make @${username} an admin?`,
+      currentStatus ? "They will lose access to the admin dashboard." : "They will have full access to manage users, stacks, and announcements.",
+      async () => {
+        setConfirm(null)
+        try {
+          const supabase = createClient()
+          const { error } = await supabase.from('profiles').update({ is_admin: !currentStatus }).eq('id', userId)
+          if (error) throw error
+          setUsers(prev => prev.map(u => u.id === userId ? { ...u, is_admin: !currentStatus } : u))
+          showToast(`User @${username} is ${currentStatus ? 'no longer' : 'now'} an admin`)
+        } catch (err) {
+          console.error('Toggle admin failed:', err)
+          showToast('Failed to change admin status', false)
+        }
+      },
+      currentStatus ? "Remove Admin" : "Make Admin",
+      currentStatus
+    )
+  }
+
+  async function loadMoreStacks() {
+    try {
+      setLoadingMoreStacks(true)
+      const supabase = createClient()
+      const start = (stacksPage + 1) * 100
+      const end = start + 99
+      const { data, error } = await supabase
+        .from("stacks")
+        .select("id, user_input, build_style, goal, is_public, is_featured, upvotes, score_card, created_at, share_slug, user_id, skill_level, budget, detail_level")
+        .order("created_at", { ascending: false })
+        .range(start, end)
+      
+      if (error) {
+        console.error('[admin] load more stacks error:', error)
+        showToast("Failed to load more stacks", false)
+        return
+      }
+      
+      if (data && data.length > 0) {
+        setStacks(prev => [...prev, ...data])
+        setStacksPage(prev => prev + 1)
+      } else {
+        showToast("No more stacks to load", true)
+      }
+    } catch (err) {
+      console.error("Load more stacks failed:", err)
+    } finally {
+      setLoadingMoreStacks(false)
+    }
+  }
+
+  async function loadUserStacks(userId: string) {
+    if (userStacks[userId]) {
+      setExpandedUser(expandedUser === userId ? null : userId)
+      return
+    }
+    setExpandedUser(expandedUser === userId ? null : userId)
+    if (expandedUser === userId) return
+    
     try {
       const supabase = createClient()
-      const { error } = await supabase.from("stacks").delete().eq("id", stackId)
-      if (error) throw error
-      setStacks(prev => prev.filter(s => s.id !== stackId))
-      setTotalStacks(prev => prev - 1)
-      showToast("Stack deleted successfully")
+      const { data, error } = await supabase
+        .from('stacks')
+        .select('id, user_input, created_at, score_card, share_slug')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(3)
+        
+      if (error) {
+        console.error('[admin] load user stacks error:', error)
+        return
+      }
+      
+      setUserStacks(prev => ({ ...prev, [userId]: (data || []) as Stack[] }))
     } catch (err) {
-      console.error("Delete stack failed:", err)
-      showToast("Failed to delete stack", false)
+      console.error("Failed to load user stacks:", err)
     }
   }
 
@@ -334,17 +498,23 @@ export default function AdminDashboard() {
   }
 
   async function deleteAnnouncement(id: string) {
-    if (!window.confirm("Delete this announcement?")) return
-    try {
-      const supabase = createClient()
-      const { error } = await supabase.from("announcements").delete().eq("id", id)
-      if (error) throw error
-      setAnnouncements(prev => prev.filter(a => a.id !== id))
-      showToast("Announcement deleted")
-    } catch (err) {
-      console.error("Delete announcement failed:", err)
-      showToast("Failed to delete announcement", false)
-    }
+    openConfirm(
+      "Delete this announcement?",
+      "It will be removed permanently.",
+      async () => {
+        setConfirm(null)
+        try {
+          const supabase = createClient()
+          const { error } = await supabase.from("announcements").delete().eq("id", id)
+          if (error) throw error
+          setAnnouncements(prev => prev.filter(a => a.id !== id))
+          showToast("Announcement deleted")
+        } catch (err) {
+          console.error("Delete announcement failed:", err)
+          showToast("Failed to delete announcement", false)
+        }
+      }
+    )
   }
 
   // ── Helpers ─────────────────────────────────────────────────────────────
@@ -513,12 +683,14 @@ export default function AdminDashboard() {
         {activeTab === "overview" && (
           <div className="space-y-6 animate-in fade-in duration-300">
             {/* KPI Cards */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {[
                 { label: "Total Users", value: totalUsers, icon: <Users className="h-5 w-5 text-blue-500" />, color: "bg-blue-50" },
                 { label: "Total Stacks", value: totalStacks, icon: <Layers className="h-5 w-5 text-amber-500" />, color: "bg-amber-50" },
                 { label: "Stacks Today", value: todayStacks, icon: <TrendingUp className="h-5 w-5 text-green-500" />, color: "bg-green-50" },
                 { label: "Open Bug Reports", value: openBugs, icon: <Bug className="h-5 w-5 text-red-500" />, color: "bg-red-50" },
+                { label: "Total Bookmarks", value: totalBookmarks, icon: <Bookmark className="h-5 w-5 text-purple-500" />, color: "bg-purple-50" },
+                { label: "Avg Stack Score", value: avgScore, icon: <Trophy className="h-5 w-5 text-amber-600" />, color: "bg-amber-50" },
               ].map(card => (
                 <div
                   key={card.label}
@@ -546,33 +718,54 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               {/* Build Style Distribution */}
               <div className="rounded-xl border border-[#FFD896] bg-white p-6">
-                <h3 className="font-semibold text-[#111827] mb-4">Build Style Distribution</h3>
-                <div className="space-y-4">
-                  {(["traditional", "vibe", "nocode"] as const).map(style => {
-                    const count = buildStyleCounts[style] || 0
-                    const total = recentStacks?.length || 1
-                    const pct = Math.round((count / total) * 100)
+                <h3 className="font-semibold text-[#111827] mb-6">Build Style Distribution</h3>
+                <div className="flex items-center gap-6">
+                  {(() => {
+                    const total = recentStacks?.length || 1;
+                    const vibe = buildStyleCounts["vibe"] || 0;
+                    const nocode = buildStyleCounts["nocode"] || 0;
+                    const traditional = buildStyleCounts["traditional"] || 0;
+                    
+                    const vibePct = Math.round((vibe / total) * 100);
+                    const nocodePct = Math.round((nocode / total) * 100);
+                    const tradPct = Math.round((traditional / total) * 100);
+                    
                     return (
-                      <div key={style} className="space-y-1.5">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-[#111827]/70 font-medium">
-                            {style === "vibe" ? "Vibe Coding ✨" : style === "nocode" ? "No-Code 🧩" : "Traditional 💻"}
-                          </span>
-                          <span className="font-semibold text-[#111827]">
-                            {count} ({pct}%)
-                          </span>
+                      <>
+                        <div className="relative h-32 w-32 rounded-full flex flex-col items-center justify-center shrink-0 transition-all duration-1000 animate-in zoom-in-50"
+                             style={{ background: `conic-gradient(#A855F7 0% ${vibePct}%, #3B82F6 ${vibePct}% ${vibePct + nocodePct}%, #9CA3AF ${vibePct + nocodePct}% 100%)` }}>
+                          <div className="absolute inset-[20%] bg-white rounded-full flex flex-col items-center justify-center shadow-inner">
+                            <span className="text-xl font-black text-[#111827]">{total}</span>
+                          </div>
                         </div>
-                        <div className="h-2.5 rounded-full bg-[#FFD896]/60 overflow-hidden">
-                          <div
-                            className="h-full bg-gradient-to-r from-[#F97316] to-[#FB923C] rounded-full transition-all duration-700 ease-out"
-                            style={{ width: `${pct}%` }}
-                          />
+                        <div className="w-full space-y-3">
+                          <div className="flex items-center justify-between text-sm">
+                            <div className="flex items-center gap-2">
+                              <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                              <span className="font-medium text-gray-700">Vibe ✨</span>
+                            </div>
+                            <span className="font-bold text-gray-900">{vibe} ({vibePct}%)</span>
+                          </div>
+                          <div className="flex items-center justify-between text-sm">
+                            <div className="flex items-center gap-2">
+                              <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                              <span className="font-medium text-gray-700">No-Code 🧩</span>
+                            </div>
+                            <span className="font-bold text-gray-900">{nocode} ({nocodePct}%)</span>
+                          </div>
+                          <div className="flex items-center justify-between text-sm">
+                            <div className="flex items-center gap-2">
+                              <div className="w-3 h-3 rounded-full bg-gray-400"></div>
+                              <span className="font-medium text-gray-700">Traditional 💻</span>
+                            </div>
+                            <span className="font-bold text-gray-900">{traditional} ({tradPct}%)</span>
+                          </div>
                         </div>
-                      </div>
+                      </>
                     )
-                  })}
+                  })()}
                 </div>
-                <p className="mt-4 text-xs text-[#6B7280]">Based on last 100 stacks</p>
+                <p className="mt-6 text-xs text-[#6B7280] text-center">Based on last 100 stacks</p>
               </div>
 
               {/* Top Goals */}
@@ -656,7 +849,8 @@ export default function AdminDashboard() {
                       </tr>
                     ) : (
                       filteredUsers.map(user => (
-                        <tr key={user.id} className="border-b border-[#FFD896]/50 hover:bg-[#fff1d6]/30 transition-colors">
+                        <React.Fragment key={user.id}>
+                        <tr className={cn("border-b border-[#FFD896]/50 hover:bg-[#fff1d6]/30 transition-colors cursor-pointer", expandedUser === user.id && "bg-[#fff1d6]/40")} onClick={() => loadUserStacks(user.id)}>
                           <td className="py-3 px-4">
                             <div className="flex items-center gap-3">
                               <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#F97316] to-[#FB923C] flex items-center justify-center text-white text-xs font-bold shrink-0 overflow-hidden">
@@ -682,25 +876,73 @@ export default function AdminDashboard() {
                             </span>
                           </td>
                           <td className="py-3 px-4 text-[#6B7280] text-xs">{formatDate(user.created_at)}</td>
-                          <td className="py-3 px-4">
-                            {user.is_admin ? (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-[#F97316]/10 px-2.5 py-0.5 text-xs font-bold text-[#F97316]">
-                                <Shield className="h-3 w-3" />
-                                Admin
-                              </span>
-                            ) : (
-                              <span className="text-xs text-[#6B7280]">User</span>
-                            )}
-                          </td>
-                          <td className="py-3 px-4">
-                            <Link
-                              href={`/profile/${user.username}`}
-                              className="text-xs font-medium text-[#F97316] hover:text-[#EA6C0A] transition-colors"
+                          <td className="py-3 px-4" onClick={e => e.stopPropagation()}>
+                            <button
+                              onClick={() => handleToggleAdmin(user.id, !!user.is_admin, user.username || 'unknown')}
+                              className={cn(
+                                "group inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold transition-all",
+                                user.is_admin 
+                                  ? "bg-[#F97316]/10 text-[#F97316] hover:bg-red-50 hover:text-red-600" 
+                                  : "text-[#6B7280] bg-gray-100 hover:bg-[#F97316]/10 hover:text-[#F97316]"
+                              )}
+                              title={user.is_admin ? "Remove admin rights" : "Make admin"}
                             >
-                              View Profile →
-                            </Link>
+                              <Shield className={cn("h-3 w-3", user.is_admin ? "fill-[#F97316]/20 group-hover:fill-red-500/20" : "")} />
+                              {user.is_admin ? "Admin" : "User"}
+                            </button>
+                          </td>
+                          <td className="py-3 px-4" onClick={e => e.stopPropagation()}>
+                            <div className="flex items-center gap-3">
+                              <Link
+                                href={`/profile/${user.username}`}
+                                className="text-xs font-medium text-[#F97316] hover:text-[#EA6C0A] transition-colors"
+                              >
+                                View Profile
+                              </Link>
+                              <button
+                                onClick={() => handleDeleteUser(user.id, user.username || 'unknown')}
+                                disabled={user.is_admin || deletingUserId === user.id}
+                                className={cn(
+                                  "p-1.5 rounded-lg transition-colors",
+                                  user.is_admin
+                                    ? "opacity-30 cursor-not-allowed text-[#6B7280]"
+                                    : "text-[#6B7280] hover:bg-red-50 hover:text-red-600"
+                                )}
+                                title={user.is_admin ? "Cannot delete admin" : "Delete user"}
+                              >
+                                {deletingUserId === user.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
+                              </button>
+                            </div>
                           </td>
                         </tr>
+                        {expandedUser === user.id && (
+                          <tr className="bg-[#fff1d6]/20">
+                            <td colSpan={7} className="px-6 py-4">
+                              <div className="rounded-lg bg-white border border-[#FFD896] p-4">
+                                <p className="text-sm font-semibold text-[#111827] mb-3">
+                                  Recent Stacks by @{user.username}
+                                </p>
+                                {(userStacks[user.id] || []).length === 0 ? (
+                                  <p className="text-sm text-[#6B7280]">No stacks yet</p>
+                                ) : (
+                                  <div className="space-y-2">
+                                    {(userStacks[user.id] || []).map(s => (
+                                      <div key={s.id} className="flex items-center justify-between gap-4 rounded-lg bg-[#fff1d6]/50 px-4 py-2">
+                                        <p className="text-sm text-[#111827] truncate flex-1">{s.user_input || '—'}</p>
+                                        {s.share_slug && (
+                                          <Link href={`/result?slug=${s.share_slug}`} className="text-xs text-[#F97316] hover:underline shrink-0">
+                                            View →
+                                          </Link>
+                                        )}
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                        </React.Fragment>
                       ))
                     )}
                   </tbody>
@@ -859,6 +1101,21 @@ export default function AdminDashboard() {
                   </tbody>
                 </table>
               </div>
+              {filteredStacks.length > 0 && !stackSearch && stackBuildFilter === "all" && stackPublicFilter === "all" && (
+                <div className="p-4 border-t border-[#FFD896] bg-white flex justify-center">
+                  <button
+                    onClick={loadMoreStacks}
+                    disabled={loadingMoreStacks}
+                    className="flex items-center gap-2 rounded-lg px-6 py-2.5 text-sm font-semibold text-[#111827] bg-[#fff1d6] border border-[#FFD896] hover:bg-[#FFD896]/50 transition-colors disabled:opacity-50"
+                  >
+                    {loadingMoreStacks ? (
+                      <><Loader2 className="h-4 w-4 animate-spin" /> Loading...</>
+                    ) : (
+                      "Load Next 100 Stacks"
+                    )}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -1086,24 +1343,26 @@ export default function AdminDashboard() {
                 <p className="text-xs font-medium text-[#6B7280] mb-1">
                   Total API Calls
                 </p>
-                <p className="text-3xl font-black text-[#111827]">
-                  {apiLogs.length}
-                </p>
+                <div className="flex items-end gap-2">
+                  <p className="text-3xl font-black text-[#111827]">
+                    {totalApiLogs}
+                  </p>
+                </div>
               </div>
               <div className="rounded-xl border border-blue-100 bg-blue-50 p-5">
                 <p className="text-xs font-medium text-blue-600 mb-1">
                   Gemini Calls
                 </p>
                 <p className="text-3xl font-black text-blue-700">
-                  {apiLogs.filter(l => l.provider === 'gemini').length}
+                  {totalGemini}
                 </p>
               </div>
               <div className="rounded-xl border border-amber-100 bg-amber-50 p-5">
                 <p className="text-xs font-medium text-amber-600 mb-1">
-                  Groq Fallbacks
+                  Groq Calls
                 </p>
                 <p className="text-3xl font-black text-amber-700">
-                  {apiLogs.filter(l => l.is_fallback).length}
+                  {totalGroq}
                 </p>
               </div>
               <div className="rounded-xl border border-red-100 bg-red-50 p-5">
@@ -1111,16 +1370,17 @@ export default function AdminDashboard() {
                   Failed Calls
                 </p>
                 <p className="text-3xl font-black text-red-600">
-                  {apiLogs.filter(l => !l.success).length}
+                  {totalFailed}
                 </p>
               </div>
             </div>
 
             {/* Health + Daily Usage */}
-            <div className="grid gap-6 lg:grid-cols-2">
+            {/* Health, Donut Chart, and Daily Usage */}
+            <div className="grid gap-6 lg:grid-cols-3">
 
               {/* API Health */}
-              <div className="rounded-xl border border-[#FFD896] bg-white p-6">
+              <div className="rounded-xl border border-[#FFD896] bg-white p-6 lg:col-span-1">
                 <h3 className="font-semibold text-[#111827] mb-4">
                   API Health
                 </h3>
@@ -1188,8 +1448,51 @@ export default function AdminDashboard() {
                 })()}
               </div>
 
+              {/* Provider Split Donut Chart */}
+              <div className="rounded-xl border border-[#FFD896] bg-white p-6 lg:col-span-1 flex flex-col items-center">
+                <h3 className="font-semibold text-[#111827] mb-6 self-start">
+                  Provider Split
+                </h3>
+                {(() => {
+                  const total = apiLogs.length || 1;
+                  const gemini = apiLogs.filter(l => l.provider === 'gemini').length;
+                  const groq = apiLogs.filter(l => l.provider === 'groq').length;
+                  const geminiPct = Math.round((gemini / total) * 100);
+                  const groqPct = Math.round((groq / total) * 100);
+                  
+                  return (
+                    <div className="flex flex-col items-center gap-6 w-full">
+                      <div className="relative h-36 w-36 rounded-full flex items-center justify-center transition-all duration-1000 animate-in zoom-in-50"
+                           style={{ background: `conic-gradient(#3B82F6 0% ${geminiPct}%, #F59E0B ${geminiPct}% 100%)` }}>
+                        <div className="absolute inset-[18%] bg-white rounded-full flex flex-col items-center justify-center shadow-inner">
+                          <span className="text-xl font-black text-[#111827]">{total}</span>
+                          <span className="text-[10px] uppercase tracking-widest text-[#6B7280] font-semibold">Calls</span>
+                        </div>
+                      </div>
+                      
+                      <div className="w-full space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                            <span className="font-medium text-gray-700">Gemini</span>
+                          </div>
+                          <span className="font-bold text-gray-900">{gemini} ({geminiPct}%)</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+                            <span className="font-medium text-gray-700">Groq</span>
+                          </div>
+                          <span className="font-bold text-gray-900">{groq} ({groqPct}%)</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+
               {/* Daily Usage */}
-              <div className="rounded-xl border border-[#FFD896] bg-white p-6">
+              <div className="rounded-xl border border-[#FFD896] bg-white p-6 lg:col-span-1 flex flex-col justify-between">
                 <h3 className="font-semibold text-[#111827] mb-4">
                   Usage Last 7 Days
                 </h3>
@@ -1197,39 +1500,37 @@ export default function AdminDashboard() {
                   const last7 = Array.from({ length: 7 }, (_, i) => {
                     const d = new Date()
                     d.setDate(d.getDate() - (6 - i))
-                    return d.toISOString().split('T')[0]
+                    return d.toLocaleDateString('en-CA')
                   })
                   const counts = last7.map(day => 
-                    apiLogs.filter(l => l.created_at.startsWith(day)).length
+                    apiLogs.filter(l => new Date(l.created_at).toLocaleDateString('en-CA') === day).length
                   )
                   const maxCount = Math.max(...counts, 1)
                   return (
-                    <div className="space-y-2">
-                      {last7.map((day, i) => {
-                        const count = counts[i]
-                        const pct = Math.round(count / maxCount * 100)
-                        const label = new Date(day).toLocaleDateString('en-US', {
-                          weekday: 'short',
-                          month: 'short',
-                          day: 'numeric'
-                        })
-                        return (
-                          <div key={day} className="flex items-center gap-3">
-                            <span className="text-xs text-[#6B7280] w-24 shrink-0 truncate">
-                              {label}
-                            </span>
-                            <div className="flex-1 h-6 rounded-lg bg-[#FFD896]/30 overflow-hidden">
-                              <div
-                                className="h-full rounded-lg bg-[#F97316] transition-all duration-500"
-                                style={{ width:`${pct}%` }}
-                              />
+                    <div className="space-y-3 mt-auto">
+                      <div className="flex items-end justify-between h-32 gap-1.5 border-b border-[#FFD896]/50 pb-2">
+                        {last7.map((day, i) => {
+                          const count = counts[i]
+                          const pct = Math.round(count / maxCount * 100)
+                          const label = new Date(day).toLocaleDateString('en-US', { weekday: 'narrow' })
+                          return (
+                            <div key={day} className="flex flex-col items-center gap-2 flex-1 group">
+                              <div className="w-full relative flex items-end justify-center h-full rounded-t-sm overflow-hidden bg-[#FFD896]/20 group-hover:bg-[#FFD896]/40 transition-[background]">
+                                <div 
+                                  className="w-full bg-[#F97316] rounded-t-sm transition-all duration-1000 ease-out animate-in slide-in-from-bottom"
+                                  style={{ height: `${pct}%` }} 
+                                />
+                                {count > 0 && (
+                                  <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap z-10 pointer-events-none">
+                                    {count} requests
+                                  </div>
+                                )}
+                              </div>
+                              <span className="text-[10px] font-semibold text-[#6B7280]">{label}</span>
                             </div>
-                            <span className="text-xs font-semibold text-[#111827] w-5 text-right">
-                              {count}
-                            </span>
-                          </div>
-                        )
-                      })}
+                          )
+                        })}
+                      </div>
                     </div>
                   )
                 })()}
@@ -1252,12 +1553,18 @@ export default function AdminDashboard() {
                       <p className="text-xs mt-1">
                         1,500 req/day • 15 req/min
                       </p>
-                      <p className="text-xs font-bold text-blue-600 mt-1">
-                        Today: {apiLogs.filter(
+                      {(() => {
+                        const todayLocal = new Date().toLocaleDateString('en-CA')
+                        const c = apiLogs.filter(
                           l => l.provider === 'gemini' && 
-                          l.created_at.startsWith(new Date().toISOString().split('T')[0])
-                        ).length} / 1,500 used
-                      </p>
+                          new Date(l.created_at).toLocaleDateString('en-CA') === todayLocal
+                        ).length
+                        return (
+                          <p className="text-xs font-bold text-blue-600 mt-1">
+                            Today: {c} / 1,500 used
+                          </p>
+                        )
+                      })()}
                     </div>
                     <div className="rounded-lg bg-white/60 px-3 py-2">
                       <p className="font-semibold text-amber-700">
@@ -1266,12 +1573,18 @@ export default function AdminDashboard() {
                       <p className="text-xs mt-1">
                         14,400 req/day • 30 req/min
                       </p>
-                      <p className="text-xs font-bold text-amber-600 mt-1">
-                        Today: {apiLogs.filter(
+                      {(() => {
+                        const todayLocal = new Date().toLocaleDateString('en-CA')
+                        const c = apiLogs.filter(
                           l => l.provider === 'groq' && 
-                          l.created_at.startsWith(new Date().toISOString().split('T')[0])
-                        ).length} / 14,400 used
-                      </p>
+                          new Date(l.created_at).toLocaleDateString('en-CA') === todayLocal
+                        ).length
+                        return (
+                          <p className="text-xs font-bold text-amber-600 mt-1">
+                            Today: {c} / 14,400 used
+                          </p>
+                        )
+                      })()}
                     </div>
                   </div>
                 </div>
@@ -1365,6 +1678,138 @@ export default function AdminDashboard() {
             </div>
           </div>
         )}
+
+        {/* ── Admins ─────────────────────────────────────────────────────────── */}
+        {activeTab === "admins" && (
+          <div className="space-y-6 animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex flex-col gap-1">
+              <h2 className="text-2xl font-black tracking-tight text-[#111827]">
+                Admins
+              </h2>
+              <p className="text-sm text-[#6B7280]">
+                Manage administrator privileges across the platform.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-[#FFD896] bg-white overflow-hidden p-6 space-y-8">
+              <div className="max-w-md">
+                <label className="block text-sm font-semibold text-[#111827] mb-2">
+                  Add Administrator
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="email"
+                    placeholder="User email"
+                    id="newAdminEmail"
+                    className="flex-1 px-3 py-2 rounded-lg border border-[#FFD896] bg-[#fff1d6]/20 focus:outline-none focus:ring-2 focus:ring-[#FFD896] text-sm"
+                  />
+                  <button
+                    onClick={async () => {
+                      const emailInput = document.getElementById("newAdminEmail") as HTMLInputElement
+                      const email = emailInput?.value
+                      if (!email) return
+                      try {
+                        const supabase = createClient()
+                        const targetUser = users.find(u => u.email?.toLowerCase() === email.toLowerCase())
+                        if (!targetUser) {
+                          showToast("User not found by email.", false)
+                          return
+                        }
+                        if (targetUser.is_admin) {
+                          showToast("User is already an admin.", false)
+                          return
+                        }
+                        const { error } = await supabase.from('profiles').update({ is_admin: true }).eq('id', targetUser.id)
+                        if (error) throw error
+                        setUsers(prev => prev.map(u => u.id === targetUser.id ? { ...u, is_admin: true } : u))
+                        showToast("Admin access granted.", true)
+                        emailInput.value = ""
+                      } catch (err) {
+                        console.error(err)
+                        showToast("Failed to add admin", false)
+                      }
+                    }}
+                    className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition"
+                  >
+                    Add Admin
+                  </button>
+                </div>
+                <p className="text-xs text-[#6B7280] mt-2">
+                  The user must already have signed into Toolvise once.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-[#111827] mb-4">Current Administrators</h3>
+                <div className="space-y-3">
+                  {users.filter(u => u.is_admin).map(admin => (
+                    <div key={admin.id} className="flex items-center justify-between p-3 rounded-lg border border-[#FFD896]/50 bg-[#fff1d6]/20">
+                      <div className="flex items-center gap-3">
+                        {admin.profile_picture_url ? (
+                          <img src={admin.profile_picture_url} alt="" className="h-10 w-10 rounded-full" />
+                        ) : (
+                          <div className="h-10 w-10 rounded-full bg-[#111827] flex items-center justify-center text-white font-bold uppercase text-sm">
+                            {admin.name?.charAt(0) || '?'}
+                          </div>
+                        )}
+                        <div>
+                          <p className="font-semibold text-sm text-[#111827] flex items-center gap-2">
+                            {admin.name || 'Unnamed User'}
+                            {admin.is_owner && (
+                              <span className="text-[10px] font-bold text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded uppercase">Owner</span>
+                            )}
+                            {admin.id === currentUserId && !admin.is_owner && (
+                              <span className="text-[10px] font-bold text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded uppercase">You</span>
+                            )}
+                          </p>
+                          <p className="text-xs text-[#6B7280]">{admin.email}</p>
+                        </div>
+                      </div>
+
+                      {/* Role Management Actions */}
+                      <div className="flex items-center gap-2">
+                        {admin.is_owner ? (
+                           <span className="text-xs font-semibold text-gray-400 px-3">Protected</span>
+                        ) : admin.id === currentUserId ? (
+                           <span className="text-xs font-semibold text-gray-400 px-3">Current Session</span>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              setConfirm({
+                                title: "Remove Admin",
+                                message: `Are you sure you want to remove admin rights from ${admin.email}?`,
+                                confirmText: "Remove Admin",
+                                danger: true,
+                                onConfirm: async () => {
+                                  try {
+                                    const supabase = createClient()
+                                    const { error } = await supabase.from('profiles').update({ is_admin: false }).eq('id', admin.id)
+                                    if (error) throw error
+                                    setUsers(prev => prev.map(u => u.id === admin.id ? { ...u, is_admin: false } : u))
+                                    showToast("Admin access removed", true)
+                                  } catch (err) {
+                                    console.error(err)
+                                    showToast("Failed to remove admin", false)
+                                  }
+                                }
+                              })
+                            }}
+                            className="text-xs font-semibold text-red-600 hover:text-white px-3 py-1.5 rounded-md hover:bg-red-600 transition"
+                          >
+                            Revoke Access
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  {users.filter(u => u.is_admin).length === 0 && (
+                    <p className="text-sm text-[#6B7280] italic">No active administrators found.</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Toast */}
@@ -1377,6 +1822,45 @@ export default function AdminDashboard() {
               : "bg-red-50 border border-red-200 text-red-600"
           )}>
             {toast.ok ? "✓" : "✕"} {toast.msg}
+          </div>
+        </div>
+      )}
+
+      {/* Confirm Dialog */}
+      {confirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl border border-[#FFD896] bg-white p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="flex items-center gap-3 mb-4">
+              <div className={cn(
+                "grid h-10 w-10 place-items-center rounded-xl",
+                confirm.danger ? "bg-red-50 border border-red-100" : "bg-[#fff1d6] border border-[#FFD896]"
+              )}>
+                <AlertTriangle className={cn("h-5 w-5", confirm.danger ? "text-red-500" : "text-[#F97316]")} />
+              </div>
+              <div>
+                <h3 className="font-semibold text-[#111827]">{confirm.title}</h3>
+              </div>
+            </div>
+            <p className="text-sm text-[#111827]/70 mb-6 leading-relaxed">
+              {confirm.message}
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirm(null)}
+                className="flex-1 rounded-xl border border-[#FFD896] bg-white py-2.5 text-sm font-medium text-[#111827]/70 hover:bg-[#fff1d6] transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirm.onConfirm}
+                className={cn(
+                  "flex-1 rounded-xl py-2.5 text-sm font-semibold text-white transition-colors",
+                  confirm.danger ? "bg-red-500 hover:bg-red-600" : "bg-[#F97316] hover:bg-[#EA6C0A]"
+                )}
+              >
+                {confirm.confirmText}
+              </button>
+            </div>
           </div>
         </div>
       )}

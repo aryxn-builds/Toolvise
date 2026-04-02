@@ -235,6 +235,36 @@ function CompareContent() {
     { label: "🔧 Flexibility", keyA: "flexibility" as keyof ScoreCard, keyB: "flexibility" as keyof ScoreCard },
   ];
 
+  function handleSwap() {
+    setSlugA(slugB);
+    setSlugB(slugA);
+    if (stackA && stackB) {
+      setStackA(stackB);
+      setStackB(stackA);
+      router.replace(`/compare?a=${stackB.shareSlug}&b=${stackA.shareSlug}`, {
+        scroll: false,
+      });
+      setVerdictData(null);
+    }
+  }
+
+  // Categories for breakdown
+  const CATEGORY_ORDER = ["Frontend", "Backend", "Database", "AI", "DevOps", "Design", "Other"];
+  
+  function getGroupedTools(tools: Tool[]) {
+    const grouped = tools.reduce((acc: Record<string, Tool[]>, t) => {
+      const c = t.category || "Other";
+      if (!acc[c]) acc[c] = [];
+      acc[c].push(t);
+      return acc;
+    }, {});
+    
+    return CATEGORY_ORDER.filter(c => grouped[c]).map(c => ({
+      category: c,
+      tools: grouped[c]
+    }));
+  }
+
   return (
     <div className="min-h-dvh bg-[#fff1d6] text-[#111827]">
       <Navbar />
@@ -247,33 +277,45 @@ function CompareContent() {
             <h1 className="text-2xl font-bold">Stack Comparison</h1>
           </div>
           <p className="text-sm text-[#111827]/50">
-            Compare two Toolvise stacks side by side and get an AI verdict.
+            Compare two Toolvise stacks side by side to see which one fits your needs better.
           </p>
         </div>
 
         {/* ── SECTION 1: Input ─────────────────────────────────────────── */}
-        <section className="rounded-2xl border border-[#FFD896] bg-white p-6 space-y-4">
-          <h2 className="font-semibold text-[#111827]">Enter Stack Slugs</h2>
+        <section className="rounded-2xl border border-[#FFD896] bg-white p-6 space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="font-semibold text-[#111827]">Select Stacks to Compare</h2>
+          </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-[#111827]/60">Stack A</label>
+          <div className="flex flex-col sm:flex-row items-center gap-4 relative">
+            <div className="space-y-1.5 w-full">
+              <label className="text-xs font-bold text-[#F97316] uppercase tracking-wider">Stack A</label>
               <input
                 id="slug-a"
                 value={slugA}
                 onChange={(e) => setSlugA(e.target.value)}
-                placeholder="e.g. brave-lion-42"
-                className="w-full rounded-xl border border-[#FFD896] bg-[#fff1d6]/40 px-4 py-2.5 text-sm outline-none focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/20 transition-all"
+                placeholder="Search or paste Stack A URL"
+                className="w-full rounded-xl border border-[#FFD896] bg-[#fff1d6]/40 px-4 py-3 text-sm outline-none focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/20 transition-all font-mono"
               />
             </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-[#111827]/60">Stack B</label>
+            
+            <button 
+              onClick={handleSwap}
+              className="mt-6 shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-[#fff1d6] border border-[#FFD896] hover:bg-[#FFE8B6] hover:border-[#F97316]/50 text-[#F97316] transition-all shadow-sm z-10"
+              title="Swap stacks"
+            >
+              <ArrowRight className="h-4 w-4" style={{ transform: 'rotate(180deg) rotateX(180deg)', display: 'none' }} />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+            </button>
+            
+            <div className="space-y-1.5 w-full">
+              <label className="text-xs font-bold text-blue-600 uppercase tracking-wider">Stack B</label>
               <input
                 id="slug-b"
                 value={slugB}
                 onChange={(e) => setSlugB(e.target.value)}
-                placeholder="e.g. swift-fox-77"
-                className="w-full rounded-xl border border-[#FFD896] bg-[#fff1d6]/40 px-4 py-2.5 text-sm outline-none focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/20 transition-all"
+                placeholder="Search or paste Stack B URL"
+                className="w-full rounded-xl border border-[#FFD896] bg-[#fff1d6]/40 px-4 py-3 text-sm outline-none focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/20 transition-all font-mono"
               />
             </div>
           </div>

@@ -1,0 +1,22 @@
+﻿On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   app/admin/page.tsx
+	modified:   app/compare/page.tsx
+	modified:   app/dashboard/page.tsx
+	modified:   app/leaderboard/page.tsx
+	modified:   app/result/page.tsx
+	modified:   app/settings/page.tsx
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	app/api/critic/
+	git_status.txt
+	migrations/
+	supabase-migration-phase3.sql
+	supabase-migration-phase4.sql
+
+no changes added to commit (use "git add" and/or "git commit -a")

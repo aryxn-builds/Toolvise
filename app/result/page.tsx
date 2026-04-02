@@ -19,6 +19,9 @@ import {
   Trophy,
   AlertTriangle,
   CheckCircle2,
+  Monitor,
+  Server,
+  Database
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -377,6 +380,34 @@ function ResultContent() {
   const [promptCopied, setPromptCopied] = React.useState(false)
   const [saved, setSaved] = React.useState(false)
   const [saving, setSaving] = React.useState(false)
+  const [learningMode, setLearningMode] = React.useState(false)
+  
+  const [criticData, setCriticData] = React.useState<any>(null)
+  const [criticLoading, setCriticLoading] = React.useState(false)
+
+  const handleCriticMode = async () => {
+    if (criticData || criticLoading || !data) return;
+    setCriticLoading(true);
+    try {
+      const res = await fetch("/api/critic", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          summary: data.summary,
+          tools: data.tools,
+          userInput: data.formInput?.description,
+        })
+      });
+      if (res.ok) {
+        const d = await res.json();
+        setCriticData(d);
+      }
+    } catch(e) {
+      console.error("Critic mode failed", e);
+    } finally {
+      setCriticLoading(false);
+    }
+  }
 
   React.useEffect(() => {
     async function loadData() {
@@ -734,16 +765,30 @@ function ResultContent() {
               ({data.tools?.length || 0} tools)
             </span>
           </h2>
-          {/* Legend */}
-          <div className="flex items-center gap-3 text-xs text-[#6B7280]">
-            <span className="flex items-center gap-1">
-              <span className="h-2 w-2 rounded-full bg-green-400" />
-              Free
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="h-2 w-2 rounded-full bg-yellow-400" />
-              Paid
-            </span>
+          {/* Controls & Legend */}
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setLearningMode(!learningMode)}
+              className={cn(
+                "hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition-colors border",
+                learningMode 
+                  ? "bg-purple-100 text-purple-700 border-purple-300" 
+                  : "bg-white text-[#6B7280] border-[#FFD896]"
+              )}
+            >
+              <Lightbulb className={cn("h-3.5 w-3.5", learningMode && "text-purple-600")} />
+              Learning Mode: {learningMode ? "ON" : "OFF"}
+            </button>
+            <div className="flex items-center gap-3 text-xs text-[#6B7280]">
+              <span className="flex items-center gap-1">
+                <span className="h-2 w-2 rounded-full bg-green-400" />
+                Free
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="h-2 w-2 rounded-full bg-yellow-400" />
+                Paid
+              </span>
+            </div>
           </div>
         </div>
 
@@ -752,85 +797,207 @@ function ResultContent() {
           💬 These are the tools we recommend for your project. Each has a role — hover or read below to understand what each one does and why.
         </p>
 
-        {/* Tools grid - 2 cols on tablet, 3 on desktop */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {data.tools?.map((tool, index) => {
-            if (!tool || typeof tool !== 'object') return null
+        {/* Tools grouping */}
+        <div className="space-y-8">
+          {Object.entries(
+            (data.tools || []).reduce((acc: Record<string, Tool[]>, tool) => {
+              if (tool && tool.category) {
+                if (!acc[tool.category]) acc[tool.category] = []
+                acc[tool.category].push(tool)
+              }
+              return acc
+            }, {})
+          ).map(([category, catTools]) => {
+            const categoryObj = CATEGORY_COLORS[category] || "border-[#FFD896] bg-[#fff1d6] text-[#6B7280]"
+            // extract the text-color from category object
+            const textColorMatch = categoryObj.match(/text-([a-z]+-\d+)/)
+            const catTextColor = textColorMatch ? textColorMatch[0] : "text-[#111827]"
+            
             return (
-              <Card key={index} className="border-[#FFD896] bg-white hover:shadow-md hover:border-[#F97316]/40 transition-all duration-200 flex flex-col">
-                <CardContent className="p-5 flex flex-col flex-1 gap-3">
-                  
-                  {/* Tool header */}
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <h3 className="font-bold text-[#111827] text-base">
-                        {String(tool.name || '')}
-                      </h3>
-                      <Badge className={cn(
-                        "text-[10px] uppercase font-bold mt-1 whitespace-nowrap",
-                        CATEGORY_COLORS[tool.category] || "border-[#FFD896] bg-[#fff1d6] text-[#111827]/60"
-                      )}>
-                        {tool.category}
-                      </Badge>
-                    </div>
-                    <Badge className={cn(
-                      "shrink-0 text-xs font-semibold px-2 py-0.5",
-                      tool.isFree ? "bg-green-50 text-green-600 border-green-200" : "bg-yellow-50 text-yellow-600 border-yellow-200"
-                    )}>
-                      {tool.isFree ? "✅ Free" : "💳 Paid"}
-                    </Badge>
-                  </div>
+              <div key={category} className="space-y-3">
+                <h3 className={cn("text-lg font-bold border-b border-[#FFD896]/50 pb-2", catTextColor)}>
+                  {category}
+                </h3>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {catTools.map((tool, index) => (
+                    <Card key={index} className="relative border-[#FFD896] bg-white hover:shadow-md hover:border-[#F97316]/40 transition-all duration-200 flex flex-col pt-3">
+                      <div className="absolute -top-3 -left-3 flex h-7 w-7 items-center justify-center rounded-full bg-[#111827] text-white text-xs font-bold shadow-md ring-2 ring-white z-10">
+                        {index + 1}
+                      </div>
+                      <CardContent className="p-5 flex flex-col flex-1 gap-3">
+                        
+                        {/* Tool header */}
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <h3 className="font-bold text-[#111827] text-base flex items-center gap-2">
+                              {String(tool.name || '')}
+                              {tool.difficulty === 'Industry Standard' && (
+                                <span title="Industry Standard" className="text-xs">⭐</span>
+                              )}
+                              {['next.js', 'react', 'tailwind css', 'supabase', 'vercel', 'prisma', 'stripe', 'clerk']
+                                .includes(String(tool.name).toLowerCase()) && (
+                                <span title="Trending Tool" className="inline-flex items-center rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-bold text-red-700 select-none">
+                                  Trending 🔥
+                                </span>
+                              )}
+                            </h3>
+                            <Badge className={cn(
+                              "text-[10px] uppercase font-bold mt-1 whitespace-nowrap",
+                              CATEGORY_COLORS[tool.category] || "border-[#FFD896] bg-[#fff1d6] text-[#111827]/60"
+                            )}>
+                              {tool.category}
+                            </Badge>
+                          </div>
+                          <Badge className={cn(
+                            "shrink-0 text-xs font-semibold px-2 py-0.5",
+                            tool.isFree ? "bg-green-50 text-green-600 border-green-200" : "bg-yellow-50 text-yellow-600 border-yellow-200"
+                          )}>
+                            {tool.isFree ? "✅ Free" : "💳 Paid"}
+                          </Badge>
+                        </div>
 
-                  {/* What it does */}
-                  <div className="bg-[#fff1d6]/60 rounded-lg p-3">
-                    <p className="text-xs font-semibold text-[#F97316] mb-1">
-                      🔧 What it does
-                    </p>
-                    <p className="text-sm text-[#111827]/70 leading-relaxed line-clamp-3">
-                      {String(tool.reason || '')}
-                    </p>
-                  </div>
+                        {/* What it does */}
+                        <div className="bg-[#fff1d6]/60 rounded-lg p-3">
+                          <p className="text-xs font-semibold text-[#F97316] mb-1">
+                            🔧 What it does
+                          </p>
+                          <p className="text-sm text-[#111827]/70 leading-relaxed line-clamp-3">
+                            {String(tool.reason || '')}
+                          </p>
+                        </div>
 
-                  {/* Difficulty */}
-                  <div className="flex items-center gap-2 text-xs text-[#6B7280]">
-                    <span>Difficulty:</span>
-                    <span className={cn(
-                      "font-semibold",
-                      tool.difficulty === 'Beginner' ? "text-green-500" : tool.difficulty === 'Intermediate' ? "text-yellow-500" : "text-red-500"
-                    )}>
-                      {tool.difficulty === 'Beginner' && "🟢 "}
-                      {tool.difficulty === 'Intermediate' && "🟡 "}
-                      {tool.difficulty === 'Advanced' && "🔴 "}
-                      {tool.difficulty}
-                    </span>
-                  </div>
+                        {/* Learning Mode Extender */}
+                        {learningMode && (
+                          <div className="bg-purple-50/50 border border-purple-100 rounded-lg p-3 mt-1 animate-in fade-in slide-in-from-top-2">
+                            <p className="text-xs font-semibold text-purple-600 mb-1 flex items-center gap-1">
+                              <Lightbulb className="h-3 w-3" />
+                              Why this choice?
+                            </p>
+                            <p className="text-xs text-purple-900/70 leading-relaxed">
+                              This tool strongly fits your prompt constraints, keeping {tool.isFree ? "costs down" : "features high"} while offering {tool.difficulty.toLowerCase()} level accessibility.
+                            </p>
+                          </div>
+                        )}
 
-                  {/* Deep dive extras */}
-                  {tool.bestFor && (
-                    <p className="text-xs text-emerald-600 bg-emerald-50 rounded-lg px-3 py-2">
-                      ✨ Best for: {tool.bestFor}
-                    </p>
-                  )}
-                  {tool.warnings && (
-                    <p className="text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2">
-                      ⚠️ {tool.warnings}
-                    </p>
-                  )}
-                  {tool.alternatives && tool.alternatives.length > 0 && (
-                    <p className="text-xs text-[#6B7280]">
-                      Alternatives: {tool.alternatives.join(", ")}
-                    </p>
-                  )}
+                        {/* Difficulty */}
+                        <div className="flex items-center gap-2 text-xs text-[#6B7280]">
+                          <span>Difficulty:</span>
+                          <span className={cn(
+                            "font-semibold",
+                            tool.difficulty === 'Beginner' ? "text-green-500" : tool.difficulty === 'Intermediate' ? "text-yellow-500" : "text-red-500"
+                          )}>
+                            {tool.difficulty === 'Beginner' && "🟢 "}
+                            {tool.difficulty === 'Intermediate' && "🟡 "}
+                            {tool.difficulty === 'Advanced' && "🔴 "}
+                            {tool.difficulty}
+                          </span>
+                        </div>
 
-                  {/* Learn button */}
-                  <a href={tool.learnUrl} target="_blank" rel="noreferrer" className="mt-auto flex items-center justify-center gap-2 rounded-lg bg-[#F97316] text-white px-4 py-2.5 text-sm font-semibold hover:bg-[#EA6C0A] transition-colors">
-                    {tool.isFree ? "Learn Free 📚" : "Learn More 📚"}
-                    <ArrowUpRight className="h-4 w-4" />
-                  </a>
-                </CardContent>
-              </Card>
+                        {/* Deep dive extras */}
+                        {tool.bestFor && learningMode && (
+                          <p className="text-xs text-emerald-600 bg-emerald-50 rounded-lg px-3 py-2">
+                            ✨ Best for: {tool.bestFor}
+                          </p>
+                        )}
+                        {tool.warnings && (
+                          <p className="text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2">
+                            ⚠️ {tool.warnings}
+                          </p>
+                        )}
+                        {tool.alternatives && tool.alternatives.length > 0 && learningMode && (
+                          <p className="text-xs text-[#6B7280]">
+                            Alternatives: {tool.alternatives.join(", ")}
+                          </p>
+                        )}
+
+                        {/* Learn button */}
+                        <a href={tool.learnUrl || "#"} target="_blank" rel="noreferrer" className="mt-auto flex items-center justify-center gap-2 rounded-lg bg-[#F97316] text-white px-4 py-2.5 text-sm font-semibold hover:bg-[#EA6C0A] transition-colors">
+                          {tool.isFree ? "Learn Free 📚" : "Learn More 📚"}
+                          <ArrowUpRight className="h-4 w-4" />
+                        </a>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
             )
           })}
+        </div>
+      </section>
+
+      {/* 4.5 ARCHITECTURE DIAGRAM */}
+      <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "200ms" }}>
+        <h2 className="text-xl font-bold text-[#111827] flex items-center gap-2">
+          🏗️ Architecture Diagram
+        </h2>
+        <div className="bg-white p-6 rounded-xl border border-[#FFD896] shadow-sm overflow-x-auto">
+          <div className="min-w-[600px] flex items-center justify-between gap-4 py-8 px-12">
+            
+            {/* Frontend / Client */}
+            <div className="flex flex-col items-center gap-3 w-40">
+              <div className="w-20 h-20 rounded-2xl bg-blue-50 flex items-center justify-center border-2 border-blue-200 shadow-sm relative group">
+                <Monitor className="text-blue-500 h-10 w-10 transition-transform group-hover:scale-110" />
+                <div className="absolute -top-3 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 border border-blue-200">
+                  <span className="text-[10px] select-none">UI</span>
+                </div>
+              </div>
+              <div className="text-center">
+                <span className="font-bold text-sm text-[#111827] block">Frontend</span>
+                <span className="text-xs text-[#6B7280] line-clamp-1">
+                  {data.tools?.find(t => t.category === "Frontend")?.name || "Client UI"}
+                </span>
+              </div>
+            </div>
+            
+            {/* Arrow */}
+            <div className="flex-1 flex flex-col items-center justify-center relative -mt-6">
+              <span className="text-[10px] font-semibold text-gray-400 mb-1 uppercase tracking-wider">REST / GraphQL</span>
+              <div className="w-full h-0.5 bg-gray-200 relative">
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 border-gray-300 rotate-45"></div>
+              </div>
+            </div>
+
+            {/* Backend / API */}
+            <div className="flex flex-col items-center gap-3 w-40">
+              <div className="w-20 h-20 rounded-2xl bg-orange-50 flex items-center justify-center border-2 border-orange-200 shadow-sm relative group">
+                <Server className="text-orange-500 h-10 w-10 transition-transform group-hover:scale-110" />
+                <div className="absolute -top-3 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-orange-100 border border-orange-200">
+                  <span className="text-[10px] select-none">API</span>
+                </div>
+              </div>
+              <div className="text-center">
+                <span className="font-bold text-sm text-[#111827] block">Backend</span>
+                <span className="text-xs text-[#6B7280] line-clamp-1">
+                  {data.tools?.find(t => t.category === "Backend")?.name || "Server Edge"}
+                </span>
+              </div>
+            </div>
+
+            {/* Arrow */}
+            <div className="flex-1 flex flex-col items-center justify-center relative -mt-6">
+              <span className="text-[10px] font-semibold text-gray-400 mb-1 uppercase tracking-wider">Queries</span>
+              <div className="w-full h-0.5 bg-gray-200 relative">
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t-2 border-r-2 border-gray-300 rotate-45"></div>
+              </div>
+            </div>
+
+            {/* Database */}
+            <div className="flex flex-col items-center gap-3 w-40">
+              <div className="w-20 h-20 rounded-2xl bg-green-50 flex items-center justify-center border-2 border-green-200 shadow-sm relative group">
+                <Database className="text-green-500 h-10 w-10 transition-transform group-hover:scale-110" />
+                <div className="absolute -top-3 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-green-100 border border-green-200">
+                  <span className="text-[10px] select-none">DB</span>
+                </div>
+              </div>
+              <div className="text-center">
+                <span className="font-bold text-sm text-[#111827] block">Database</span>
+                <span className="text-xs text-[#6B7280] line-clamp-1">
+                  {data.tools?.find(t => t.category === "Database")?.name || "Data Store"}
+                </span>
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
 
@@ -844,7 +1011,7 @@ function ResultContent() {
           📌 Follow these steps in order to build your project. Each step builds on the previous one.
         </p>
 
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="relative pl-6 sm:pl-8 border-l-2 border-[#FFD896]/60 space-y-8 mt-6">
           {data.roadmap?.map((step, idx) => {
             let stepText: string
             if (typeof step === 'string') {
@@ -856,13 +1023,16 @@ function ResultContent() {
               stepText = String(step ?? '')
             }
             return (
-              <div key={idx} className="flex items-start gap-3 p-4 rounded-xl border border-[#FFD896] bg-white hover:border-[#F97316]/40 hover:bg-[#fff1d6]/50 transition-all">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#F97316] text-white text-sm font-bold">
+              <div key={idx} className="relative group">
+                <div className="absolute -left-[35px] sm:-left-[43px] top-0 flex h-8 w-8 items-center justify-center rounded-full border-[3px] border-[#fff1d6] bg-[#F97316] text-white text-sm font-bold shadow-md transition-transform group-hover:scale-110">
                   {idx + 1}
                 </div>
-                <p className="text-sm text-[#111827]/80 leading-relaxed pt-1">
-                  {stepText}
-                </p>
+                <div className="bg-white p-5 rounded-xl border border-[#FFD896] hover:border-[#F97316]/40 transition-colors shadow-sm ml-2">
+                  <h4 className="font-bold text-[#111827] mb-1">Phase {idx + 1}</h4>
+                  <p className="text-sm text-[#111827]/80 leading-relaxed">
+                    {stepText}
+                  </p>
+                </div>
               </div>
             )
           })}
@@ -998,6 +1168,72 @@ function ResultContent() {
           </div>
         )
       ) : null}
+
+      {/* 7.5 AI CRITIC */}
+      <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "450ms" }}>
+        <div className="flex items-center justify-between border border-[#FFD896] bg-white rounded-xl p-6 shadow-sm">
+          <div className="space-y-2">
+            <h2 className="text-xl font-bold text-[#111827] flex items-center gap-2">
+              🧐 Ask the AI Critic
+            </h2>
+            <p className="text-sm text-[#6B7280]">
+              Get a harsh, realistic review of this tech stack. Find out its bottlenecks, tradeoffs, and missing pieces before you start building.
+            </p>
+          </div>
+          <Button
+            onClick={handleCriticMode}
+            disabled={criticLoading || !!criticData}
+            className="shrink-0 rounded-xl bg-purple-600 text-white hover:bg-purple-700 h-10 px-6 font-semibold"
+          >
+            {criticLoading ? (
+              <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Roasting Stack...</>
+            ) : criticData ? (
+              "Criticized"
+            ) : (
+              "Critique Stack"
+            )}
+          </Button>
+        </div>
+
+        {criticData && (
+          <div className="mt-4 rounded-xl border border-purple-200 bg-purple-50 p-6 animate-in fade-in slide-in-from-top-4">
+            <div className="flex items-start gap-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-100 text-2xl">
+                 🧑‍⚖️
+              </div>
+              <div className="space-y-5 flex-1">
+                <div>
+                  <h3 className="font-bold text-purple-900 mb-1">The Verdict</h3>
+                  <p className="text-sm text-purple-800 leading-relaxed">{criticData.verdict}</p>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="bg-white rounded-lg p-4 border border-purple-100">
+                    <h4 className="text-xs font-bold text-red-600 uppercase mb-2 flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> Missing Pieces</h4>
+                    <p className="text-sm text-[#111827]/80">{criticData.missingPiece}</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 border border-purple-100">
+                    <h4 className="text-xs font-bold text-amber-600 uppercase mb-2 flex items-center gap-1"><Zap className="h-3 w-3" /> Scaling Bottlenecks</h4>
+                    <p className="text-sm text-[#111827]/80">{criticData.scalingBottleneck}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-purple-900 mb-2">Key Tradeoffs</h4>
+                  <div className="space-y-2">
+                    {criticData.tradeoffs?.map((t: any, i: number) => (
+                      <div key={i} className="flex gap-2 items-start text-sm bg-white rounded-lg p-3 border border-purple-100">
+                        <span className="shrink-0 bg-purple-100 text-purple-700 px-2 py-0.5 rounded text-xs font-semibold">{t.aspect}</span>
+                        <span className="text-[#111827]/80">{t.comment}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
 
       {/* 8. ACTION BUTTONS */}
       <section className="border-t border-[#FFD896] pt-8 pb-16 animate-in fade-in slide-in-from-bottom-4 duration-700" style={{ animationDelay: "500ms" }}>

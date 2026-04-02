@@ -21,8 +21,13 @@ import {
   X,
   AlertTriangle,
   Bookmark,
+  MoreVertical,
+  Check,
+  Copy,
+  BookmarkMinus,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { Navbar } from "@/components/Navbar";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -119,7 +124,7 @@ function DeleteDialog({
   );
 }
 
-// ── My Stack Card (full control) ──────────────────────────────────────────
+// ── My Stack Card (with three-dot menu) ──────────────────────────────────
 function StackCard({
   stack,
   onDelete,
@@ -135,41 +140,92 @@ function StackCard({
     day: "numeric",
     year: "numeric",
   });
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const menuRef = React.useRef<HTMLDivElement>(null);
+
+  // Close on outside click
+  React.useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    if (menuOpen) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [menuOpen]);
 
   return (
     <Card className="group relative flex flex-col border-[#FFD896] bg-white hover:shadow-[0_8px_30px_rgba(249,115,22,0.1)] transition-all duration-200 rounded-2xl overflow-hidden">
-      {/* Public/Private pill */}
-      <div className="absolute top-3 right-3 z-10">
-        <button
-          onClick={() => onToggleVisibility(stack)}
-          title={stack.is_public ? "Make private" : "Make public"}
+      {/* Visibility badge (read-only display) */}
+      <div className="absolute top-3 left-3 z-10">
+        <span
           className={cn(
-            "flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider transition-all",
+            "flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider",
             stack.is_public
-              ? "bg-green-50 text-green-600 border border-green-200 hover:bg-green-100"
-              : "bg-[#fff1d6] text-[#111827]/50 border border-[#FFD896] hover:bg-[#FFD896]/30"
+              ? "bg-green-50 text-green-600 border border-green-200"
+              : "bg-[#fff1d6] text-[#111827]/50 border border-[#FFD896]"
           )}
         >
-          {stack.is_public ? (
-            <Globe className="h-3 w-3" />
-          ) : (
-            <Lock className="h-3 w-3" />
-          )}
+          {stack.is_public ? <Globe className="h-3 w-3" /> : <Lock className="h-3 w-3" />}
           {stack.is_public ? "Public" : "Private"}
-        </button>
+        </span>
       </div>
 
-      <CardContent className="flex flex-col flex-1 p-5 pt-4 space-y-3">
-        <p className="text-sm font-medium text-[#111827] line-clamp-2 pr-20 leading-relaxed">
+      {/* Three-dot menu */}
+      <div ref={menuRef} className="absolute top-3 right-3 z-20">
+        <button
+          onClick={() => setMenuOpen((o) => !o)}
+          className="h-7 w-7 flex items-center justify-center rounded-full bg-white/80 border border-[#FFD896] hover:bg-[#fff1d6] transition-colors"
+        >
+          <MoreVertical className="h-4 w-4 text-[#111827]/50" />
+        </button>
+        {menuOpen && (
+          <div className="absolute right-0 top-9 w-44 rounded-xl border border-[#FFD896] bg-white shadow-xl shadow-amber-100 py-1.5 z-30 animate-in fade-in zoom-in-95 duration-150">
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(`${window.location.origin}/result?slug=${stack.share_slug}`);
+                setMenuOpen(false);
+              }}
+              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-[#111827]/70 hover:bg-[#fff1d6] hover:text-[#111827] transition-colors"
+            >
+              <Copy className="h-3.5 w-3.5" /> Copy Link
+            </button>
+            <button
+              onClick={() => { onToggleVisibility(stack); setMenuOpen(false); }}
+              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-[#111827]/70 hover:bg-[#fff1d6] hover:text-[#111827] transition-colors"
+            >
+              {stack.is_public ? (
+                <><Lock className="h-3.5 w-3.5" /> Make Private</>
+              ) : (
+                <><Globe className="h-3.5 w-3.5" /> Make Public</>
+              )}
+            </button>
+            <Link
+              href={`/result?slug=${stack.share_slug}`}
+              onClick={() => setMenuOpen(false)}
+              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-[#111827]/70 hover:bg-[#fff1d6] hover:text-[#111827] transition-colors"
+            >
+              <ArrowUpRight className="h-3.5 w-3.5" /> View Stack
+            </Link>
+            <div className="border-t border-[#FFD896]/50 my-1" />
+            <button
+              onClick={() => { onDelete(stack); setMenuOpen(false); }}
+              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors"
+            >
+              <Trash2 className="h-3.5 w-3.5" /> Delete Stack
+            </button>
+          </div>
+        )}
+      </div>
+
+      <CardContent className="flex flex-col flex-1 p-5 pt-12 space-y-3">
+        <p className="text-sm font-medium text-[#111827] line-clamp-2 leading-relaxed">
           &quot;{stack.user_input}&quot;
         </p>
 
         <div className="flex flex-wrap gap-1.5">
           {(stack.tools || []).slice(0, 3).map((t, idx) => (
-            <Badge
-              key={idx}
-              className="border border-[#FFD896] bg-[#fff1d6] text-[#111827]/70 text-xs"
-            >
+            <Badge key={idx} className="border border-[#FFD896] bg-[#fff1d6] text-[#111827]/70 text-xs">
               {t.name}
             </Badge>
           ))}
@@ -199,14 +255,7 @@ function StackCard({
           )}
         </div>
 
-        <div className="flex items-center justify-between pt-2 border-t border-[#FFD896]/60">
-          <button
-            onClick={() => onDelete(stack)}
-            className="flex items-center gap-1 text-xs text-[#111827]/30 hover:text-red-500 transition-colors"
-          >
-            <Trash2 className="h-3.5 w-3.5" />
-            Delete
-          </button>
+        <div className="pt-2 border-t border-[#FFD896]/60">
           <Link
             href={`/result?slug=${stack.share_slug}`}
             className="flex items-center gap-1 text-sm font-semibold text-[#F97316] hover:text-[#EA6C0A] transition-colors"
@@ -269,10 +318,10 @@ function SavedStackCard({
         <div className="flex items-center justify-between pt-2 border-t border-[#FFD896]/60">
           <button
             onClick={() => onRemove(stack.id)}
-            className="flex items-center gap-1 text-xs text-[#111827]/30 hover:text-red-500 transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold text-[#111827]/60 hover:text-[#111827] bg-[#fff1d6]/50 hover:bg-[#fff1d6] border border-[#FFD896]/50 rounded-full px-3 py-1.5 transition-colors"
           >
-            <Trash2 className="h-3.5 w-3.5" />
-            Remove
+            <BookmarkMinus className="h-3.5 w-3.5" />
+            Unsave
           </button>
           <Link
             href={`/result?slug=${stack.share_slug}`}
@@ -517,47 +566,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-dvh bg-[#fff1d6] text-[#111827]">
-      {/* ── Header ── */}
-      <header className="sticky top-0 z-50 border-b border-[#FFD896] bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
-            <div className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-[#F97316] to-[#FB923C] shadow-lg shadow-amber-500/20">
-              <Sparkles className="h-4 w-4 text-white" />
-            </div>
-            <span className="text-lg font-bold tracking-tight">Toolvise</span>
-          </Link>
-
-          <div className="flex items-center gap-4">
-            <Link
-              href={`/profile/${profile?.username ?? ""}`}
-              className="flex items-center gap-2 text-sm font-medium text-[#111827]/60 hover:text-[#111827] transition-colors"
-            >
-              {profile?.avatar_url ? (
-                <>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={profile.avatar_url}
-                    alt={displayName}
-                    className="h-7 w-7 rounded-full object-cover border border-[#FFD896]"
-                  />
-                </>
-              ) : (
-                <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#F97316] to-[#FB923C] flex items-center justify-center text-white text-xs font-bold">
-                  {initials}
-                </div>
-              )}
-              <span className="hidden sm:block">{displayName}</span>
-            </Link>
-            <Link
-              href="/settings"
-              className="flex items-center gap-1.5 text-sm font-medium text-[#111827]/60 hover:text-[#111827] transition-colors"
-            >
-              <Settings className="h-4 w-4" />
-              <span className="hidden sm:block">Settings</span>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 space-y-10">
 
