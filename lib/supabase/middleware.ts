@@ -50,24 +50,18 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Admin route protection — verify is_admin in profiles OR hardcoded admin email
-  const ADMIN_EMAILS = ["ay6033756@gmail.com"];
-
+  // Admin route protection — verify is_admin in profiles
   if (pathname.startsWith("/admin") && user) {
-    const isHardcodedAdmin = ADMIN_EMAILS.includes(user.email ?? "");
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("is_admin")
+      .eq("id", user.id)
+      .maybeSingle();
 
-    if (!isHardcodedAdmin) {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("is_admin")
-        .eq("id", user.id)
-        .single();
-
-      if (!profile?.is_admin) {
-        const url = request.nextUrl.clone();
-        url.pathname = "/";
-        return NextResponse.redirect(url);
-      }
+    if (!profile?.is_admin) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.redirect(url);
     }
   }
 

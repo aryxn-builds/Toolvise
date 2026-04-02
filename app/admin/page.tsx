@@ -200,7 +200,7 @@ export default function AdminDashboard() {
           .from("profiles")
           .select("is_admin")
           .eq("id", user.id)
-          .single()
+          .maybeSingle()
 
         if (!profile?.is_admin) {
           router.push("/")
