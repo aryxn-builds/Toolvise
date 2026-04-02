@@ -1,21 +1,21 @@
 import type { Metadata } from "next";
-import { Playfair_Display, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter, Fira_Code } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const playfair = Playfair_Display({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-serif",
+  variable: "--font-heading",
   display: "swap",
 });
 
-const dmSans = DM_Sans({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const firaCode = Fira_Code({
   subsets: ["latin"],
   variable: "--font-mono",
   display: "swap",
@@ -33,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn(playfair.variable, dmSans.variable, jetbrainsMono.variable)}>
+    <html lang="en" className={cn(jakarta.variable, inter.variable, firaCode.variable)}>
       <body className="min-h-dvh antialiased">
         {children}
       </body>

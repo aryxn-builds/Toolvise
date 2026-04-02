@@ -33,9 +33,9 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         data-state={current ? "checked" : "unchecked"}
         onClick={handleClick}
         className={cn(
-          "peer relative inline-flex shrink-0 cursor-pointer items-center rounded-full border border-transparent transition-all outline-none focus-visible:border-amber-500 focus-visible:ring-2 focus-visible:ring-amber-500/30 disabled:cursor-not-allowed disabled:opacity-50 shadow-sm hover:shadow-card-hover duration-300",
+          "peer relative inline-flex shrink-0 cursor-pointer items-center rounded-full border border-transparent transition-all outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30 disabled:cursor-not-allowed disabled:opacity-50 shadow-sm hover:shadow-sm duration-300",
           size === "default" ? "h-[18px] w-[32px]" : "h-[14px] w-[24px]",
-          current ? "bg-amber-500" : "bg-neutral-300",
+          current ? "bg-primary" : "bg-neutral-lighter",
           className
         )}
         {...props}

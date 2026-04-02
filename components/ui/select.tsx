@@ -19,7 +19,7 @@ const SelectTrigger = React.forwardRef<
     ref={ref}
     data-slot="select-trigger"
     className={cn(
-      "flex w-full min-w-0 items-center justify-between gap-1.5 rounded-lg border border-neutral-300 bg-white py-2 pr-3 pl-3 text-sm whitespace-nowrap transition-all duration-200 outline-none select-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:shadow-[0_0_0_2px_rgba(200,137,58,0.1)] shadow-sm disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:opacity-50 data-[placeholder]:text-neutral-400 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      "flex w-full min-w-0 items-center justify-between gap-1.5 rounded-lg border border-input bg-background py-2 pr-3 pl-3 text-sm whitespace-nowrap transition-all duration-200 outline-none select-none focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-sm disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:opacity-50 data-[placeholder]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
       size === "default" ? "h-10" : "h-8 rounded-md",
       className
     )}
@@ -27,7 +27,7 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronDownIcon className="pointer-events-none size-4 text-neutral-500" />
+      <ChevronDownIcon className="pointer-events-none size-4 text-muted-foreground" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
@@ -117,14 +117,14 @@ const SelectItem = React.forwardRef<
     ref={ref}
     data-slot="select-item"
     className={cn(
-      "relative flex w-full cursor-default select-none items-center rounded-md py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-amber-100 focus:text-amber-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 transition-colors",
+      "relative flex w-full cursor-default select-none items-center rounded-md py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-primary-light focus:text-primary data-[disabled]:pointer-events-none data-[disabled]:opacity-50 transition-colors",
       className
     )}
     {...props}
   >
     <span className="absolute right-2 flex size-4 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <CheckIcon className="size-4 text-amber-600" />
+        <CheckIcon className="size-4 text-primary" />
       </SelectPrimitive.ItemIndicator>
     </span>
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

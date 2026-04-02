@@ -1,20 +1,20 @@
 import { cva } from "class-variance-authority"
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-sans font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:ring-amber-500 focus-visible:ring-3 focus-visible:ring-amber-500/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-sans font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:ring-primary focus-visible:ring-2 focus-visible:ring-primary/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: "bg-amber-500 text-white hover:bg-amber-400 hover:-translate-y-[2px] shadow-sm hover:shadow-btn-hover",
+        default: "bg-primary text-white hover:bg-primary-hover shadow-sm hover:shadow-md",
         outline:
-          "bg-transparent border-[1.5px] border-amber-500 text-amber-500 hover:bg-amber-100 hover:border-amber-400",
+          "bg-transparent border border-input text-foreground hover:bg-neutral-lightest",
         secondary:
-          "bg-amber-100 text-amber-600 hover:bg-amber-200 aria-expanded:bg-amber-200 aria-expanded:text-amber-700",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost:
-          "hover:bg-amber-100/50 hover:text-amber-600 aria-expanded:bg-amber-100 aria-expanded:text-amber-700",
+          "hover:bg-neutral-lightest hover:text-foreground text-foreground aria-expanded:bg-neutral-lightest",
         destructive:
-          "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
-        link: "text-amber-500 underline-offset-4 hover:underline",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
         default:

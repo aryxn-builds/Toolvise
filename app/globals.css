@@ -11,70 +11,62 @@
 
 @layer base {
   .theme {
-    --font-heading: var(--font-serif);
+    --font-heading: var(--font-heading);
     --font-sans: var(--font-sans);
+    --font-mono: var(--font-mono);
   }
   :root {
-    /* Whiskey Amber Custom Variables */
-    --bg-primary: #F5F0E8;
-    --bg-secondary: #E8E0D0;
-    --bg-surface: #FFFFFF;
-    --bg-subtle: #FFF5E0;
+    /* Premium Minimal Custom Variables */
+    --primary: #F97316;
+    --primary-hover: #EA6C0A;
+    --primary-light: #FFF7ED;
+    --primary-muted: #FFEDD5;
 
-    --amber-100: #FFF5E0;
-    --amber-200: #FFD98C;
-    --amber-300: #F5C16A;
-    --amber-400: #E8A24E;
-    --amber-500: #C8893A;
-    --amber-600: #8B6A3E;
-    --amber-700: #5C3D1E;
-    --amber-800: #3D2810;
-    --amber-900: #1A1208;
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F8FAFC;
+    --bg-surface: #F1F5F9;
 
-    --text-primary: #130E07;
-    --text-secondary: #3D2810;
-    --text-tertiary: #8B6A3E;
+    --dark: #0F172A;
+    --dark-80: #1E293B;
+    --dark-60: #334155;
+
+    --neutral: #64748B;
+    --neutral-light: #94A3B8;
+    --neutral-lighter: #CBD5E1;
+    --neutral-lightest: #E2E8F0;
+
+    --text-primary: #0F172A;
+    --text-secondary: #334155;
+    --text-tertiary: #64748B;
     --text-inverse: #FFFFFF;
 
-    --border-primary: #C0B49A;
-    --border-subtle: #E8E0D0;
-    --border-accent: #C8893A;
-
-    --neutral-100: #F5F0E8;
-    --neutral-200: #E8E0D0;
-    --neutral-300: #C0B49A;
-    --neutral-400: #8A7D6A;
-    --neutral-500: #5A4F40;
-    --neutral-600: #3D3428;
-    --neutral-700: #201A10;
-    --neutral-800: #130E07;
-    --neutral-900: #080604;
+    --border-primary: #E2E8F0;
+    --border-subtle: #F1F5F9;
+    --border-accent: #F97316;
     
-    /* Shadcn defaults / HSL mappings */
-    --primary: 31 55% 50%;
-    --primary-foreground: 0 0% 100%;
-    --background: 40 30% 93%;
-    --foreground: 25 60% 6%;
+    /* Shadcn defaults / HSL mappings mapped to Premium Minimal */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
-    --card-foreground: 25 60% 6%;
-    --border: 35 25% 72%;
-    --input: 35 25% 72%;
-    --ring: 31 55% 50%;
+    --card-foreground: 222.2 84% 4.9%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 24.6 95% 53.1%; /* primary #F97316 */
     --popover: 0 0% 100%;
-    --popover-foreground: 25 60% 6%;
-    --secondary: 38 30% 85%;
-    --secondary-foreground: 25 60% 6%;
-    --muted: 38 30% 85%;
-    --muted-foreground: 30 40% 38%;
-    --accent: 40 90% 88%;
-    --accent-foreground: 30 50% 23%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
     --chart-3: oklch(0.439 0 0);
     --chart-4: oklch(0.371 0 0);
     --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
+    --radius: 0.5rem;
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
     --sidebar-primary: oklch(0.205 0 0);
@@ -85,21 +77,13 @@
     --sidebar-ring: oklch(0.708 0 0);
   }
   * {
-    border-color: var(--border-subtle);
-    outline-color: color-mix(in srgb, var(--amber-500) 50%, transparent);
+    border-color: var(--border-primary);
+    outline-color: color-mix(in srgb, var(--primary) 50%, transparent);
   }
   body {
-    @apply bg-background text-foreground font-sans;
-  }
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
+    @apply bg-[var(--bg-primary)] text-[var(--text-primary)] font-sans;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif text-[--text-primary];
+    @apply font-heading text-[var(--text-primary)] tracking-tight;
   }
 }

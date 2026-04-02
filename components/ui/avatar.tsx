@@ -71,7 +71,7 @@ const AvatarFallback = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        "absolute inset-0 flex h-full w-full items-center justify-center rounded-full bg-amber-100 text-amber-700 font-semibold font-serif",
+        "absolute inset-0 flex h-full w-full items-center justify-center rounded-full bg-neutral-lightest text-text-secondary font-semibold font-sans",
         className
       )}
       {...props}
