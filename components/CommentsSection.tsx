@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Loader2, Send, Trash2 } from "lucide-react";
+import { Loader2, Send, Trash2, AlertCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -19,7 +19,7 @@ interface Comment {
   content: string;
   created_at: string;
   user_id: string;
-  profiles: CommentProfile | null;
+  profile: CommentProfile | null; // fetched separately
 }
 
 interface CommentsSectionProps {
@@ -53,12 +53,15 @@ function getInitials(profile: CommentProfile | null): string {
 
 // ── Main Component ─────────────────────────────────────────────────────────────
 export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
-  const supabase = createClient();
+  // Create client once via useMemo to avoid re-instantiation on re-renders
+  const supabase = React.useMemo(() => createClient(), []);
 
   const [comments, setComments] = React.useState<Comment[]>([]);
   const [newComment, setNewComment] = React.useState("");
   const [posting, setPosting] = React.useState(false);
+  const [postError, setPostError] = React.useState<string | null>(null);
   const [loadingComments, setLoadingComments] = React.useState(true);
+  const [fetchError, setFetchError] = React.useState<string | null>(null);
   const [currentUser, setCurrentUser] = React.useState<{
     id: string;
     email?: string;
@@ -68,104 +71,167 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
   const MAX_CHARS = 500;
   const remaining = MAX_CHARS - newComment.length;
 
-  // Fetch current user + comments on mount
+  // ── Fetch profile for a user_id ───────────────────────────────────────────
+  async function fetchProfile(userId: string): Promise<CommentProfile | null> {
+    try {
+      const { data } = await supabase
+        .from("profiles")
+        .select("username, display_name, avatar_url")
+        .eq("id", userId)
+        .maybeSingle();
+      return data ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  // ── Init: load user + comments ────────────────────────────────────────────
   React.useEffect(() => {
+    let cancelled = false;
+
     async function init() {
+      // 1. Get current user session
       try {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-        if (user) setCurrentUser({ id: user.id, email: user.email ?? "" });
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!cancelled && user) {
+          setCurrentUser({ id: user.id, email: user.email ?? "" });
+        }
       } catch {
-        // not logged in
+        // not logged in — fine
       }
 
+      // 2. Fetch comments (no join — fetch profiles separately per comment)
       try {
         const { data, error } = await supabase
           .from("comments")
-          .select(
-            `id, content, created_at, user_id,
-             profiles ( username, display_name, avatar_url )`
-          )
+          .select("id, content, created_at, user_id")
           .eq("stack_id", stackId)
           .order("created_at", { ascending: true });
 
+        if (cancelled) return;
+
         if (error) {
-          console.error("Comments fetch error:", error);
-          if (error.code === "PGRST116" || error.code === "42P01") {
-            // Table doesn't exist or relation missing
-            setComments([]);
+          console.error("[CommentsSection] fetch error:", error);
+          if (
+            error.code === "42P01" ||
+            error.message?.includes("relation") ||
+            error.message?.includes("does not exist")
+          ) {
+            setFetchError(
+              "Comments table is not set up yet. Please run comments-migration.sql in Supabase."
+            );
+          } else {
+            setFetchError(`Failed to load comments: ${error.message}`);
           }
+          setLoadingComments(false);
           return;
         }
 
-        // Supabase returns profiles as array with joins — normalize
-        const normalized: Comment[] = ((data as any[]) || []).map((row: any) => {
-          const profilesRaw = row.profiles;
-          const profile: CommentProfile | null = Array.isArray(profilesRaw)
-            ? (profilesRaw[0] as CommentProfile) ?? null
-            : (profilesRaw as CommentProfile) ?? null;
-          return { ...row, profiles: profile } as Comment;
-        });
+        // Batch-fetch profiles for all unique user_ids
+        const rows = (data as any[]) || [];
+        const uniqueUserIds = [...new Set(rows.map((r: any) => r.user_id as string))];
+        const profileMap: Record<string, CommentProfile | null> = {};
+
+        await Promise.all(
+          uniqueUserIds.map(async (uid) => {
+            profileMap[uid] = await fetchProfile(uid);
+          })
+        );
+
+        if (cancelled) return;
+
+        const normalized: Comment[] = rows.map((row: any) => ({
+          id: row.id,
+          content: row.content,
+          created_at: row.created_at,
+          user_id: row.user_id,
+          profile: profileMap[row.user_id] ?? null,
+        }));
+
         setComments(normalized);
       } catch (err) {
-        console.error("Comments error:", err);
+        console.error("[CommentsSection] unexpected error:", err);
+        if (!cancelled) setFetchError("Something went wrong loading comments.");
       } finally {
-        setLoadingComments(false);
+        if (!cancelled) setLoadingComments(false);
       }
     }
+
     init();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stackId]);
 
+  // ── Post a comment ────────────────────────────────────────────────────────
   async function postComment() {
-    if (!newComment.trim() || !currentUser || posting) return;
-    if (newComment.trim().length > MAX_CHARS) return;
+    const trimmed = newComment.trim();
+    if (!trimmed || !currentUser || posting) return;
+    if (trimmed.length > MAX_CHARS) return;
 
     setPosting(true);
+    setPostError(null);
+
     try {
       const { data, error } = await supabase
         .from("comments")
         .insert({
           stack_id: stackId,
           user_id: currentUser.id,
-          content: newComment.trim(),
+          content: trimmed,
         })
-        .select(
-          `id, content, created_at, user_id,
-           profiles ( username, display_name, avatar_url )`
-        )
+        .select("id, content, created_at, user_id")
         .single();
 
-      if (!error && data) {
-          // Normalize profiles (Supabase returns array on joins)
-          const raw = data as Record<string, unknown>;
-          const profilesRaw = raw.profiles;
-          const profile: CommentProfile = Array.isArray(profilesRaw)
-            ? (profilesRaw[0] as CommentProfile) ?? null
-            : (profilesRaw as CommentProfile) ?? null;
-          const normalized: Comment = { ...raw, profiles: profile } as Comment;
-          setComments((prev) => [...prev, normalized]);
-          setNewComment("");
+      if (error) {
+        console.error("[CommentsSection] post error:", error);
+        if (error.code === "42501" || error.message?.includes("policy")) {
+          setPostError("Permission denied. Please sign out and sign back in.");
+        } else if (error.message?.includes("foreign key")) {
+          setPostError("Your session may have expired. Please sign in again.");
+        } else {
+          setPostError(`Failed to post: ${error.message}`);
         }
-    } catch {
-      // silent fail — user can retry
+        return;
+      }
+
+      if (data) {
+        // Fetch profile for the current user to show in the new comment
+        const profile = await fetchProfile(currentUser.id);
+        const newEntry: Comment = {
+          id: (data as any).id,
+          content: (data as any).content,
+          created_at: (data as any).created_at,
+          user_id: (data as any).user_id,
+          profile,
+        };
+        setComments((prev) => [...prev, newEntry]);
+        setNewComment("");
+      }
+    } catch (err) {
+      console.error("[CommentsSection] unexpected post error:", err);
+      setPostError("Something went wrong. Please try again.");
     } finally {
       setPosting(false);
     }
   }
 
+  // ── Delete a comment ──────────────────────────────────────────────────────
   async function deleteComment(commentId: string) {
+    if (!currentUser) return;
     setDeletingId(commentId);
     try {
       const { error } = await supabase
         .from("comments")
         .delete()
         .eq("id", commentId)
-        .eq("user_id", currentUser!.id);
+        .eq("user_id", currentUser.id);
 
       if (!error) {
         setComments((prev) => prev.filter((c) => c.id !== commentId));
+      } else {
+        console.error("[CommentsSection] delete error:", error);
       }
     } catch {
       // silent
@@ -180,16 +246,13 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
     }
   }
 
+  // ── Render ────────────────────────────────────────────────────────────────
   return (
     <section className="rounded-2xl border border-border bg-white p-6 space-y-5">
       {/* Header */}
       <div className="flex items-center gap-2">
-        <h3 className="text-lg font-bold text-foreground">
-          💬 Discussion
-        </h3>
-        <span className="text-sm text-foreground/40">
-          ({comments.length})
-        </span>
+        <h3 className="text-lg font-bold text-foreground">💬 Discussion</h3>
+        <span className="text-sm text-foreground/40">({comments.length})</span>
       </div>
 
       {/* Comments list */}
@@ -197,6 +260,11 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
         <div className="flex items-center gap-2 text-sm text-foreground/40 py-4">
           <Loader2 className="h-4 w-4 animate-spin" />
           Loading comments...
+        </div>
+      ) : fetchError ? (
+        <div className="flex items-center gap-2 text-sm text-red-500 py-3 bg-red-50 rounded-xl px-4">
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <span>{fetchError}</span>
         </div>
       ) : comments.length === 0 ? (
         <div className="text-center py-10 text-foreground/40 space-y-1">
@@ -206,12 +274,11 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
       ) : (
         <div className="space-y-0 divide-y divide-[#FFD896]/50">
           {comments.map((comment) => {
-            const profile = comment.profiles;
+            const profile = comment.profile;
             const isOwn = currentUser?.id === comment.user_id;
 
             return (
               <div key={comment.id} className="flex gap-3 py-4">
-                {/* Avatar */}
                 <Avatar className="h-9 w-9 border border-border shrink-0">
                   {profile?.avatar_url && (
                     <AvatarImage
@@ -244,7 +311,6 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
                   </p>
                 </div>
 
-                {/* Delete button (own comments only) */}
                 {isOwn && (
                   <button
                     onClick={() => deleteComment(comment.id)}
@@ -268,9 +334,18 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
       {/* Comment input or login prompt */}
       {currentUser ? (
         <div className="space-y-2 pt-2 border-t border-border/50">
+          {postError && (
+            <div className="flex items-center gap-2 text-sm text-red-500 bg-red-50 rounded-xl px-4 py-2">
+              <AlertCircle className="h-4 w-4 shrink-0" />
+              <span>{postError}</span>
+            </div>
+          )}
           <textarea
             value={newComment}
-            onChange={(e) => setNewComment(e.target.value.slice(0, MAX_CHARS))}
+            onChange={(e) => {
+              setNewComment(e.target.value.slice(0, MAX_CHARS));
+              if (postError) setPostError(null);
+            }}
             onKeyDown={handleKeyDown}
             placeholder="Share your thoughts... (Ctrl+Enter to post)"
             rows={3}
