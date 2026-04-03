@@ -19,15 +19,15 @@ interface Comment {
   content: string;
   created_at: string;
   user_id: string;
-  profile: CommentProfile | null; // fetched separately
+  profile: CommentProfile | null;
 }
 
 interface CommentsSectionProps {
-  stackId: string;
-  shareSlug: string;
+  stackId: string;   // may be "" if not yet resolved
+  shareSlug: string; // always set — used to resolve stackId if needed
 }
 
-// ── Helper: time ago ──────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
@@ -40,38 +40,29 @@ function timeAgo(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-// ── Helper: avatar initials ────────────────────────────────────────────────────
 function getInitials(profile: CommentProfile | null): string {
   const name = profile?.display_name || profile?.username || "?";
-  return name
-    .split(" ")
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
+  return name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2);
 }
 
 // ── Main Component ─────────────────────────────────────────────────────────────
 export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
-  // Create client once via useMemo to avoid re-instantiation on re-renders
   const supabase = React.useMemo(() => createClient(), []);
 
   const [comments, setComments] = React.useState<Comment[]>([]);
+  const [resolvedStackId, setResolvedStackId] = React.useState<string>(stackId);
   const [newComment, setNewComment] = React.useState("");
   const [posting, setPosting] = React.useState(false);
   const [postError, setPostError] = React.useState<string | null>(null);
   const [loadingComments, setLoadingComments] = React.useState(true);
   const [fetchError, setFetchError] = React.useState<string | null>(null);
-  const [currentUser, setCurrentUser] = React.useState<{
-    id: string;
-    email?: string;
-  } | null>(null);
+  const [currentUser, setCurrentUser] = React.useState<{ id: string; email?: string } | null>(null);
   const [deletingId, setDeletingId] = React.useState<string | null>(null);
 
   const MAX_CHARS = 500;
   const remaining = MAX_CHARS - newComment.length;
 
-  // ── Fetch profile for a user_id ───────────────────────────────────────────
+  // ── Profile fetch helper ───────────────────────────────────────────────────
   async function fetchProfile(userId: string): Promise<CommentProfile | null> {
     try {
       const { data } = await supabase
@@ -85,12 +76,12 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
     }
   }
 
-  // ── Init: load user + comments ────────────────────────────────────────────
+  // ── Main init effect ───────────────────────────────────────────────────────
   React.useEffect(() => {
     let cancelled = false;
 
     async function init() {
-      // 1. Get current user session
+      // Step 1: Get current user
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (!cancelled && user) {
@@ -100,12 +91,35 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
         // not logged in — fine
       }
 
-      // 2. Fetch comments (no join — fetch profiles separately per comment)
+      // Step 2: Resolve stackId from shareSlug if not provided
+      let sid = stackId;
+      if (!sid && shareSlug) {
+        try {
+          const { data: row } = await supabase
+            .from("stacks")
+            .select("id")
+            .eq("share_slug", shareSlug)
+            .maybeSingle();
+          if (row?.id) {
+            sid = row.id;
+            if (!cancelled) setResolvedStackId(sid);
+          }
+        } catch {
+          /* ignore */
+        }
+      }
+
+      if (!sid) {
+        if (!cancelled) setLoadingComments(false);
+        return;
+      }
+
+      // Step 3: Fetch comments
       try {
         const { data, error } = await supabase
           .from("comments")
           .select("id, content, created_at, user_id")
-          .eq("stack_id", stackId)
+          .eq("stack_id", sid)
           .order("created_at", { ascending: true });
 
         if (cancelled) return;
@@ -114,41 +128,34 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
           console.error("[CommentsSection] fetch error:", error);
           if (
             error.code === "42P01" ||
-            error.message?.includes("relation") ||
-            error.message?.includes("does not exist")
+            (error.message && (error.message.includes("relation") || error.message.includes("does not exist")))
           ) {
-            setFetchError(
-              "Comments table is not set up yet. Please run comments-migration.sql in Supabase."
-            );
+            setFetchError("Comments are not set up yet. Please run comments-migration.sql in Supabase.");
           } else {
-            setFetchError(`Failed to load comments: ${error.message}`);
+            setFetchError(`Could not load comments: ${error.message}`);
           }
           setLoadingComments(false);
           return;
         }
 
-        // Batch-fetch profiles for all unique user_ids
         const rows = (data as any[]) || [];
-        const uniqueUserIds = [...new Set(rows.map((r: any) => r.user_id as string))];
-        const profileMap: Record<string, CommentProfile | null> = {};
 
-        await Promise.all(
-          uniqueUserIds.map(async (uid) => {
-            profileMap[uid] = await fetchProfile(uid);
-          })
-        );
+        // Step 4: Batch-fetch profiles
+        const uniqueIds = Array.from(new Set(rows.map((r: any) => r.user_id as string)));
+        const profileMap: Record<string, CommentProfile | null> = {};
+        await Promise.all(uniqueIds.map(async (uid) => {
+          profileMap[uid] = await fetchProfile(uid);
+        }));
 
         if (cancelled) return;
 
-        const normalized: Comment[] = rows.map((row: any) => ({
+        setComments(rows.map((row: any) => ({
           id: row.id,
           content: row.content,
           created_at: row.created_at,
           user_id: row.user_id,
           profile: profileMap[row.user_id] ?? null,
-        }));
-
-        setComments(normalized);
+        })));
       } catch (err) {
         console.error("[CommentsSection] unexpected error:", err);
         if (!cancelled) setFetchError("Something went wrong loading comments.");
@@ -158,16 +165,15 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
     }
 
     init();
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stackId]);
+    return () => { cancelled = true; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stackId, shareSlug]);
 
-  // ── Post a comment ────────────────────────────────────────────────────────
+  // ── Post comment ───────────────────────────────────────────────────────────
   async function postComment() {
     const trimmed = newComment.trim();
-    if (!trimmed || !currentUser || posting) return;
+    const sid = resolvedStackId || stackId;
+    if (!trimmed || !currentUser || posting || !sid) return;
     if (trimmed.length > MAX_CHARS) return;
 
     setPosting(true);
@@ -176,20 +182,18 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
     try {
       const { data, error } = await supabase
         .from("comments")
-        .insert({
-          stack_id: stackId,
-          user_id: currentUser.id,
-          content: trimmed,
-        })
+        .insert({ stack_id: sid, user_id: currentUser.id, content: trimmed })
         .select("id, content, created_at, user_id")
         .single();
 
       if (error) {
         console.error("[CommentsSection] post error:", error);
-        if (error.code === "42501" || error.message?.includes("policy")) {
+        if (error.code === "42501" || (error.message && error.message.includes("policy"))) {
           setPostError("Permission denied. Please sign out and sign back in.");
-        } else if (error.message?.includes("foreign key")) {
-          setPostError("Your session may have expired. Please sign in again.");
+        } else if (error.message && error.message.includes("foreign key")) {
+          setPostError("Session error. Please sign in again.");
+        } else if (error.code === "42P01") {
+          setPostError("Comments table not set up. Run comments-migration.sql in Supabase.");
         } else {
           setPostError(`Failed to post: ${error.message}`);
         }
@@ -197,16 +201,14 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
       }
 
       if (data) {
-        // Fetch profile for the current user to show in the new comment
         const profile = await fetchProfile(currentUser.id);
-        const newEntry: Comment = {
+        setComments((prev) => [...prev, {
           id: (data as any).id,
           content: (data as any).content,
           created_at: (data as any).created_at,
           user_id: (data as any).user_id,
           profile,
-        };
-        setComments((prev) => [...prev, newEntry]);
+        }]);
         setNewComment("");
       }
     } catch (err) {
@@ -217,7 +219,7 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
     }
   }
 
-  // ── Delete a comment ──────────────────────────────────────────────────────
+  // ── Delete comment ─────────────────────────────────────────────────────────
   async function deleteComment(commentId: string) {
     if (!currentUser) return;
     setDeletingId(commentId);
@@ -227,26 +229,19 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
         .delete()
         .eq("id", commentId)
         .eq("user_id", currentUser.id);
-
       if (!error) {
         setComments((prev) => prev.filter((c) => c.id !== commentId));
-      } else {
-        console.error("[CommentsSection] delete error:", error);
       }
-    } catch {
-      // silent
-    } finally {
+    } catch { /* silent */ } finally {
       setDeletingId(null);
     }
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-      postComment();
-    }
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) postComment();
   }
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <section className="rounded-2xl border border-border bg-white p-6 space-y-5">
       {/* Header */}
@@ -276,7 +271,6 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
           {comments.map((comment) => {
             const profile = comment.profile;
             const isOwn = currentUser?.id === comment.user_id;
-
             return (
               <div key={comment.id} className="flex gap-3 py-4">
                 <Avatar className="h-9 w-9 border border-border shrink-0">
@@ -298,13 +292,9 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
                       {profile?.display_name || profile?.username || "Anonymous"}
                     </span>
                     {profile?.username && (
-                      <span className="text-xs text-foreground/40">
-                        @{profile.username}
-                      </span>
+                      <span className="text-xs text-foreground/40">@{profile.username}</span>
                     )}
-                    <span className="text-xs text-amber-600/70">
-                      {timeAgo(comment.created_at)}
-                    </span>
+                    <span className="text-xs text-amber-600/70">{timeAgo(comment.created_at)}</span>
                   </div>
                   <p className="text-sm text-foreground/80 leading-relaxed break-words">
                     {comment.content}
@@ -318,11 +308,10 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
                     className="shrink-0 p-1.5 rounded-lg text-foreground/30 hover:text-red-500 hover:bg-red-50 transition-colors"
                     title="Delete comment"
                   >
-                    {deletingId === comment.id ? (
-                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                    ) : (
-                      <Trash2 className="h-3.5 w-3.5" />
-                    )}
+                    {deletingId === comment.id
+                      ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      : <Trash2 className="h-3.5 w-3.5" />
+                    }
                   </button>
                 )}
               </div>
@@ -331,7 +320,7 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
         </div>
       )}
 
-      {/* Comment input or login prompt */}
+      {/* Input or login prompt */}
       {currentUser ? (
         <div className="space-y-2 pt-2 border-t border-border/50">
           {postError && (
@@ -342,26 +331,16 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
           )}
           <textarea
             value={newComment}
-            onChange={(e) => {
-              setNewComment(e.target.value.slice(0, MAX_CHARS));
-              if (postError) setPostError(null);
-            }}
+            onChange={(e) => { setNewComment(e.target.value.slice(0, MAX_CHARS)); if (postError) setPostError(null); }}
             onKeyDown={handleKeyDown}
             placeholder="Share your thoughts... (Ctrl+Enter to post)"
             rows={3}
             className="w-full resize-none rounded-xl border border-border bg-background/30 px-4 py-3 text-sm text-foreground placeholder:text-foreground/30 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all"
           />
           <div className="flex items-center justify-between">
-            <span
-              className={cn(
-                "text-xs",
-                remaining < 50
-                  ? remaining < 10
-                    ? "text-red-500"
-                    : "text-amber-500"
-                  : "text-foreground/30"
-              )}
-            >
+            <span className={cn("text-xs",
+              remaining < 50 ? remaining < 10 ? "text-red-500" : "text-amber-500" : "text-foreground/30"
+            )}>
               {remaining} characters left
             </span>
             <button
@@ -369,11 +348,7 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
               disabled={posting || !newComment.trim() || remaining < 0}
               className="flex items-center gap-2 rounded-xl bg-amber-500 px-5 py-2 text-sm font-semibold text-white hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {posting ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Send className="h-4 w-4" />
-              )}
+              {posting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
               Post Comment
             </button>
           </div>

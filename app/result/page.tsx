@@ -1421,10 +1421,10 @@ function ResultContent() {
       </section>
 
       {/* 9. COMMENTS */}
-      {data.id && (
+      {data.shareSlug && (
         <CommentsSection
-          stackId={data.id}
-          shareSlug={data.shareSlug ?? ""}
+          stackId={data.id ?? ""}
+          shareSlug={data.shareSlug}
         />
       )}
     </main>
