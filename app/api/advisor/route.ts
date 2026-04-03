@@ -499,7 +499,7 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
       // Get current user (null if not logged in — that's fine)
       const { data: { user } } = await supabase.auth.getUser();
 
-      const { error: dbError } = await supabase.from("stacks").insert({
+      const { data: insertedRow, error: dbError } = await supabase.from("stacks").insert({
         share_slug: shareSlug,
         user_id: user?.id ?? null,
         is_public: true,
@@ -516,10 +516,12 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
         vibe_coding: normalizedData.vibeCoding || null,
         score_card: normalizedData.scoreCard || null,
         comparison_engine: normalizedData.comparisonEngine || null,
-      });
+      }).select("id").single();
 
       if (dbError) {
         console.error("[advisor] Supabase insert error:", dbError);
+      } else if (insertedRow?.id) {
+        (normalizedData as Record<string, unknown>).stackId = insertedRow.id;
       }
     } catch (dbErr) {
       console.error("[advisor] Supabase connection error:", dbErr);
@@ -527,6 +529,7 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
 
     // 11. Return full result to frontend
     return NextResponse.json({
+      id: (normalizedData as Record<string, unknown>).stackId ?? undefined,
       summary: normalizedData.summary,
       tools: normalizedData.tools,
       roadmap: normalizedData.roadmap,
