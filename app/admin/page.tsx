@@ -1542,19 +1542,19 @@ export default function AdminDashboard() {
                           const pct = Math.round(count / maxCount * 100)
                           const label = new Date(day + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'narrow', timeZone: 'UTC' })
                           return (
-                            <div key={day} className="flex flex-col items-center gap-2 flex-1 group relative">
+                            <div key={day} className="flex flex-col items-center justify-end gap-1 flex-1 group relative h-full">
                               {count > 0 && (
-                                <div className="absolute bottom-[calc(100%-8px)] left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap z-10 pointer-events-none">
-                                  {count} requests
+                                <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap z-10 pointer-events-none">
+                                  {count} reqs
                                 </div>
                               )}
-                              <div className="w-full flex items-end justify-center h-full rounded-t-sm overflow-hidden bg-amber-200/20 group-hover:bg-amber-200/40 transition-[background]">
+                              <div className="w-full flex items-end justify-center flex-1 rounded-t-sm overflow-hidden bg-amber-200/20 group-hover:bg-amber-200/40 transition-[background]">
                                 <div 
                                   className="w-full bg-amber-500 rounded-t-sm transition-all duration-1000 ease-out animate-in slide-in-from-bottom"
                                   style={{ height: `${pct}%` }} 
                                 />
                               </div>
-                              <span className="text-[10px] font-semibold text-amber-600/70">{label}</span>
+                              <span className="text-[10px] font-semibold text-amber-600/70 shrink-0">{label}</span>
                             </div>
                           )
                         })}
