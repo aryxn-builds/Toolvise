@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import Groq from "groq-sdk";
 
 interface ScoreCard {
   speedToShip: number;
@@ -23,6 +24,43 @@ interface CompareRequest {
   stackB: StackInput;
 }
 
+async function callGemini(geminiKey: string, prompt: string): Promise<string> {
+  const genAI = new GoogleGenerativeAI(geminiKey);
+  const model = genAI.getGenerativeModel(
+    {
+      model: "gemini-2.5-flash",
+      generationConfig: {
+        responseMimeType: "application/json",
+      },
+    },
+    {
+      customHeaders: {
+        Referer: "https://toolvise.vercel.app/",
+      },
+    }
+  );
+  const result = await model.generateContent(prompt);
+  return result.response.text();
+}
+
+async function callGroq(groqKey: string, prompt: string): Promise<string> {
+  const groq = new Groq({ apiKey: groqKey });
+  const completion = await groq.chat.completions.create({
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are a helpful AI that strictly outputs valid JSON without markdown formatting.",
+      },
+      { role: "user", content: prompt },
+    ],
+    model: "llama-3.1-8b-instant",
+    response_format: { type: "json_object" },
+    temperature: 0.7,
+  });
+  return completion.choices[0]?.message?.content || "";
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body: CompareRequest = await req.json();
@@ -35,19 +73,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
+    const geminiKey = process.env.GEMINI_API_KEY;
+    const groqKey = process.env.GROQ_API_KEY;
+
+    if (!geminiKey && !groqKey) {
       return NextResponse.json(
         { error: "AI service not configured." },
         { status: 500 }
       );
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-
-    const stackATools = (stackA.tools || []).map((t) => t.name).join(", ") || "Unknown";
-    const stackBTools = (stackB.tools || []).map((t) => t.name).join(", ") || "Unknown";
+    const stackATools =
+      (stackA.tools || []).map((t) => t.name).join(", ") || "Unknown";
+    const stackBTools =
+      (stackB.tools || []).map((t) => t.name).join(", ") || "Unknown";
 
     const prompt = `You are a senior software architect comparing two tech stacks for a developer.
 
@@ -78,16 +117,44 @@ Respond with ONLY valid JSON (no markdown, no code fences):
   "bestForB": "One sentence: ideal use case for Stack B"
 }`;
 
-    const result = await model.generateContent(prompt);
-    const raw = result.response.text().trim();
+    let raw = "";
 
-    // Strip markdown code fences if present
-    const cleaned = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+    try {
+      if (!geminiKey) throw new Error("No Gemini key");
+      raw = await callGemini(geminiKey, prompt);
+    } catch (geminiErr: unknown) {
+      console.warn(
+        "[compare] Gemini failed, falling back to Groq:",
+        (geminiErr as Error).message
+      );
+      try {
+        if (!groqKey) throw new Error("No Groq key available");
+        raw = await callGroq(groqKey, prompt);
+      } catch (groqErr: unknown) {
+        console.error(
+          "[compare] Groq also failed:",
+          (groqErr as Error).message
+        );
+        return NextResponse.json(
+          {
+            error:
+              "Our AI is taking a short break. Please try again in a few minutes. 🚀",
+          },
+          { status: 503 }
+        );
+      }
+    }
+
+    let cleaned = raw
+      .replace(/^```(?:json)?\s*/i, "")
+      .replace(/\s*```$/i, "")
+      .trim();
 
     let parsed;
     try {
       parsed = JSON.parse(cleaned);
-    } catch {
+    } catch (err) {
+      console.error("[compare] AI Response Parse Error. Raw:", raw, err);
       return NextResponse.json(
         { error: "AI returned an invalid response. Please try again." },
         { status: 502 }
