@@ -1530,8 +1530,7 @@ export default function AdminDashboard() {
                 {(() => {
                   const last7 = Array.from({ length: 7 }, (_, i) => {
                     const d = new Date()
-                    // Use local date to match dailyUsage calculated in loadAllData
-                    d.setDate(d.getDate() - (6 - i))
+                    d.setUTCDate(d.getUTCDate() - (6 - i))
                     return d.toISOString().split("T")[0]
                   })
                   const maxCount = Math.max(...dailyUsage, 1)
@@ -1541,19 +1540,19 @@ export default function AdminDashboard() {
                         {last7.map((day, i) => {
                           const count = dailyUsage[i] || 0
                           const pct = Math.round(count / maxCount * 100)
-                          const label = new Date(day).toLocaleDateString('en-US', { weekday: 'narrow' })
+                          const label = new Date(day + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'narrow', timeZone: 'UTC' })
                           return (
-                            <div key={day} className="flex flex-col items-center gap-2 flex-1 group">
-                              <div className="w-full relative flex items-end justify-center h-full rounded-t-sm overflow-hidden bg-amber-200/20 group-hover:bg-amber-200/40 transition-[background]">
+                            <div key={day} className="flex flex-col items-center gap-2 flex-1 group relative">
+                              {count > 0 && (
+                                <div className="absolute bottom-[calc(100%-8px)] left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap z-10 pointer-events-none">
+                                  {count} requests
+                                </div>
+                              )}
+                              <div className="w-full flex items-end justify-center h-full rounded-t-sm overflow-hidden bg-amber-200/20 group-hover:bg-amber-200/40 transition-[background]">
                                 <div 
                                   className="w-full bg-amber-500 rounded-t-sm transition-all duration-1000 ease-out animate-in slide-in-from-bottom"
                                   style={{ height: `${pct}%` }} 
                                 />
-                                {count > 0 && (
-                                  <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap z-10 pointer-events-none">
-                                    {count} requests
-                                  </div>
-                                )}
                               </div>
                               <span className="text-[10px] font-semibold text-amber-600/70">{label}</span>
                             </div>
