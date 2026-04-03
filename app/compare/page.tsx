@@ -68,7 +68,7 @@ function ScoreBar({
       <div className="flex-1 h-2 rounded-full bg-amber-200/40 overflow-hidden">
         <div
           className={cn(
-            "h-full rounded-full transition-all duration-700",
+            "h-full rounded-full transition-all duration-300",
             isWinner ? "bg-amber-500" : "bg-neutral-900/20"
           )}
           style={{ width: `${(value / 10) * 100}%` }}

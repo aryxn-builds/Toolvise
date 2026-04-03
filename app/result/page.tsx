@@ -227,7 +227,7 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
   }
 
   return (
-    <div ref={cardRef} className="mb-10 animate-in fade-in slide-in-from-bottom-6 duration-700 fill-mode-both" style={{ animationDelay: "100ms" }}>
+    <div ref={cardRef} className="mb-10 animate-in fade-in slide-in-from-bottom-6 duration-300 fill-mode-both" style={{ animationDelay: "50ms" }}>
       <Card className={cn("overflow-hidden border-amber-500/30 bg-background/80 backdrop-blur-md", scoreGlow)}>
         <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500" />
         <CardHeader className="pb-2">
@@ -251,7 +251,7 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
                   </div>
                   <div className="h-2.5 w-full rounded-full bg-white overflow-hidden">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400 transition-all duration-1000 ease-out"
+                      className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400 transition-all duration-500 ease-out"
                       style={{
                         width: animated ? `${bar.value * 10}%` : "0%",
                         transitionDelay: `${bar.delay}ms`,
@@ -291,7 +291,7 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
 // ── Comparison Engine Component ──────────────────────────────────────────
 function ComparisonEngineSection({ comparisons }: { comparisons: Comparison[] }) {
   return (
-    <section className="space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "250ms" }}>
+    <section className="space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-300" style={{ animationDelay: "100ms" }}>
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 border border-amber-300">
           <RefreshCcw className="h-5 w-5 text-amber-600" />
@@ -373,7 +373,7 @@ function BudgetSection({ tools }: { tools: Tool[] }) {
   const allFree = paidTools.length === 0
 
   return (
-    <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "300ms" }}>
+    <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-300" style={{ animationDelay: "100ms" }}>
       <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
         💰 Approx. Budget
       </h2>
@@ -738,7 +738,7 @@ function ResultContent() {
   return (
     <main className="relative mx-auto w-full max-w-4xl px-4 py-12 sm:px-6 lg:px-8 space-y-8 overflow-hidden">
       {/* 1. HEADER */}
-      <header className="animate-in fade-in slide-in-from-top-4 duration-700">
+      <header className="animate-in fade-in slide-in-from-top-4 duration-300">
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div className="space-y-4 max-w-2xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-sm font-medium text-amber-400">
@@ -771,7 +771,7 @@ function ResultContent() {
       {data.scoreCard && <ScoreCardSection scoreCard={data.scoreCard} />}
 
       {/* 3. OVERVIEW */}
-      <Card className="border-border bg-white shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "150ms" }}>
+      <Card className="border-border bg-white shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-300 fill-mode-both" style={{ animationDelay: "75ms" }}>
         <div className="h-1 w-full bg-gradient-to-r from-amber-500 to-amber-400" />
         <CardHeader>
           <div className="flex items-center justify-between flex-wrap gap-3">
@@ -846,7 +846,7 @@ function ResultContent() {
       </Card>
 
       {/* 4. RECOMMENDED TOOLS */}
-      <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "200ms" }}>
+      <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-300" style={{ animationDelay: "75ms" }}>
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
             🛠️ Recommended Tools
@@ -1020,7 +1020,7 @@ function ResultContent() {
       )}
 
       {/* 4.5 ARCHITECTURE DIAGRAM */}
-      <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "200ms" }}>
+      <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-300" style={{ animationDelay: "75ms" }}>
         <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
           🏗️ Architecture Diagram
         </h2>
@@ -1096,7 +1096,7 @@ function ResultContent() {
       </section>
 
       {/* 5. EXECUTION ROADMAP */}
-      <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "250ms" }}>
+      <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-300" style={{ animationDelay: "100ms" }}>
         <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
           🗺️ Execution Roadmap
         </h2>
@@ -1146,7 +1146,7 @@ function ResultContent() {
       {/* 7. VIBE CODING */}
       {data.vibeCoding ? (
         data.vibeCoding.aiTools && data.vibeCoding.aiTools.length > 0 ? (
-          <section className="animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "400ms" }}>
+          <section className="animate-in fade-in slide-in-from-bottom-8 duration-300 fill-mode-both" style={{ animationDelay: "150ms" }}>
             <div className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-4 mb-6">
               <p className="text-sm text-amber-500 font-semibold mb-1">
                 🤖 What is Vibe Coding?
@@ -1249,7 +1249,7 @@ function ResultContent() {
           </section>
         ) : (
           /* Vibe Coding fallback when data exists but aiTools is empty */
-          <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both" style={{ animationDelay: "400ms" }}>
+          <div className="animate-in fade-in slide-in-from-bottom-8 duration-300 fill-mode-both" style={{ animationDelay: "150ms" }}>
             <Card className="border-amber-500/20 bg-amber-500/5 backdrop-blur-md">
               <CardContent className="flex flex-col items-center justify-center py-12 text-center">
                 <AlertTriangle className="h-10 w-10 text-amber-400 mb-4" />
@@ -1269,7 +1269,7 @@ function ResultContent() {
       ) : null}
 
       {/* 7.5 AI CRITIC */}
-      <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-700" style={{ animationDelay: "450ms" }}>
+      <section className="space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-300" style={{ animationDelay: "150ms" }}>
         <div className="flex items-center justify-between border border-border bg-white rounded-xl p-6 shadow-sm">
           <div className="space-y-2">
             <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
@@ -1335,7 +1335,7 @@ function ResultContent() {
       </section>
 
       {/* 8. ACTION BUTTONS */}
-      <section className="border-t border-border pt-8 pb-16 animate-in fade-in slide-in-from-bottom-4 duration-700" style={{ animationDelay: "500ms" }}>
+      <section className="border-t border-border pt-8 pb-16 animate-in fade-in slide-in-from-bottom-4 duration-300" style={{ animationDelay: "200ms" }}>
         
         <p className="text-center text-sm text-amber-600/70 mb-6">
           Happy with your stack? Save it to your dashboard or share it with your team.

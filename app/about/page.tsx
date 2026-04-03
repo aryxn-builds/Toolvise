@@ -23,7 +23,7 @@ export default async function AboutPage() {
       <main className="mx-auto max-w-5xl px-4 pt-24 pb-24 sm:px-6 lg:px-8">
         
         {/* 1. HERO SECTION */}
-        <section className="mb-24 text-center mt-12 animate-in slide-in-from-bottom-6 fade-in duration-700">
+        <section className="mb-24 text-center mt-12 animate-in slide-in-from-bottom-6 fade-in duration-300">
           <h1 className="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-300 sm:text-6xl mb-6">
             About Toolvise
           </h1>
@@ -35,7 +35,7 @@ export default async function AboutPage() {
         <div className="grid gap-20 md:gap-32">
           
           {/* 2. WHAT IS TOOLVISE */}
-          <section className="animate-in slide-in-from-bottom-6 fade-in duration-700 delay-150 fill-mode-both">
+          <section className="animate-in slide-in-from-bottom-6 fade-in duration-300 delay-75 fill-mode-both">
             <div className="max-w-3xl">
               <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3">
                 <Code2 className="h-6 w-6 text-amber-400" /> What is Toolvise?
@@ -47,7 +47,7 @@ export default async function AboutPage() {
           </section>
 
           {/* 3. WHY WE BUILT THIS */}
-          <section className="animate-in slide-in-from-bottom-6 fade-in duration-700 delay-300 fill-mode-both">
+          <section className="animate-in slide-in-from-bottom-6 fade-in duration-300 delay-100 fill-mode-both">
             <div className="max-w-3xl ml-auto text-left md:text-right">
               <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3 justify-start md:justify-end">
                 <Users className="h-6 w-6 text-amber-400" /> Why we built this
@@ -59,7 +59,7 @@ export default async function AboutPage() {
           </section>
 
           {/* 4. FEATURES SECTION */}
-          <section className="animate-in slide-in-from-bottom-6 fade-in duration-700 delay-500 fill-mode-both">
+          <section className="animate-in slide-in-from-bottom-6 fade-in duration-300 delay-75 fill-mode-both">
             <h2 className="text-3xl font-bold text-center text-foreground mb-12">What Toolvise does</h2>
             <div className="grid gap-6 sm:grid-cols-2">
               
@@ -91,7 +91,7 @@ export default async function AboutPage() {
           </section>
 
           {/* 5. BUILT BY SECTION & CTA */}
-          <section className="rounded-3xl border border-border bg-gradient-to-b from-white/5 to-transparent p-10 text-center sm:p-16 animate-in slide-in-from-bottom-6 fade-in duration-700 delay-700 fill-mode-both">
+          <section className="rounded-3xl border border-border bg-gradient-to-b from-white/5 to-transparent p-10 text-center sm:p-16 animate-in slide-in-from-bottom-6 fade-in duration-300 delay-200 fill-mode-both">
             <h2 className="text-3xl font-bold text-foreground mb-6">Built by a student, for builders</h2>
             <p className="mx-auto max-w-2xl text-lg text-foreground/60 leading-relaxed mb-10">
               Toolvise was built solo by a student developer who was tired of the same problem. No big team. No VC funding. Just code, caffeine, and a vision to help builders move faster.
@@ -102,7 +102,7 @@ export default async function AboutPage() {
           </section>
 
           {/* 6. STATS SECTION */}
-          <section className="grid gap-6 sm:grid-cols-3 text-center border-t border-border pt-16 mt-8 animate-in slide-in-from-bottom-6 fade-in duration-700 delay-1000 fill-mode-both">
+          <section className="grid gap-6 sm:grid-cols-3 text-center border-t border-border pt-16 mt-8 animate-in slide-in-from-bottom-6 fade-in duration-300 delay-100 fill-mode-both">
             <div>
               <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-indigo-400 mb-2">
                 {statsCount}

@@ -235,7 +235,7 @@ export default function ExplorePage() {
       <main className="relative mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         
         {/* 1. HEADER */}
-        <header className="mb-14 text-center space-y-4 animate-in fade-in slide-in-from-top-4 duration-700">
+        <header className="mb-14 text-center space-y-4 animate-in fade-in slide-in-from-top-4 duration-300">
           <Badge variant="outline" className="border-amber-500/30 bg-amber-500/10 text-amber-200 px-4 py-1.5 text-sm">
             <Layers className="mr-2 h-4 w-4" />
             {totalCount.toLocaleString()} Generated Stacks
@@ -249,7 +249,7 @@ export default function ExplorePage() {
         </header>
 
         {/* 2. SEARCH & FILTER BAR */}
-        <div className="mb-12 space-y-6 flex flex-col items-center animate-in fade-in zoom-in-95 duration-700 delay-150 fill-mode-both">
+        <div className="mb-12 space-y-6 flex flex-col items-center animate-in fade-in zoom-in-95 duration-300 delay-75 fill-mode-both">
           <div className="relative w-full max-w-2xl">
             <Search className="absolute left-4 top-3.5 h-5 w-5 text-foreground/40" />
             <Input
@@ -288,7 +288,7 @@ export default function ExplorePage() {
             ))}
           </div>
         ) : stacks.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 animate-in fade-in fill-mode-both duration-700 delay-300">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 animate-in fade-in fill-mode-both duration-300 delay-100">
             {stacks.map((stack) => {
               const hasVoted = votedCache.includes(stack.id) || stack._voted;
               

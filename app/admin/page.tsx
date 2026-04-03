@@ -756,7 +756,7 @@ export default function AdminDashboard() {
                     
                     return (
                       <>
-                        <div className="relative h-32 w-32 rounded-full flex flex-col items-center justify-center shrink-0 transition-all duration-1000 animate-in zoom-in-50"
+                        <div className="relative h-32 w-32 rounded-full flex flex-col items-center justify-center shrink-0 transition-all duration-500 animate-in zoom-in-50"
                              style={{ background: `conic-gradient(#A855F7 0% ${vibePct}%, #3B82F6 ${vibePct}% ${vibePct + nocodePct}%, #9CA3AF ${vibePct + nocodePct}% 100%)` }}>
                           <div className="absolute inset-[20%] bg-white rounded-full flex flex-col items-center justify-center shadow-inner">
                             <span className="text-xl font-black text-foreground">{total}</span>
@@ -818,7 +818,7 @@ export default function AdminDashboard() {
                           </div>
                           <div className="h-2 rounded-full bg-amber-200/60 overflow-hidden">
                             <div
-                              className="h-full bg-gradient-to-r from-[#FB923C] to-amber-500 rounded-full transition-all duration-700 ease-out"
+                              className="h-full bg-gradient-to-r from-[#FB923C] to-amber-500 rounded-full transition-all duration-300 ease-out"
                               style={{ width: `${pct}%` }}
                             />
                           </div>
@@ -1493,7 +1493,7 @@ export default function AdminDashboard() {
                   
                   return (
                     <div className="flex flex-col items-center gap-6 w-full">
-                      <div className="relative h-36 w-36 rounded-full flex items-center justify-center transition-all duration-1000 animate-in zoom-in-50"
+                      <div className="relative h-36 w-36 rounded-full flex items-center justify-center transition-all duration-500 animate-in zoom-in-50"
                            style={{ background: `conic-gradient(#3B82F6 0% ${geminiPct}%, #F59E0B ${geminiPct}% 100%)` }}>
                         <div className="absolute inset-[18%] bg-white rounded-full flex flex-col items-center justify-center shadow-inner">
                           <span className="text-xl font-black text-foreground">{total}</span>
@@ -1550,7 +1550,7 @@ export default function AdminDashboard() {
                               )}
                               <div className="w-full flex items-end justify-center flex-1 rounded-t-sm overflow-hidden bg-amber-200/20 group-hover:bg-amber-200/40 transition-[background]">
                                 <div 
-                                  className="w-full bg-amber-500 rounded-t-sm transition-all duration-1000 ease-out animate-in slide-in-from-bottom"
+                                  className="w-full bg-amber-500 rounded-t-sm transition-all duration-500 ease-out animate-in slide-in-from-bottom"
                                   style={{ height: `${pct}%` }} 
                                 />
                               </div>
