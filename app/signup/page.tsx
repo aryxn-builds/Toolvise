@@ -112,7 +112,7 @@ export default function SignupPage() {
         {/* Logo */}
         <div className="flex flex-col items-center gap-3">
           <Link href="/" className="flex items-center gap-2">
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-400 shadow-lg shadow-amber-500/20">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-plum-500 to-plum-400 shadow-medium">
               <Sparkles className="h-5 w-5 text-white" />
             </div>
             <span className="text-xl font-bold tracking-tight text-foreground">
@@ -122,7 +122,7 @@ export default function SignupPage() {
         </div>
 
         {/* Card */}
-        <div className="rounded-2xl border border-border bg-white p-8 shadow-sm">
+        <div className="rounded-2xl border border-[#DFB6B2] bg-white p-8 shadow-medium rounded-3xl">
           <h1 className="text-2xl font-bold text-foreground text-center mb-2">
             Create your account
           </h1>
@@ -135,7 +135,7 @@ export default function SignupPage() {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={oauthLoading}
-            className="w-full flex items-center justify-center gap-3 h-11 rounded-xl border border-border bg-white hover:bg-background text-foreground font-medium transition-all mb-6 disabled:opacity-60"
+            className="w-full flex items-center justify-center gap-3 h-11 rounded-xl border border-[#DFB6B2] bg-white hover:bg-background text-foreground font-medium transition-all mb-6 disabled:opacity-60"
           >
             {oauthLoading ? (
               <Loader2 className="h-5 w-5 animate-spin text-foreground/50" />
@@ -153,7 +153,7 @@ export default function SignupPage() {
           {/* Divider */}
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-border" />
+              <div className="w-full border-t border-[#DFB6B2]" />
             </div>
             <div className="relative flex justify-center text-xs">
               <span className="bg-white px-3 text-foreground/40 font-medium">or</span>
@@ -181,7 +181,7 @@ export default function SignupPage() {
                   placeholder="your_username"
                   required
                   minLength={3}
-                  className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500 focus-visible:border-amber-500 pr-10"
+                  className="h-11 bg-white border-[#DFB6B2] text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500 focus-visible:border-[#522B5B] pr-10"
                 />
                 <div className="absolute right-3 top-3">
                   {usernameStatus === "checking" && (
@@ -211,7 +211,7 @@ export default function SignupPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500 focus-visible:border-amber-500"
+                className="h-11 bg-white border-[#DFB6B2] text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500 focus-visible:border-[#522B5B]"
               />
             </div>
 
@@ -228,12 +228,12 @@ export default function SignupPage() {
                   placeholder="••••••••"
                   required
                   minLength={8}
-                  className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500 focus-visible:border-amber-500 pr-12"
+                  className="h-11 bg-white border-[#DFB6B2] text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500 focus-visible:border-[#522B5B] pr-12"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-600/70 hover:text-amber-300 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-plum-600/70 hover:text-[#190019] transition-colors"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
@@ -249,7 +249,7 @@ export default function SignupPage() {
             <Button
               type="submit"
               disabled={loading || usernameStatus === "taken"}
-              className="w-full h-11 rounded-xl bg-amber-500 text-white hover:bg-amber-400 font-semibold shadow-lg shadow-amber-500/20 transition-all"
+              className="w-full h-11 rounded-xl btn-3d font-semibold"
             >
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Create Account
@@ -262,7 +262,7 @@ export default function SignupPage() {
           Already have an account?{" "}
           <Link
             href="/login"
-            className="font-semibold text-amber-500 hover:underline"
+            className="font-semibold text-[#522B5B] hover:underline"
           >
             Sign in
           </Link>

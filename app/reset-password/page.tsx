@@ -88,7 +88,7 @@ export default function ResetPasswordPage() {
         {/* Logo */}
         <div className="flex flex-col items-center gap-3">
           <Link href="/" className="flex items-center gap-2">
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-400 shadow-lg shadow-amber-500/20">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-plum-500 to-plum-400 shadow-lg shadow-plum-500/20">
               <Sparkles className="h-5 w-5 text-white" />
             </div>
             <span className="text-xl font-bold tracking-tight text-foreground">
@@ -115,7 +115,7 @@ export default function ResetPasswordPage() {
                 sign in...
               </div>
               <div className="flex justify-center">
-                <Loader2 className="h-5 w-5 animate-spin text-amber-500" />
+                <Loader2 className="h-5 w-5 animate-spin text-[#522B5B]" />
               </div>
             </div>
           ) : (
@@ -135,7 +135,7 @@ export default function ResetPasswordPage() {
               )}
 
               {!sessionReady && (
-                <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-700 mb-4">
+                <div className="rounded-lg border border-[#DFB6B2] bg-[#FBE4D8] p-3 text-sm text-plum-700 mb-4">
                   Verifying your reset link... If you arrived here directly,
                   please use the link from your email.
                 </div>
@@ -156,12 +156,12 @@ export default function ResetPasswordPage() {
                       placeholder="••••••••"
                       required
                       minLength={8}
-                      className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500 focus-visible:border-amber-500 pr-10"
+                      className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500 focus-visible:border-[#522B5B] pr-10"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-3 text-foreground/40 hover:text-amber-300/70 transition-colors"
+                      className="absolute right-3 top-3 text-foreground/40 hover:text-[#190019]/70 transition-colors"
                     >
                       {showPassword ? (
                         <EyeOff className="h-4 w-4" />
@@ -188,18 +188,18 @@ export default function ResetPasswordPage() {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="••••••••"
                       required
-                      className={`h-11 bg-white text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500 pr-10 ${
+                      className={`h-11 bg-white text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500 pr-10 ${
                         passwordsMismatch
                           ? "border-red-400 focus-visible:border-red-400"
                           : passwordsMatch
                           ? "border-green-400 focus-visible:border-green-400"
-                          : "border-border focus-visible:border-amber-500"
+                          : "border-border focus-visible:border-[#522B5B]"
                       }`}
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirm(!showConfirm)}
-                      className="absolute right-3 top-3 text-foreground/40 hover:text-amber-300/70 transition-colors"
+                      className="absolute right-3 top-3 text-foreground/40 hover:text-[#190019]/70 transition-colors"
                     >
                       {showConfirm ? (
                         <EyeOff className="h-4 w-4" />
@@ -221,7 +221,7 @@ export default function ResetPasswordPage() {
                 <Button
                   type="submit"
                   disabled={loading || !sessionReady}
-                  className="w-full h-11 rounded-xl bg-amber-500 text-white hover:bg-amber-400 font-semibold shadow-lg shadow-amber-500/20 transition-all"
+                  className="w-full h-11 rounded-xl bg-[#FBE4D8] text-white hover:bg-[#522B5B] font-semibold shadow-lg shadow-plum-500/20 transition-all"
                 >
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Update Password
@@ -234,7 +234,7 @@ export default function ResetPasswordPage() {
         <div className="text-center">
           <Link
             href="/login"
-            className="text-sm text-foreground/50 hover:text-amber-300 transition-colors"
+            className="text-sm text-foreground/50 hover:text-[#190019] transition-colors"
           >
             Back to Sign In
           </Link>

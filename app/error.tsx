@@ -22,7 +22,7 @@ export default function Error({
         text-foreground mb-3">
         Something went wrong
       </h2>
-      <p className="text-amber-600/70 mb-8 
+      <p className="text-plum-600/70 mb-8 
         max-w-md">
         Don&apos;t worry — your data is safe.
         Try refreshing or go back home.
@@ -31,8 +31,8 @@ export default function Error({
         <button
           onClick={reset}
           className="px-6 py-3 rounded-xl 
-          bg-amber-500 text-white font-semibold
-          hover:bg-amber-400 transition-colors"
+          bg-[#FBE4D8] text-white font-semibold
+          hover:bg-[#522B5B] transition-colors"
         >
           Try Again
         </button>

@@ -90,37 +90,37 @@ export function Navbar() {
     .slice(0, 2);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-white shadow-nav">
+    <header className="sticky top-0 z-50 border-b border-[#DFB6B2]/60 bg-[#FBE4D8]/80 backdrop-blur-xl shadow-nav">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-400 shadow-[0_10px_30px_rgba(249,115,22,0.25)]">
-            <Sparkles className="h-4 w-4 text-white" />
+          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#522B5B] to-[#854F6C] shadow-glow">
+            <Sparkles className="h-4 w-4 text-[#FBE4D8]" />
           </div>
-          <span className="text-xl font-bold font-serif text-amber-500">
+          <span className="text-xl font-bold font-serif text-[#522B5B]">
             Toolvise
           </span>
         </Link>
 
         {/* Nav links */}
-        <nav className="hidden items-center gap-6 text-sm text-[var(--text-secondary)] md:flex font-sans font-medium">
-          <Link className="transition-colors hover:text-amber-500 px-1 py-5 border-b-2 border-transparent hover:border-amber-500" href="/">
+        <nav className="hidden items-center gap-6 text-sm text-[#522B5B] md:flex font-sans font-medium">
+          <Link className="transition-colors hover:text-[#190019] px-1 py-5 border-b-2 border-transparent hover:border-[#190019]" href="/">
             Home
           </Link>
           <Link
-            className="transition-colors hover:text-amber-500 px-1 py-5 border-b-2 border-transparent hover:border-amber-500"
+            className="transition-colors hover:text-[#190019] px-1 py-5 border-b-2 border-transparent hover:border-[#190019]"
             href="/explore"
           >
             Explore
           </Link>
           <Link
-            className="transition-colors hover:text-amber-500 px-1 py-5 border-b-2 border-transparent hover:border-amber-500"
+            className="transition-colors hover:text-[#190019] px-1 py-5 border-b-2 border-transparent hover:border-[#190019]"
             href="/leaderboard"
           >
             Leaderboard
           </Link>
           <Link
-            className="transition-colors hover:text-amber-500 px-1 py-5 border-b-2 border-transparent hover:border-amber-500"
+            className="transition-colors hover:text-[#190019] px-1 py-5 border-b-2 border-transparent hover:border-[#190019]"
             href="/about"
           >
             About
@@ -143,7 +143,7 @@ export function Navbar() {
                     className="h-7 w-7 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="h-7 w-7 rounded-full bg-gradient-to-br from-amber-500 to-amber-400 flex items-center justify-center text-white text-xs font-bold">
+                  <div className="h-7 w-7 rounded-full bg-gradient-to-br from-plum-500 to-plum-400 flex items-center justify-center text-white text-xs font-bold">
                     {initials}
                   </div>
                 )}
@@ -170,7 +170,7 @@ export function Navbar() {
                   <Link
                     href="/dashboard"
                     onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-foreground/70 hover:bg-background hover:text-amber-300 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-foreground/70 hover:bg-background hover:text-[#190019] transition-colors"
                   >
                     <LayoutDashboard className="h-4 w-4" />
                     My Dashboard
@@ -178,7 +178,7 @@ export function Navbar() {
                   <Link
                     href={`/profile/${profile?.username || ""}`}
                     onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-foreground/70 hover:bg-background hover:text-amber-300 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-foreground/70 hover:bg-background hover:text-[#190019] transition-colors"
                   >
                     <User className="h-4 w-4" />
                     My Profile
@@ -186,7 +186,7 @@ export function Navbar() {
                   <Link
                     href="/settings"
                     onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-foreground/70 hover:bg-background hover:text-amber-300 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-foreground/70 hover:bg-background hover:text-[#190019] transition-colors"
                   >
                     <Settings className="h-4 w-4" />
                     Settings
@@ -211,7 +211,7 @@ export function Navbar() {
                 href="/login"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "sm" }),
-                  "border-border bg-transparent text-foreground/70 hover:bg-white hover:text-amber-300 hidden sm:inline-flex"
+                  "border border-[#DFB6B2] text-[#522B5B] hover:bg-[#522B5B] hover:text-[#FBE4D8] rounded-xl hidden sm:inline-flex transition-colors"
                 )}
               >
                 Sign In
@@ -220,7 +220,7 @@ export function Navbar() {
                 href="/signup"
                 className={cn(
                   buttonVariants({ size: "sm" }),
-                  "bg-amber-500 text-white hover:bg-amber-400 shadow-sm"
+                  "btn-3d px-5 font-semibold"
                 )}
               >
                 Sign Up

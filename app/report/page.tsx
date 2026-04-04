@@ -68,13 +68,13 @@ export default function ReportBugPage() {
   }
 
   return (
-    <div className="min-h-dvh bg-white bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(232,162,78,0.12)_0%,transparent_70%)] font-sans text-foreground/90 selection:bg-amber-500/30">
+    <div className="min-h-dvh bg-white bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(232,162,78,0.12)_0%,transparent_70%)] font-sans text-foreground/90 selection:bg-[#FBE4D8]/30">
       <Navbar />
 
       <main className="mx-auto max-w-2xl px-4 pt-24 pb-24 sm:px-6 lg:px-8">
         <div className="mb-10 text-center">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/10 mb-6">
-            <Bug className="h-6 w-6 text-amber-400" />
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FBE4D8]/10 mb-6">
+            <Bug className="h-6 w-6 text-[#854F6C]" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-3">
             Report a Bug 🐛
@@ -109,11 +109,11 @@ export default function ReportBugPage() {
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-foreground/80">Your Name <span className="text-foreground/40 font-normal">(optional)</span></Label>
-                  <Input id="name" name="name" placeholder="John Doe" className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500" />
+                  <Input id="name" name="name" placeholder="John Doe" className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-foreground/80">Email <span className="text-foreground/40 font-normal">(optional)</span></Label>
-                  <Input id="email" name="email" type="email" placeholder="john@example.com" className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500" />
+                  <Input id="email" name="email" type="email" placeholder="john@example.com" className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500" />
                 </div>
               </div>
 
@@ -121,7 +121,7 @@ export default function ReportBugPage() {
                 <div className="space-y-2">
                   <Label htmlFor="bug_type" className="text-foreground/80">Bug Type <span className="text-red-400">*</span></Label>
                   <Select name="bug_type" required>
-                    <SelectTrigger className="h-11 bg-white border-border text-foreground focus:ring-amber-500">
+                    <SelectTrigger className="h-11 bg-white border-border text-foreground focus:ring-plum-500">
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent className="bg-white border-border text-foreground">
@@ -136,7 +136,7 @@ export default function ReportBugPage() {
                 <div className="space-y-2">
                   <Label htmlFor="page_name" className="text-foreground/80">Page Where Bug Occurred <span className="text-red-400">*</span></Label>
                   <Select name="page_name" required>
-                    <SelectTrigger className="h-11 bg-white border-border text-foreground focus:ring-amber-500">
+                    <SelectTrigger className="h-11 bg-white border-border text-foreground focus:ring-plum-500">
                       <SelectValue placeholder="Select page" />
                     </SelectTrigger>
                     <SelectContent className="bg-white border-border text-foreground">
@@ -158,14 +158,14 @@ export default function ReportBugPage() {
                   required
                   rows={5}
                   placeholder="Describe what happened, what you expected, and steps to reproduce..." 
-                  className="resize-none bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500" 
+                  className="resize-none bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500" 
                 />
               </div>
 
               <Button 
                 type="submit" 
                 disabled={loading}
-                className="h-12 w-full rounded-xl bg-amber-600 hover:bg-amber-700 text-foreground font-semibold shadow-lg shadow-amber-500/25 transition-all active:scale-[0.98]"
+                className="h-12 w-full rounded-xl bg-plum-600 hover:bg-plum-700 text-foreground font-semibold shadow-lg shadow-plum-500/25 transition-all active:scale-[0.98]"
               >
                 {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <Bug className="mr-2 h-5 w-5" />}
                 {loading ? "Submitting..." : "Submit Report 🐛"}
@@ -178,16 +178,16 @@ export default function ReportBugPage() {
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-10 text-sm text-neutral-300 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>Toolvise © 2025 • Built for builders</p>
           <div className="flex items-center gap-4">
-            <Link className="transition-colors hover:text-amber-300" href="/">
+            <Link className="transition-colors hover:text-[#190019]" href="/">
               Home
             </Link>
-            <Link className="transition-colors hover:text-amber-300" href="/explore">
+            <Link className="transition-colors hover:text-[#190019]" href="/explore">
               Explore
             </Link>
-            <Link className="transition-colors hover:text-amber-300" href="/about">
+            <Link className="transition-colors hover:text-[#190019]" href="/about">
               About
             </Link>
-            <Link className="transition-colors hover:text-amber-300 flex items-center gap-1" href="/report">
+            <Link className="transition-colors hover:text-[#190019] flex items-center gap-1" href="/report">
               Report a Bug 🐛
             </Link>
           </div>

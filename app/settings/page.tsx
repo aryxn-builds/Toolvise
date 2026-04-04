@@ -191,7 +191,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div className="min-h-dvh bg-background flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-amber-500" />
+        <Loader2 className="h-8 w-8 animate-spin text-[#522B5B]" />
       </div>
     );
   }
@@ -215,7 +215,7 @@ export default function SettingsPage() {
           {/* ── Account Info ── */}
           <div className="rounded-2xl border border-border bg-white p-6 sm:p-8 space-y-4">
             <h2 className="text-lg font-semibold flex items-center gap-2">
-              <User className="h-5 w-5 text-amber-500" /> Account Info
+              <User className="h-5 w-5 text-[#522B5B]" /> Account Info
             </h2>
             <div className="grid gap-2">
               <span className="text-sm font-medium text-foreground/60">Email</span>
@@ -243,9 +243,9 @@ export default function SettingsPage() {
             <div className="space-y-3">
               <Label className="text-foreground/80">Profile Picture</Label>
               <div className="flex items-center gap-5">
-                <Avatar className="h-20 w-20 border-2 border-border bg-amber-100 shadow-sm">
+                <Avatar className="h-20 w-20 border-2 border-border bg-[#FEF0E8] shadow-sm">
                   <AvatarImage src={avatarUrl} alt={displayName} className="object-cover" />
-                  <AvatarFallback className="text-xl font-bold text-amber-600 bg-amber-100">
+                  <AvatarFallback className="text-xl font-bold text-plum-600 bg-[#FEF0E8]">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
@@ -262,7 +262,7 @@ export default function SettingsPage() {
                     variant="outline"
                     disabled={uploading}
                     onClick={() => fileInputRef.current?.click()}
-                    className="border-border hover:bg-amber-100 hover:text-amber-600 text-sm h-10"
+                    className="border-border hover:bg-[#FEF0E8] hover:text-plum-600 text-sm h-10"
                   >
                     {uploading ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -284,7 +284,7 @@ export default function SettingsPage() {
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Your display name"
-                className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500"
+                className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
               />
             </div>
 
@@ -300,7 +300,7 @@ export default function SettingsPage() {
                 onChange={(e) => setBio(e.target.value.slice(0, 160))}
                 placeholder="Tell people about yourself..."
                 rows={3}
-                className="resize-none bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500"
+                className="resize-none bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
               />
             </div>
 
@@ -309,7 +309,7 @@ export default function SettingsPage() {
               <div className="space-y-2">
                 <Label htmlFor="gender" className="text-foreground/80">Gender</Label>
                 <Select value={gender} onValueChange={setGender}>
-                  <SelectTrigger className="h-11 bg-white border-border text-foreground focus:ring-amber-500">
+                  <SelectTrigger className="h-11 bg-white border-border text-foreground focus:ring-plum-500">
                     <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-border text-foreground">
@@ -323,7 +323,7 @@ export default function SettingsPage() {
               <div className="space-y-2">
                 <Label htmlFor="skillLevel" className="text-foreground/80">Skill Level</Label>
                 <Select value={skillLevel} onValueChange={setSkillLevel}>
-                  <SelectTrigger className="h-11 bg-white border-border text-foreground focus:ring-amber-500">
+                  <SelectTrigger className="h-11 bg-white border-border text-foreground focus:ring-plum-500">
                     <SelectValue placeholder="Select skill level" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-border text-foreground">
@@ -345,7 +345,7 @@ export default function SettingsPage() {
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   placeholder="e.g. Mumbai, India"
-                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500"
+                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
                 />
               </div>
             </div>
@@ -356,7 +356,7 @@ export default function SettingsPage() {
                 <Clock className="h-3.5 w-3.5" /> Timezone
               </Label>
               <Select value={timezone} onValueChange={setTimezone}>
-                <SelectTrigger className="h-11 bg-white border-border text-foreground focus:ring-amber-500">
+                <SelectTrigger className="h-11 bg-white border-border text-foreground focus:ring-plum-500">
                   <SelectValue placeholder="Select your timezone" />
                 </SelectTrigger>
                 <SelectContent className="bg-white border-border text-foreground max-h-60">
@@ -377,7 +377,7 @@ export default function SettingsPage() {
                 value={preferredLanguages}
                 onChange={(e) => setPreferredLanguages(e.target.value)}
                 placeholder="e.g. TypeScript, Python, React, Next.js"
-                className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500"
+                className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
               />
               <p className="text-xs text-foreground/40">Comma-separated. Helps us give better recommendations.</p>
             </div>
@@ -396,7 +396,7 @@ export default function SettingsPage() {
                   value={website}
                   onChange={(e) => setWebsite(e.target.value)}
                   placeholder="https://yoursite.com"
-                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500"
+                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
                 />
               </div>
             </div>
@@ -410,7 +410,7 @@ export default function SettingsPage() {
                   value={githubUrl}
                   onChange={(e) => setGithubUrl(e.target.value)}
                   placeholder="https://github.com/username"
-                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500"
+                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
                 />
               </div>
             </div>
@@ -424,7 +424,7 @@ export default function SettingsPage() {
                   value={twitterUrl}
                   onChange={(e) => setTwitterUrl(e.target.value)}
                   placeholder="https://twitter.com/username"
-                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500"
+                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
                 />
               </div>
             </div>
@@ -438,7 +438,7 @@ export default function SettingsPage() {
                   value={linkedinUrl}
                   onChange={(e) => setLinkedinUrl(e.target.value)}
                   placeholder="https://linkedin.com/in/username"
-                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500"
+                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
                 />
               </div>
             </div>
@@ -446,7 +446,7 @@ export default function SettingsPage() {
             <Button
               type="submit"
               disabled={saving}
-              className="mt-2 h-11 w-full sm:w-auto rounded-xl bg-amber-500 text-white hover:bg-amber-400 font-semibold shadow-lg shadow-amber-500/20 transition-all"
+              className="mt-2 h-11 w-full sm:w-auto rounded-xl bg-[#FBE4D8] text-white hover:bg-[#522B5B] font-semibold shadow-lg shadow-plum-500/20 transition-all"
             >
               {saving ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

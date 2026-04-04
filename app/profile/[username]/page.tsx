@@ -85,7 +85,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             href="/"
             className="flex items-center gap-2 transition-opacity hover:opacity-80"
           >
-            <div className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-amber-500 to-amber-400 shadow-lg shadow-amber-500/20">
+            <div className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-plum-500 to-plum-400 shadow-lg shadow-plum-500/20">
               <Sparkles className="h-4 w-4 text-white" />
             </div>
             <span className="text-lg font-bold tracking-tight">Toolvise</span>
@@ -93,13 +93,13 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           <div className="ml-auto flex items-center gap-4">
             <Link
               href="/leaderboard"
-              className="text-sm text-foreground/50 hover:text-amber-300 transition-colors hidden sm:block"
+              className="text-sm text-foreground/50 hover:text-[#190019] transition-colors hidden sm:block"
             >
               Leaderboard
             </Link>
             <Link
               href="/dashboard"
-              className="text-sm font-medium text-foreground/60 hover:text-amber-300 flex items-center gap-2 transition-colors"
+              className="text-sm font-medium text-foreground/60 hover:text-[#190019] flex items-center gap-2 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" /> Dashboard
             </Link>
@@ -120,7 +120,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                   className="object-cover"
                 />
               )}
-              <AvatarFallback className="bg-gradient-to-br from-amber-500 to-amber-400 text-white text-2xl font-bold">
+              <AvatarFallback className="bg-gradient-to-br from-plum-500 to-plum-400 text-white text-2xl font-bold">
                 {initials}
               </AvatarFallback>
             </Avatar>
@@ -157,7 +157,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                   <Link href="/settings">
                     <Button
                       variant="outline"
-                      className="border-border text-foreground/70 hover:bg-background hover:text-amber-300 rounded-xl"
+                      className="border-border text-foreground/70 hover:bg-background hover:text-[#190019] rounded-xl"
                     >
                       <Pencil className="mr-2 h-4 w-4" />
                       Edit Profile
@@ -178,19 +178,19 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                   <span className="font-bold text-foreground">
                     {profile.stacks_count ?? 0}
                   </span>
-                  <span className="text-amber-600/70 ml-1">Stacks</span>
+                  <span className="text-plum-600/70 ml-1">Stacks</span>
                 </div>
                 <div>
                   <span className="font-bold text-foreground">
                     {profile.followers_count ?? 0}
                   </span>
-                  <span className="text-amber-600/70 ml-1">Followers</span>
+                  <span className="text-plum-600/70 ml-1">Followers</span>
                 </div>
                 <div>
                   <span className="font-bold text-foreground">
                     {profile.following_count ?? 0}
                   </span>
-                  <span className="text-amber-600/70 ml-1">Following</span>
+                  <span className="text-plum-600/70 ml-1">Following</span>
                 </div>
               </div>
 
@@ -204,7 +204,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                     }
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-sm text-amber-500 hover:text-amber-600 transition-colors"
+                    className="flex items-center gap-1 text-sm text-[#522B5B] hover:text-plum-600 transition-colors"
                   >
                     <Globe className="h-3.5 w-3.5" />
                     {profile.website.replace(/^https?:\/\//, "")}
@@ -251,7 +251,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                     </div>
                     <Link
                       href={`/result?slug=${stack.share_slug}`}
-                      className="flex items-center gap-1 text-sm font-semibold text-amber-500 hover:text-amber-600 transition-colors pt-1"
+                      className="flex items-center gap-1 text-sm font-semibold text-[#522B5B] hover:text-plum-600 transition-colors pt-1"
                     >
                       View Stack
                       <ArrowUpRight className="h-3.5 w-3.5" />
@@ -273,7 +273,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               </p>
               {isOwnProfile && (
                 <Link href="/advisor">
-                  <Button className="mt-6 bg-amber-500 text-white hover:bg-amber-400 rounded-xl">
+                  <Button className="mt-6 bg-[#FBE4D8] text-white hover:bg-[#522B5B] rounded-xl">
                     <Sparkles className="mr-2 h-4 w-4" />
                     Create a Stack
                   </Button>

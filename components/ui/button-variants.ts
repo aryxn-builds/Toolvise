@@ -5,16 +5,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-white hover:bg-primary-hover shadow-sm hover:shadow-md",
+        default: "btn-3d",
         outline:
           "bg-transparent border border-input text-foreground hover:bg-neutral-lightest",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-[#FBE4D8] text-[#190019] hover:bg-[#FBE4D8]/80 font-medium",
         ghost:
-          "hover:bg-neutral-lightest hover:text-foreground text-foreground aria-expanded:bg-neutral-lightest",
+          "hover:bg-[#DFB6B2]/20 hover:text-[#2B124C] text-[#522B5B] aria-expanded:bg-[#DFB6B2]/20",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        link: "text-primary underline-offset-4 hover:underline",
+        link: "text-[#522B5B] underline-offset-4 hover:underline",
       },
       size: {
         default:

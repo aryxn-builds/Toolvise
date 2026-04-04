@@ -197,7 +197,7 @@ export default function AdvisorPage() {
               <div className="flex items-center justify-between">
                 <Label htmlFor="description" className="text-foreground/90">
                   Project Description
-                  <span className="ml-1 text-amber-500">*</span>
+                  <span className="ml-1 text-[#522B5B]">*</span>
                 </Label>
                 <span
                   className={cn(
@@ -215,7 +215,7 @@ export default function AdvisorPage() {
                 placeholder="e.g. I want to build a task management app for students..."
                 rows={4}
                 className={cn(
-                  "resize-none bg-white border-border text-foreground placeholder:text-foreground/25 focus-visible:border-amber-500 focus-visible:ring-amber-500/20",
+                  "resize-none bg-white border-border text-foreground placeholder:text-foreground/25 focus-visible:border-[#522B5B] focus-visible:ring-plum-500/20",
                   errors.description && "border-red-500/60 focus-visible:border-red-500 focus-visible:ring-red-500/20"
                 )}
                 aria-describedby={errors.description ? "description-error" : undefined}
@@ -229,7 +229,7 @@ export default function AdvisorPage() {
             <div className="space-y-2">
               <Label htmlFor="skillLevel" className="text-foreground/90">
                 Skill Level
-                <span className="ml-1 text-amber-500">*</span>
+                <span className="ml-1 text-[#522B5B]">*</span>
               </Label>
               <Select
                 value={form.skillLevel}
@@ -238,7 +238,7 @@ export default function AdvisorPage() {
                 <SelectTrigger
                   id="skillLevel"
                   className={cn(
-                    "w-full h-10 bg-white border-border text-foreground data-[placeholder]:text-foreground/30 focus:border-amber-500 focus:ring-amber-500/20",
+                    "w-full h-10 bg-white border-border text-foreground data-[placeholder]:text-foreground/30 focus:border-[#522B5B] focus:ring-plum-500/20",
                     errors.skillLevel && "border-red-500/60"
                   )}
                 >
@@ -261,7 +261,7 @@ export default function AdvisorPage() {
             <div className="space-y-2">
               <Label className="text-foreground/90">
                 Budget
-                <span className="ml-1 text-amber-500">*</span>
+                <span className="ml-1 text-[#522B5B]">*</span>
               </Label>
               <div
                 className="grid grid-cols-1 gap-2 sm:grid-cols-3"
@@ -279,13 +279,13 @@ export default function AdvisorPage() {
                       className={cn(
                         "relative rounded-xl border px-3 py-3 text-sm font-medium transition-all duration-150 text-center select-none",
                         selected
-                          ? "border-amber-500 bg-amber-500/15 text-foreground shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
-                          : "border-border bg-white text-foreground/60 hover:border-border hover:bg-white hover:text-amber-300/85",
+                          ? "border-[#522B5B] bg-[#FBE4D8]/15 text-foreground shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
+                          : "border-border bg-white text-foreground/60 hover:border-border hover:bg-white hover:text-[#190019]/85",
                         errors.budget && !selected && "border-red-500/30"
                       )}
                     >
                       {selected && (
-                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-amber-500">
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#FBE4D8]">
                           <svg className="h-2.5 w-2.5 text-foreground" viewBox="0 0 10 8" fill="none">
                             <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
@@ -305,7 +305,7 @@ export default function AdvisorPage() {
             <div className="space-y-2">
               <Label htmlFor="goal" className="text-foreground/90">
                 Goal
-                <span className="ml-1 text-amber-500">*</span>
+                <span className="ml-1 text-[#522B5B]">*</span>
               </Label>
               <Select
                 value={form.goal}
@@ -314,7 +314,7 @@ export default function AdvisorPage() {
                 <SelectTrigger
                   id="goal"
                   className={cn(
-                    "w-full h-10 bg-white border-border text-foreground data-[placeholder]:text-foreground/30 focus:border-amber-500 focus:ring-amber-500/20",
+                    "w-full h-10 bg-white border-border text-foreground data-[placeholder]:text-foreground/30 focus:border-[#522B5B] focus:ring-plum-500/20",
                     errors.goal && "border-red-500/60"
                   )}
                 >
@@ -337,7 +337,7 @@ export default function AdvisorPage() {
             <div className="space-y-2">
               <Label className="text-foreground/90">
                 How deep should we go?
-                <span className="ml-1 text-amber-500">*</span>
+                <span className="ml-1 text-[#522B5B]">*</span>
               </Label>
               <div
                 className="grid grid-cols-1 gap-2 sm:grid-cols-3"
@@ -355,13 +355,13 @@ export default function AdvisorPage() {
                       className={cn(
                         "relative rounded-xl border px-3 py-3 text-sm font-medium transition-all duration-150 text-center select-none",
                         selected
-                          ? "border-amber-500 bg-amber-500/15 text-foreground shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
-                          : "border-border bg-white text-foreground/60 hover:border-border hover:bg-white hover:text-amber-300/85",
+                          ? "border-[#522B5B] bg-[#FBE4D8]/15 text-foreground shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
+                          : "border-border bg-white text-foreground/60 hover:border-border hover:bg-white hover:text-[#190019]/85",
                         errors.detailLevel && !selected && "border-red-500/30"
                       )}
                     >
                       {selected && (
-                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-amber-500">
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#FBE4D8]">
                           <svg className="h-2.5 w-2.5 text-foreground" viewBox="0 0 10 8" fill="none">
                             <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
@@ -382,7 +382,7 @@ export default function AdvisorPage() {
             <div className="space-y-2">
               <Label className="text-foreground/90">
                 How do you want to build this?
-                <span className="ml-1 text-amber-500">*</span>
+                <span className="ml-1 text-[#522B5B]">*</span>
               </Label>
               <div
                 className="grid grid-cols-1 gap-2 sm:grid-cols-3"
@@ -400,13 +400,13 @@ export default function AdvisorPage() {
                       className={cn(
                         "relative rounded-xl border px-3 py-3 text-sm font-medium transition-all duration-150 text-center select-none",
                         selected
-                          ? "border-amber-500 bg-amber-500/15 text-foreground shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
-                          : "border-border bg-white text-foreground/60 hover:border-border hover:bg-white hover:text-amber-300/85",
+                          ? "border-[#522B5B] bg-[#FBE4D8]/15 text-foreground shadow-[0_0_0_1px_rgba(249,115,22,0.5)]"
+                          : "border-border bg-white text-foreground/60 hover:border-border hover:bg-white hover:text-[#190019]/85",
                         errors.buildStyle && !selected && "border-red-500/30"
                       )}
                     >
                       {selected && (
-                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-amber-500">
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#FBE4D8]">
                           <svg className="h-2.5 w-2.5 text-foreground" viewBox="0 0 10 8" fill="none">
                             <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
@@ -436,8 +436,8 @@ export default function AdvisorPage() {
               disabled={loading}
               className={cn(
                 "relative w-full rounded-xl px-5 py-3 text-sm font-semibold text-foreground transition-all duration-150",
-                "bg-amber-500 shadow-[0_12px_40px_rgba(249,115,22,0.28)]",
-                "hover:-translate-y-0.5 hover:bg-amber-400 hover:shadow-[0_16px_48px_rgba(249,115,22,0.38)]",
+                "bg-[#FBE4D8] shadow-[0_12px_40px_rgba(249,115,22,0.28)]",
+                "hover:-translate-y-0.5 hover:bg-[#522B5B] hover:shadow-[0_16px_48px_rgba(249,115,22,0.38)]",
                 "active:translate-y-0 active:shadow-none",
                 "disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0",
                 "flex items-center justify-center gap-2"

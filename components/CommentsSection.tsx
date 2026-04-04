@@ -281,7 +281,7 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
                       className="object-cover"
                     />
                   )}
-                  <AvatarFallback className="bg-gradient-to-br from-amber-500 to-amber-400 text-white text-xs font-bold">
+                  <AvatarFallback className="bg-gradient-to-br from-plum-500 to-plum-400 text-white text-xs font-bold">
                     {getInitials(profile)}
                   </AvatarFallback>
                 </Avatar>
@@ -294,7 +294,7 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
                     {profile?.username && (
                       <span className="text-xs text-foreground/40">@{profile.username}</span>
                     )}
-                    <span className="text-xs text-amber-600/70">{timeAgo(comment.created_at)}</span>
+                    <span className="text-xs text-plum-600/70">{timeAgo(comment.created_at)}</span>
                   </div>
                   <p className="text-sm text-foreground/80 leading-relaxed break-words">
                     {comment.content}
@@ -335,18 +335,18 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
             onKeyDown={handleKeyDown}
             placeholder="Share your thoughts... (Ctrl+Enter to post)"
             rows={3}
-            className="w-full resize-none rounded-xl border border-border bg-background/30 px-4 py-3 text-sm text-foreground placeholder:text-foreground/30 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all"
+            className="w-full resize-none rounded-xl border border-border bg-background/30 px-4 py-3 text-sm text-foreground placeholder:text-foreground/30 outline-none focus:border-[#522B5B] focus:ring-2 focus:ring-plum-500/20 transition-all"
           />
           <div className="flex items-center justify-between">
             <span className={cn("text-xs",
-              remaining < 50 ? remaining < 10 ? "text-red-500" : "text-amber-500" : "text-foreground/30"
+              remaining < 50 ? remaining < 10 ? "text-red-500" : "text-[#522B5B]" : "text-foreground/30"
             )}>
               {remaining} characters left
             </span>
             <button
               onClick={postComment}
               disabled={posting || !newComment.trim() || remaining < 0}
-              className="flex items-center gap-2 rounded-xl bg-amber-500 px-5 py-2 text-sm font-semibold text-white hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex items-center gap-2 rounded-xl bg-[#FBE4D8] px-5 py-2 text-sm font-semibold text-white hover:bg-[#522B5B] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {posting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
               Post Comment
@@ -357,7 +357,7 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
         <div className="pt-2 border-t border-border/50">
           <Link
             href={`/login?next=/result?slug=${shareSlug}`}
-            className="inline-flex items-center gap-2 text-sm text-amber-500 font-semibold hover:text-amber-600 transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-[#522B5B] font-semibold hover:text-plum-600 transition-colors"
           >
             Sign in to join the discussion →
           </Link>

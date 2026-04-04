@@ -180,19 +180,19 @@ function StackCard({
           <MoreVertical className="h-4 w-4 text-foreground/50" />
         </button>
         {menuOpen && (
-          <div className="absolute right-0 top-9 w-44 rounded-xl border border-border bg-white shadow-xl shadow-amber-100 py-1.5 z-30 animate-in fade-in zoom-in-95 duration-150">
+          <div className="absolute right-0 top-9 w-44 rounded-xl border border-border bg-white shadow-xl shadow-plum-100 py-1.5 z-30 animate-in fade-in zoom-in-95 duration-150">
             <button
               onClick={() => {
                 navigator.clipboard.writeText(`${window.location.origin}/result?slug=${stack.share_slug}`);
                 setMenuOpen(false);
               }}
-              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-foreground/70 hover:bg-background hover:text-amber-300 transition-colors"
+              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-foreground/70 hover:bg-background hover:text-[#190019] transition-colors"
             >
               <Copy className="h-3.5 w-3.5" /> Copy Link
             </button>
             <button
               onClick={() => { onToggleVisibility(stack); setMenuOpen(false); }}
-              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-foreground/70 hover:bg-background hover:text-amber-300 transition-colors"
+              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-foreground/70 hover:bg-background hover:text-[#190019] transition-colors"
             >
               {stack.is_public ? (
                 <><Lock className="h-3.5 w-3.5" /> Make Private</>
@@ -203,7 +203,7 @@ function StackCard({
             <Link
               href={`/result?slug=${stack.share_slug}`}
               onClick={() => setMenuOpen(false)}
-              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-foreground/70 hover:bg-background hover:text-amber-300 transition-colors"
+              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-foreground/70 hover:bg-background hover:text-[#190019] transition-colors"
             >
               <ArrowUpRight className="h-3.5 w-3.5" /> View Stack
             </Link>
@@ -243,13 +243,13 @@ function StackCard({
           </span>
           {stack.upvotes > 0 && (
             <span className="flex items-center gap-1">
-              <Flame className="h-3 w-3 text-amber-500" />
+              <Flame className="h-3 w-3 text-[#522B5B]" />
               {stack.upvotes}
             </span>
           )}
           {score !== null && (
             <span className="flex items-center gap-1">
-              <BarChart3 className="h-3 w-3 text-amber-500" />
+              <BarChart3 className="h-3 w-3 text-[#522B5B]" />
               {score}/100
             </span>
           )}
@@ -258,7 +258,7 @@ function StackCard({
         <div className="pt-2 border-t border-border/60">
           <Link
             href={`/result?slug=${stack.share_slug}`}
-            className="flex items-center gap-1 text-sm font-semibold text-amber-500 hover:text-amber-600 transition-colors"
+            className="flex items-center gap-1 text-sm font-semibold text-[#522B5B] hover:text-plum-600 transition-colors"
           >
             View Stack
             <ArrowUpRight className="h-3.5 w-3.5" />
@@ -310,7 +310,7 @@ function SavedStackCard({
 
         {stack.score_card?.overallScore != null && (
           <div className="flex items-center gap-1 text-xs text-foreground/40">
-            <BarChart3 className="h-3 w-3 text-amber-500" />
+            <BarChart3 className="h-3 w-3 text-[#522B5B]" />
             Score: {stack.score_card.overallScore}/100
           </div>
         )}
@@ -318,14 +318,14 @@ function SavedStackCard({
         <div className="flex items-center justify-between pt-2 border-t border-border/60">
           <button
             onClick={() => onRemove(stack.id)}
-            className="flex items-center gap-1.5 text-xs font-semibold text-foreground/60 hover:text-amber-300 bg-background/50 hover:bg-background border border-border/50 rounded-full px-3 py-1.5 transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold text-foreground/60 hover:text-[#190019] bg-background/50 hover:bg-background border border-border/50 rounded-full px-3 py-1.5 transition-colors"
           >
             <BookmarkMinus className="h-3.5 w-3.5" />
             Unsave
           </button>
           <Link
             href={`/result?slug=${stack.share_slug}`}
-            className="flex items-center gap-1 text-sm font-semibold text-amber-500 hover:text-amber-600 transition-colors"
+            className="flex items-center gap-1 text-sm font-semibold text-[#522B5B] hover:text-plum-600 transition-colors"
           >
             View Stack
             <ArrowUpRight className="h-3.5 w-3.5" />
@@ -542,13 +542,13 @@ export default function DashboardPage() {
         <header className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur-md">
           <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-400 animate-pulse" />
-              <div className="h-5 w-24 rounded bg-amber-200/60 animate-pulse" />
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-plum-500 to-plum-400 animate-pulse" />
+              <div className="h-5 w-24 rounded bg-plum-200/60 animate-pulse" />
             </div>
           </div>
         </header>
         <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8 space-y-8">
-          <div className="h-10 w-64 rounded-xl bg-amber-200/60 animate-pulse" />
+          <div className="h-10 w-64 rounded-xl bg-plum-200/60 animate-pulse" />
           <div className="grid grid-cols-3 gap-4">
             {[1, 2, 3].map((n) => (
               <div key={n} className="h-24 rounded-2xl bg-white border border-border animate-pulse" />
@@ -582,7 +582,7 @@ export default function DashboardPage() {
               </p>
             </div>
             <Link href="/advisor">
-              <Button className="bg-amber-500 text-white hover:bg-amber-400 rounded-xl shadow-lg shadow-amber-500/20 gap-2">
+              <Button className="bg-[#FBE4D8] text-white hover:bg-[#522B5B] rounded-xl shadow-lg shadow-plum-500/20 gap-2">
                 <Plus className="h-4 w-4" />
                 Generate New Stack
               </Button>
@@ -595,19 +595,19 @@ export default function DashboardPage() {
               {
                 label: "My Stacks",
                 value: stacks.length,
-                icon: <Layers className="h-5 w-5 text-amber-500" />,
+                icon: <Layers className="h-5 w-5 text-[#522B5B]" />,
                 sub: "Generated by you",
               },
               {
                 label: "Saved Stacks",
                 value: savedStacks.length,
-                icon: <Bookmark className="h-5 w-5 text-amber-500" />,
+                icon: <Bookmark className="h-5 w-5 text-[#522B5B]" />,
                 sub: "Bookmarked from others",
               },
               {
                 label: "Top Score",
                 value: topScore > 0 ? `${topScore}/100` : "—",
-                icon: <BarChart3 className="h-5 w-5 text-amber-500" />,
+                icon: <BarChart3 className="h-5 w-5 text-[#522B5B]" />,
                 sub: "Best stack score",
               },
             ].map((stat) => (
@@ -630,7 +630,7 @@ export default function DashboardPage() {
         {/* ── Quick Actions ── */}
         <section className="flex flex-wrap gap-3">
           <Link href="/advisor">
-            <Button className="bg-amber-500 text-white hover:bg-amber-400 rounded-xl shadow-lg shadow-amber-500/20 gap-2">
+            <Button className="bg-[#FBE4D8] text-white hover:bg-[#522B5B] rounded-xl shadow-lg shadow-plum-500/20 gap-2">
               <Sparkles className="h-4 w-4" />
               Generate New Stack →
             </Button>
@@ -638,7 +638,7 @@ export default function DashboardPage() {
           <Link href={`/profile/${profile?.username ?? ""}`}>
             <Button
               variant="outline"
-              className="border-border text-foreground/70 hover:bg-white hover:text-amber-300 rounded-xl gap-2"
+              className="border-border text-foreground/70 hover:bg-white hover:text-[#190019] rounded-xl gap-2"
             >
               <User className="h-4 w-4" />
               View My Profile →
@@ -647,7 +647,7 @@ export default function DashboardPage() {
           <Link href="/explore">
             <Button
               variant="outline"
-              className="border-border text-foreground/70 hover:bg-white hover:text-amber-300 rounded-xl gap-2"
+              className="border-border text-foreground/70 hover:bg-white hover:text-[#190019] rounded-xl gap-2"
             >
               <Layers className="h-4 w-4" />
               Explore Community
@@ -663,8 +663,8 @@ export default function DashboardPage() {
               className={cn(
                 "px-5 py-2 rounded-lg text-sm font-semibold transition-all",
                 activeTab === "my"
-                  ? "bg-amber-500 text-white shadow-sm"
-                  : "text-foreground/60 hover:text-amber-300"
+                  ? "bg-[#FBE4D8] text-white shadow-sm"
+                  : "text-foreground/60 hover:text-[#190019]"
               )}
             >
               My Stacks
@@ -676,8 +676,8 @@ export default function DashboardPage() {
               className={cn(
                 "px-5 py-2 rounded-lg text-sm font-semibold transition-all",
                 activeTab === "saved"
-                  ? "bg-amber-500 text-white shadow-sm"
-                  : "text-foreground/60 hover:text-amber-300"
+                  ? "bg-[#FBE4D8] text-white shadow-sm"
+                  : "text-foreground/60 hover:text-[#190019]"
               )}
             >
               Saved Stacks
@@ -697,12 +697,12 @@ export default function DashboardPage() {
                       placeholder="Search stacks…"
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
-                      className="pl-9 h-10 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-amber-500 rounded-xl"
+                      className="pl-9 h-10 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500 rounded-xl"
                     />
                     {search && (
                       <button
                         onClick={() => setSearch("")}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/30 hover:text-amber-300"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/30 hover:text-[#190019]"
                       >
                         <X className="h-3.5 w-3.5" />
                       </button>
@@ -717,8 +717,8 @@ export default function DashboardPage() {
                         className={cn(
                           "px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all",
                           filter === f
-                            ? "bg-amber-500 text-white shadow-sm"
-                            : "bg-white border border-border text-foreground/60 hover:text-amber-300"
+                            ? "bg-[#FBE4D8] text-white shadow-sm"
+                            : "bg-white border border-border text-foreground/60 hover:text-[#190019]"
                         )}
                       >
                         {f}
@@ -730,7 +730,7 @@ export default function DashboardPage() {
                     <select
                       value={sort}
                       onChange={(e) => setSort(e.target.value as SortKey)}
-                      className="appearance-none h-10 pl-3 pr-8 rounded-xl border border-border bg-white text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/40 cursor-pointer"
+                      className="appearance-none h-10 pl-3 pr-8 rounded-xl border border-border bg-white text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-plum-500/40 cursor-pointer"
                     >
                       <option value="newest">Newest First</option>
                       <option value="score">Highest Score</option>
@@ -755,7 +755,7 @@ export default function DashboardPage() {
               ) : stacks.length === 0 ? (
                 <div className="rounded-2xl border border-border bg-white p-14 text-center animate-in fade-in duration-300">
                   <div className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl bg-background border border-border">
-                    <Layers className="h-8 w-8 text-amber-500" />
+                    <Layers className="h-8 w-8 text-[#522B5B]" />
                   </div>
                   <h3 className="text-lg font-bold text-foreground mb-2">
                     You haven&apos;t generated any stacks yet
@@ -764,7 +764,7 @@ export default function DashboardPage() {
                     Describe your project and our AI will recommend the perfect tech stack, tools, and learning path.
                   </p>
                   <Link href="/advisor">
-                    <Button className="bg-amber-500 text-white hover:bg-amber-400 rounded-xl shadow-lg shadow-amber-500/20 gap-2">
+                    <Button className="bg-[#FBE4D8] text-white hover:bg-[#522B5B] rounded-xl shadow-lg shadow-plum-500/20 gap-2">
                       <Sparkles className="h-4 w-4" />
                       Generate Your First Stack →
                     </Button>
@@ -777,7 +777,7 @@ export default function DashboardPage() {
                   <p className="text-sm text-foreground/50">Try adjusting your search or filter</p>
                   <button
                     onClick={() => { setSearch(""); setFilter("all"); }}
-                    className="mt-4 text-sm font-semibold text-amber-500 hover:underline"
+                    className="mt-4 text-sm font-semibold text-[#522B5B] hover:underline"
                   >
                     Clear filters
                   </button>
@@ -802,7 +802,7 @@ export default function DashboardPage() {
               ) : (
                 <div className="rounded-2xl border border-border bg-white p-14 text-center animate-in fade-in duration-300">
                   <div className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl bg-background border border-border">
-                    <Bookmark className="h-8 w-8 text-amber-500" />
+                    <Bookmark className="h-8 w-8 text-[#522B5B]" />
                   </div>
                   <h3 className="text-lg font-bold text-foreground mb-2">
                     You haven&apos;t saved any stacks yet
@@ -811,7 +811,7 @@ export default function DashboardPage() {
                     Browse the explore page and save stacks that inspire you.
                   </p>
                   <Link href="/explore">
-                    <Button className="bg-amber-500 text-white hover:bg-amber-400 rounded-xl shadow-lg shadow-amber-500/20 gap-2">
+                    <Button className="bg-[#FBE4D8] text-white hover:bg-[#522B5B] rounded-xl shadow-lg shadow-plum-500/20 gap-2">
                       <Layers className="h-4 w-4" />
                       Explore Stacks →
                     </Button>

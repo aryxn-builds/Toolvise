@@ -34,7 +34,7 @@ export function StackCard({
               variant="secondary"
               className="border border-border bg-white text-foreground/80"
             >
-              <Sparkles className="mr-1 h-3.5 w-3.5 text-amber-500" />
+              <Sparkles className="mr-1 h-3.5 w-3.5 text-[#522B5B]" />
               AI Stack
             </Badge>
           </div>
@@ -56,13 +56,13 @@ export function StackCard({
           <Button
             type="button"
             variant="outline"
-            className="border-border bg-transparent text-foreground/85 hover:bg-white hover:text-amber-300"
+            className="border-border bg-transparent text-foreground/85 hover:bg-white hover:text-[#190019]"
           >
             Upvote
           </Button>
           <Button
             type="button"
-            className="bg-amber-400 text-foreground hover:bg-[#EA7C28]"
+            className="bg-[#522B5B] text-foreground hover:bg-[#EA7C28]"
           >
             View
             <ArrowUpRight className="ml-2 h-4 w-4" />

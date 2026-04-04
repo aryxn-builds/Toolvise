@@ -3,7 +3,11 @@ ALTER TABLE public.profiles
   ADD COLUMN IF NOT EXISTS avatar_url text,
   ADD COLUMN IF NOT EXISTS github_url text,
   ADD COLUMN IF NOT EXISTS twitter_url text,
-  ADD COLUMN IF NOT EXISTS linkedin_url text;
+  ADD COLUMN IF NOT EXISTS linkedin_url text,
+  ADD COLUMN IF NOT EXISTS gender text,
+  ADD COLUMN IF NOT EXISTS location text,
+  ADD COLUMN IF NOT EXISTS preferred_languages text,
+  ADD COLUMN IF NOT EXISTS timezone text;
 
 -- Create storage bucket for avatars if it doesn't exist
 INSERT INTO storage.buckets (id, name, public) 

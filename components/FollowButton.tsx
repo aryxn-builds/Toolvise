@@ -75,7 +75,7 @@ export function FollowButton({
           "disabled:opacity-60 disabled:cursor-not-allowed",
           isFollowing
             ? "border border-border bg-white text-foreground hover:bg-red-50 hover:text-red-600 hover:border-red-200"
-            : "bg-amber-500 text-white hover:bg-amber-400 shadow-sm shadow-amber-500/30"
+            : "bg-[#FBE4D8] text-white hover:bg-[#522B5B] shadow-sm shadow-plum-500/30"
         )}
       >
         {loading && <Loader2 className="h-3.5 w-3.5 animate-spin" />}

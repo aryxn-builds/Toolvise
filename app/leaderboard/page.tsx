@@ -66,7 +66,7 @@ function RankBadge({ rank }: { rank: number }) {
     );
   if (rank === 3)
     return (
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-600 text-white text-base shadow-sm">
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-plum-600 text-white text-base shadow-sm">
         🥉
       </span>
     );
@@ -95,7 +95,7 @@ function UserAvatar({
   return (
     <Avatar className="h-10 w-10 border border-border">
       {url && <AvatarImage src={url} alt={name ?? ""} className="object-cover" />}
-      <AvatarFallback className="bg-gradient-to-br from-amber-500 to-amber-400 text-white text-sm font-bold">
+      <AvatarFallback className="bg-gradient-to-br from-plum-500 to-plum-400 text-white text-sm font-bold">
         {initials}
       </AvatarFallback>
     </Avatar>
@@ -218,8 +218,8 @@ export default function LeaderboardPage() {
               className={cn(
                 "px-5 py-2 rounded-lg text-sm font-semibold transition-all",
                 tab === key
-                  ? "bg-amber-500 text-white shadow-sm"
-                  : "text-foreground/60 hover:text-amber-300 hover:bg-background"
+                  ? "bg-[#FBE4D8] text-white shadow-sm"
+                  : "text-foreground/60 hover:text-[#190019] hover:bg-background"
               )}
             >
               {label}
@@ -264,7 +264,7 @@ export default function LeaderboardPage() {
                   key={builder.id}
                   className={cn(
                     "border-border bg-white hover:shadow-md transition-all",
-                    idx < 3 && "border-border ring-1 ring-amber-200/60"
+                    idx < 3 && "border-border ring-1 ring-plum-200/60"
                   )}
                 >
                   <CardContent className="p-4 flex items-center gap-4">
@@ -303,7 +303,7 @@ export default function LeaderboardPage() {
                       {builder.username && (
                         <Link
                           href={`/profile/${builder.username}`}
-                          className="flex items-center gap-1 text-xs font-semibold text-amber-500 hover:text-amber-600 transition-colors whitespace-nowrap"
+                          className="flex items-center gap-1 text-xs font-semibold text-[#522B5B] hover:text-plum-600 transition-colors whitespace-nowrap"
                         >
                           View Profile
                           <ArrowUpRight className="h-3.5 w-3.5" />
@@ -333,7 +333,7 @@ export default function LeaderboardPage() {
                     key={stack.id}
                     className={cn(
                       "border-border bg-white hover:shadow-md transition-all",
-                      idx < 3 && "ring-1 ring-amber-200/60"
+                      idx < 3 && "ring-1 ring-plum-200/60"
                     )}
                   >
                     <CardContent className="p-4 flex items-start gap-4">
@@ -368,7 +368,7 @@ export default function LeaderboardPage() {
                         {/* Upvotes */}
                         <div className="text-center">
                           <div className="flex items-center gap-1 justify-center">
-                            <Flame className="h-3.5 w-3.5 text-amber-500" />
+                            <Flame className="h-3.5 w-3.5 text-[#522B5B]" />
                             <span className="text-sm font-bold text-foreground">
                               {stack.upvotes ?? 0}
                             </span>
@@ -380,7 +380,7 @@ export default function LeaderboardPage() {
 
                         <Link
                           href={`/result?slug=${stack.share_slug}`}
-                          className="flex items-center gap-1 text-xs font-semibold text-amber-500 hover:text-amber-600 transition-colors whitespace-nowrap"
+                          className="flex items-center gap-1 text-xs font-semibold text-[#522B5B] hover:text-plum-600 transition-colors whitespace-nowrap"
                         >
                           View Stack
                           <ArrowUpRight className="h-3.5 w-3.5" />

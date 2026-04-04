@@ -96,7 +96,7 @@ function CommunityCards() {
     return (
       <div className="grid gap-4 md:grid-cols-3">
         {[1, 2, 3].map(n => (
-          <Card key={n} className="h-48 bg-white border-border animate-pulse rounded-2xl" />
+          <Card key={n} className="h-48 bg-[#FBE4D8] border-border animate-pulse rounded-2xl" />
         ))}
       </div>
     )
@@ -107,7 +107,7 @@ function CommunityCards() {
       {cards.map((card, idx) => (
         <Card
           key={idx}
-          className="group border-border bg-card text-card-foreground shadow-card hover:shadow-card-hover hover:-translate-y-0.5 rounded-xl transition-all hover:border-border transition-all"
+          className="card-3d group hover:-translate-y-0.5"
         >
           <CardHeader className="space-y-2">
             <div className="flex items-start justify-between gap-4">
@@ -116,9 +116,9 @@ function CommunityCards() {
               </CardTitle>
               <Badge
                 variant="secondary"
-                className="border border-border bg-white text-foreground/80 shrink-0"
+                className="border border-border bg-[#FBE4D8] text-foreground/80 shrink-0"
               >
-                <Sparkles className="mr-1 h-3.5 w-3.5 text-amber-500" />
+                <Sparkles className="mr-1 h-3.5 w-3.5 text-[#522B5B]" />
                 AI Stack
               </Badge>
             </div>
@@ -136,7 +136,7 @@ function CommunityCards() {
             </div>
 
             {card.goal && (
-              <Badge variant="outline" className="border-amber-500/30 bg-amber-500/10 text-amber-200 text-[10px] uppercase tracking-wider font-bold">
+              <Badge variant="outline" className="border-[#522B5B]/30 bg-[#FBE4D8]/10 text-[#854F6C] text-[10px] uppercase tracking-wider font-bold">
                 {card.goal}
               </Badge>
             )}
@@ -145,7 +145,7 @@ function CommunityCards() {
               {card.slug ? (
                 <Link
                   href={`/result?slug=${card.slug}`}
-                  className="flex items-center gap-1.5 text-sm font-semibold text-amber-500 hover:text-amber-800 transition-colors"
+                  className="flex items-center gap-1.5 text-sm font-semibold text-[#522B5B] hover:text-plum-800 transition-colors"
                 >
                   View Stack
                   <ArrowUpRight className="h-4 w-4" />
@@ -153,7 +153,7 @@ function CommunityCards() {
               ) : (
                 <Link
                   href="/advisor"
-                  className="flex items-center gap-1.5 text-sm font-semibold text-amber-500 hover:text-amber-800 transition-colors"
+                  className="flex items-center gap-1.5 text-sm font-semibold text-[#522B5B] hover:text-plum-800 transition-colors"
                 >
                   Build Yours
                   <ArrowUpRight className="h-4 w-4" />
@@ -180,16 +180,16 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="bg-white text-foreground">
+    <div className="bg-[#FBE4D8] text-foreground">
       <Navbar />
       <AnnouncementBanner />
 
       <main>
         <section className="relative overflow-hidden">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(232,162,78,0.12)_0%,transparent_70%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(82,43,91,0.18)_0%,transparent_70%)]" />
           <div className="relative mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
             <div className="max-w-2xl space-y-6">
-              <Badge className="w-fit border border-border bg-white text-foreground/80">
+              <Badge className="w-fit border border-border bg-[#FBE4D8] text-foreground/80">
                 AI-Powered Stack Advisor
               </Badge>
               <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl font-serif text-text-primary">
@@ -206,7 +206,7 @@ export default function Home() {
                     href="/advisor"
                     className={cn(
                       buttonVariants({ size: "lg" }),
-                      "h-11 bg-amber-500 px-5 text-foreground shadow-[0_12px_40px_rgba(249,115,22,0.25)] transition-all hover:-translate-y-0.5 hover:bg-amber-400 active:translate-y-0"
+                      "btn-3d px-8 font-semibold w-full sm:w-auto"
                     )}
                   >
                     Find My Stack <ArrowRight className="ml-1.5 h-4 w-4" />
@@ -215,7 +215,7 @@ export default function Home() {
                     href="/dashboard"
                     className={cn(
                       buttonVariants({ variant: "outline", size: "lg" }),
-                      "h-11 border-border bg-transparent text-foreground/85 transition-all hover:-translate-y-0.5 hover:bg-white hover:text-amber-300 active:translate-y-0"
+                      "h-11 border-border bg-white text-foreground/85 transition-all hover:-translate-y-0.5 hover:bg-[#FEF0E8] hover:text-[#190019] active:translate-y-0 font-medium rounded-xl w-full sm:w-auto"
                     )}
                   >
                     My Dashboard
@@ -227,7 +227,7 @@ export default function Home() {
                     href="/signup"
                     className={cn(
                       buttonVariants({ size: "lg" }),
-                      "h-11 bg-amber-500 px-5 text-foreground shadow-[0_12px_40px_rgba(249,115,22,0.25)] transition-all hover:-translate-y-0.5 hover:bg-amber-400 active:translate-y-0"
+                      "btn-3d px-8 font-semibold w-full sm:w-auto"
                     )}
                   >
                     Get Started Free <ArrowRight className="ml-1.5 h-4 w-4" />
@@ -236,7 +236,7 @@ export default function Home() {
                     href="/login"
                     className={cn(
                       buttonVariants({ variant: "outline", size: "lg" }),
-                      "h-11 border-border bg-transparent text-foreground/85 transition-all hover:-translate-y-0.5 hover:bg-white hover:text-amber-300 active:translate-y-0"
+                      "h-11 border-border bg-white text-foreground/85 transition-all hover:-translate-y-0.5 hover:bg-[#FEF0E8] hover:text-[#190019] active:translate-y-0 font-medium rounded-xl w-full sm:w-auto"
                     )}
                   >
                     Sign In
@@ -255,7 +255,7 @@ export default function Home() {
               <Card className="border-border bg-card text-card-foreground shadow-card hover:shadow-card-hover hover:-translate-y-0.5 rounded-xl transition-all">
                 <CardHeader className="space-y-3">
                   <div className="grid h-10 w-10 place-items-center rounded-xl border border-border bg-background">
-                    <Layers3 className="h-5 w-5 text-amber-500" />
+                    <Layers3 className="h-5 w-5 text-[#522B5B]" />
                   </div>
                   <CardTitle className="text-base">Clarity, instantly</CardTitle>
                 </CardHeader>
@@ -267,7 +267,7 @@ export default function Home() {
               <Card className="border-border bg-card text-card-foreground shadow-card hover:shadow-card-hover hover:-translate-y-0.5 rounded-xl transition-all">
                 <CardHeader className="space-y-3">
                   <div className="grid h-10 w-10 place-items-center rounded-xl border border-border bg-background">
-                    <Compass className="h-5 w-5 text-amber-400" />
+                    <Compass className="h-5 w-5 text-[#854F6C]" />
                   </div>
                   <CardTitle className="text-base">A path to ship</CardTitle>
                 </CardHeader>
@@ -294,13 +294,13 @@ export default function Home() {
                 n: "01",
                 title: "Describe Your Project",
                 text: "Tell us what you're building in plain English",
-                icon: <Sparkles className="h-5 w-5 text-amber-500" />,
+                icon: <Sparkles className="h-5 w-5 text-[#522B5B]" />,
               },
               {
                 n: "02",
                 title: "AI Analyzes & Recommends",
                 text: "Gemini AI finds your perfect stack",
-                icon: <Layers3 className="h-5 w-5 text-amber-400" />,
+                icon: <Layers3 className="h-5 w-5 text-[#854F6C]" />,
               },
               {
                 n: "03",
@@ -339,14 +339,14 @@ export default function Home() {
               href="/explore"
               className={cn(
                 buttonVariants({ variant: "outline" }),
-                "border-border bg-transparent text-foreground/85 transition-all hover:-translate-y-0.5 hover:bg-white hover:text-amber-300 active:translate-y-0"
+                "border-border bg-transparent text-foreground/85 transition-all hover:-translate-y-0.5 hover:bg-[#FBE4D8] hover:text-[#190019] active:translate-y-0"
               )}
             >
               View All Stacks <ArrowRight className="ml-1.5 h-4 w-4" />
             </Link>
           </div>
           <CommunityCards />
-          <Separator className="mt-14 bg-white" />
+          <Separator className="mt-14 bg-[#FBE4D8]" />
         </section>
       </main>
 
@@ -354,19 +354,19 @@ export default function Home() {
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-10 text-sm text-neutral-300 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>Toolvise © 2025 • Built for builders</p>
           <div className="flex items-center gap-4">
-            <Link className="transition-colors hover:text-amber-300" href="/">
+            <Link className="transition-colors hover:text-[#190019]" href="/">
               Home
             </Link>
-            <Link className="transition-colors hover:text-amber-300" href="/explore">
+            <Link className="transition-colors hover:text-[#190019]" href="/explore">
               Explore
             </Link>
-            <Link className="transition-colors hover:text-amber-300" href="/leaderboard">
+            <Link className="transition-colors hover:text-[#190019]" href="/leaderboard">
               Leaderboard
             </Link>
-            <Link className="transition-colors hover:text-amber-300" href="/about">
+            <Link className="transition-colors hover:text-[#190019]" href="/about">
               About
             </Link>
-            <Link className="transition-colors hover:text-amber-300 flex items-center gap-1" href="/report">
+            <Link className="transition-colors hover:text-[#190019] flex items-center gap-1" href="/report">
               Report a Bug 🐛
             </Link>
           </div>

@@ -228,7 +228,7 @@ export default function ExplorePage() {
   }
 
   return (
-    <div className="min-h-dvh bg-white text-foreground selection:bg-amber-500/30 relative pb-24">
+    <div className="min-h-dvh bg-white text-foreground selection:bg-[#FBE4D8]/30 relative pb-24">
       <Navbar />
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(232,162,78,0.12)_0%,transparent_70%)]" />
 
@@ -236,11 +236,11 @@ export default function ExplorePage() {
         
         {/* 1. HEADER */}
         <header className="mb-14 text-center space-y-4 animate-in fade-in slide-in-from-top-4 duration-300">
-          <Badge variant="outline" className="border-amber-500/30 bg-amber-500/10 text-amber-200 px-4 py-1.5 text-sm">
+          <Badge variant="outline" className="border-[#522B5B]/30 bg-[#FBE4D8]/10 text-[#854F6C] px-4 py-1.5 text-sm">
             <Layers className="mr-2 h-4 w-4" />
             {totalCount.toLocaleString()} Generated Stacks
           </Badge>
-          <h1 className="bg-gradient-to-br from-amber-400 to-orange-300 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-6xl">
+          <h1 className="bg-gradient-to-br from-plum-500 to-plum-400 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-6xl">
             Explore Stacks
           </h1>
           <p className="text-lg text-foreground/50 max-w-2xl mx-auto font-medium">
@@ -257,7 +257,7 @@ export default function ExplorePage() {
               placeholder="Search by tech, idea, or tags... (e.g. Next.js, AI CRM)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-12 w-full pl-12 rounded-xl bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-1 focus-visible:ring-amber-500 focus-visible:border-amber-500 transition-all text-base"
+              className="h-12 w-full pl-12 rounded-xl bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-1 focus-visible:ring-plum-500 focus-visible:border-[#522B5B] transition-all text-base"
             />
           </div>
 
@@ -270,8 +270,8 @@ export default function ExplorePage() {
                 className={cn(
                   "rounded-full border-border px-5 transition-all text-sm font-semibold",
                   activeFilter === filter 
-                    ? "bg-amber-500 text-foreground border-amber-500 shadow-[0_0_15px_rgba(249,115,22,0.4)]" 
-                    : "bg-white text-foreground/60 hover:bg-white hover:text-amber-300"
+                    ? "bg-[#FBE4D8] text-foreground border-[#522B5B] shadow-[0_0_15px_rgba(249,115,22,0.4)]" 
+                    : "bg-white text-foreground/60 hover:bg-white hover:text-[#190019]"
                 )}
               >
                 {filter}
@@ -305,7 +305,7 @@ export default function ExplorePage() {
                       <Badge className="bg-white text-foreground/80 border-0 uppercase tracking-wider text-[10px] font-bold">
                         {stack.skill_level}
                       </Badge>
-                      <Badge className="bg-amber-500/20 text-amber-200 border-0 text-[10px] font-bold uppercase tracking-wider">
+                      <Badge className="bg-[#FBE4D8]/20 text-[#854F6C] border-0 text-[10px] font-bold uppercase tracking-wider">
                         {stack.goal}
                       </Badge>
                     </div>
@@ -342,11 +342,11 @@ export default function ExplorePage() {
                             className={cn(
                               "flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold transition-all",
                               hasVoted
-                                ? "bg-amber-1000/20 text-orange-500"
-                                : "bg-white text-foreground/50 hover:bg-white hover:text-amber-300"
+                                ? "bg-[#FEF0E8]/20 text-plum-500"
+                                : "bg-white text-foreground/50 hover:bg-white hover:text-[#190019]"
                             )}
                           >
-                            <Flame className={cn("h-4 w-4", hasVoted && "fill-orange-500")} />
+                            <Flame className={cn("h-4 w-4", hasVoted && "fill-plum-500")} />
                             {stack.upvotes.toLocaleString()}
                           </button>
                           {!isLoggedIn && (
@@ -361,8 +361,8 @@ export default function ExplorePage() {
                           className={cn(
                             "flex items-center gap-1 text-xs transition-colors",
                             bookmarked.has(stack.id)
-                              ? "text-amber-500 font-semibold"
-                              : "text-foreground/30 hover:text-amber-500"
+                              ? "text-[#522B5B] font-semibold"
+                              : "text-foreground/30 hover:text-[#522B5B]"
                           )}
                         >
                           <Bookmark className={cn("h-3.5 w-3.5", bookmarked.has(stack.id) && "fill-[#F97316]")} />
@@ -372,7 +372,7 @@ export default function ExplorePage() {
 
                       <Link
                         href={`/result?slug=${stack.share_slug}`}
-                        className="flex items-center gap-1.5 text-sm font-semibold text-amber-500 hover:text-amber-800 transition-colors"
+                        className="flex items-center gap-1.5 text-sm font-semibold text-[#522B5B] hover:text-plum-800 transition-colors"
                       >
                         View Stack
                         <ArrowUpRight className="h-4 w-4" />
@@ -405,7 +405,7 @@ export default function ExplorePage() {
                 variant="outline"
                 className="h-12 px-8 rounded-full border-border bg-white text-foreground hover:bg-white gap-2 font-semibold"
               >
-                {loadingMore && <Loader2 className="h-4 w-4 animate-spin text-amber-500" />}
+                {loadingMore && <Loader2 className="h-4 w-4 animate-spin text-[#522B5B]" />}
                 {loadingMore ? "Loading..." : "Load More Stacks"}
               </Button>
             ) : (

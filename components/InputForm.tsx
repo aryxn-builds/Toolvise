@@ -21,7 +21,7 @@ export function InputForm() {
           <Label className="text-foreground/80">Project description</Label>
           <Textarea
             placeholder="What are you building? Who is it for? Any constraints?"
-            className="min-h-28 resize-y border-border bg-white text-foreground placeholder:text-foreground/35 focus-visible:ring-amber-500/40"
+            className="min-h-28 resize-y border-border bg-white text-foreground placeholder:text-foreground/35 focus-visible:ring-plum-500/40"
           />
         </div>
 
@@ -29,7 +29,7 @@ export function InputForm() {
           <div className="space-y-2">
             <Label className="text-foreground/80">Your skill level</Label>
             <Select>
-              <SelectTrigger className="border-border bg-white text-foreground focus:ring-amber-500/40">
+              <SelectTrigger className="border-border bg-white text-foreground focus:ring-plum-500/40">
                 <SelectValue placeholder="Select level" />
               </SelectTrigger>
               <SelectContent className="border-border bg-white text-foreground">
@@ -43,7 +43,7 @@ export function InputForm() {
           <div className="space-y-2">
             <Label className="text-foreground/80">Your goal</Label>
             <Select>
-              <SelectTrigger className="border-border bg-white text-foreground focus:ring-amber-500/40">
+              <SelectTrigger className="border-border bg-white text-foreground focus:ring-plum-500/40">
                 <SelectValue placeholder="Select goal" />
               </SelectTrigger>
               <SelectContent className="border-border bg-white text-foreground">
@@ -73,7 +73,7 @@ export function InputForm() {
         <div className="flex items-center justify-end gap-3">
           <Button
             type="button"
-            className="h-11 w-full bg-amber-500 text-foreground shadow-[0_12px_40px_rgba(249,115,22,0.25)] hover:bg-amber-400 sm:w-auto"
+            className="h-11 w-full bg-[#FBE4D8] text-foreground shadow-medium hover:bg-[#522B5B] sm:w-auto"
           >
             Find My Stack
           </Button>

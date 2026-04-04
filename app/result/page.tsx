@@ -129,10 +129,10 @@ interface StackResult {
 
 // ── Category colors ────────────────────────────────────────────────────────
 const CATEGORY_COLORS: Record<string, string> = {
-  Frontend: "border-orange-500/40 bg-amber-1000/15 text-orange-400",
+  Frontend: "border-plum-500/40 bg-[#FEF0E8]/15 text-plum-",
   Backend: "border-green-500/40 bg-green-500/15 text-green-400",
-  Database: "border-amber-500/40 bg-amber-500/15 text-amber-400",
-  AI: "border-amber-500/40 bg-amber-500/15 text-amber-400",
+  Database: "border-[#522B5B]/40 bg-[#FBE4D8]/15 text-[#854F6C]",
+  AI: "border-[#522B5B]/40 bg-[#FBE4D8]/15 text-[#854F6C]",
   Design: "border-pink-500/40 bg-pink-500/15 text-pink-400",
   DevOps: "border-cyan-500/40 bg-cyan-500/15 text-cyan-400",
 }
@@ -190,7 +190,7 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
   const scoreColor = displayScore >= 90
     ? "text-green-500"
     : displayScore >= 70
-      ? "text-amber-500"
+      ? "text-[#522B5B]"
       : displayScore >= 50
         ? "text-yellow-500"
         : "text-red-500"
@@ -228,11 +228,11 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
 
   return (
     <div ref={cardRef} className="mb-10 animate-in fade-in slide-in-from-bottom-6 duration-300 fill-mode-both" style={{ animationDelay: "50ms" }}>
-      <Card className={cn("overflow-hidden border-amber-500/30 bg-background/80 backdrop-blur-md", scoreGlow)}>
-        <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500" />
+      <Card className={cn("overflow-hidden border-[#522B5B]/30 bg-background/80 backdrop-blur-md", scoreGlow)}>
+        <div className="h-1 w-full bg-gradient-to-r from-plum-500 via-plum-400 to-plum-500" />
         <CardHeader className="pb-2">
           <CardTitle className="text-xl font-semibold tracking-tight text-foreground flex items-center gap-2">
-            <Trophy className="h-5 w-5 text-amber-500" />
+            <Trophy className="h-5 w-5 text-[#522B5B]" />
             Your Stack Score 🏆
           </CardTitle>
           {scoreCard.verdict && (
@@ -251,7 +251,7 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
                   </div>
                   <div className="h-2.5 w-full rounded-full bg-white overflow-hidden">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400 transition-all duration-500 ease-out"
+                      className="h-full rounded-full bg-gradient-to-r from-plum-500 to-plum-400 transition-all duration-500 ease-out"
                       style={{
                         width: animated ? `${bar.value * 10}%` : "0%",
                         transitionDelay: `${bar.delay}ms`,
@@ -274,7 +274,7 @@ function ScoreCardSection({ scoreCard }: { scoreCard: ScoreCard }) {
                   "mt-4 flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold transition-all",
                   scoreCopied
                     ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                    : "bg-white text-foreground/50 border border-border hover:bg-white hover:text-amber-300"
+                    : "bg-white text-foreground/50 border border-border hover:bg-white hover:text-[#190019]"
                 )}
               >
                 <Share2 className="h-3.5 w-3.5" />
@@ -293,30 +293,30 @@ function ComparisonEngineSection({ comparisons }: { comparisons: Comparison[] })
   return (
     <section className="space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-300" style={{ animationDelay: "100ms" }}>
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 border border-amber-300">
-          <RefreshCcw className="h-5 w-5 text-amber-600" />
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-plum-100 border border-plum-300">
+          <RefreshCcw className="h-5 w-5 text-plum-600" />
         </div>
         <div>
           <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
             🚀 Tool Comparison Engine
           </h2>
-          <p className="text-sm text-amber-600/70">Detailed breakdown of why we chose these specific tools for your project</p>
+          <p className="text-sm text-plum-600/70">Detailed breakdown of why we chose these specific tools for your project</p>
         </div>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         {comparisons.map((comp, idx) => (
           <Card key={idx} className="border-border/50 bg-white/80 backdrop-blur-sm overflow-hidden hover:shadow-xl transition-all duration-300 group">
-            <CardHeader className="bg-gradient-to-br from-amber-100/50 to-white border-b border-border/30 pb-3">
+            <CardHeader className="bg-gradient-to-br from-plum-100/50 to-white border-b border-border/30 pb-3">
               <div className="flex items-center justify-between">
-                <Badge variant="outline" className="bg-white border-border text-amber-500 font-bold shadow-sm">
+                <Badge variant="outline" className="bg-white border-border text-[#522B5B] font-bold shadow-sm">
                   {comp.category}
                 </Badge>
               </div>
               <CardTitle className="text-lg mt-2 flex flex-wrap items-center gap-2">
-                <span className="text-foreground bg-amber-500/5 px-2 py-0.5 rounded-lg border border-amber-500/10">{comp.recommended}</span>
-                <span className="text-amber-600/70 font-normal text-sm italic">vs</span>
-                <span className="text-amber-600/70 font-normal text-sm">{comp.alternatives.join(" / ")}</span>
+                <span className="text-foreground bg-[#FBE4D8]/5 px-2 py-0.5 rounded-lg border border-[#522B5B]/10">{comp.recommended}</span>
+                <span className="text-plum-600/70 font-normal text-sm italic">vs</span>
+                <span className="text-plum-600/70 font-normal text-sm">{comp.alternatives.join(" / ")}</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-5 space-y-4">
@@ -351,7 +351,7 @@ function ComparisonEngineSection({ comparisons }: { comparisons: Comparison[] })
 
               <div className="pt-3 border-t border-border/30">
                 <p className="text-xs font-bold text-foreground mb-1 flex items-center gap-1">
-                  <Lightbulb className="h-3 w-3 text-orange-500" />
+                  <Lightbulb className="h-3 w-3 text-plum-500" />
                   When to use what?
                 </p>
                 <p className="text-xs text-foreground/60 leading-relaxed italic">
@@ -383,14 +383,14 @@ function BudgetSection({ tools }: { tools: Tool[] }) {
           
           <div className={cn(
             "rounded-xl p-4 flex items-center gap-4",
-            allFree ? "bg-green-50 border border-green-200" : "bg-amber-50 border border-amber-200"
+            allFree ? "bg-green-50 border border-green-200" : "bg-[#FBE4D8] border border-[#DFB6B2]"
           )}>
             <div className="text-4xl">{allFree ? "🎉" : "💳"}</div>
             <div>
               <p className="font-bold text-lg text-foreground">
                 {allFree ? "100% Free Stack!" : "Mostly Free Stack"}
               </p>
-              <p className="text-sm text-amber-600/70">
+              <p className="text-sm text-plum-600/70">
                 {allFree 
                   ? "All recommended tools have free tiers. Perfect for students and indie builders!" 
                   : `${freeTools.length} free tools + ${paidTools.length} paid tools in your stack`}
@@ -417,15 +417,15 @@ function BudgetSection({ tools }: { tools: Tool[] }) {
 
           {paidTools.length > 0 && (
             <div className="space-y-2">
-              <p className="font-semibold text-amber-700 text-sm flex items-center gap-2">
+              <p className="font-semibold text-plum-700 text-sm flex items-center gap-2">
                 💳 Paid Tools ({paidTools.length})
               </p>
               <div className="grid gap-2 sm:grid-cols-2">
                 {paidTools.map((t, i) => (
-                  <div key={i} className="flex items-center gap-2 rounded-lg bg-amber-50 border border-amber-100 px-3 py-2">
-                    <span className="h-2 w-2 rounded-full bg-amber-400 shrink-0" />
-                    <span className="text-sm font-medium text-amber-800">{t.name}</span>
-                    <span className="text-xs text-amber-600 ml-auto">Paid</span>
+                  <div key={i} className="flex items-center gap-2 rounded-lg bg-[#FBE4D8] border border-plum-100 px-3 py-2">
+                    <span className="h-2 w-2 rounded-full bg-[#522B5B] shrink-0" />
+                    <span className="text-sm font-medium text-plum-800">{t.name}</span>
+                    <span className="text-xs text-plum-600 ml-auto">Paid</span>
                   </div>
                 ))}
               </div>
@@ -445,7 +445,7 @@ function BudgetSection({ tools }: { tools: Tool[] }) {
 
           <div className="flex items-center justify-between rounded-xl bg-background border border-border px-5 py-4">
             <span className="font-semibold text-foreground">Estimated Monthly Cost</span>
-            <span className="text-2xl font-black text-amber-500">
+            <span className="text-2xl font-black text-[#522B5B]">
               {allFree ? "$0 / month" : paidTools.length === 1 ? "~$10-30 / month" : "~$30-100 / month"}
             </span>
           </div>
@@ -690,7 +690,7 @@ function ResultContent() {
   if (loading) {
     return (
       <div className="flex min-h-[80vh] flex-col items-center justify-center space-y-4">
-        <Loader2 className="h-8 w-8 animate-spin text-amber-500" />
+        <Loader2 className="h-8 w-8 animate-spin text-[#522B5B]" />
         <p className="animate-pulse text-sm text-foreground/50 tracking-widest uppercase font-medium">Loading Stack</p>
       </div>
     )
@@ -707,7 +707,7 @@ function ResultContent() {
             text-foreground mb-2">
             No stack result found
           </h2>
-          <p className="text-amber-600/70 
+          <p className="text-plum-600/70 
             max-w-md">
             This could happen if the result 
             expired or the link is invalid.
@@ -717,8 +717,8 @@ function ResultContent() {
         </div>
         <div className="flex gap-3">
           <Link href="/advisor">
-            <Button className="bg-amber-500 
-              text-white hover:bg-amber-400 
+            <Button className="bg-[#FBE4D8] 
+              text-white hover:bg-[#522B5B] 
               rounded-xl px-6">
               Generate New Stack →
             </Button>
@@ -741,11 +741,11 @@ function ResultContent() {
       <header className="animate-in fade-in slide-in-from-top-4 duration-300">
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-sm font-medium text-amber-400">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#522B5B]/30 bg-[#FBE4D8]/10 px-3 py-1 text-sm font-medium text-[#854F6C]">
               <Sparkles className="h-4 w-4" />
               AI Generated
             </div>
-            <h1 className="bg-gradient-to-br from-amber-400 to-orange-300 bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl">
+            <h1 className="bg-gradient-to-br from-plum-500 to-plum-400 bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl">
               Your Perfect Stack
             </h1>
             {data.formInput?.description && (
@@ -760,7 +760,7 @@ function ResultContent() {
               onClick={handleShare}
               className="rounded-full bg-white border border-border h-12 px-6 py-6 text-foreground hover:bg-white hover:border-border transition-all shadow-lg text-sm font-semibold"
             >
-              <Share2 className="mr-2 h-4 w-4 text-amber-500" />
+              <Share2 className="mr-2 h-4 w-4 text-[#522B5B]" />
               {copied ? "Copied!" : "Share Stack"}
             </Button>
           </div>
@@ -772,7 +772,7 @@ function ResultContent() {
 
       {/* 3. OVERVIEW */}
       <Card className="border-border bg-white shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-300 fill-mode-both" style={{ animationDelay: "75ms" }}>
-        <div className="h-1 w-full bg-gradient-to-r from-amber-500 to-amber-400" />
+        <div className="h-1 w-full bg-gradient-to-r from-plum-500 to-plum-400" />
         <CardHeader>
           <div className="flex items-center justify-between flex-wrap gap-3">
             <CardTitle className="text-xl font-bold text-foreground flex items-center gap-2">
@@ -780,7 +780,7 @@ function ResultContent() {
             </CardTitle>
             <div className="flex items-center gap-2 flex-wrap">
               {/* Estimated Time Badge */}
-              <Badge className="bg-amber-500/10 border-amber-500/30 text-amber-500 px-3 py-1">
+              <Badge className="bg-[#FBE4D8]/10 border-[#522B5B]/30 text-[#522B5B] px-3 py-1">
                 ⏱ {formatEstimatedTime(data.estimatedTime)}
               </Badge>
               {/* Skill level badge */}
@@ -828,14 +828,14 @@ function ResultContent() {
 
           {/* Pro Tip */}
           {data.proTip && (
-            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+            <div className="rounded-xl border border-[#DFB6B2] bg-[#FBE4D8] p-4">
               <div className="flex items-start gap-3">
-                <Lightbulb className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+                <Lightbulb className="h-5 w-5 text-[#522B5B] shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-semibold text-amber-700 mb-1 text-sm">
+                  <p className="font-semibold text-plum-700 mb-1 text-sm">
                     Pro Tip
                   </p>
-                  <p className="text-sm leading-relaxed text-amber-700/80">
+                  <p className="text-sm leading-relaxed text-plum-700/80">
                     {data.proTip}
                   </p>
                 </div>
@@ -850,7 +850,7 @@ function ResultContent() {
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
             🛠️ Recommended Tools
-            <span className="text-sm font-normal text-amber-600/70">
+            <span className="text-sm font-normal text-plum-600/70">
               ({data.tools?.length || 0} tools)
             </span>
           </h2>
@@ -862,13 +862,13 @@ function ResultContent() {
                 "hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition-colors border",
                 learningMode 
                   ? "bg-purple-100 text-purple-700 border-purple-300" 
-                  : "bg-white text-amber-600/70 border-border"
+                  : "bg-white text-plum-600/70 border-border"
               )}
             >
               <Lightbulb className={cn("h-3.5 w-3.5", learningMode && "text-purple-600")} />
               Learning Mode: {learningMode ? "ON" : "OFF"}
             </button>
-            <div className="flex items-center gap-3 text-xs text-amber-600/70">
+            <div className="flex items-center gap-3 text-xs text-plum-600/70">
               <span className="flex items-center gap-1">
                 <span className="h-2 w-2 rounded-full bg-green-400" />
                 Free
@@ -882,7 +882,7 @@ function ResultContent() {
         </div>
 
         {/* Beginner explanation */}
-        <p className="text-sm text-amber-600/70 bg-white border border-border rounded-xl px-4 py-3">
+        <p className="text-sm text-plum-600/70 bg-white border border-border rounded-xl px-4 py-3">
           💬 These are the tools we recommend for your project. Each has a role — hover or read below to understand what each one does and why.
         </p>
 
@@ -897,7 +897,7 @@ function ResultContent() {
               return acc
             }, {})
           ).map(([category, catTools]) => {
-            const categoryObj = CATEGORY_COLORS[category] || "border-border bg-background text-amber-600/70"
+            const categoryObj = CATEGORY_COLORS[category] || "border-border bg-background text-plum-600/70"
             // extract the text-color from category object
             const textColorMatch = categoryObj.match(/text-([a-z]+-\d+)/)
             const catTextColor = textColorMatch ? textColorMatch[0] : "text-foreground"
@@ -909,7 +909,7 @@ function ResultContent() {
                 </h3>
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {catTools.map((tool, index) => (
-                    <Card key={index} className="relative border-border bg-white hover:shadow-md hover:border-amber-500/40 transition-all duration-200 flex flex-col pt-3">
+                    <Card key={index} className="relative border-border bg-white hover:shadow-md hover:border-[#522B5B]/40 transition-all duration-200 flex flex-col pt-3">
                       <div className="absolute -top-3 -left-3 flex h-7 w-7 items-center justify-center rounded-full bg-neutral-900 text-white text-xs font-bold shadow-md ring-2 ring-white z-10">
                         {index + 1}
                       </div>
@@ -947,7 +947,7 @@ function ResultContent() {
 
                         {/* What it does */}
                         <div className="bg-background/60 rounded-lg p-3">
-                          <p className="text-xs font-semibold text-amber-500 mb-1">
+                          <p className="text-xs font-semibold text-[#522B5B] mb-1">
                             🔧 What it does
                           </p>
                           <p className="text-sm text-foreground/70 leading-relaxed line-clamp-3">
@@ -969,7 +969,7 @@ function ResultContent() {
                         )}
 
                         {/* Difficulty */}
-                        <div className="flex items-center gap-2 text-xs text-amber-600/70">
+                        <div className="flex items-center gap-2 text-xs text-plum-600/70">
                           <span>Difficulty:</span>
                           <span className={cn(
                             "font-semibold",
@@ -989,18 +989,18 @@ function ResultContent() {
                           </p>
                         )}
                         {tool.warnings && (
-                          <p className="text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2">
+                          <p className="text-xs text-plum-600 bg-[#FBE4D8] rounded-lg px-3 py-2">
                             ⚠️ {tool.warnings}
                           </p>
                         )}
                         {tool.alternatives && tool.alternatives.length > 0 && learningMode && (
-                          <p className="text-xs text-amber-600/70">
+                          <p className="text-xs text-plum-600/70">
                             Alternatives: {tool.alternatives.join(", ")}
                           </p>
                         )}
 
                         {/* Learn button */}
-                        <a href={tool.learnUrl || "#"} target="_blank" rel="noreferrer" className="mt-auto flex items-center justify-center gap-2 rounded-lg bg-amber-500 text-white px-4 py-2.5 text-sm font-semibold hover:bg-amber-400 transition-colors">
+                        <a href={tool.learnUrl || "#"} target="_blank" rel="noreferrer" className="mt-auto flex items-center justify-center gap-2 rounded-lg bg-[#FBE4D8] text-white px-4 py-2.5 text-sm font-semibold hover:bg-[#522B5B] transition-colors">
                           {tool.isFree ? "Learn Free 📚" : "Learn More 📚"}
                           <ArrowUpRight className="h-4 w-4" />
                         </a>
@@ -1037,7 +1037,7 @@ function ResultContent() {
               </div>
               <div className="text-center">
                 <span className="font-bold text-sm text-foreground block">Frontend</span>
-                <span className="text-xs text-amber-600/70 line-clamp-1">
+                <span className="text-xs text-plum-600/70 line-clamp-1">
                   {data.tools?.find(t => t.category === "Frontend")?.name || "Client UI"}
                 </span>
               </div>
@@ -1053,15 +1053,15 @@ function ResultContent() {
 
             {/* Backend / API */}
             <div className="flex flex-col items-center gap-3 w-40">
-              <div className="w-20 h-20 rounded-2xl bg-amber-100 flex items-center justify-center border-2 border-amber-300 shadow-sm relative group">
-                <Server className="text-orange-500 h-10 w-10 transition-transform group-hover:scale-110" />
-                <div className="absolute -top-3 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-orange-100 border border-amber-300">
+              <div className="w-20 h-20 rounded-2xl bg-[#FEF0E8] flex items-center justify-center border-2 border-plum-300 shadow-sm relative group">
+                <Server className="text-plum-500 h-10 w-10 transition-transform group-hover:scale-110" />
+                <div className="absolute -top-3 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-plum-100 border border-plum-300">
                   <span className="text-[10px] select-none">API</span>
                 </div>
               </div>
               <div className="text-center">
                 <span className="font-bold text-sm text-foreground block">Backend</span>
-                <span className="text-xs text-amber-600/70 line-clamp-1">
+                <span className="text-xs text-plum-600/70 line-clamp-1">
                   {data.tools?.find(t => t.category === "Backend")?.name || "Server Edge"}
                 </span>
               </div>
@@ -1085,7 +1085,7 @@ function ResultContent() {
               </div>
               <div className="text-center">
                 <span className="font-bold text-sm text-foreground block">Database</span>
-                <span className="text-xs text-amber-600/70 line-clamp-1">
+                <span className="text-xs text-plum-600/70 line-clamp-1">
                   {data.tools?.find(t => t.category === "Database")?.name || "Data Store"}
                 </span>
               </div>
@@ -1101,7 +1101,7 @@ function ResultContent() {
           🗺️ Execution Roadmap
         </h2>
         
-        <p className="text-sm text-amber-600/70 bg-white border border-border rounded-xl px-4 py-3">
+        <p className="text-sm text-plum-600/70 bg-white border border-border rounded-xl px-4 py-3">
           📌 Follow these steps in order to build your project. Each step builds on the previous one.
         </p>
 
@@ -1118,10 +1118,10 @@ function ResultContent() {
             }
             return (
               <div key={idx} className="relative group">
-                <div className="absolute -left-[35px] sm:-left-[43px] top-0 flex h-8 w-8 items-center justify-center rounded-full border-[3px] border-amber-100 bg-amber-500 text-white text-sm font-bold shadow-md transition-transform group-hover:scale-110">
+                <div className="absolute -left-[35px] sm:-left-[43px] top-0 flex h-8 w-8 items-center justify-center rounded-full border-[3px] border-plum-100 bg-[#FBE4D8] text-white text-sm font-bold shadow-md transition-transform group-hover:scale-110">
                   {idx + 1}
                 </div>
-                <div className="bg-white p-5 rounded-xl border border-border hover:border-amber-500/40 transition-colors shadow-sm ml-2">
+                <div className="bg-white p-5 rounded-xl border border-border hover:border-[#522B5B]/40 transition-colors shadow-sm ml-2">
                   <h4 className="font-bold text-foreground mb-1">Phase {idx + 1}</h4>
                   <p className="text-sm text-foreground/80 leading-relaxed">
                     {stepText}
@@ -1147,8 +1147,8 @@ function ResultContent() {
       {data.vibeCoding ? (
         data.vibeCoding.aiTools && data.vibeCoding.aiTools.length > 0 ? (
           <section className="animate-in fade-in slide-in-from-bottom-8 duration-300 fill-mode-both" style={{ animationDelay: "150ms" }}>
-            <div className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-4 mb-6">
-              <p className="text-sm text-amber-500 font-semibold mb-1">
+            <div className="rounded-xl bg-[#FBE4D8]/5 border border-[#522B5B]/20 p-4 mb-6">
+              <p className="text-sm text-[#522B5B] font-semibold mb-1">
                 🤖 What is Vibe Coding?
               </p>
               <p className="text-sm text-foreground/70 leading-relaxed">
@@ -1157,8 +1157,8 @@ function ResultContent() {
             </div>
 
             <div className="mb-8 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/20">
-                <Bot className="h-5 w-5 text-amber-500" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FBE4D8]/20">
+                <Bot className="h-5 w-5 text-[#522B5B]" />
               </div>
               <h2 className="text-2xl font-bold text-foreground">🤖 Your Vibe Coding Workflow</h2>
             </div>
@@ -1167,21 +1167,21 @@ function ResultContent() {
               {/* AI Tools Cards */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-foreground/90 flex items-center gap-2">
-                  <Zap className="h-4 w-4 text-amber-500" />
+                  <Zap className="h-4 w-4 text-[#522B5B]" />
                   AI Coding Tools
                 </h3>
                 <div className="space-y-3">
                   {data.vibeCoding.aiTools.map((tool, idx) => (
                     <Card
                       key={idx}
-                      className="border-amber-500/20 bg-amber-500/5 backdrop-blur-md overflow-hidden"
+                      className="border-[#522B5B]/20 bg-[#FBE4D8]/5 backdrop-blur-md overflow-hidden"
                     >
                       <CardContent className="p-5 space-y-2">
                         <h4 className="text-base font-bold text-foreground">{tool.name}</h4>
                         <p className="text-sm text-foreground/70 leading-relaxed">{tool.purpose}</p>
-                        <div className="flex items-start gap-2 mt-2 pt-2 border-t border-amber-500/10">
-                          <Lightbulb className="h-3.5 w-3.5 mt-0.5 text-amber-400 shrink-0" />
-                          <p className="text-xs text-amber-400">{tool.tip}</p>
+                        <div className="flex items-start gap-2 mt-2 pt-2 border-t border-[#522B5B]/10">
+                          <Lightbulb className="h-3.5 w-3.5 mt-0.5 text-[#854F6C] shrink-0" />
+                          <p className="text-xs text-[#854F6C]">{tool.tip}</p>
                         </div>
                       </CardContent>
                     </Card>
@@ -1212,7 +1212,7 @@ function ResultContent() {
                     }
                     return (
                       <div key={idx} className="relative group">
-                        <div className="absolute -left-[49px] top-0 flex h-8 w-8 items-center justify-center rounded-full border-2 border-border bg-amber-100 text-sm font-bold text-amber-500 z-10 transition-transform group-hover:scale-110">
+                        <div className="absolute -left-[49px] top-0 flex h-8 w-8 items-center justify-center rounded-full border-2 border-border bg-[#FEF0E8] text-sm font-bold text-[#522B5B] z-10 transition-transform group-hover:scale-110">
                           {idx + 1}
                         </div>
                         <p className="text-sm text-foreground/80 leading-relaxed pt-1">{stepText}</p>
@@ -1228,7 +1228,7 @@ function ResultContent() {
               <div className="mt-8">
                 <h3 className="text-lg font-semibold text-foreground/90 mb-3">Starter Prompt</h3>
                 <div className="relative group">
-                  <pre className="overflow-x-auto rounded-xl border border-border bg-amber-200 p-4 text-sm text-foreground leading-relaxed whitespace-pre-wrap font-mono">
+                  <pre className="overflow-x-auto rounded-xl border border-border bg-plum-200 p-4 text-sm text-foreground leading-relaxed whitespace-pre-wrap font-mono">
                     {data.vibeCoding.starterPrompt}
                   </pre>
                   <button
@@ -1237,7 +1237,7 @@ function ResultContent() {
                       "absolute right-3 top-3 flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all",
                       promptCopied
                         ? "bg-green-100 text-green-700 border border-green-300"
-                        : "bg-amber-500 text-white hover:bg-amber-400"
+                        : "bg-[#FBE4D8] text-white hover:bg-[#522B5B]"
                     )}
                   >
                     <Copy className="h-3.5 w-3.5" />
@@ -1250,14 +1250,14 @@ function ResultContent() {
         ) : (
           /* Vibe Coding fallback when data exists but aiTools is empty */
           <div className="animate-in fade-in slide-in-from-bottom-8 duration-300 fill-mode-both" style={{ animationDelay: "150ms" }}>
-            <Card className="border-amber-500/20 bg-amber-500/5 backdrop-blur-md">
+            <Card className="border-[#522B5B]/20 bg-[#FBE4D8]/5 backdrop-blur-md">
               <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-                <AlertTriangle className="h-10 w-10 text-amber-400 mb-4" />
+                <AlertTriangle className="h-10 w-10 text-[#854F6C] mb-4" />
                 <h3 className="text-lg font-semibold text-foreground mb-2">Vibe coding workflow generation failed.</h3>
                 <p className="text-sm text-foreground/50 mb-6">Try again with the same settings.</p>
                 <Button
                   onClick={() => router.push("/advisor")}
-                  className="rounded-xl bg-amber-500 text-foreground hover:bg-amber-400 px-6 font-semibold"
+                  className="rounded-xl bg-[#FBE4D8] text-foreground hover:bg-[#522B5B] px-6 font-semibold"
                 >
                   <RefreshCcw className="mr-2 h-4 w-4" />
                   Try Again
@@ -1275,7 +1275,7 @@ function ResultContent() {
             <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
               🧐 Ask the AI Critic
             </h2>
-            <p className="text-sm text-amber-600/70">
+            <p className="text-sm text-plum-600/70">
               Get a harsh, realistic review of this tech stack. Find out its bottlenecks, tradeoffs, and missing pieces before you start building.
             </p>
           </div>
@@ -1312,7 +1312,7 @@ function ResultContent() {
                     <p className="text-sm text-foreground/80">{criticData.missingPiece}</p>
                   </div>
                   <div className="bg-white rounded-lg p-4 border border-purple-100">
-                    <h4 className="text-xs font-bold text-amber-600 uppercase mb-2 flex items-center gap-1"><Zap className="h-3 w-3" /> Scaling Bottlenecks</h4>
+                    <h4 className="text-xs font-bold text-plum-600 uppercase mb-2 flex items-center gap-1"><Zap className="h-3 w-3" /> Scaling Bottlenecks</h4>
                     <p className="text-sm text-foreground/80">{criticData.scalingBottleneck}</p>
                   </div>
                 </div>
@@ -1337,7 +1337,7 @@ function ResultContent() {
       {/* 8. ACTION BUTTONS */}
       <section className="border-t border-border pt-8 pb-16 animate-in fade-in slide-in-from-bottom-4 duration-300" style={{ animationDelay: "200ms" }}>
         
-        <p className="text-center text-sm text-amber-600/70 mb-6">
+        <p className="text-center text-sm text-plum-600/70 mb-6">
           Happy with your stack? Save it to your dashboard or share it with your team.
         </p>
         
@@ -1349,7 +1349,7 @@ function ResultContent() {
                "h-12 px-8 rounded-xl font-semibold w-full sm:w-auto text-base shadow-[0_0_20px_rgba(249,115,22,0.3)]",
                saved
                  ? "bg-green-500 hover:bg-green-500 text-white cursor-default shadow-none"
-                 : "bg-amber-500 text-foreground hover:bg-amber-400"
+                 : "bg-[#FBE4D8] text-foreground hover:bg-[#522B5B]"
             )}
           >
             {saving ? (
@@ -1393,7 +1393,7 @@ function ResultContent() {
           <Button
             onClick={() => router.push('/advisor')}
             variant="ghost"
-            className="h-12 px-8 rounded-xl text-foreground/70 hover:text-amber-300 hover:bg-white font-semibold w-full sm:w-auto text-base"
+            className="h-12 px-8 rounded-xl text-foreground/70 hover:text-[#190019] hover:bg-white font-semibold w-full sm:w-auto text-base"
           >
             <RefreshCcw className="mr-2 h-5 w-5" />
             Try Again
@@ -1402,7 +1402,7 @@ function ResultContent() {
           <Button
             onClick={() => router.push('/explore')}
             variant="ghost"
-            className="h-12 px-8 rounded-xl text-foreground/70 hover:text-amber-300 hover:bg-white font-semibold w-full sm:w-auto text-base"
+            className="h-12 px-8 rounded-xl text-foreground/70 hover:text-[#190019] hover:bg-white font-semibold w-full sm:w-auto text-base"
           >
             <Library className="mr-2 h-5 w-5" />
             View All Stacks
@@ -1434,14 +1434,14 @@ function ResultContent() {
 // ── Main Page Wrap ─────────────────────────────────────────────────────────
 export default function ResultPage() {
   return (
-    <div className="relative min-h-dvh bg-background text-foreground selection:bg-amber-500/30 overflow-hidden">
+    <div className="relative min-h-dvh bg-background text-foreground selection:bg-[#FBE4D8]/30 overflow-hidden">
       <Navbar />
       {/* Background ambient glow */}
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(232,162,78,0.12)_0%,transparent_70%)]" />
       
       <React.Suspense fallback={
         <div className="flex min-h-[100dvh] flex-col items-center justify-center space-y-4 relative z-10">
-          <Loader2 className="h-8 w-8 animate-spin text-amber-500" />
+          <Loader2 className="h-8 w-8 animate-spin text-[#522B5B]" />
           <p className="animate-pulse text-sm text-foreground/50 tracking-widest uppercase font-medium">Resolving Stack</p>
         </div>
       }>

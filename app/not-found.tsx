@@ -10,14 +10,14 @@ export default function NotFound() {
         text-foreground mb-3">
         Page not found
       </h2>
-      <p className="text-amber-600/70 mb-8">
+      <p className="text-plum-600/70 mb-8">
         The page you&apos;re looking for 
         doesn&apos;t exist.
       </p>
       <Link href="/">
         <button className="px-6 py-3 
-          rounded-xl bg-amber-500 text-white 
-          font-semibold hover:bg-amber-400 
+          rounded-xl bg-[#FBE4D8] text-white 
+          font-semibold hover:bg-[#522B5B] 
           transition-colors">
           Go Home
         </button>

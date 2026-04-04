@@ -71,7 +71,7 @@ export default function CheckAdminPage() {
             {profile?.is_admin ? (
               <Link 
                 href="/admin" 
-                className="block w-full bg-amber-1000 text-white text-center py-4 rounded-xl font-black border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+                className="block w-full bg-[#FEF0E8] text-white text-center py-4 rounded-xl font-black border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
               >
                 GOTO ADMIN DASHBOARD
               </Link>
