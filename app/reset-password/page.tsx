@@ -83,48 +83,48 @@ export default function ResetPasswordPage() {
     confirmPassword.length > 0 && password !== confirmPassword;
 
   return (
-    <div className="min-h-dvh bg-background flex items-center justify-center px-4">
+    <div className="min-h-dvh bg-[#0A0A0A] flex items-center justify-center px-4">
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="flex flex-col items-center gap-3">
           <Link href="/" className="flex items-center gap-2">
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-plum-500 to-plum-400 shadow-lg shadow-plum-500/20">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#4F8EF7] to-[#00D4FF] shadow-lg shadow-[#4F8EF7]/20">
               <Sparkles className="h-5 w-5 text-white" />
             </div>
-            <span className="text-xl font-bold tracking-tight text-foreground">
+            <span className="text-xl font-bold tracking-tight text-[#F8F8F8]">
               Toolvise
             </span>
           </Link>
         </div>
 
         {/* Card */}
-        <div className="rounded-2xl border border-border bg-white p-8 shadow-sm">
+        <div className="rounded-2xl border border-white/10 bg-[#0A0A0A] p-8 shadow-sm">
           {success ? (
             /* Success state */
             <div className="text-center space-y-4">
               <div className="flex justify-center">
-                <div className="h-16 w-16 rounded-full bg-green-50 border border-green-200 flex items-center justify-center">
-                  <CheckCircle2 className="h-8 w-8 text-green-600" />
+                <div className="h-16 w-16 rounded-full bg-[#00D4FF]/10 border border-[#00D4FF]/30 flex items-center justify-center">
+                  <CheckCircle2 className="h-8 w-8 text-[#00D4FF]" />
                 </div>
               </div>
-              <h1 className="text-2xl font-bold text-foreground">
+              <h1 className="text-2xl font-bold text-[#F8F8F8]">
                 Password updated!
               </h1>
-              <div className="rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-700">
+              <div className="rounded-lg border border-[#00D4FF]/30 bg-[#00D4FF]/10 p-3 text-sm text-[#00D4FF]">
                 Your password has been changed successfully. Redirecting to
                 sign in...
               </div>
               <div className="flex justify-center">
-                <Loader2 className="h-5 w-5 animate-spin text-[#522B5B]" />
+                <Loader2 className="h-5 w-5 animate-spin text-[#4F8EF7]" />
               </div>
             </div>
           ) : (
             /* Form */
             <>
-              <h1 className="text-2xl font-bold text-foreground text-center mb-2">
+              <h1 className="text-2xl font-bold text-[#F8F8F8] text-center mb-2">
                 Set new password
               </h1>
-              <p className="text-sm text-foreground/50 text-center mb-8">
+              <p className="text-sm text-[#F8F8F8]/50 text-center mb-8">
                 Choose a strong password for your account
               </p>
 
@@ -135,7 +135,7 @@ export default function ResetPasswordPage() {
               )}
 
               {!sessionReady && (
-                <div className="rounded-lg border border-[#DFB6B2] bg-[#FBE4D8] p-3 text-sm text-plum-700 mb-4">
+                <div className="rounded-lg border border-white/8 bg-[#0A0A0A] p-3 text-sm text-[#4F8EF7] mb-4">
                   Verifying your reset link... If you arrived here directly,
                   please use the link from your email.
                 </div>
@@ -144,7 +144,7 @@ export default function ResetPasswordPage() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* New Password */}
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-foreground/80">
+                  <Label htmlFor="password" className="text-[#F8F8F8]/80">
                     New Password
                   </Label>
                   <div className="relative">
@@ -156,12 +156,12 @@ export default function ResetPasswordPage() {
                       placeholder="••••••••"
                       required
                       minLength={8}
-                      className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500 focus-visible:border-[#522B5B] pr-10"
+                      className="h-11 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30 focus-visible:border-[#4F8EF7] pr-10"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-3 text-foreground/40 hover:text-[#190019]/70 transition-colors"
+                      className="absolute right-3 top-3 text-[#F8F8F8]/40 hover:text-[#F8F8F8]/70 transition-colors"
                     >
                       {showPassword ? (
                         <EyeOff className="h-4 w-4" />
@@ -170,14 +170,14 @@ export default function ResetPasswordPage() {
                       )}
                     </button>
                   </div>
-                  <p className="text-xs text-foreground/40">
+                  <p className="text-xs text-[#F8F8F8]/40">
                     Minimum 8 characters
                   </p>
                 </div>
 
                 {/* Confirm Password */}
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" className="text-foreground/80">
+                  <Label htmlFor="confirmPassword" className="text-[#F8F8F8]/80">
                     Confirm Password
                   </Label>
                   <div className="relative">
@@ -188,18 +188,18 @@ export default function ResetPasswordPage() {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="••••••••"
                       required
-                      className={`h-11 bg-white text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500 pr-10 ${
+                      className={`h-11 bg-[#0A0A0A] text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30 pr-10 ${
                         passwordsMismatch
                           ? "border-red-400 focus-visible:border-red-400"
                           : passwordsMatch
                           ? "border-green-400 focus-visible:border-green-400"
-                          : "border-border focus-visible:border-[#522B5B]"
+                          : "border-white/10 focus-visible:border-[#4F8EF7]"
                       }`}
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirm(!showConfirm)}
-                      className="absolute right-3 top-3 text-foreground/40 hover:text-[#190019]/70 transition-colors"
+                      className="absolute right-3 top-3 text-[#F8F8F8]/40 hover:text-[#F8F8F8]/70 transition-colors"
                     >
                       {showConfirm ? (
                         <EyeOff className="h-4 w-4" />
@@ -214,14 +214,14 @@ export default function ResetPasswordPage() {
                     </p>
                   )}
                   {passwordsMatch && (
-                    <p className="text-xs text-green-600">Passwords match ✓</p>
+                    <p className="text-xs text-[#00D4FF]">Passwords match ✓</p>
                   )}
                 </div>
 
                 <Button
                   type="submit"
                   disabled={loading || !sessionReady}
-                  className="w-full h-11 rounded-xl bg-[#FBE4D8] text-white hover:bg-[#522B5B] font-semibold shadow-lg shadow-plum-500/20 transition-all"
+                  className="w-full h-11 rounded-xl bg-[#0A0A0A] text-white hover:bg-[#4F8EF7] font-semibold shadow-lg shadow-[#4F8EF7]/20 transition-all"
                 >
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Update Password
@@ -234,7 +234,7 @@ export default function ResetPasswordPage() {
         <div className="text-center">
           <Link
             href="/login"
-            className="text-sm text-foreground/50 hover:text-[#190019] transition-colors"
+            className="text-sm text-[#F8F8F8]/50 hover:text-[#F8F8F8] transition-colors"
           >
             Back to Sign In
           </Link>

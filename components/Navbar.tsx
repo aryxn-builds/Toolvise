@@ -90,37 +90,37 @@ export function Navbar() {
     .slice(0, 2);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#DFB6B2]/60 bg-[#FBE4D8]/80 backdrop-blur-xl shadow-nav">
+    <header className="sticky top-0 z-50 border-b border-white/8 bg-[#0A0A0A]/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#522B5B] to-[#854F6C] shadow-glow">
-            <Sparkles className="h-4 w-4 text-[#FBE4D8]" />
+          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-r from-[#4F8EF7] to-[#00D4FF]">
+            <Sparkles className="h-4 w-4 text-white" />
           </div>
-          <span className="text-xl font-bold font-serif text-[#522B5B]">
+          <span className="text-xl font-heading font-semibold text-white tracking-tight">
             Toolvise
           </span>
         </Link>
 
         {/* Nav links */}
-        <nav className="hidden items-center gap-6 text-sm text-[#522B5B] md:flex font-sans font-medium">
-          <Link className="transition-colors hover:text-[#190019] px-1 py-5 border-b-2 border-transparent hover:border-[#190019]" href="/">
+        <nav className="hidden items-center gap-6 text-sm md:flex font-sans font-medium text-white/60">
+          <Link className="transition-colors hover:text-white px-1 py-5" href="/">
             Home
           </Link>
           <Link
-            className="transition-colors hover:text-[#190019] px-1 py-5 border-b-2 border-transparent hover:border-[#190019]"
+            className="transition-colors hover:text-white px-1 py-5"
             href="/explore"
           >
             Explore
           </Link>
           <Link
-            className="transition-colors hover:text-[#190019] px-1 py-5 border-b-2 border-transparent hover:border-[#190019]"
+            className="transition-colors hover:text-white px-1 py-5"
             href="/leaderboard"
           >
             Leaderboard
           </Link>
           <Link
-            className="transition-colors hover:text-[#190019] px-1 py-5 border-b-2 border-transparent hover:border-[#190019]"
+            className="transition-colors hover:text-white px-1 py-5"
             href="/about"
           >
             About
@@ -134,7 +134,7 @@ export function Navbar() {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2 rounded-full border border-border bg-white px-2 py-1.5 transition-all hover:bg-background"
+                className="flex items-center gap-2 rounded-full border border-white/10 bg-[#0A0A0A] px-2 py-1.5 transition-all hover:bg-[#0A0A0A]"
               >
                 {profile?.avatar_url ? (
                   <img
@@ -143,13 +143,13 @@ export function Navbar() {
                     className="h-7 w-7 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="h-7 w-7 rounded-full bg-gradient-to-br from-plum-500 to-plum-400 flex items-center justify-center text-white text-xs font-bold">
+                  <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#4F8EF7] to-[#00D4FF] flex items-center justify-center text-white text-xs font-bold">
                     {initials}
                   </div>
                 )}
                 <ChevronDown
                   className={cn(
-                    "h-3.5 w-3.5 text-foreground/50 transition-transform",
+                    "h-3.5 w-3.5 text-[#F8F8F8]/50 transition-transform",
                     dropdownOpen && "rotate-180"
                   )}
                 />
@@ -157,12 +157,12 @@ export function Navbar() {
 
               {/* Dropdown */}
               {dropdownOpen && (
-                <div className="absolute right-0 top-full mt-2 w-56 rounded-xl border border-border bg-white shadow-lg py-1 animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="px-4 py-3 border-b border-border/50">
-                    <p className="text-sm font-semibold text-foreground truncate">
+                <div className="absolute right-0 top-full mt-2 w-56 rounded-xl border border-white/10 bg-[#0A0A0A] shadow-glass py-1 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="px-4 py-3 border-b border-white/10/50">
+                    <p className="text-sm font-semibold text-white/80 truncate">
                       {profile?.display_name || profile?.username}
                     </p>
-                    <p className="text-xs text-foreground/40 truncate">
+                    <p className="text-xs text-white/40 truncate">
                       {user.email}
                     </p>
                   </div>
@@ -170,7 +170,7 @@ export function Navbar() {
                   <Link
                     href="/dashboard"
                     onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-foreground/70 hover:bg-background hover:text-[#190019] transition-colors"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#F8F8F8]/70 hover:bg-[#0A0A0A] hover:text-[#F8F8F8] transition-colors"
                   >
                     <LayoutDashboard className="h-4 w-4" />
                     My Dashboard
@@ -178,7 +178,7 @@ export function Navbar() {
                   <Link
                     href={`/profile/${profile?.username || ""}`}
                     onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-foreground/70 hover:bg-background hover:text-[#190019] transition-colors"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#F8F8F8]/70 hover:bg-[#0A0A0A] hover:text-[#F8F8F8] transition-colors"
                   >
                     <User className="h-4 w-4" />
                     My Profile
@@ -186,13 +186,13 @@ export function Navbar() {
                   <Link
                     href="/settings"
                     onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-foreground/70 hover:bg-background hover:text-[#190019] transition-colors"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#F8F8F8]/70 hover:bg-[#0A0A0A] hover:text-[#F8F8F8] transition-colors"
                   >
                     <Settings className="h-4 w-4" />
                     Settings
                   </Link>
 
-                  <div className="border-t border-border/50 mt-1 pt-1">
+                  <div className="border-t border-white/10/50 mt-1 pt-1">
                     <button
                       onClick={handleSignOut}
                       className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors"
@@ -209,19 +209,13 @@ export function Navbar() {
             <>
               <Link
                 href="/login"
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "sm" }),
-                  "border border-[#DFB6B2] text-[#522B5B] hover:bg-[#522B5B] hover:text-[#FBE4D8] rounded-xl hidden sm:inline-flex transition-colors"
-                )}
+                className="bg-white/5 border border-white/10 text-white hover:bg-white/8 hover:border-white/15 rounded-lg px-4 py-2 text-sm hidden sm:inline-flex transition-colors font-medium"
               >
                 Sign In
               </Link>
               <Link
                 href="/signup"
-                className={cn(
-                  buttonVariants({ size: "sm" }),
-                  "btn-3d px-5 font-semibold"
-                )}
+                className="btn-primary px-5 py-2 text-sm font-semibold rounded-lg hidden sm:inline-flex"
               >
                 Sign Up
               </Link>

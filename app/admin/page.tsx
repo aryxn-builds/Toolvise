@@ -600,16 +600,16 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-dvh bg-background">
-        <header className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur-md">
+      <div className="min-h-dvh bg-[#0A0A0A]">
+        <header className="sticky top-0 z-50 border-b border-white/10 bg-white/80 backdrop-blur-md">
           <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-plum-500 to-plum-400 flex items-center justify-center">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[#4F8EF7] to-[#00D4FF] flex items-center justify-center">
                 <Shield className="h-4 w-4 text-white" />
               </div>
               <div>
                 <div className="h-4 w-32 rounded bg-gray-200 animate-pulse" />
-                <div className="h-3 w-24 rounded bg-gray-100 animate-pulse mt-1" />
+                <div className="h-3 w-24 rounded bg-white/10 animate-pulse mt-1" />
               </div>
             </div>
           </div>
@@ -617,12 +617,12 @@ export default function AdminDashboard() {
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[1, 2, 3, 4].map(i => (
-              <div key={i} className="h-28 rounded-xl bg-white border border-border animate-pulse" />
+              <div key={i} className="h-28 rounded-xl bg-[#0A0A0A] border border-white/10 animate-pulse" />
             ))}
           </div>
           <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
             {[1, 2].map(i => (
-              <div key={i} className="h-64 rounded-xl bg-white border border-border animate-pulse" />
+              <div key={i} className="h-64 rounded-xl bg-[#0A0A0A] border border-white/10 animate-pulse" />
             ))}
           </div>
         </div>
@@ -635,17 +635,17 @@ export default function AdminDashboard() {
   // ── Render ──────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-dvh bg-background">
+    <div className="min-h-dvh bg-[#0A0A0A]">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-white/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-plum-500 to-plum-400 flex items-center justify-center">
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[#4F8EF7] to-[#00D4FF] flex items-center justify-center">
               <Shield className="h-4 w-4 text-white" />
             </div>
             <div>
-              <h1 className="font-bold text-foreground">Admin Dashboard</h1>
-              <p className="text-xs text-plum-600/70">Toolvise Control Center</p>
+              <h1 className="font-bold text-[#F8F8F8]">Admin Dashboard</h1>
+              <p className="text-xs text-[#4F8EF7]/70">Toolvise Control Center</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -654,14 +654,14 @@ export default function AdminDashboard() {
                 setLoading(true)
                 loadAllData().finally(() => setLoading(false))
               }}
-              className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm text-plum-600/70 hover:bg-background hover:text-[#190019] transition-colors"
+              className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm text-[#4F8EF7]/70 hover:bg-[#0A0A0A] hover:text-[#F8F8F8] transition-colors"
             >
               <RefreshCw className="h-3.5 w-3.5" />
               Refresh
             </button>
             <Link
               href="/"
-              className="text-sm text-plum-600/70 hover:text-[#190019] flex items-center gap-1 transition-colors"
+              className="text-sm text-[#4F8EF7]/70 hover:text-[#F8F8F8] flex items-center gap-1 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to Site
@@ -671,7 +671,7 @@ export default function AdminDashboard() {
       </header>
 
       {/* Tab Navigation */}
-      <div className="border-b border-border bg-white/50 backdrop-blur-sm">
+      <div className="border-b border-white/10 bg-white/50 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <nav className="flex gap-1 overflow-x-auto py-2 scrollbar-hide" aria-label="Admin tabs">
             {TABS.map(tab => (
@@ -681,8 +681,8 @@ export default function AdminDashboard() {
                 className={cn(
                   "flex items-center gap-2 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition-all",
                   activeTab === tab.key
-                    ? "bg-[#FBE4D8] text-white shadow-md shadow-[#F97316]/20"
-                    : "text-plum-600/70 hover:bg-background hover:text-[#190019]"
+                    ? "bg-[#0A0A0A] text-white shadow-md shadow-[#00D4FF]/20"
+                    : "text-[#4F8EF7]/70 hover:bg-[#0A0A0A] hover:text-[#F8F8F8]"
                 )}
               >
                 {tab.icon}
@@ -709,23 +709,23 @@ export default function AdminDashboard() {
             {/* KPI Cards */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                { label: "Total Users", value: totalUsers, icon: <Users className="h-5 w-5 text-blue-500" />, color: "bg-blue-50" },
-                { label: "Total Stacks", value: totalStacks, icon: <Layers className="h-5 w-5 text-[#522B5B]" />, color: "bg-[#FBE4D8]" },
-                { label: "Stacks Today", value: todayStacks, icon: <TrendingUp className="h-5 w-5 text-green-500" />, color: "bg-green-50" },
+                { label: "Total Users", value: totalUsers, icon: <Users className="h-5 w-5 text-blue-500" />, color: "bg-[#4F8EF7]/10" },
+                { label: "Total Stacks", value: totalStacks, icon: <Layers className="h-5 w-5 text-[#4F8EF7]" />, color: "bg-[#0A0A0A]" },
+                { label: "Stacks Today", value: todayStacks, icon: <TrendingUp className="h-5 w-5 text-green-500" />, color: "bg-[#00D4FF]/10" },
                 { label: "Open Bug Reports", value: openBugs, icon: <Bug className="h-5 w-5 text-red-500" />, color: "bg-red-50" },
                 { label: "Total Bookmarks", value: totalBookmarks, icon: <Bookmark className="h-5 w-5 text-purple-500" />, color: "bg-purple-50" },
-                { label: "Avg Stack Score", value: avgScore, icon: <Trophy className="h-5 w-5 text-plum-600" />, color: "bg-[#FBE4D8]" },
+                { label: "Avg Stack Score", value: avgScore, icon: <Trophy className="h-5 w-5 text-[#4F8EF7]" />, color: "bg-[#0A0A0A]" },
               ].map(card => (
                 <div
                   key={card.label}
-                  className="rounded-xl border border-border bg-white p-6 transition-all hover:shadow-md hover:shadow-[#F97316]/5"
+                  className="rounded-xl border border-white/10 bg-[#0A0A0A] p-6 transition-all hover:shadow-md hover:shadow-[#00D4FF]/5"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-plum-600/70 font-medium">{card.label}</p>
+                      <p className="text-sm text-[#4F8EF7]/70 font-medium">{card.label}</p>
                       <p className={cn(
                         "text-3xl font-black mt-1",
-                        card.label === "Open Bug Reports" && openBugs > 0 ? "text-red-600" : "text-foreground"
+                        card.label === "Open Bug Reports" && openBugs > 0 ? "text-red-600" : "text-[#F8F8F8]"
                       )}>
                         {card.value}
                       </p>
@@ -741,8 +741,8 @@ export default function AdminDashboard() {
             {/* Build Style + Goals */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               {/* Build Style Distribution */}
-              <div className="rounded-xl border border-border bg-white p-6">
-                <h3 className="font-semibold text-foreground mb-6">Build Style Distribution</h3>
+              <div className="rounded-xl border border-white/10 bg-[#0A0A0A] p-6">
+                <h3 className="font-semibold text-[#F8F8F8] mb-6">Build Style Distribution</h3>
                 <div className="flex items-center gap-6">
                   {(() => {
                     const total = recentStacks?.length || 1;
@@ -758,45 +758,45 @@ export default function AdminDashboard() {
                       <>
                         <div className="relative h-32 w-32 rounded-full flex flex-col items-center justify-center shrink-0 transition-all duration-500 animate-in zoom-in-50"
                              style={{ background: `conic-gradient(#A855F7 0% ${vibePct}%, #3B82F6 ${vibePct}% ${vibePct + nocodePct}%, #9CA3AF ${vibePct + nocodePct}% 100%)` }}>
-                          <div className="absolute inset-[20%] bg-white rounded-full flex flex-col items-center justify-center shadow-inner">
-                            <span className="text-xl font-black text-foreground">{total}</span>
+                          <div className="absolute inset-[20%] bg-[#0A0A0A] rounded-full flex flex-col items-center justify-center shadow-inner">
+                            <span className="text-xl font-black text-[#F8F8F8]">{total}</span>
                           </div>
                         </div>
                         <div className="w-full space-y-3">
                           <div className="flex items-center justify-between text-sm">
                             <div className="flex items-center gap-2">
                               <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-                              <span className="font-medium text-gray-700">Vibe ✨</span>
+                              <span className="font-medium text-white/60">Vibe ✨</span>
                             </div>
-                            <span className="font-bold text-gray-900">{vibe} ({vibePct}%)</span>
+                            <span className="font-bold text-white">{vibe} ({vibePct}%)</span>
                           </div>
                           <div className="flex items-center justify-between text-sm">
                             <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                              <span className="font-medium text-gray-700">No-Code 🧩</span>
+                              <div className="w-3 h-3 rounded-full bg-[#4F8EF7]/100"></div>
+                              <span className="font-medium text-white/60">No-Code 🧩</span>
                             </div>
-                            <span className="font-bold text-gray-900">{nocode} ({nocodePct}%)</span>
+                            <span className="font-bold text-white">{nocode} ({nocodePct}%)</span>
                           </div>
                           <div className="flex items-center justify-between text-sm">
                             <div className="flex items-center gap-2">
                               <div className="w-3 h-3 rounded-full bg-gray-400"></div>
-                              <span className="font-medium text-gray-700">Traditional 💻</span>
+                              <span className="font-medium text-white/60">Traditional 💻</span>
                             </div>
-                            <span className="font-bold text-gray-900">{traditional} ({tradPct}%)</span>
+                            <span className="font-bold text-white">{traditional} ({tradPct}%)</span>
                           </div>
                         </div>
                       </>
                     )
                   })()}
                 </div>
-                <p className="mt-6 text-xs text-plum-600/70 text-center">Based on last 100 stacks</p>
+                <p className="mt-6 text-xs text-[#4F8EF7]/70 text-center">Based on last 100 stacks</p>
               </div>
 
               {/* Top Goals */}
-              <div className="rounded-xl border border-border bg-white p-6">
-                <h3 className="font-semibold text-foreground mb-4">Top Project Goals</h3>
+              <div className="rounded-xl border border-white/10 bg-[#0A0A0A] p-6">
+                <h3 className="font-semibold text-[#F8F8F8] mb-4">Top Project Goals</h3>
                 {topGoals.length === 0 ? (
-                  <p className="text-sm text-plum-600/70">No data yet</p>
+                  <p className="text-sm text-[#4F8EF7]/70">No data yet</p>
                 ) : (
                   <div className="space-y-3">
                     {topGoals.map(([goal, count], idx) => {
@@ -805,20 +805,20 @@ export default function AdminDashboard() {
                       return (
                         <div key={goal} className="space-y-1.5">
                           <div className="flex justify-between text-sm">
-                            <span className="text-foreground/70 font-medium flex items-center gap-2">
+                            <span className="text-[#F8F8F8]/70 font-medium flex items-center gap-2">
                               <span className={cn(
                                 "inline-flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold",
-                                idx === 0 ? "bg-[#FBE4D8] text-white" : "bg-background text-foreground/60"
+                                idx === 0 ? "bg-[#0A0A0A] text-white" : "bg-[#0A0A0A] text-[#F8F8F8]/60"
                               )}>
                                 {idx + 1}
                               </span>
                               {goal}
                             </span>
-                            <span className="font-semibold text-foreground">{count} ({pct}%)</span>
+                            <span className="font-semibold text-[#F8F8F8]">{count} ({pct}%)</span>
                           </div>
-                          <div className="h-2 rounded-full bg-plum-200/60 overflow-hidden">
+                          <div className="h-2 rounded-full bg-[#4F8EF7]/60 overflow-hidden">
                             <div
-                              className="h-full bg-gradient-to-r from-[#FB923C] to-plum-500 rounded-full transition-all duration-300 ease-out"
+                              className="h-full bg-gradient-to-r from-[#FB923C] to-[#00D4FF] rounded-full transition-all duration-300 ease-out"
                               style={{ width: `${pct}%` }}
                             />
                           </div>
@@ -838,47 +838,47 @@ export default function AdminDashboard() {
             {/* Search */}
             <div className="flex items-center gap-3">
               <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-plum-600/70" />
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#4F8EF7]/70" />
                 <input
                   type="text"
                   placeholder="Search users by name or username..."
                   value={userSearch}
                   onChange={e => setUserSearch(e.target.value)}
-                  className="h-10 w-full rounded-lg border border-border bg-white pl-10 pr-4 text-sm text-foreground placeholder:text-plum-600/70/60 focus:outline-none focus:ring-2 focus:ring-plum-500/30 focus:border-[#522B5B]"
+                  className="h-10 w-full rounded-lg border border-white/10 bg-[#0A0A0A] pl-10 pr-4 text-sm text-[#F8F8F8] placeholder:text-[#4F8EF7]/70/60 focus:outline-none focus:ring-2 focus:ring-[#4F8EF7]/30/30 focus:border-[#4F8EF7]"
                 />
               </div>
-              <span className="text-sm text-plum-600/70">{filteredUsers.length} users</span>
+              <span className="text-sm text-[#4F8EF7]/70">{filteredUsers.length} users</span>
             </div>
 
             {/* Table */}
-            <div className="rounded-xl border border-border bg-white overflow-hidden">
+            <div className="rounded-xl border border-white/10 bg-[#0A0A0A] overflow-hidden">
               <div className="max-w-full overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border bg-background/40">
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">User</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Username</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold text-center">Stacks</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold text-center">Followers</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Joined</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Role</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Actions</th>
+                    <tr className="border-b border-white/10 bg-[#0A0A0A]/40">
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">User</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Username</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold text-center">Stacks</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold text-center">Followers</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Joined</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Role</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredUsers.length === 0 ? (
                       <tr>
-                        <td colSpan={7} className="py-12 text-center text-plum-600/70">
+                        <td colSpan={7} className="py-12 text-center text-[#4F8EF7]/70">
                           {userSearch ? "No users match your search" : "No users found"}
                         </td>
                       </tr>
                     ) : (
                       filteredUsers.map(user => (
                         <React.Fragment key={user.id}>
-                        <tr className={cn("border-b border-border/50 hover:bg-background/30 transition-colors cursor-pointer", expandedUser === user.id && "bg-background/40")} onClick={() => loadUserStacks(user.id)}>
+                        <tr className={cn("border-b border-white/10/50 hover:bg-[#0A0A0A]/30 transition-colors cursor-pointer", expandedUser === user.id && "bg-[#0A0A0A]/40")} onClick={() => loadUserStacks(user.id)}>
                           <td className="py-3 px-4">
                             <div className="flex items-center gap-3">
-                              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-plum-500 to-plum-400 flex items-center justify-center text-white text-xs font-bold shrink-0 overflow-hidden">
+                              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#4F8EF7] to-[#00D4FF] flex items-center justify-center text-white text-xs font-bold shrink-0 overflow-hidden">
                                 {user.avatar_url ? (
                                   <>
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -888,37 +888,37 @@ export default function AdminDashboard() {
                                   (user.display_name || user.username || "?").charAt(0).toUpperCase()
                                 )}
                               </div>
-                              <span className="font-medium text-foreground truncate max-w-[150px]">
+                              <span className="font-medium text-[#F8F8F8] truncate max-w-[150px]">
                                 {user.display_name || user.username || "Unknown"}
                               </span>
                             </div>
                           </td>
-                          <td className="py-3 px-4 text-plum-600/70">@{user.username || "—"}</td>
+                          <td className="py-3 px-4 text-[#4F8EF7]/70">@{user.username || "—"}</td>
                           <td className="py-3 px-4 text-center">
-                            <span className="inline-flex items-center gap-1 rounded-full bg-background px-2.5 py-0.5 text-xs font-semibold text-foreground">
-                              <Layers className="h-3 w-3 text-[#522B5B]" />
+                            <span className="inline-flex items-center gap-1 rounded-full bg-[#0A0A0A] px-2.5 py-0.5 text-xs font-semibold text-[#F8F8F8]">
+                              <Layers className="h-3 w-3 text-[#4F8EF7]" />
                               {user.stacks_count ?? 0}
                             </span>
                           </td>
                           <td className="py-3 px-4 text-center">
-                            <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-600">
+                            <span className="inline-flex items-center gap-1 rounded-full bg-[#4F8EF7]/10 px-2.5 py-0.5 text-xs font-semibold text-[#4F8EF7]">
                               <Star className="h-3 w-3 text-blue-500" />
                               {user.followers_count ?? 0}
                             </span>
                           </td>
-                          <td className="py-3 px-4 text-plum-600/70 text-xs">{formatDate(user.created_at)}</td>
+                          <td className="py-3 px-4 text-[#4F8EF7]/70 text-xs">{formatDate(user.created_at)}</td>
                           <td className="py-3 px-4" onClick={e => e.stopPropagation()}>
                             <button
                               onClick={() => handleToggleAdmin(user.id, !!user.is_admin, user.username || 'unknown')}
                               className={cn(
                                 "group inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold transition-all",
                                 user.is_admin 
-                                  ? "bg-[#FBE4D8]/10 text-[#522B5B] hover:bg-red-50 hover:text-red-600" 
-                                  : "text-plum-600/70 bg-gray-100 hover:bg-[#FBE4D8]/10 hover:text-[#522B5B]"
+                                  ? "bg-[#0A0A0A]/10 text-[#4F8EF7] hover:bg-red-50 hover:text-red-600" 
+                                  : "text-[#4F8EF7]/70 bg-white/10 hover:bg-[#0A0A0A]/10 hover:text-[#4F8EF7]"
                               )}
                               title={user.is_admin ? "Remove admin rights" : "Make admin"}
                             >
-                              <Shield className={cn("h-3 w-3", user.is_admin ? "fill-[#F97316]/20 group-hover:fill-red-500/20" : "")} />
+                              <Shield className={cn("h-3 w-3", user.is_admin ? "fill-[#00D4FF]/20 group-hover:fill-red-500/20" : "")} />
                               {user.is_admin ? "Admin" : "User"}
                             </button>
                           </td>
@@ -926,7 +926,7 @@ export default function AdminDashboard() {
                             <div className="flex items-center gap-3">
                               <Link
                                 href={`/profile/${user.username}`}
-                                className="text-xs font-medium text-[#522B5B] hover:text-plum-600 transition-colors"
+                                className="text-xs font-medium text-[#4F8EF7] hover:text-[#4F8EF7] transition-colors"
                               >
                                 View Profile
                               </Link>
@@ -936,8 +936,8 @@ export default function AdminDashboard() {
                                 className={cn(
                                   "p-1.5 rounded-lg transition-colors",
                                   user.is_admin
-                                    ? "opacity-30 cursor-not-allowed text-plum-600/70"
-                                    : "text-plum-600/70 hover:bg-red-50 hover:text-red-600"
+                                    ? "opacity-30 cursor-not-allowed text-[#4F8EF7]/70"
+                                    : "text-[#4F8EF7]/70 hover:bg-red-50 hover:text-red-600"
                                 )}
                                 title={user.is_admin ? "Cannot delete admin" : "Delete user"}
                               >
@@ -947,21 +947,21 @@ export default function AdminDashboard() {
                           </td>
                         </tr>
                         {expandedUser === user.id && (
-                          <tr className="bg-background/20">
+                          <tr className="bg-[#0A0A0A]/20">
                             <td colSpan={7} className="px-6 py-4">
-                              <div className="rounded-lg bg-white border border-border p-4">
-                                <p className="text-sm font-semibold text-foreground mb-3">
+                              <div className="rounded-lg bg-[#0A0A0A] border border-white/10 p-4">
+                                <p className="text-sm font-semibold text-[#F8F8F8] mb-3">
                                   Recent Stacks by @{user.username}
                                 </p>
                                 {(userStacks[user.id] || []).length === 0 ? (
-                                  <p className="text-sm text-plum-600/70">No stacks yet</p>
+                                  <p className="text-sm text-[#4F8EF7]/70">No stacks yet</p>
                                 ) : (
                                   <div className="space-y-2">
                                     {(userStacks[user.id] || []).map(s => (
-                                      <div key={s.id} className="flex items-center justify-between gap-4 rounded-lg bg-background/50 px-4 py-2">
-                                        <p className="text-sm text-foreground truncate flex-1">{s.user_input || '—'}</p>
+                                      <div key={s.id} className="flex items-center justify-between gap-4 rounded-lg bg-[#0A0A0A]/50 px-4 py-2">
+                                        <p className="text-sm text-[#F8F8F8] truncate flex-1">{s.user_input || '—'}</p>
                                         {s.share_slug && (
-                                          <Link href={`/result?slug=${s.share_slug}`} className="text-xs text-[#522B5B] hover:underline shrink-0">
+                                          <Link href={`/result?slug=${s.share_slug}`} className="text-xs text-[#4F8EF7] hover:underline shrink-0">
                                             View →
                                           </Link>
                                         )}
@@ -989,19 +989,19 @@ export default function AdminDashboard() {
             {/* Filters */}
             <div className="flex flex-wrap items-center gap-3">
               <div className="relative flex-1 min-w-[200px] max-w-md">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-plum-600/70" />
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#4F8EF7]/70" />
                 <input
                   type="text"
                   placeholder="Search stacks..."
                   value={stackSearch}
                   onChange={e => setStackSearch(e.target.value)}
-                  className="h-10 w-full rounded-lg border border-border bg-white pl-10 pr-4 text-sm text-foreground placeholder:text-plum-600/70/60 focus:outline-none focus:ring-2 focus:ring-plum-500/30 focus:border-[#522B5B]"
+                  className="h-10 w-full rounded-lg border border-white/10 bg-[#0A0A0A] pl-10 pr-4 text-sm text-[#F8F8F8] placeholder:text-[#4F8EF7]/70/60 focus:outline-none focus:ring-2 focus:ring-[#4F8EF7]/30/30 focus:border-[#4F8EF7]"
                 />
               </div>
               <select
                 value={stackBuildFilter}
                 onChange={e => setStackBuildFilter(e.target.value)}
-                className="h-10 rounded-lg border border-border bg-white px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-plum-500/30"
+                className="h-10 rounded-lg border border-white/10 bg-[#0A0A0A] px-3 text-sm text-[#F8F8F8] focus:outline-none focus:ring-2 focus:ring-[#4F8EF7]/30/30"
               >
                 <option value="all">All Styles</option>
                 <option value="traditional">Traditional</option>
@@ -1011,34 +1011,34 @@ export default function AdminDashboard() {
               <select
                 value={stackPublicFilter}
                 onChange={e => setStackPublicFilter(e.target.value)}
-                className="h-10 rounded-lg border border-border bg-white px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-plum-500/30"
+                className="h-10 rounded-lg border border-white/10 bg-[#0A0A0A] px-3 text-sm text-[#F8F8F8] focus:outline-none focus:ring-2 focus:ring-[#4F8EF7]/30/30"
               >
                 <option value="all">All Visibility</option>
                 <option value="public">Public</option>
                 <option value="private">Private</option>
               </select>
-              <span className="text-sm text-plum-600/70">{filteredStacks.length} stacks</span>
+              <span className="text-sm text-[#4F8EF7]/70">{filteredStacks.length} stacks</span>
             </div>
 
             {/* Table */}
-            <div className="rounded-xl border border-border bg-white overflow-hidden">
+            <div className="rounded-xl border border-white/10 bg-[#0A0A0A] overflow-hidden">
               <div className="max-w-full overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border bg-background/40">
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Project</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Style</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Score</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Visibility</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Upvotes</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Date</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Actions</th>
+                    <tr className="border-b border-white/10 bg-[#0A0A0A]/40">
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Project</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Style</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Score</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Visibility</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Upvotes</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Date</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredStacks.length === 0 ? (
                       <tr>
-                        <td colSpan={7} className="py-12 text-center text-plum-600/70">
+                        <td colSpan={7} className="py-12 text-center text-[#4F8EF7]/70">
                           No stacks found
                         </td>
                       </tr>
@@ -1046,12 +1046,12 @@ export default function AdminDashboard() {
                       filteredStacks.map(stack => {
                         const score = stack.score_card?.overallScore
                         return (
-                          <tr key={stack.id} className="border-b border-border/50 hover:bg-background/30 transition-colors">
+                          <tr key={stack.id} className="border-b border-white/10/50 hover:bg-[#0A0A0A]/30 transition-colors">
                             <td className="py-3 px-4">
                               <div className="max-w-[250px]">
-                                <p className="font-medium text-foreground truncate">{truncate(stack.user_input, 50)}</p>
+                                <p className="font-medium text-[#F8F8F8] truncate">{truncate(stack.user_input, 50)}</p>
                                 {stack.goal && (
-                                  <p className="text-xs text-plum-600/70 mt-0.5">{stack.goal}</p>
+                                  <p className="text-xs text-[#4F8EF7]/70 mt-0.5">{stack.goal}</p>
                                 )}
                               </div>
                             </td>
@@ -1059,8 +1059,8 @@ export default function AdminDashboard() {
                               <span className={cn(
                                 "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold",
                                 stack.build_style === "vibe" ? "bg-purple-50 text-purple-600" :
-                                  stack.build_style === "nocode" ? "bg-blue-50 text-blue-600" :
-                                    "bg-gray-100 text-gray-600"
+                                  stack.build_style === "nocode" ? "bg-[#4F8EF7]/10 text-[#4F8EF7]" :
+                                    "bg-white/10 text-white/50"
                               )}>
                                 {stack.build_style === "vibe" ? "Vibe ✨" : stack.build_style === "nocode" ? "No-Code" : "Traditional"}
                               </span>
@@ -1069,37 +1069,37 @@ export default function AdminDashboard() {
                               {score != null ? (
                                 <span className={cn(
                                   "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-bold",
-                                  score >= 80 ? "bg-green-50 text-green-600" :
-                                    score >= 60 ? "bg-[#FBE4D8] text-plum-600" :
+                                  score >= 80 ? "bg-[#00D4FF]/10 text-[#00D4FF]" :
+                                    score >= 60 ? "bg-[#0A0A0A] text-[#4F8EF7]" :
                                       "bg-red-50 text-red-600"
                                 )}>
                                   {score}/100
                                 </span>
                               ) : (
-                                <span className="text-xs text-plum-600/70">—</span>
+                                <span className="text-xs text-[#4F8EF7]/70">—</span>
                               )}
                             </td>
                             <td className="py-3 px-4">
                               {stack.is_public ? (
-                                <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-600">
+                                <span className="inline-flex items-center gap-1 rounded-full bg-[#00D4FF]/10 px-2.5 py-0.5 text-xs font-medium text-[#00D4FF]">
                                   <Eye className="h-3 w-3" />
                                   Public
                                 </span>
                               ) : (
-                                <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">
+                                <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-medium text-white/40">
                                   <EyeOff className="h-3 w-3" />
                                   Private
                                 </span>
                               )}
                             </td>
-                            <td className="py-3 px-4 text-foreground font-medium">{stack.upvotes ?? 0}</td>
-                            <td className="py-3 px-4 text-plum-600/70 text-xs">{formatDate(stack.created_at)}</td>
+                            <td className="py-3 px-4 text-[#F8F8F8] font-medium">{stack.upvotes ?? 0}</td>
+                            <td className="py-3 px-4 text-[#4F8EF7]/70 text-xs">{formatDate(stack.created_at)}</td>
                             <td className="py-3 px-4">
                               <div className="flex items-center gap-2">
                                 {stack.share_slug && (
                                   <Link
                                     href={`/result?slug=${stack.share_slug}`}
-                                    className="text-xs font-medium text-[#522B5B] hover:text-plum-600 transition-colors"
+                                    className="text-xs font-medium text-[#4F8EF7] hover:text-[#4F8EF7] transition-colors"
                                   >
                                     View
                                   </Link>
@@ -1109,8 +1109,8 @@ export default function AdminDashboard() {
                                   className={cn(
                                     "p-1.5 rounded-lg transition-colors",
                                     stack.is_featured
-                                      ? "bg-[#FEF0E8] text-plum-600 hover:bg-plum-200"
-                                      : "text-plum-600/70 hover:bg-background hover:text-[#522B5B]"
+                                      ? "bg-[#0F0F0F] text-[#4F8EF7] hover:bg-[#4F8EF7]"
+                                      : "text-[#4F8EF7]/70 hover:bg-[#0A0A0A] hover:text-[#4F8EF7]"
                                   )}
                                   title={stack.is_featured ? "Unfeature" : "Feature"}
                                 >
@@ -1118,7 +1118,7 @@ export default function AdminDashboard() {
                                 </button>
                                 <button
                                   onClick={() => handleDeleteStack(stack.id)}
-                                  className="p-1.5 rounded-lg text-plum-600/70 hover:bg-red-50 hover:text-red-600 transition-colors"
+                                  className="p-1.5 rounded-lg text-[#4F8EF7]/70 hover:bg-red-50 hover:text-red-600 transition-colors"
                                   title="Delete"
                                 >
                                   <Trash2 className="h-3.5 w-3.5" />
@@ -1133,11 +1133,11 @@ export default function AdminDashboard() {
                 </table>
               </div>
               {filteredStacks.length > 0 && !stackSearch && stackBuildFilter === "all" && stackPublicFilter === "all" && (
-                <div className="p-4 border-t border-border bg-white flex justify-center">
+                <div className="p-4 border-t border-white/10 bg-[#0A0A0A] flex justify-center">
                   <button
                     onClick={loadMoreStacks}
                     disabled={loadingMoreStacks}
-                    className="flex items-center gap-2 rounded-lg px-6 py-2.5 text-sm font-semibold text-foreground bg-background border border-border hover:bg-plum-200/50 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-2 rounded-lg px-6 py-2.5 text-sm font-semibold text-[#F8F8F8] bg-[#0A0A0A] border border-white/10 hover:bg-[#4F8EF7]/50 transition-colors disabled:opacity-50"
                   >
                     {loadingMoreStacks ? (
                       <><Loader2 className="h-4 w-4 animate-spin" /> Loading...</>
@@ -1168,34 +1168,34 @@ export default function AdminDashboard() {
                   className={cn(
                     "rounded-lg px-4 py-2 text-sm font-medium transition-all",
                     bugFilter === f.key
-                      ? "bg-[#FBE4D8] text-white shadow-md shadow-[#F97316]/20"
-                      : "bg-white text-plum-600/70 border border-border hover:bg-background hover:text-[#190019]"
+                      ? "bg-[#0A0A0A] text-white shadow-md shadow-[#00D4FF]/20"
+                      : "bg-[#0A0A0A] text-[#4F8EF7]/70 border border-white/10 hover:bg-[#0A0A0A] hover:text-[#F8F8F8]"
                   )}
                 >
                   {f.label}
                 </button>
               ))}
-              <span className="ml-auto text-sm text-plum-600/70">{filteredBugs.length} reports</span>
+              <span className="ml-auto text-sm text-[#4F8EF7]/70">{filteredBugs.length} reports</span>
             </div>
 
             {/* Table */}
-            <div className="rounded-xl border border-border bg-white overflow-hidden">
+            <div className="rounded-xl border border-white/10 bg-[#0A0A0A] overflow-hidden">
               <div className="max-w-full overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border bg-background/40">
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Type</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Page</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Description</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Reporter</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Status</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Date</th>
+                    <tr className="border-b border-white/10 bg-[#0A0A0A]/40">
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Type</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Page</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Description</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Reporter</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Status</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Date</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredBugs.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="py-12 text-center text-plum-600/70">
+                        <td colSpan={6} className="py-12 text-center text-[#4F8EF7]/70">
                           {bugFilter === "all" ? "No bug reports yet 🎉" : `No ${bugFilter.replace("_", " ")} bugs`}
                         </td>
                       </tr>
@@ -1204,31 +1204,31 @@ export default function AdminDashboard() {
                         <React.Fragment key={bug.id}>
                           <tr
                             className={cn(
-                              "border-b border-border/50 hover:bg-background/30 transition-colors cursor-pointer",
-                              expandedBug === bug.id && "bg-background/40"
+                              "border-b border-white/10/50 hover:bg-[#0A0A0A]/30 transition-colors cursor-pointer",
+                              expandedBug === bug.id && "bg-[#0A0A0A]/40"
                             )}
                             onClick={() => setExpandedBug(expandedBug === bug.id ? null : bug.id)}
                           >
                             <td className="py-3 px-4">
-                              <span className="inline-flex items-center rounded-full bg-background px-2.5 py-0.5 text-xs font-semibold text-foreground">
+                              <span className="inline-flex items-center rounded-full bg-[#0A0A0A] px-2.5 py-0.5 text-xs font-semibold text-[#F8F8F8]">
                                 {bug.bug_type || "Unknown"}
                               </span>
                             </td>
                             <td className="py-3 px-4">
-                              <span className="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-600">
+                              <span className="inline-flex items-center rounded-full bg-[#4F8EF7]/10 px-2.5 py-0.5 text-xs font-medium text-[#4F8EF7]">
                                 {bug.page_name || "—"}
                               </span>
                             </td>
                             <td className="py-3 px-4">
                               <div className="flex items-center gap-2 max-w-[300px]">
                                 <ChevronDown className={cn(
-                                  "h-3.5 w-3.5 text-plum-600/70 transition-transform shrink-0",
+                                  "h-3.5 w-3.5 text-[#4F8EF7]/70 transition-transform shrink-0",
                                   expandedBug === bug.id && "rotate-180"
                                 )} />
-                                <span className="text-foreground truncate">{truncate(bug.description, 60)}</span>
+                                <span className="text-[#F8F8F8] truncate">{truncate(bug.description, 60)}</span>
                               </div>
                             </td>
-                            <td className="py-3 px-4 text-plum-600/70 text-xs">
+                            <td className="py-3 px-4 text-[#4F8EF7]/70 text-xs">
                               {bug.name || bug.email || "Anonymous"}
                             </td>
                             <td className="py-3 px-4" onClick={e => e.stopPropagation()}>
@@ -1236,10 +1236,10 @@ export default function AdminDashboard() {
                                 value={bug.status}
                                 onChange={e => updateBugStatus(bug.id, e.target.value)}
                                 className={cn(
-                                  "rounded-full px-3 py-1 text-xs font-semibold border-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-plum-500/30",
+                                  "rounded-full px-3 py-1 text-xs font-semibold border-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#4F8EF7]/30/30",
                                   bug.status === "open" ? "bg-red-50 text-red-600" :
-                                    bug.status === "in_progress" ? "bg-[#FBE4D8] text-plum-600" :
-                                      "bg-green-50 text-green-600"
+                                    bug.status === "in_progress" ? "bg-[#0A0A0A] text-[#4F8EF7]" :
+                                      "bg-[#00D4FF]/10 text-[#00D4FF]"
                                 )}
                               >
                                 <option value="open">Open</option>
@@ -1247,17 +1247,17 @@ export default function AdminDashboard() {
                                 <option value="resolved">Resolved</option>
                               </select>
                             </td>
-                            <td className="py-3 px-4 text-plum-600/70 text-xs">{formatDate(bug.created_at)}</td>
+                            <td className="py-3 px-4 text-[#4F8EF7]/70 text-xs">{formatDate(bug.created_at)}</td>
                           </tr>
                           {expandedBug === bug.id && (
-                            <tr className="bg-background/20">
+                            <tr className="bg-[#0A0A0A]/20">
                               <td colSpan={6} className="px-6 py-4">
-                                <div className="rounded-lg bg-white border border-border p-4">
-                                  <p className="text-sm font-medium text-foreground mb-2">Full Description</p>
-                                  <p className="text-sm text-plum-600/70 whitespace-pre-wrap">{bug.description || "No description provided"}</p>
+                                <div className="rounded-lg bg-[#0A0A0A] border border-white/10 p-4">
+                                  <p className="text-sm font-medium text-[#F8F8F8] mb-2">Full Description</p>
+                                  <p className="text-sm text-[#4F8EF7]/70 whitespace-pre-wrap">{bug.description || "No description provided"}</p>
                                   {bug.email && (
-                                    <p className="mt-3 text-xs text-plum-600/70">
-                                      Contact: <a href={`mailto:${bug.email}`} className="text-[#522B5B] hover:underline">{bug.email}</a>
+                                    <p className="mt-3 text-xs text-[#4F8EF7]/70">
+                                      Contact: <a href={`mailto:${bug.email}`} className="text-[#4F8EF7] hover:underline">{bug.email}</a>
                                     </p>
                                   )}
                                 </div>
@@ -1278,9 +1278,9 @@ export default function AdminDashboard() {
         {activeTab === "announcements" && (
           <div className="space-y-6 animate-in fade-in duration-300">
             {/* New Announcement */}
-            <div className="rounded-xl border border-border bg-white p-6">
-              <h3 className="font-semibold text-foreground mb-3">Post New Announcement</h3>
-              <p className="text-xs text-plum-600/70 mb-4">
+            <div className="rounded-xl border border-white/10 bg-[#0A0A0A] p-6">
+              <h3 className="font-semibold text-[#F8F8F8] mb-3">Post New Announcement</h3>
+              <p className="text-xs text-[#4F8EF7]/70 mb-4">
                 This will appear as a banner on the landing page. Only one announcement can be active at a time.
               </p>
               <div className="flex gap-3">
@@ -1289,7 +1289,7 @@ export default function AdminDashboard() {
                   onChange={e => setNewMessage(e.target.value)}
                   placeholder="Write your announcement message..."
                   rows={2}
-                  className="flex-1 resize-none rounded-lg border border-border bg-background/30 px-4 py-3 text-sm text-foreground placeholder:text-plum-600/70/60 focus:outline-none focus:ring-2 focus:ring-plum-500/30 focus:border-[#522B5B]"
+                  className="flex-1 resize-none rounded-lg border border-white/10 bg-[#0A0A0A]/30 px-4 py-3 text-sm text-[#F8F8F8] placeholder:text-[#4F8EF7]/70/60 focus:outline-none focus:ring-2 focus:ring-[#4F8EF7]/30/30 focus:border-[#4F8EF7]"
                 />
                 <button
                   onClick={postAnnouncement}
@@ -1297,8 +1297,8 @@ export default function AdminDashboard() {
                   className={cn(
                     "shrink-0 rounded-lg px-5 py-2 text-sm font-semibold transition-all self-end",
                     newMessage.trim()
-                      ? "bg-[#FBE4D8] text-white hover:bg-[#522B5B] shadow-md shadow-[#F97316]/20"
-                      : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                      ? "bg-[#0A0A0A] text-white hover:bg-[#4F8EF7] shadow-md shadow-[#00D4FF]/20"
+                      : "bg-white/10 text-gray-400 cursor-not-allowed"
                   )}
                 >
                   <Megaphone className="inline h-4 w-4 mr-1.5" />
@@ -1310,7 +1310,7 @@ export default function AdminDashboard() {
             {/* Announcements List */}
             <div className="space-y-3">
               {(announcements || []).length === 0 ? (
-                <div className="rounded-xl border border-border bg-white p-12 text-center text-plum-600/70">
+                <div className="rounded-xl border border-white/10 bg-[#0A0A0A] p-12 text-center text-[#4F8EF7]/70">
                   No announcements yet
                 </div>
               ) : (
@@ -1318,25 +1318,25 @@ export default function AdminDashboard() {
                   <div
                     key={a.id}
                     className={cn(
-                      "rounded-xl border bg-white p-5 transition-all",
-                      a.is_active ? "border-[#522B5B] shadow-md shadow-[#F97316]/10" : "border-border"
+                      "rounded-xl border bg-[#0A0A0A] p-5 transition-all",
+                      a.is_active ? "border-[#4F8EF7] shadow-md shadow-[#00D4FF]/10" : "border-white/10"
                     )}
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-2">
                           {a.is_active ? (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-bold text-green-600">
+                            <span className="inline-flex items-center gap-1 rounded-full bg-[#00D4FF]/10 px-2.5 py-0.5 text-xs font-bold text-[#00D4FF]">
                               ● Active
                             </span>
                           ) : (
-                            <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">
+                            <span className="inline-flex items-center rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-medium text-white/40">
                               Inactive
                             </span>
                           )}
-                          <span className="text-xs text-plum-600/70">{formatDate(a.created_at)}</span>
+                          <span className="text-xs text-[#4F8EF7]/70">{formatDate(a.created_at)}</span>
                         </div>
-                        <p className="text-sm text-foreground">{a.message}</p>
+                        <p className="text-sm text-[#F8F8F8]">{a.message}</p>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <button
@@ -1344,15 +1344,15 @@ export default function AdminDashboard() {
                           className={cn(
                             "rounded-lg px-3 py-1.5 text-xs font-medium transition-colors",
                             a.is_active
-                              ? "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                              : "bg-[#FBE4D8]/10 text-[#522B5B] hover:bg-[#FBE4D8]/20"
+                              ? "bg-white/10 text-white/50 hover:bg-gray-200"
+                              : "bg-[#0A0A0A]/10 text-[#4F8EF7] hover:bg-[#0A0A0A]/20"
                           )}
                         >
                           {a.is_active ? "Deactivate" : "Activate"}
                         </button>
                         <button
                           onClick={() => deleteAnnouncement(a.id)}
-                          className="p-1.5 rounded-lg text-plum-600/70 hover:bg-red-50 hover:text-red-600 transition-colors"
+                          className="p-1.5 rounded-lg text-[#4F8EF7]/70 hover:bg-red-50 hover:text-red-600 transition-colors"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
                         </button>
@@ -1370,29 +1370,29 @@ export default function AdminDashboard() {
           <div className="space-y-6 animate-in fade-in duration-300">
             {/* API Stats Cards */}
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <div className="rounded-xl border border-border bg-white p-5">
-                <p className="text-xs font-medium text-plum-600/70 mb-1">
+              <div className="rounded-xl border border-white/10 bg-[#0A0A0A] p-5">
+                <p className="text-xs font-medium text-[#4F8EF7]/70 mb-1">
                   Total API Calls
                 </p>
                 <div className="flex items-end gap-2">
-                  <p className="text-3xl font-black text-foreground">
+                  <p className="text-3xl font-black text-[#F8F8F8]">
                     {totalApiLogs}
                   </p>
                 </div>
               </div>
-              <div className="rounded-xl border border-blue-100 bg-blue-50 p-5">
-                <p className="text-xs font-medium text-blue-600 mb-1">
+              <div className="rounded-xl border border-[#4F8EF7]/20 bg-[#4F8EF7]/10 p-5">
+                <p className="text-xs font-medium text-[#4F8EF7] mb-1">
                   Gemini Calls
                 </p>
-                <p className="text-3xl font-black text-blue-700">
+                <p className="text-3xl font-black text-[#4F8EF7]">
                   {totalGemini}
                 </p>
               </div>
-              <div className="rounded-xl border border-plum-100 bg-[#FBE4D8] p-5">
-                <p className="text-xs font-medium text-plum-600 mb-1">
+              <div className="rounded-xl border border-[#4F8EF7]/30 bg-[#0A0A0A] p-5">
+                <p className="text-xs font-medium text-[#4F8EF7] mb-1">
                   Groq Calls
                 </p>
-                <p className="text-3xl font-black text-plum-700">
+                <p className="text-3xl font-black text-[#4F8EF7]">
                   {totalGroq}
                 </p>
               </div>
@@ -1411,8 +1411,8 @@ export default function AdminDashboard() {
             <div className="grid gap-6 lg:grid-cols-3">
 
               {/* API Health */}
-              <div className="rounded-xl border border-border bg-white p-6 lg:col-span-1">
-                <h3 className="font-semibold text-foreground mb-4">
+              <div className="rounded-xl border border-white/10 bg-[#0A0A0A] p-6 lg:col-span-1">
+                <h3 className="font-semibold text-[#F8F8F8] mb-4">
                   API Health
                 </h3>
                 {(() => {
@@ -1430,21 +1430,21 @@ export default function AdminDashboard() {
                     <div className="space-y-4">
                       <div className="space-y-1.5">
                         <div className="flex justify-between text-sm">
-                          <span className="text-plum-600/70">
+                          <span className="text-[#4F8EF7]/70">
                             Overall Success Rate
                           </span>
                           <span className={cn(
                             "font-bold",
-                            rate >= 90 ? "text-green-600" : rate >= 70 ? "text-plum-600" : "text-red-600"
+                            rate >= 90 ? "text-[#00D4FF]" : rate >= 70 ? "text-[#4F8EF7]" : "text-red-600"
                           )}>
                             {rate}%
                           </span>
                         </div>
-                        <div className="h-3 rounded-full bg-plum-200/50">
+                        <div className="h-3 rounded-full bg-[#4F8EF7]/50">
                           <div
                             className={cn(
                               "h-full rounded-full",
-                              rate >= 90 ? "bg-green-500" : rate >= 70 ? "bg-[#FBE4D8]" : "bg-red-500"
+                              rate >= 90 ? "bg-[#00D4FF]/100" : rate >= 70 ? "bg-[#0A0A0A]" : "bg-red-500"
                             )}
                             style={{ width:`${rate}%` }}
                           />
@@ -1452,25 +1452,25 @@ export default function AdminDashboard() {
                       </div>
                       <div className="space-y-1.5">
                         <div className="flex justify-between text-sm">
-                          <span className="text-plum-600/70">
+                          <span className="text-[#4F8EF7]/70">
                             Gemini Reliability
                           </span>
-                          <span className="font-bold text-blue-600">
+                          <span className="font-bold text-[#4F8EF7]">
                             {geminiRate}%
                           </span>
                         </div>
                         <div className="h-3 rounded-full bg-blue-100">
                           <div
-                            className="h-full rounded-full bg-blue-500"
+                            className="h-full rounded-full bg-[#4F8EF7]/100"
                             style={{ width:`${geminiRate}%` }}
                           />
                         </div>
                       </div>
-                      <div className="flex items-center justify-between pt-2 border-t border-border">
-                        <span className="text-sm text-plum-600/70">
+                      <div className="flex items-center justify-between pt-2 border-t border-white/10">
+                        <span className="text-sm text-[#4F8EF7]/70">
                           Avg Response Time
                         </span>
-                        <span className="font-bold text-foreground">
+                        <span className="font-bold text-[#F8F8F8]">
                           {avgTime > 0 ? `${avgTime}ms` : "—"}
                         </span>
                       </div>
@@ -1480,8 +1480,8 @@ export default function AdminDashboard() {
               </div>
 
               {/* Provider Split Donut Chart */}
-              <div className="rounded-xl border border-border bg-white p-6 lg:col-span-1 flex flex-col items-center">
-                <h3 className="font-semibold text-foreground mb-6 self-start">
+              <div className="rounded-xl border border-white/10 bg-[#0A0A0A] p-6 lg:col-span-1 flex flex-col items-center">
+                <h3 className="font-semibold text-[#F8F8F8] mb-6 self-start">
                   Provider Split
                 </h3>
                 {(() => {
@@ -1495,26 +1495,26 @@ export default function AdminDashboard() {
                     <div className="flex flex-col items-center gap-6 w-full">
                       <div className="relative h-36 w-36 rounded-full flex items-center justify-center transition-all duration-500 animate-in zoom-in-50"
                            style={{ background: `conic-gradient(#3B82F6 0% ${geminiPct}%, #F59E0B ${geminiPct}% 100%)` }}>
-                        <div className="absolute inset-[18%] bg-white rounded-full flex flex-col items-center justify-center shadow-inner">
-                          <span className="text-xl font-black text-foreground">{total}</span>
-                          <span className="text-[10px] uppercase tracking-widest text-plum-600/70 font-semibold">Calls</span>
+                        <div className="absolute inset-[18%] bg-[#0A0A0A] rounded-full flex flex-col items-center justify-center shadow-inner">
+                          <span className="text-xl font-black text-[#F8F8F8]">{total}</span>
+                          <span className="text-[10px] uppercase tracking-widest text-[#4F8EF7]/70 font-semibold">Calls</span>
                         </div>
                       </div>
                       
                       <div className="w-full space-y-2">
                         <div className="flex items-center justify-between text-sm">
                           <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                            <span className="font-medium text-gray-700">Gemini</span>
+                            <div className="w-3 h-3 rounded-full bg-[#4F8EF7]/100"></div>
+                            <span className="font-medium text-white/60">Gemini</span>
                           </div>
-                          <span className="font-bold text-gray-900">{gemini} ({geminiPct}%)</span>
+                          <span className="font-bold text-white">{gemini} ({geminiPct}%)</span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
                           <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full bg-[#FBE4D8]"></div>
-                            <span className="font-medium text-gray-700">Groq</span>
+                            <div className="w-3 h-3 rounded-full bg-[#0A0A0A]"></div>
+                            <span className="font-medium text-white/60">Groq</span>
                           </div>
-                          <span className="font-bold text-gray-900">{groq} ({groqPct}%)</span>
+                          <span className="font-bold text-white">{groq} ({groqPct}%)</span>
                         </div>
                       </div>
                     </div>
@@ -1523,8 +1523,8 @@ export default function AdminDashboard() {
               </div>
 
               {/* Daily Usage */}
-              <div className="rounded-xl border border-border bg-white p-6 lg:col-span-1 flex flex-col justify-between">
-                <h3 className="font-semibold text-foreground mb-4">
+              <div className="rounded-xl border border-white/10 bg-[#0A0A0A] p-6 lg:col-span-1 flex flex-col justify-between">
+                <h3 className="font-semibold text-[#F8F8F8] mb-4">
                   Usage Last 7 Days
                 </h3>
                 {(() => {
@@ -1536,7 +1536,7 @@ export default function AdminDashboard() {
                   const maxCount = Math.max(...dailyUsage, 1)
                   return (
                     <div className="space-y-3 mt-auto">
-                      <div className="flex items-end justify-between h-32 gap-1.5 border-b border-border/50 pb-2">
+                      <div className="flex items-end justify-between h-32 gap-1.5 border-b border-white/10/50 pb-2">
                         {last7.map((day, i) => {
                           const count = dailyUsage[i] || 0
                           const pct = Math.round(count / maxCount * 100)
@@ -1548,13 +1548,13 @@ export default function AdminDashboard() {
                                   {count} reqs
                                 </div>
                               )}
-                              <div className="w-full flex items-end justify-center flex-1 rounded-t-sm overflow-hidden bg-plum-200/20 group-hover:bg-plum-200/40 transition-[background]">
+                              <div className="w-full flex items-end justify-center flex-1 rounded-t-sm overflow-hidden bg-[#4F8EF7]/20 group-hover:bg-[#4F8EF7]/40 transition-[background]">
                                 <div 
-                                  className="w-full bg-[#FBE4D8] rounded-t-sm transition-all duration-500 ease-out animate-in slide-in-from-bottom"
+                                  className="w-full bg-[#0A0A0A] rounded-t-sm transition-all duration-500 ease-out animate-in slide-in-from-bottom"
                                   style={{ height: `${pct}%` }} 
                                 />
                               </div>
-                              <span className="text-[10px] font-semibold text-plum-600/70 shrink-0">{label}</span>
+                              <span className="text-[10px] font-semibold text-[#4F8EF7]/70 shrink-0">{label}</span>
                             </div>
                           )
                         })}
@@ -1566,16 +1566,16 @@ export default function AdminDashboard() {
             </div>
 
             {/* Free Tier Warning */}
-            <div className="rounded-xl border border-[#DFB6B2] bg-[#FBE4D8] p-5">
+            <div className="rounded-xl border border-white/8 bg-[#0A0A0A] p-5">
               <div className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-[#522B5B] shrink-0 mt-0.5" />
+                <AlertTriangle className="h-5 w-5 text-[#4F8EF7] shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-semibold text-plum-800 mb-2">
+                  <p className="font-semibold text-[#4F8EF7] mb-2">
                     Free Tier Limits
                   </p>
-                  <div className="grid gap-2 sm:grid-cols-2 text-sm text-plum-700">
+                  <div className="grid gap-2 sm:grid-cols-2 text-sm text-[#4F8EF7]">
                     <div className="rounded-lg bg-white/60 px-3 py-2">
-                      <p className="font-semibold text-blue-700">
+                      <p className="font-semibold text-[#4F8EF7]">
                         🔵 Gemini (Free)
                       </p>
                       <p className="text-xs mt-1">
@@ -1588,14 +1588,14 @@ export default function AdminDashboard() {
                           new Date(l.created_at).toLocaleDateString('en-CA') === todayLocal
                         ).length
                         return (
-                          <p className="text-xs font-bold text-blue-600 mt-1">
+                          <p className="text-xs font-bold text-[#4F8EF7] mt-1">
                             Today: {c} / 1,500 used
                           </p>
                         )
                       })()}
                     </div>
                     <div className="rounded-lg bg-white/60 px-3 py-2">
-                      <p className="font-semibold text-plum-700">
+                      <p className="font-semibold text-[#4F8EF7]">
                         🟡 Groq (Free)
                       </p>
                       <p className="text-xs mt-1">
@@ -1608,7 +1608,7 @@ export default function AdminDashboard() {
                           new Date(l.created_at).toLocaleDateString('en-CA') === todayLocal
                         ).length
                         return (
-                          <p className="text-xs font-bold text-plum-600 mt-1">
+                          <p className="text-xs font-bold text-[#4F8EF7] mt-1">
                             Today: {c} / 14,400 used
                           </p>
                         )
@@ -1620,43 +1620,43 @@ export default function AdminDashboard() {
             </div>
 
             {/* Recent Logs Table */}
-            <div className="rounded-xl border border-border bg-white overflow-hidden">
-              <div className="p-4 border-b border-border flex items-center justify-between">
-                <h3 className="font-semibold text-foreground">
+            <div className="rounded-xl border border-white/10 bg-[#0A0A0A] overflow-hidden">
+              <div className="p-4 border-b border-white/10 flex items-center justify-between">
+                <h3 className="font-semibold text-[#F8F8F8]">
                   Recent API Calls
                 </h3>
-                <span className="text-xs text-plum-600/70">
+                <span className="text-xs text-[#4F8EF7]/70">
                   Last 100 calls
                 </span>
               </div>
               <div className="max-w-full overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border bg-background/40">
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Provider</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Model</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Status</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Type</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Time</th>
-                      <th className="text-left py-3 px-4 text-plum-600/70 font-semibold">Date</th>
+                    <tr className="border-b border-white/10 bg-[#0A0A0A]/40">
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Provider</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Model</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Status</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Type</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Time</th>
+                      <th className="text-left py-3 px-4 text-[#4F8EF7]/70 font-semibold">Date</th>
                     </tr>
                   </thead>
                   <tbody>
                     {apiLogs.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="py-12 text-center text-plum-600/70">
+                        <td colSpan={6} className="py-12 text-center text-[#4F8EF7]/70">
                           No API calls logged yet. Generate a stack to see logs here.
                         </td>
                       </tr>
                     ) : (
                       apiLogs.map(log => (
-                        <tr key={log.id} className="border-b border-border/50 hover:bg-background/30 transition-colors">
+                        <tr key={log.id} className="border-b border-white/10/50 hover:bg-[#0A0A0A]/30 transition-colors">
                           <td className="py-3 px-4">
                             <span className={cn(
                               "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold",
                               log.provider === 'gemini'
-                                ? "bg-blue-50 text-blue-600"
-                                : "bg-[#FBE4D8] text-plum-600"
+                                ? "bg-[#4F8EF7]/10 text-[#4F8EF7]"
+                                : "bg-[#0A0A0A] text-[#4F8EF7]"
                             )}>
                               {log.provider === 'gemini'
                                 ? '🔵 Gemini'
@@ -1664,14 +1664,14 @@ export default function AdminDashboard() {
                               }
                             </span>
                           </td>
-                          <td className="py-3 px-4 text-xs text-plum-600/70">
+                          <td className="py-3 px-4 text-xs text-[#4F8EF7]/70">
                             {log.model || '—'}
                           </td>
                           <td className="py-3 px-4">
                             <span className={cn(
                               "rounded-full px-2.5 py-0.5 text-xs font-semibold",
                               log.success
-                                ? "bg-green-50 text-green-600"
+                                ? "bg-[#00D4FF]/10 text-[#00D4FF]"
                                 : "bg-red-50 text-red-600"
                             )}>
                               {log.success
@@ -1681,20 +1681,20 @@ export default function AdminDashboard() {
                             </span>
                           </td>
                           <td className="py-3 px-4">
-                            <span className="text-xs text-plum-600/70">
+                            <span className="text-xs text-[#4F8EF7]/70">
                               {log.is_fallback
                                 ? "⚡ Fallback"
                                 : "Primary"
                               }
                             </span>
                           </td>
-                          <td className="py-3 px-4 text-xs text-plum-600/70">
+                          <td className="py-3 px-4 text-xs text-[#4F8EF7]/70">
                             {log.duration_ms
                               ? `${log.duration_ms}ms`
                               : '—'
                             }
                           </td>
-                          <td className="py-3 px-4 text-xs text-plum-600/70">
+                          <td className="py-3 px-4 text-xs text-[#4F8EF7]/70">
                             {formatDate(log.created_at)}
                           </td>
                         </tr>
@@ -1711,17 +1711,17 @@ export default function AdminDashboard() {
         {activeTab === "admins" && (
           <div className="space-y-6 animate-in fade-in zoom-in-95 duration-200">
             <div className="flex flex-col gap-1">
-              <h2 className="text-2xl font-black tracking-tight text-foreground">
+              <h2 className="text-2xl font-black tracking-tight text-[#F8F8F8]">
                 Admins
               </h2>
-              <p className="text-sm text-plum-600/70">
+              <p className="text-sm text-[#4F8EF7]/70">
                 Manage administrator privileges across the platform.
               </p>
             </div>
 
-            <div className="rounded-xl border border-border bg-white overflow-hidden p-6 space-y-8">
+            <div className="rounded-xl border border-white/10 bg-[#0A0A0A] overflow-hidden p-6 space-y-8">
               <div className="max-w-md">
-                <label className="block text-sm font-semibold text-foreground mb-2">
+                <label className="block text-sm font-semibold text-[#F8F8F8] mb-2">
                   Add Administrator
                 </label>
                 <div className="flex gap-2">
@@ -1729,7 +1729,7 @@ export default function AdminDashboard() {
                     type="text"
                     placeholder="Email or Username"
                     id="newAdminInput"
-                    className="flex-1 px-3 py-2 rounded-lg border border-border bg-background/20 focus:outline-none focus:ring-2 focus:ring-plum-200 text-sm"
+                    className="flex-1 px-3 py-2 rounded-lg border border-white/10 bg-[#0A0A0A]/20 focus:outline-none focus:ring-2 focus:ring-[#4F8EF7]/30 text-sm"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         document.getElementById("addAdminBtn")?.click();
@@ -1820,22 +1820,22 @@ export default function AdminDashboard() {
                         showToast("Failed to add admin. Make sure the email column exists in profiles.", false)
                       }
                     }}
-                    className="px-6 py-2 bg-[#FBE4D8] text-white text-sm font-bold rounded-lg hover:bg-[#522B5B] shadow-md hover:shadow-plum- transition-all flex items-center gap-2"
+                    className="px-6 py-2 bg-[#0A0A0A] text-white text-sm font-bold rounded-lg hover:bg-[#4F8EF7] shadow-md hover:shadow-[#4F8EF7]/50 transition-all flex items-center gap-2"
                   >
                     <Plus className="h-4 w-4" />
                     Add
                   </button>
                 </div>
-                <p className="text-xs text-plum-600/70 mt-2">
+                <p className="text-xs text-[#4F8EF7]/70 mt-2">
                   The user must already have signed into Toolvise once.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-4">Current Administrators</h3>
+                <h3 className="font-semibold text-[#F8F8F8] mb-4">Current Administrators</h3>
                 <div className="space-y-3">
                   {users.filter(u => u.is_admin).map(admin => (
-                    <div key={admin.id} className="flex items-center justify-between p-3 rounded-lg border border-border/50 bg-background/20">
+                    <div key={admin.id} className="flex items-center justify-between p-3 rounded-lg border border-white/10/50 bg-[#0A0A0A]/20">
                       <div className="flex items-center gap-3">
                         {admin.avatar_url ? (
                           <img src={admin.avatar_url} alt="" className="h-10 w-10 rounded-full" />
@@ -1845,10 +1845,10 @@ export default function AdminDashboard() {
                           </div>
                         )}
                         <div>
-                          <p className="font-semibold text-sm text-foreground flex items-center gap-2">
+                          <p className="font-semibold text-sm text-[#F8F8F8] flex items-center gap-2">
                             {admin.display_name || admin.username || 'Unnamed User'}
                           </p>
-                          <p className="text-xs text-plum-600/70">@{admin.username || 'unknown'}</p>
+                          <p className="text-xs text-[#4F8EF7]/70">@{admin.username || 'unknown'}</p>
                         </div>
                       </div>
 
@@ -1889,7 +1889,7 @@ export default function AdminDashboard() {
                     </div>
                   ))}
                   {users.filter(u => u.is_admin).length === 0 && (
-                    <p className="text-sm text-plum-600/70 italic">No active administrators found.</p>
+                    <p className="text-sm text-[#4F8EF7]/70 italic">No active administrators found.</p>
                   )}
                 </div>
               </div>
@@ -1904,7 +1904,7 @@ export default function AdminDashboard() {
           <div className={cn(
             "rounded-xl px-5 py-3 text-sm font-medium shadow-lg flex items-center gap-2",
             toast.ok
-              ? "bg-green-50 border border-green-200 text-green-700"
+              ? "bg-[#00D4FF]/10 border border-[#00D4FF]/30 text-[#00D4FF]"
               : "bg-red-50 border border-red-200 text-red-600"
           )}>
             {toast.ok ? "✓" : "✕"} {toast.msg}
@@ -1915,25 +1915,25 @@ export default function AdminDashboard() {
       {/* Confirm Dialog */}
       {confirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="w-full max-w-sm rounded-2xl border border-border bg-white p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+          <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#0A0A0A] p-6 shadow-2xl animate-in zoom-in-95 duration-200">
             <div className="flex items-center gap-3 mb-4">
               <div className={cn(
                 "grid h-10 w-10 place-items-center rounded-xl",
-                confirm.danger ? "bg-red-50 border border-red-100" : "bg-background border border-border"
+                confirm.danger ? "bg-red-50 border border-red-100" : "bg-[#0A0A0A] border border-white/10"
               )}>
-                <AlertTriangle className={cn("h-5 w-5", confirm.danger ? "text-red-500" : "text-[#522B5B]")} />
+                <AlertTriangle className={cn("h-5 w-5", confirm.danger ? "text-red-500" : "text-[#4F8EF7]")} />
               </div>
               <div>
-                <h3 className="font-semibold text-foreground">{confirm.title}</h3>
+                <h3 className="font-semibold text-[#F8F8F8]">{confirm.title}</h3>
               </div>
             </div>
-            <p className="text-sm text-foreground/70 mb-6 leading-relaxed">
+            <p className="text-sm text-[#F8F8F8]/70 mb-6 leading-relaxed">
               {confirm.message}
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setConfirm(null)}
-                className="flex-1 rounded-xl border border-border bg-white py-2.5 text-sm font-medium text-foreground/70 hover:bg-background transition-colors"
+                className="flex-1 rounded-xl border border-white/10 bg-[#0A0A0A] py-2.5 text-sm font-medium text-[#F8F8F8]/70 hover:bg-[#0A0A0A] transition-colors"
               >
                 Cancel
               </button>
@@ -1941,7 +1941,7 @@ export default function AdminDashboard() {
                 onClick={confirm.onConfirm}
                 className={cn(
                   "flex-1 rounded-xl py-2.5 text-sm font-semibold text-white transition-colors",
-                  confirm.danger ? "bg-red-500 hover:bg-red-600" : "bg-[#FBE4D8] hover:bg-[#522B5B]"
+                  confirm.danger ? "bg-red-500 hover:bg-red-600" : "bg-[#0A0A0A] hover:bg-[#4F8EF7]"
                 )}
               >
                 {confirm.confirmText}

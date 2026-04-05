@@ -190,8 +190,8 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-dvh bg-background flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-[#522B5B]" />
+      <div className="min-h-dvh bg-[#0A0A0A] flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-[#4F8EF7]" />
       </div>
     );
   }
@@ -201,51 +201,51 @@ export default function SettingsPage() {
     : "U";
 
   return (
-    <div className="min-h-dvh bg-background text-foreground">
+    <div className="min-h-dvh bg-[#0A0A0A] text-[#F8F8F8]">
       <Navbar />
 
       <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 space-y-10">
         <div>
           <h1 className="text-3xl font-bold">Settings</h1>
-          <p className="text-foreground/60 mt-2">Manage your profile and account preferences.</p>
+          <p className="text-[#F8F8F8]/60 mt-2">Manage your profile and account preferences.</p>
         </div>
 
         <form onSubmit={handleSave} className="space-y-8">
 
           {/* ── Account Info ── */}
-          <div className="rounded-2xl border border-border bg-white p-6 sm:p-8 space-y-4">
+          <div className="rounded-2xl border border-white/10 bg-[#0A0A0A] p-6 sm:p-8 space-y-4">
             <h2 className="text-lg font-semibold flex items-center gap-2">
-              <User className="h-5 w-5 text-[#522B5B]" /> Account Info
+              <User className="h-5 w-5 text-[#4F8EF7]" /> Account Info
             </h2>
             <div className="grid gap-2">
-              <span className="text-sm font-medium text-foreground/60">Email</span>
-              <div className="h-11 flex items-center px-3 rounded-lg bg-gray-50 border border-gray-200 text-foreground/70 font-mono text-sm">
+              <span className="text-sm font-medium text-[#F8F8F8]/60">Email</span>
+              <div className="h-11 flex items-center px-3 rounded-lg bg-white/5 border border-white/10 text-[#F8F8F8]/70 font-mono text-sm">
                 {userEmail}
               </div>
-              <p className="text-xs text-foreground/50 mt-1">Your email cannot be changed at this time.</p>
+              <p className="text-xs text-[#F8F8F8]/50 mt-1">Your email cannot be changed at this time.</p>
             </div>
           </div>
 
           {/* ── Profile Information ── */}
-          <div className="rounded-2xl border border-border bg-white p-6 sm:p-8 space-y-6">
+          <div className="rounded-2xl border border-white/10 bg-[#0A0A0A] p-6 sm:p-8 space-y-6">
             <h2 className="text-lg font-semibold">Profile Information</h2>
 
             {error && (
               <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-600">{error}</div>
             )}
             {success && (
-              <div className="rounded-lg border border-green-300 bg-green-50 p-3 text-sm text-green-600">
+              <div className="rounded-lg border border-green-300 bg-[#00D4FF]/10 p-3 text-sm text-[#00D4FF]">
                 Profile updated successfully! ✅
               </div>
             )}
 
             {/* Avatar Upload */}
             <div className="space-y-3">
-              <Label className="text-foreground/80">Profile Picture</Label>
+              <Label className="text-[#F8F8F8]/80">Profile Picture</Label>
               <div className="flex items-center gap-5">
-                <Avatar className="h-20 w-20 border-2 border-border bg-[#FEF0E8] shadow-sm">
+                <Avatar className="h-20 w-20 border-2 border-white/10 bg-[#0F0F0F] shadow-sm">
                   <AvatarImage src={avatarUrl} alt={displayName} className="object-cover" />
-                  <AvatarFallback className="text-xl font-bold text-plum-600 bg-[#FEF0E8]">
+                  <AvatarFallback className="text-xl font-bold text-[#4F8EF7] bg-[#0F0F0F]">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
@@ -262,7 +262,7 @@ export default function SettingsPage() {
                     variant="outline"
                     disabled={uploading}
                     onClick={() => fileInputRef.current?.click()}
-                    className="border-border hover:bg-[#FEF0E8] hover:text-plum-600 text-sm h-10"
+                    className="border-white/10 hover:bg-[#0F0F0F] hover:text-[#4F8EF7] text-sm h-10"
                   >
                     {uploading ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -271,28 +271,28 @@ export default function SettingsPage() {
                     )}
                     {uploading ? "Uploading…" : "Upload Photo"}
                   </Button>
-                  <p className="text-xs text-foreground/50 mt-2">Max 2MB · JPG, PNG, WebP</p>
+                  <p className="text-xs text-[#F8F8F8]/50 mt-2">Max 2MB · JPG, PNG, WebP</p>
                 </div>
               </div>
             </div>
 
             {/* Display Name */}
             <div className="space-y-2">
-              <Label htmlFor="displayName" className="text-foreground/80">Display Name</Label>
+              <Label htmlFor="displayName" className="text-[#F8F8F8]/80">Display Name</Label>
               <Input
                 id="displayName"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Your display name"
-                className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
+                className="h-11 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30"
               />
             </div>
 
             {/* Bio */}
             <div className="space-y-2">
-              <Label htmlFor="bio" className="text-foreground/80">
+              <Label htmlFor="bio" className="text-[#F8F8F8]/80">
                 Bio{" "}
-                <span className="text-foreground/40 font-normal">({bio.length}/160)</span>
+                <span className="text-[#F8F8F8]/40 font-normal">({bio.length}/160)</span>
               </Label>
               <Textarea
                 id="bio"
@@ -300,19 +300,19 @@ export default function SettingsPage() {
                 onChange={(e) => setBio(e.target.value.slice(0, 160))}
                 placeholder="Tell people about yourself..."
                 rows={3}
-                className="resize-none bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
+                className="resize-none bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30"
               />
             </div>
 
             {/* Gender + Skill Level row */}
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="gender" className="text-foreground/80">Gender</Label>
+                <Label htmlFor="gender" className="text-[#F8F8F8]/80">Gender</Label>
                 <Select value={gender} onValueChange={setGender}>
-                  <SelectTrigger className="h-11 bg-white border-border text-foreground focus:ring-plum-500">
+                  <SelectTrigger className="h-11 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] focus:ring-[#4F8EF7]/30">
                     <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-border text-foreground">
+                  <SelectContent className="bg-[#0A0A0A] border-white/10 text-[#F8F8F8]">
                     {GENDER_OPTIONS.map((g) => (
                       <SelectItem key={g} value={g}>{g}</SelectItem>
                     ))}
@@ -321,12 +321,12 @@ export default function SettingsPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="skillLevel" className="text-foreground/80">Skill Level</Label>
+                <Label htmlFor="skillLevel" className="text-[#F8F8F8]/80">Skill Level</Label>
                 <Select value={skillLevel} onValueChange={setSkillLevel}>
-                  <SelectTrigger className="h-11 bg-white border-border text-foreground focus:ring-plum-500">
+                  <SelectTrigger className="h-11 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] focus:ring-[#4F8EF7]/30">
                     <SelectValue placeholder="Select skill level" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-border text-foreground">
+                  <SelectContent className="bg-[#0A0A0A] border-white/10 text-[#F8F8F8]">
                     {SKILL_LEVELS.map((level) => (
                       <SelectItem key={level} value={level}>{level}</SelectItem>
                     ))}
@@ -337,29 +337,29 @@ export default function SettingsPage() {
 
             {/* Location */}
             <div className="space-y-2">
-              <Label htmlFor="location" className="text-foreground/80">Location</Label>
+              <Label htmlFor="location" className="text-[#F8F8F8]/80">Location</Label>
               <div className="relative">
-                <MapPin className="absolute left-3 top-3.5 h-4 w-4 text-foreground/40" />
+                <MapPin className="absolute left-3 top-3.5 h-4 w-4 text-[#F8F8F8]/40" />
                 <Input
                   id="location"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   placeholder="e.g. Mumbai, India"
-                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
+                  className="h-11 pl-9 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30"
                 />
               </div>
             </div>
 
             {/* Timezone */}
             <div className="space-y-2">
-              <Label htmlFor="timezone" className="text-foreground/80 flex items-center gap-1.5">
+              <Label htmlFor="timezone" className="text-[#F8F8F8]/80 flex items-center gap-1.5">
                 <Clock className="h-3.5 w-3.5" /> Timezone
               </Label>
               <Select value={timezone} onValueChange={setTimezone}>
-                <SelectTrigger className="h-11 bg-white border-border text-foreground focus:ring-plum-500">
+                <SelectTrigger className="h-11 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] focus:ring-[#4F8EF7]/30">
                   <SelectValue placeholder="Select your timezone" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-border text-foreground max-h-60">
+                <SelectContent className="bg-[#0A0A0A] border-white/10 text-[#F8F8F8] max-h-60">
                   {TIMEZONE_OPTIONS.map((tz) => (
                     <SelectItem key={tz} value={tz}>{tz}</SelectItem>
                   ))}
@@ -369,7 +369,7 @@ export default function SettingsPage() {
 
             {/* Preferred Languages */}
             <div className="space-y-2">
-              <Label htmlFor="preferredLanguages" className="text-foreground/80 flex items-center gap-1.5">
+              <Label htmlFor="preferredLanguages" className="text-[#F8F8F8]/80 flex items-center gap-1.5">
                 <Code2 className="h-3.5 w-3.5" /> Preferred Languages / Frameworks
               </Label>
               <Input
@@ -377,68 +377,68 @@ export default function SettingsPage() {
                 value={preferredLanguages}
                 onChange={(e) => setPreferredLanguages(e.target.value)}
                 placeholder="e.g. TypeScript, Python, React, Next.js"
-                className="h-11 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
+                className="h-11 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30"
               />
-              <p className="text-xs text-foreground/40">Comma-separated. Helps us give better recommendations.</p>
+              <p className="text-xs text-[#F8F8F8]/40">Comma-separated. Helps us give better recommendations.</p>
             </div>
           </div>
 
           {/* ── Social Links ── */}
-          <div className="rounded-2xl border border-border bg-white p-6 sm:p-8 space-y-6">
+          <div className="rounded-2xl border border-white/10 bg-[#0A0A0A] p-6 sm:p-8 space-y-6">
             <h2 className="text-lg font-semibold">Social Links</h2>
 
             <div className="space-y-2">
-              <Label htmlFor="website" className="text-foreground/80">Website URL</Label>
+              <Label htmlFor="website" className="text-[#F8F8F8]/80">Website URL</Label>
               <div className="relative">
-                <Globe className="absolute left-3 top-3.5 h-4 w-4 text-foreground/40" />
+                <Globe className="absolute left-3 top-3.5 h-4 w-4 text-[#F8F8F8]/40" />
                 <Input
                   id="website"
                   value={website}
                   onChange={(e) => setWebsite(e.target.value)}
                   placeholder="https://yoursite.com"
-                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
+                  className="h-11 pl-9 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="github" className="text-foreground/80">GitHub URL</Label>
+              <Label htmlFor="github" className="text-[#F8F8F8]/80">GitHub URL</Label>
               <div className="relative">
-                <Github className="absolute left-3 top-3.5 h-4 w-4 text-foreground/40" />
+                <Github className="absolute left-3 top-3.5 h-4 w-4 text-[#F8F8F8]/40" />
                 <Input
                   id="github"
                   value={githubUrl}
                   onChange={(e) => setGithubUrl(e.target.value)}
                   placeholder="https://github.com/username"
-                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
+                  className="h-11 pl-9 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="twitter" className="text-foreground/80">Twitter (X) URL</Label>
+              <Label htmlFor="twitter" className="text-[#F8F8F8]/80">Twitter (X) URL</Label>
               <div className="relative">
-                <Twitter className="absolute left-3 top-3.5 h-4 w-4 text-foreground/40" />
+                <Twitter className="absolute left-3 top-3.5 h-4 w-4 text-[#F8F8F8]/40" />
                 <Input
                   id="twitter"
                   value={twitterUrl}
                   onChange={(e) => setTwitterUrl(e.target.value)}
                   placeholder="https://twitter.com/username"
-                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
+                  className="h-11 pl-9 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="linkedin" className="text-foreground/80">LinkedIn URL</Label>
+              <Label htmlFor="linkedin" className="text-[#F8F8F8]/80">LinkedIn URL</Label>
               <div className="relative">
-                <Linkedin className="absolute left-3 top-3.5 h-4 w-4 text-foreground/40" />
+                <Linkedin className="absolute left-3 top-3.5 h-4 w-4 text-[#F8F8F8]/40" />
                 <Input
                   id="linkedin"
                   value={linkedinUrl}
                   onChange={(e) => setLinkedinUrl(e.target.value)}
                   placeholder="https://linkedin.com/in/username"
-                  className="h-11 pl-9 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500"
+                  className="h-11 pl-9 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30"
                 />
               </div>
             </div>
@@ -446,7 +446,7 @@ export default function SettingsPage() {
             <Button
               type="submit"
               disabled={saving}
-              className="mt-2 h-11 w-full sm:w-auto rounded-xl bg-[#FBE4D8] text-white hover:bg-[#522B5B] font-semibold shadow-lg shadow-plum-500/20 transition-all"
+              className="mt-2 h-11 w-full sm:w-auto rounded-xl bg-[#0A0A0A] text-white hover:bg-[#4F8EF7] font-semibold shadow-lg shadow-[#4F8EF7]/20 transition-all"
             >
               {saving ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -459,14 +459,14 @@ export default function SettingsPage() {
         </form>
 
         {/* ── Danger Zone ── */}
-        <div className="rounded-2xl border border-red-200 bg-white p-6 sm:p-8">
+        <div className="rounded-2xl border border-red-200 bg-[#0A0A0A] p-6 sm:p-8">
           <h2 className="text-lg font-semibold text-red-600 flex items-center gap-2 mb-4">
             <AlertTriangle className="h-5 w-5" />
             Danger Zone
           </h2>
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <div className="flex-1">
-              <p className="text-sm text-foreground/70">Sign out of your account on this device.</p>
+              <p className="text-sm text-[#F8F8F8]/70">Sign out of your account on this device.</p>
             </div>
             <Button
               type="button"

@@ -1,23 +1,26 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Inter, Fira_Code } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const jakarta = Plus_Jakarta_Sans({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-heading",
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
-const firaCode = Fira_Code({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -33,8 +36,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn(jakarta.variable, inter.variable, firaCode.variable)}>
-      <body className="min-h-dvh antialiased">
+    <html lang="en" className={cn(spaceGrotesk.variable, inter.variable, jetbrainsMono.variable)}>
+      <body className="min-h-dvh bg-[#0A0A0A] text-white antialiased font-sans">
         {children}
       </body>
     </html>

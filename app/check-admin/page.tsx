@@ -38,8 +38,8 @@ export default function CheckAdminPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="bg-white p-8 rounded-2xl border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-md w-full">
+    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center p-4">
+      <div className="bg-[#0A0A0A] p-8 rounded-2xl border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-md w-full">
         <h1 className="text-2xl font-black mb-6">Permission Checker</h1>
         
         {loading ? (
@@ -56,14 +56,14 @@ export default function CheckAdminPage() {
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="p-4 bg-gray-50 rounded-lg border-2 border-black">
-              <p className="text-sm text-gray-500">Logged in email:</p>
+            <div className="p-4 bg-white/5 rounded-lg border-2 border-black">
+              <p className="text-sm text-white/40">Logged in email:</p>
               <p className="font-bold">{profile?.email || "No email in profile"}</p>
             </div>
 
             <div className={`p-6 rounded-xl border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center ${profile?.is_admin ? 'bg-green-100' : 'bg-red-100'}`}>
               <p className="text-sm uppercase font-black mb-1">Admin Status</p>
-              <p className={`text-4xl font-black ${profile?.is_admin ? 'text-green-700' : 'text-red-700'}`}>
+              <p className={`text-4xl font-black ${profile?.is_admin ? 'text-[#00D4FF]' : 'text-red-700'}`}>
                 {profile?.is_admin ? 'VERIFIED ✅' : 'DENIED ❌'}
               </p>
             </div>
@@ -71,12 +71,12 @@ export default function CheckAdminPage() {
             {profile?.is_admin ? (
               <Link 
                 href="/admin" 
-                className="block w-full bg-[#FEF0E8] text-white text-center py-4 rounded-xl font-black border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+                className="block w-full bg-[#0F0F0F] text-white text-center py-4 rounded-xl font-black border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
               >
                 GOTO ADMIN DASHBOARD
               </Link>
             ) : (
-              <p className="text-sm text-gray-600 italic">
+              <p className="text-sm text-white/50 italic">
                 If this says &quot;DENIED&quot;, your SQL command didn&apos;t update this specific user. Check your email spelling in the SQL!
               </p>
             )}

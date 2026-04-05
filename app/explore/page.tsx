@@ -228,7 +228,7 @@ export default function ExplorePage() {
   }
 
   return (
-    <div className="min-h-dvh bg-white text-foreground selection:bg-[#FBE4D8]/30 relative pb-24">
+    <div className="min-h-dvh bg-[#0A0A0A] text-[#F8F8F8] selection:bg-white/2 relative pb-24">
       <Navbar />
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(232,162,78,0.12)_0%,transparent_70%)]" />
 
@@ -236,14 +236,14 @@ export default function ExplorePage() {
         
         {/* 1. HEADER */}
         <header className="mb-14 text-center space-y-4 animate-in fade-in slide-in-from-top-4 duration-300">
-          <Badge variant="outline" className="border-[#522B5B]/30 bg-[#FBE4D8]/10 text-[#854F6C] px-4 py-1.5 text-sm">
+          <Badge variant="outline" className="border-[#4F8EF7]/25 bg-[#0A0A0A]/10 text-[#A0A0A0] px-4 py-1.5 text-sm">
             <Layers className="mr-2 h-4 w-4" />
             {totalCount.toLocaleString()} Generated Stacks
           </Badge>
-          <h1 className="bg-gradient-to-br from-plum-500 to-plum-400 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-6xl">
+          <h1 className="bg-gradient-to-br from-[#4F8EF7] to-[#00D4FF] bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-6xl">
             Explore Stacks
           </h1>
-          <p className="text-lg text-foreground/50 max-w-2xl mx-auto font-medium">
+          <p className="text-lg text-[#F8F8F8]/50 max-w-2xl mx-auto font-medium">
             See what others are building with Toolvise and discover the perfect blueprint for your next project.
           </p>
         </header>
@@ -251,13 +251,13 @@ export default function ExplorePage() {
         {/* 2. SEARCH & FILTER BAR */}
         <div className="mb-12 space-y-6 flex flex-col items-center animate-in fade-in zoom-in-95 duration-300 delay-75 fill-mode-both">
           <div className="relative w-full max-w-2xl">
-            <Search className="absolute left-4 top-3.5 h-5 w-5 text-foreground/40" />
+            <Search className="absolute left-4 top-3.5 h-5 w-5 text-[#F8F8F8]/40" />
             <Input
               type="text"
               placeholder="Search by tech, idea, or tags... (e.g. Next.js, AI CRM)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-12 w-full pl-12 rounded-xl bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-1 focus-visible:ring-plum-500 focus-visible:border-[#522B5B] transition-all text-base"
+              className="h-12 w-full pl-12 rounded-xl bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-1 focus-visible:ring-[#4F8EF7]/30 focus-visible:border-[#4F8EF7] transition-all text-base"
             />
           </div>
 
@@ -268,10 +268,10 @@ export default function ExplorePage() {
                 variant="outline"
                 onClick={() => setActiveFilter(filter)}
                 className={cn(
-                  "rounded-full border-border px-5 transition-all text-sm font-semibold",
+                  "rounded-full border-white/10 px-5 transition-all text-sm font-semibold",
                   activeFilter === filter 
-                    ? "bg-[#FBE4D8] text-foreground border-[#522B5B] shadow-[0_0_15px_rgba(249,115,22,0.4)]" 
-                    : "bg-white text-foreground/60 hover:bg-white hover:text-[#190019]"
+                    ? "bg-[#0A0A0A] text-[#F8F8F8] border-[#4F8EF7] shadow-[0_0_15px_rgba(0,212,255,0.4)]" 
+                    : "bg-[#0A0A0A] text-[#F8F8F8]/60 hover:bg-[#0A0A0A] hover:text-[#F8F8F8]"
                 )}
               >
                 {filter}
@@ -284,7 +284,7 @@ export default function ExplorePage() {
         {loading ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {[1, 2, 3, 4, 5, 6, 7, 8].map(n => (
-              <Card key={n} className="h-72 bg-white border-border animate-pulse rounded-2xl" />
+              <Card key={n} className="h-72 bg-[#0A0A0A] border-white/10 animate-pulse rounded-2xl" />
             ))}
           </div>
         ) : stacks.length > 0 ? (
@@ -295,30 +295,30 @@ export default function ExplorePage() {
               return (
                 <Card 
                   key={stack.id} 
-                  className="group relative flex flex-col overflow-hidden bg-white border-border hover:border-border hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all rounded-2xl h-[320px]"
+                  className="group relative flex flex-col overflow-hidden bg-[#0A0A0A] border-white/10 hover:border-white/10 hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all rounded-2xl h-[320px]"
                 >
                   <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none" />
                   
                   <CardContent className="flex flex-1 flex-col p-6 h-full">
                     {/* Top Badges */}
                     <div className="flex items-start justify-between gap-2 mb-4 shrink-0">
-                      <Badge className="bg-white text-foreground/80 border-0 uppercase tracking-wider text-[10px] font-bold">
+                      <Badge className="bg-[#0A0A0A] text-[#F8F8F8]/80 border-0 uppercase tracking-wider text-[10px] font-bold">
                         {stack.skill_level}
                       </Badge>
-                      <Badge className="bg-[#FBE4D8]/20 text-[#854F6C] border-0 text-[10px] font-bold uppercase tracking-wider">
+                      <Badge className="bg-[#0A0A0A]/20 text-[#A0A0A0] border-0 text-[10px] font-bold uppercase tracking-wider">
                         {stack.goal}
                       </Badge>
                     </div>
 
                     {/* Description */}
-                    <p className="text-sm font-medium text-foreground/90 leading-relaxed line-clamp-3 mb-4">
+                    <p className="text-sm font-medium text-[#F8F8F8]/90 leading-relaxed line-clamp-3 mb-4">
                       &quot;{stack.user_input}&quot;
                     </p>
 
                     {/* Tools Preview */}
                     <div className="flex flex-wrap gap-2 mb-auto shrink-0">
                       {stack.tools?.slice(0, 3).map((t, idx) => (
-                        <div key={idx} className="flex items-center gap-1.5 text-xs text-foreground/50 bg-white rounded-md px-2 py-1">
+                        <div key={idx} className="flex items-center gap-1.5 text-xs text-[#F8F8F8]/50 bg-[#0A0A0A] rounded-md px-2 py-1">
                           <span className={t.isFree ? "text-green-500" : "text-yellow-500"}>
                             {t.isFree ? "●" : "◎"}
                           </span>
@@ -326,14 +326,14 @@ export default function ExplorePage() {
                         </div>
                       ))}
                       {stack.tools?.length > 3 && (
-                        <div className="text-xs text-foreground/40 bg-white rounded-md px-2 py-1 flex items-center">
+                        <div className="text-xs text-[#F8F8F8]/40 bg-[#0A0A0A] rounded-md px-2 py-1 flex items-center">
                           +{stack.tools.length - 3} more
                         </div>
                       )}
                     </div>
 
                     {/* Bottom Actions */}
-                    <div className="flex items-center justify-between mt-6 pt-4 border-t border-border shrink-0">
+                    <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/10 shrink-0">
                       <div className="flex items-center gap-3">
                         <div className="relative group/upvote">
                           <button
@@ -342,11 +342,11 @@ export default function ExplorePage() {
                             className={cn(
                               "flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold transition-all",
                               hasVoted
-                                ? "bg-[#FEF0E8]/20 text-plum-500"
-                                : "bg-white text-foreground/50 hover:bg-white hover:text-[#190019]"
+                                ? "bg-[#0F0F0F]/20 text-[#4F8EF7]"
+                                : "bg-[#0A0A0A] text-[#F8F8F8]/50 hover:bg-[#0A0A0A] hover:text-[#F8F8F8]"
                             )}
                           >
-                            <Flame className={cn("h-4 w-4", hasVoted && "fill-plum-500")} />
+                            <Flame className={cn("h-4 w-4", hasVoted && "fill-[#4F8EF7]")} />
                             {stack.upvotes.toLocaleString()}
                           </button>
                           {!isLoggedIn && (
@@ -361,18 +361,18 @@ export default function ExplorePage() {
                           className={cn(
                             "flex items-center gap-1 text-xs transition-colors",
                             bookmarked.has(stack.id)
-                              ? "text-[#522B5B] font-semibold"
-                              : "text-foreground/30 hover:text-[#522B5B]"
+                              ? "text-[#4F8EF7] font-semibold"
+                              : "text-[#F8F8F8]/30 hover:text-[#4F8EF7]"
                           )}
                         >
-                          <Bookmark className={cn("h-3.5 w-3.5", bookmarked.has(stack.id) && "fill-[#F97316]")} />
+                          <Bookmark className={cn("h-3.5 w-3.5", bookmarked.has(stack.id) && "fill-[#00D4FF]")} />
                           {bookmarked.has(stack.id) ? "Saved" : "Save"}
                         </button>
                       </div>
 
                       <Link
                         href={`/result?slug=${stack.share_slug}`}
-                        className="flex items-center gap-1.5 text-sm font-semibold text-[#522B5B] hover:text-plum-800 transition-colors"
+                        className="flex items-center gap-1.5 text-sm font-semibold text-[#4F8EF7] hover:text-[#4F8EF7] transition-colors"
                       >
                         View Stack
                         <ArrowUpRight className="h-4 w-4" />
@@ -385,11 +385,11 @@ export default function ExplorePage() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in duration-500">
-            <div className="h-20 w-20 rounded-full bg-white flex items-center justify-center mb-6">
-              <Inbox className="h-8 w-8 text-foreground/30" />
+            <div className="h-20 w-20 rounded-full bg-[#0A0A0A] flex items-center justify-center mb-6">
+              <Inbox className="h-8 w-8 text-[#F8F8F8]/30" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-2">No stacks found</h3>
-            <p className="text-foreground/50 max-w-sm">
+            <h3 className="text-xl font-bold text-[#F8F8F8] mb-2">No stacks found</h3>
+            <p className="text-[#F8F8F8]/50 max-w-sm">
               We couldn&apos;t find any generated stacks matching your current filters. Try adjusting your search!
             </p>
           </div>
@@ -403,13 +403,13 @@ export default function ExplorePage() {
                 onClick={handleLoadMore}
                 disabled={loadingMore}
                 variant="outline"
-                className="h-12 px-8 rounded-full border-border bg-white text-foreground hover:bg-white gap-2 font-semibold"
+                className="h-12 px-8 rounded-full border-white/10 bg-[#0A0A0A] text-[#F8F8F8] hover:bg-[#0A0A0A] gap-2 font-semibold"
               >
-                {loadingMore && <Loader2 className="h-4 w-4 animate-spin text-[#522B5B]" />}
+                {loadingMore && <Loader2 className="h-4 w-4 animate-spin text-[#4F8EF7]" />}
                 {loadingMore ? "Loading..." : "Load More Stacks"}
               </Button>
             ) : (
-              <p className="text-sm font-medium text-foreground/40 bg-white px-6 py-2 rounded-full border border-border shadow-inner">
+              <p className="text-sm font-medium text-[#F8F8F8]/40 bg-[#0A0A0A] px-6 py-2 rounded-full border border-white/10 shadow-inner">
                 No more stacks to display
               </p>
             )}

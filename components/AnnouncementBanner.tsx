@@ -31,7 +31,7 @@ export function AnnouncementBanner() {
   if (!msg || dismissed) return null
 
   return (
-    <div className="w-full bg-gradient-to-r from-plum-500 to-plum-400 text-white px-4 py-2.5 flex items-center justify-between gap-4 text-sm font-medium shadow-md shadow-[#F97316]/20">
+    <div className="w-full bg-gradient-to-r from-[#4F8EF7] to-[#00D4FF] text-white px-4 py-2.5 flex items-center justify-between gap-4 text-sm font-medium shadow-md shadow-[#00D4FF]/20">
       <div className="flex items-center gap-2 flex-1 justify-center">
         <Megaphone className="h-4 w-4 shrink-0" />
         <span>{msg}</span>

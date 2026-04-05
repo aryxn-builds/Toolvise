@@ -87,25 +87,25 @@ function DeleteDialog({
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="w-full max-w-sm rounded-2xl border border-border bg-white p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+      <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#0A0A0A] p-6 shadow-2xl animate-in zoom-in-95 duration-200">
         <div className="flex items-center gap-3 mb-4">
           <div className="grid h-10 w-10 place-items-center rounded-xl bg-red-50 border border-red-100">
             <AlertTriangle className="h-5 w-5 text-red-500" />
           </div>
           <div>
-            <h3 className="font-semibold text-foreground">Delete Stack?</h3>
-            <p className="text-xs text-foreground/50">This action cannot be undone</p>
+            <h3 className="font-semibold text-[#F8F8F8]">Delete Stack?</h3>
+            <p className="text-xs text-[#F8F8F8]/50">This action cannot be undone</p>
           </div>
         </div>
 
-        <p className="text-sm text-foreground/70 mb-6 line-clamp-2 bg-background border border-border rounded-lg px-3 py-2">
+        <p className="text-sm text-[#F8F8F8]/70 mb-6 line-clamp-2 bg-[#0A0A0A] border border-white/10 rounded-lg px-3 py-2">
           &quot;{stack.user_input}&quot;
         </p>
 
         <div className="flex gap-3">
           <Button
             variant="outline"
-            className="flex-1 border-border text-foreground/70 hover:bg-background rounded-xl"
+            className="flex-1 border-white/10 text-[#F8F8F8]/70 hover:bg-[#0A0A0A] rounded-xl"
             onClick={onCancel}
             disabled={loading}
           >
@@ -155,15 +155,15 @@ function StackCard({
   }, [menuOpen]);
 
   return (
-    <Card className="group relative flex flex-col border-border bg-white hover:shadow-[0_8px_30px_rgba(249,115,22,0.1)] transition-all duration-200 rounded-2xl overflow-hidden">
+    <Card className="group relative flex flex-col border-white/10 bg-[#0A0A0A] hover:shadow-[0_8px_30px_rgba(0,212,255,0.1)] transition-all duration-200 rounded-2xl overflow-hidden">
       {/* Visibility badge (read-only display) */}
       <div className="absolute top-3 left-3 z-10">
         <span
           className={cn(
             "flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider",
             stack.is_public
-              ? "bg-green-50 text-green-600 border border-green-200"
-              : "bg-background text-foreground/50 border border-border"
+              ? "bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30"
+              : "bg-[#0A0A0A] text-[#F8F8F8]/50 border border-white/10"
           )}
         >
           {stack.is_public ? <Globe className="h-3 w-3" /> : <Lock className="h-3 w-3" />}
@@ -175,24 +175,24 @@ function StackCard({
       <div ref={menuRef} className="absolute top-3 right-3 z-20">
         <button
           onClick={() => setMenuOpen((o) => !o)}
-          className="h-7 w-7 flex items-center justify-center rounded-full bg-white/80 border border-border hover:bg-background transition-colors"
+          className="h-7 w-7 flex items-center justify-center rounded-full bg-white/80 border border-white/10 hover:bg-[#0A0A0A] transition-colors"
         >
-          <MoreVertical className="h-4 w-4 text-foreground/50" />
+          <MoreVertical className="h-4 w-4 text-[#F8F8F8]/50" />
         </button>
         {menuOpen && (
-          <div className="absolute right-0 top-9 w-44 rounded-xl border border-border bg-white shadow-xl shadow-plum-100 py-1.5 z-30 animate-in fade-in zoom-in-95 duration-150">
+          <div className="absolute right-0 top-9 w-44 rounded-xl border border-white/10 bg-[#0A0A0A] shadow-xl shadow-black/50 py-1.5 z-30 animate-in fade-in zoom-in-95 duration-150">
             <button
               onClick={() => {
                 navigator.clipboard.writeText(`${window.location.origin}/result?slug=${stack.share_slug}`);
                 setMenuOpen(false);
               }}
-              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-foreground/70 hover:bg-background hover:text-[#190019] transition-colors"
+              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-[#F8F8F8]/70 hover:bg-[#0A0A0A] hover:text-[#F8F8F8] transition-colors"
             >
               <Copy className="h-3.5 w-3.5" /> Copy Link
             </button>
             <button
               onClick={() => { onToggleVisibility(stack); setMenuOpen(false); }}
-              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-foreground/70 hover:bg-background hover:text-[#190019] transition-colors"
+              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-[#F8F8F8]/70 hover:bg-[#0A0A0A] hover:text-[#F8F8F8] transition-colors"
             >
               {stack.is_public ? (
                 <><Lock className="h-3.5 w-3.5" /> Make Private</>
@@ -203,11 +203,11 @@ function StackCard({
             <Link
               href={`/result?slug=${stack.share_slug}`}
               onClick={() => setMenuOpen(false)}
-              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-foreground/70 hover:bg-background hover:text-[#190019] transition-colors"
+              className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-[#F8F8F8]/70 hover:bg-[#0A0A0A] hover:text-[#F8F8F8] transition-colors"
             >
               <ArrowUpRight className="h-3.5 w-3.5" /> View Stack
             </Link>
-            <div className="border-t border-border/50 my-1" />
+            <div className="border-t border-white/10/50 my-1" />
             <button
               onClick={() => { onDelete(stack); setMenuOpen(false); }}
               className="w-full flex items-center gap-2.5 px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors"
@@ -219,46 +219,46 @@ function StackCard({
       </div>
 
       <CardContent className="flex flex-col flex-1 p-5 pt-12 space-y-3">
-        <p className="text-sm font-medium text-foreground line-clamp-2 leading-relaxed">
+        <p className="text-sm font-medium text-[#F8F8F8] line-clamp-2 leading-relaxed">
           &quot;{stack.user_input}&quot;
         </p>
 
         <div className="flex flex-wrap gap-1.5">
           {(stack.tools || []).slice(0, 3).map((t, idx) => (
-            <Badge key={idx} className="border border-border bg-background text-foreground/70 text-xs">
+            <Badge key={idx} className="border border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/70 text-xs">
               {t.name}
             </Badge>
           ))}
           {(stack.tools || []).length > 3 && (
-            <Badge className="border border-border bg-white text-foreground/40 text-xs">
+            <Badge className="border border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/40 text-xs">
               +{stack.tools.length - 3}
             </Badge>
           )}
         </div>
 
-        <div className="flex items-center gap-3 text-xs text-foreground/40 flex-wrap">
+        <div className="flex items-center gap-3 text-xs text-[#F8F8F8]/40 flex-wrap">
           <span className="flex items-center gap-1">
             <CalendarDays className="h-3 w-3" />
             {date}
           </span>
           {stack.upvotes > 0 && (
             <span className="flex items-center gap-1">
-              <Flame className="h-3 w-3 text-[#522B5B]" />
+              <Flame className="h-3 w-3 text-[#4F8EF7]" />
               {stack.upvotes}
             </span>
           )}
           {score !== null && (
             <span className="flex items-center gap-1">
-              <BarChart3 className="h-3 w-3 text-[#522B5B]" />
+              <BarChart3 className="h-3 w-3 text-[#4F8EF7]" />
               {score}/100
             </span>
           )}
         </div>
 
-        <div className="pt-2 border-t border-border/60">
+        <div className="pt-2 border-t border-white/10/60">
           <Link
             href={`/result?slug=${stack.share_slug}`}
-            className="flex items-center gap-1 text-sm font-semibold text-[#522B5B] hover:text-plum-600 transition-colors"
+            className="flex items-center gap-1 text-sm font-semibold text-[#4F8EF7] hover:text-[#4F8EF7] transition-colors"
           >
             View Stack
             <ArrowUpRight className="h-3.5 w-3.5" />
@@ -278,17 +278,17 @@ function SavedStackCard({
   onRemove: (stackId: string) => void;
 }) {
   return (
-    <Card className="group relative flex flex-col border-border bg-white hover:shadow-[0_8px_30px_rgba(249,115,22,0.1)] transition-all duration-200 rounded-2xl overflow-hidden">
+    <Card className="group relative flex flex-col border-white/10 bg-[#0A0A0A] hover:shadow-[0_8px_30px_rgba(0,212,255,0.1)] transition-all duration-200 rounded-2xl overflow-hidden">
       {/* Read-only badge */}
       <div className="absolute top-3 right-3 z-10">
-        <span className="flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-500 border border-blue-100">
+        <span className="flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider bg-[#4F8EF7]/10 text-blue-500 border border-[#4F8EF7]/20">
           <Bookmark className="h-3 w-3 fill-blue-500" />
           Saved
         </span>
       </div>
 
       <CardContent className="flex flex-col flex-1 p-5 pt-4 space-y-3">
-        <p className="text-sm font-medium text-foreground line-clamp-2 pr-20 leading-relaxed">
+        <p className="text-sm font-medium text-[#F8F8F8] line-clamp-2 pr-20 leading-relaxed">
           &quot;{stack.user_input}&quot;
         </p>
 
@@ -296,36 +296,36 @@ function SavedStackCard({
           {(stack.tools || []).slice(0, 3).map((t, idx) => (
             <Badge
               key={idx}
-              className="border border-border bg-background text-foreground/70 text-xs"
+              className="border border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/70 text-xs"
             >
               {t.name}
             </Badge>
           ))}
           {(stack.tools || []).length > 3 && (
-            <Badge className="border border-border bg-white text-foreground/40 text-xs">
+            <Badge className="border border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/40 text-xs">
               +{stack.tools.length - 3}
             </Badge>
           )}
         </div>
 
         {stack.score_card?.overallScore != null && (
-          <div className="flex items-center gap-1 text-xs text-foreground/40">
-            <BarChart3 className="h-3 w-3 text-[#522B5B]" />
+          <div className="flex items-center gap-1 text-xs text-[#F8F8F8]/40">
+            <BarChart3 className="h-3 w-3 text-[#4F8EF7]" />
             Score: {stack.score_card.overallScore}/100
           </div>
         )}
 
-        <div className="flex items-center justify-between pt-2 border-t border-border/60">
+        <div className="flex items-center justify-between pt-2 border-t border-white/10/60">
           <button
             onClick={() => onRemove(stack.id)}
-            className="flex items-center gap-1.5 text-xs font-semibold text-foreground/60 hover:text-[#190019] bg-background/50 hover:bg-background border border-border/50 rounded-full px-3 py-1.5 transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold text-[#F8F8F8]/60 hover:text-[#F8F8F8] bg-[#0A0A0A]/50 hover:bg-[#0A0A0A] border border-white/10/50 rounded-full px-3 py-1.5 transition-colors"
           >
             <BookmarkMinus className="h-3.5 w-3.5" />
             Unsave
           </button>
           <Link
             href={`/result?slug=${stack.share_slug}`}
-            className="flex items-center gap-1 text-sm font-semibold text-[#522B5B] hover:text-plum-600 transition-colors"
+            className="flex items-center gap-1 text-sm font-semibold text-[#4F8EF7] hover:text-[#4F8EF7] transition-colors"
           >
             View Stack
             <ArrowUpRight className="h-3.5 w-3.5" />
@@ -538,25 +538,25 @@ export default function DashboardPage() {
   // ── Loading skeleton ──────────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="min-h-dvh bg-background text-foreground">
-        <header className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur-md">
+      <div className="min-h-dvh bg-[#0A0A0A] text-[#F8F8F8]">
+        <header className="sticky top-0 z-50 border-b border-white/10 bg-white/80 backdrop-blur-md">
           <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-plum-500 to-plum-400 animate-pulse" />
-              <div className="h-5 w-24 rounded bg-plum-200/60 animate-pulse" />
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[#4F8EF7] to-[#00D4FF] animate-pulse" />
+              <div className="h-5 w-24 rounded bg-[#4F8EF7]/60 animate-pulse" />
             </div>
           </div>
         </header>
         <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8 space-y-8">
-          <div className="h-10 w-64 rounded-xl bg-plum-200/60 animate-pulse" />
+          <div className="h-10 w-64 rounded-xl bg-[#4F8EF7]/60 animate-pulse" />
           <div className="grid grid-cols-3 gap-4">
             {[1, 2, 3].map((n) => (
-              <div key={n} className="h-24 rounded-2xl bg-white border border-border animate-pulse" />
+              <div key={n} className="h-24 rounded-2xl bg-[#0A0A0A] border border-white/10 animate-pulse" />
             ))}
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3, 4, 5, 6].map((n) => (
-              <div key={n} className="h-52 rounded-2xl bg-white border border-border animate-pulse" />
+              <div key={n} className="h-52 rounded-2xl bg-[#0A0A0A] border border-white/10 animate-pulse" />
             ))}
           </div>
         </main>
@@ -565,7 +565,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-dvh bg-background text-foreground">
+    <div className="min-h-dvh bg-[#0A0A0A] text-[#F8F8F8]">
       <Navbar />
 
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 space-y-10">
@@ -577,12 +577,12 @@ export default function DashboardPage() {
               <h1 className="text-3xl font-bold tracking-tight">
                 Welcome back, {displayName} 👋
               </h1>
-              <p className="text-foreground/50 mt-1 text-sm">
+              <p className="text-[#F8F8F8]/50 mt-1 text-sm">
                 Here&apos;s your stack command center.
               </p>
             </div>
             <Link href="/advisor">
-              <Button className="bg-[#FBE4D8] text-white hover:bg-[#522B5B] rounded-xl shadow-lg shadow-plum-500/20 gap-2">
+              <Button className="bg-[#0A0A0A] text-white hover:bg-[#4F8EF7] rounded-xl shadow-lg shadow-[#4F8EF7]/20 gap-2">
                 <Plus className="h-4 w-4" />
                 Generate New Stack
               </Button>
@@ -595,32 +595,32 @@ export default function DashboardPage() {
               {
                 label: "My Stacks",
                 value: stacks.length,
-                icon: <Layers className="h-5 w-5 text-[#522B5B]" />,
+                icon: <Layers className="h-5 w-5 text-[#4F8EF7]" />,
                 sub: "Generated by you",
               },
               {
                 label: "Saved Stacks",
                 value: savedStacks.length,
-                icon: <Bookmark className="h-5 w-5 text-[#522B5B]" />,
+                icon: <Bookmark className="h-5 w-5 text-[#4F8EF7]" />,
                 sub: "Bookmarked from others",
               },
               {
                 label: "Top Score",
                 value: topScore > 0 ? `${topScore}/100` : "—",
-                icon: <BarChart3 className="h-5 w-5 text-[#522B5B]" />,
+                icon: <BarChart3 className="h-5 w-5 text-[#4F8EF7]" />,
                 sub: "Best stack score",
               },
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="rounded-2xl border border-border bg-white p-5 flex items-center gap-4"
+                className="rounded-2xl border border-white/10 bg-[#0A0A0A] p-5 flex items-center gap-4"
               >
-                <div className="grid h-10 w-10 place-items-center rounded-xl bg-background border border-border shrink-0">
+                <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#0A0A0A] border border-white/10 shrink-0">
                   {stat.icon}
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-foreground">{stat.value}</p>
-                  <p className="text-xs text-foreground/50">{stat.label}</p>
+                  <p className="text-2xl font-bold text-[#F8F8F8]">{stat.value}</p>
+                  <p className="text-xs text-[#F8F8F8]/50">{stat.label}</p>
                 </div>
               </div>
             ))}
@@ -630,7 +630,7 @@ export default function DashboardPage() {
         {/* ── Quick Actions ── */}
         <section className="flex flex-wrap gap-3">
           <Link href="/advisor">
-            <Button className="bg-[#FBE4D8] text-white hover:bg-[#522B5B] rounded-xl shadow-lg shadow-plum-500/20 gap-2">
+            <Button className="bg-[#0A0A0A] text-white hover:bg-[#4F8EF7] rounded-xl shadow-lg shadow-[#4F8EF7]/20 gap-2">
               <Sparkles className="h-4 w-4" />
               Generate New Stack →
             </Button>
@@ -638,7 +638,7 @@ export default function DashboardPage() {
           <Link href={`/profile/${profile?.username ?? ""}`}>
             <Button
               variant="outline"
-              className="border-border text-foreground/70 hover:bg-white hover:text-[#190019] rounded-xl gap-2"
+              className="border-white/10 text-[#F8F8F8]/70 hover:bg-[#0A0A0A] hover:text-[#F8F8F8] rounded-xl gap-2"
             >
               <User className="h-4 w-4" />
               View My Profile →
@@ -647,7 +647,7 @@ export default function DashboardPage() {
           <Link href="/explore">
             <Button
               variant="outline"
-              className="border-border text-foreground/70 hover:bg-white hover:text-[#190019] rounded-xl gap-2"
+              className="border-white/10 text-[#F8F8F8]/70 hover:bg-[#0A0A0A] hover:text-[#F8F8F8] rounded-xl gap-2"
             >
               <Layers className="h-4 w-4" />
               Explore Community
@@ -657,14 +657,14 @@ export default function DashboardPage() {
 
         {/* ── Tab Switcher ── */}
         <section className="space-y-6">
-          <div className="flex items-center gap-1 p-1 bg-white border border-border rounded-xl w-fit">
+          <div className="flex items-center gap-1 p-1 bg-[#0A0A0A] border border-white/10 rounded-xl w-fit">
             <button
               onClick={() => setActiveTab("my")}
               className={cn(
                 "px-5 py-2 rounded-lg text-sm font-semibold transition-all",
                 activeTab === "my"
-                  ? "bg-[#FBE4D8] text-white shadow-sm"
-                  : "text-foreground/60 hover:text-[#190019]"
+                  ? "bg-[#0A0A0A] text-white shadow-sm"
+                  : "text-[#F8F8F8]/60 hover:text-[#F8F8F8]"
               )}
             >
               My Stacks
@@ -676,8 +676,8 @@ export default function DashboardPage() {
               className={cn(
                 "px-5 py-2 rounded-lg text-sm font-semibold transition-all",
                 activeTab === "saved"
-                  ? "bg-[#FBE4D8] text-white shadow-sm"
-                  : "text-foreground/60 hover:text-[#190019]"
+                  ? "bg-[#0A0A0A] text-white shadow-sm"
+                  : "text-[#F8F8F8]/60 hover:text-[#F8F8F8]"
               )}
             >
               Saved Stacks
@@ -692,17 +692,17 @@ export default function DashboardPage() {
               {stacks.length > 0 && (
                 <div className="flex flex-col sm:flex-row gap-3">
                   <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground/40" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#F8F8F8]/40" />
                     <Input
                       placeholder="Search stacks…"
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
-                      className="pl-9 h-10 bg-white border-border text-foreground placeholder:text-foreground/30 focus-visible:ring-plum-500 rounded-xl"
+                      className="pl-9 h-10 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30 rounded-xl"
                     />
                     {search && (
                       <button
                         onClick={() => setSearch("")}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/30 hover:text-[#190019]"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#F8F8F8]/30 hover:text-[#F8F8F8]"
                       >
                         <X className="h-3.5 w-3.5" />
                       </button>
@@ -717,8 +717,8 @@ export default function DashboardPage() {
                         className={cn(
                           "px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all",
                           filter === f
-                            ? "bg-[#FBE4D8] text-white shadow-sm"
-                            : "bg-white border border-border text-foreground/60 hover:text-[#190019]"
+                            ? "bg-[#0A0A0A] text-white shadow-sm"
+                            : "bg-[#0A0A0A] border border-white/10 text-[#F8F8F8]/60 hover:text-[#F8F8F8]"
                         )}
                       >
                         {f}
@@ -730,13 +730,13 @@ export default function DashboardPage() {
                     <select
                       value={sort}
                       onChange={(e) => setSort(e.target.value as SortKey)}
-                      className="appearance-none h-10 pl-3 pr-8 rounded-xl border border-border bg-white text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-plum-500/40 cursor-pointer"
+                      className="appearance-none h-10 pl-3 pr-8 rounded-xl border border-white/10 bg-[#0A0A0A] text-[#F8F8F8] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#4F8EF7]/30/40 cursor-pointer"
                     >
                       <option value="newest">Newest First</option>
                       <option value="score">Highest Score</option>
                       <option value="upvotes">Most Upvoted</option>
                     </select>
-                    <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground/40" />
+                    <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#F8F8F8]/40" />
                   </div>
                 </div>
               )}
@@ -753,31 +753,31 @@ export default function DashboardPage() {
                   ))}
                 </div>
               ) : stacks.length === 0 ? (
-                <div className="rounded-2xl border border-border bg-white p-14 text-center animate-in fade-in duration-300">
-                  <div className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl bg-background border border-border">
-                    <Layers className="h-8 w-8 text-[#522B5B]" />
+                <div className="rounded-2xl border border-white/10 bg-[#0A0A0A] p-14 text-center animate-in fade-in duration-300">
+                  <div className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl bg-[#0A0A0A] border border-white/10">
+                    <Layers className="h-8 w-8 text-[#4F8EF7]" />
                   </div>
-                  <h3 className="text-lg font-bold text-foreground mb-2">
+                  <h3 className="text-lg font-bold text-[#F8F8F8] mb-2">
                     You haven&apos;t generated any stacks yet
                   </h3>
-                  <p className="text-sm text-foreground/50 mb-6 max-w-sm mx-auto">
+                  <p className="text-sm text-[#F8F8F8]/50 mb-6 max-w-sm mx-auto">
                     Describe your project and our AI will recommend the perfect tech stack, tools, and learning path.
                   </p>
                   <Link href="/advisor">
-                    <Button className="bg-[#FBE4D8] text-white hover:bg-[#522B5B] rounded-xl shadow-lg shadow-plum-500/20 gap-2">
+                    <Button className="bg-[#0A0A0A] text-white hover:bg-[#4F8EF7] rounded-xl shadow-lg shadow-[#4F8EF7]/20 gap-2">
                       <Sparkles className="h-4 w-4" />
                       Generate Your First Stack →
                     </Button>
                   </Link>
                 </div>
               ) : (
-                <div className="rounded-2xl border border-border bg-white p-10 text-center animate-in fade-in duration-300">
-                  <Search className="h-8 w-8 text-foreground/20 mx-auto mb-3" />
-                  <h3 className="text-base font-semibold text-foreground mb-1">No stacks match</h3>
-                  <p className="text-sm text-foreground/50">Try adjusting your search or filter</p>
+                <div className="rounded-2xl border border-white/10 bg-[#0A0A0A] p-10 text-center animate-in fade-in duration-300">
+                  <Search className="h-8 w-8 text-[#F8F8F8]/20 mx-auto mb-3" />
+                  <h3 className="text-base font-semibold text-[#F8F8F8] mb-1">No stacks match</h3>
+                  <p className="text-sm text-[#F8F8F8]/50">Try adjusting your search or filter</p>
                   <button
                     onClick={() => { setSearch(""); setFilter("all"); }}
-                    className="mt-4 text-sm font-semibold text-[#522B5B] hover:underline"
+                    className="mt-4 text-sm font-semibold text-[#4F8EF7] hover:underline"
                   >
                     Clear filters
                   </button>
@@ -800,18 +800,18 @@ export default function DashboardPage() {
                   ))}
                 </div>
               ) : (
-                <div className="rounded-2xl border border-border bg-white p-14 text-center animate-in fade-in duration-300">
-                  <div className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl bg-background border border-border">
-                    <Bookmark className="h-8 w-8 text-[#522B5B]" />
+                <div className="rounded-2xl border border-white/10 bg-[#0A0A0A] p-14 text-center animate-in fade-in duration-300">
+                  <div className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl bg-[#0A0A0A] border border-white/10">
+                    <Bookmark className="h-8 w-8 text-[#4F8EF7]" />
                   </div>
-                  <h3 className="text-lg font-bold text-foreground mb-2">
+                  <h3 className="text-lg font-bold text-[#F8F8F8] mb-2">
                     You haven&apos;t saved any stacks yet
                   </h3>
-                  <p className="text-sm text-foreground/50 mb-6 max-w-sm mx-auto">
+                  <p className="text-sm text-[#F8F8F8]/50 mb-6 max-w-sm mx-auto">
                     Browse the explore page and save stacks that inspire you.
                   </p>
                   <Link href="/explore">
-                    <Button className="bg-[#FBE4D8] text-white hover:bg-[#522B5B] rounded-xl shadow-lg shadow-plum-500/20 gap-2">
+                    <Button className="bg-[#0A0A0A] text-white hover:bg-[#4F8EF7] rounded-xl shadow-lg shadow-[#4F8EF7]/20 gap-2">
                       <Layers className="h-4 w-4" />
                       Explore Stacks →
                     </Button>
@@ -840,7 +840,7 @@ export default function DashboardPage() {
             className={cn(
               "rounded-xl px-5 py-3 text-sm font-medium shadow-lg backdrop-blur-md",
               toast.ok
-                ? "bg-green-500/10 border border-green-500/20 text-green-700"
+                ? "bg-[#00D4FF]/100/10 border border-green-500/20 text-[#00D4FF]"
                 : "bg-red-500/10 border border-red-500/20 text-red-600"
             )}
           >
