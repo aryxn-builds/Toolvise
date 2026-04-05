@@ -65,21 +65,21 @@ function LoginForm() {
       {/* Logo */}
       <div className="flex flex-col items-center gap-3">
         <Link href="/" className="flex items-center gap-2">
-          <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#4F8EF7] to-[#00D4FF] shadow-medium">
-            <Sparkles className="h-5 w-5 text-white" />
+          <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-primary shadow-medium">
+            <Sparkles className="h-5 w-5 text-[#E6EDF3]" />
           </div>
-          <span className="text-xl font-bold tracking-tight text-[#F8F8F8]">
+          <span className="text-xl font-bold tracking-tight text-[#E6EDF3]">
             Toolvise
           </span>
         </Link>
       </div>
 
       {/* Card */}
-      <div className="rounded-2xl border border-white/8 bg-[#0A0A0A] p-8 shadow-medium rounded-3xl">
-        <h1 className="text-2xl font-bold text-[#F8F8F8] text-center mb-2">
+      <div className="card-3d p-8 shadow-medium rounded-3xl">
+        <h1 className="text-2xl font-bold text-[#E6EDF3] text-center mb-2">
           Welcome back
         </h1>
-        <p className="text-sm text-[#F8F8F8]/50 text-center mb-8">
+        <p className="text-sm text-[#E6EDF3]/50 text-center mb-8">
           Sign in to your Toolvise account
         </p>
 
@@ -88,10 +88,10 @@ function LoginForm() {
           type="button"
           onClick={handleGoogleSignIn}
           disabled={oauthLoading}
-          className="w-full flex items-center justify-center gap-3 h-11 rounded-xl border border-white/8 bg-[#0A0A0A] hover:bg-[#0A0A0A] text-[#F8F8F8] font-medium transition-all mb-6 disabled:opacity-60"
+          className="w-full flex items-center justify-center gap-3 h-11 card-3d hover:bg-[#0D1117] text-[#E6EDF3] font-medium transition-all mb-6 disabled:opacity-60"
         >
           {oauthLoading ? (
-            <Loader2 className="h-5 w-5 animate-spin text-[#F8F8F8]/50" />
+            <Loader2 className="h-5 w-5 animate-spin text-[#E6EDF3]/50" />
           ) : (
             <svg viewBox="0 0 24 24" className="w-5 h-5">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -106,16 +106,16 @@ function LoginForm() {
         {/* Divider */}
         <div className="relative mb-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-white/8" />
+            <div className="w-full border-t border-[rgba(240,246,252,0.10)]" />
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="bg-[#0A0A0A] px-3 text-[#F8F8F8]/40 font-medium">or</span>
+            <span className="bg-[#0D1117] px-3 text-[#E6EDF3]/40 font-medium">or</span>
           </div>
         </div>
 
         {/* Error */}
         {error && (
-          <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-500 mb-4">
+          <div className="rounded-lg border border-red-500/30 bg-red-900/20 p-3 text-sm text-red-500 mb-4">
             {error}
           </div>
         )}
@@ -123,7 +123,7 @@ function LoginForm() {
         {/* Email form */}
         <form onSubmit={handleEmailLogin} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-[#F8F8F8]/80">
+            <Label htmlFor="email" className="text-[#E6EDF3]/80">
               Email
             </Label>
             <Input
@@ -133,12 +133,12 @@ function LoginForm() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
-              className="h-11 bg-[#0A0A0A] border-white/8 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30 focus-visible:border-[#4F8EF7]"
+              className="h-11 bg-[#0D1117] border-[rgba(240,246,252,0.10)] text-[#E6EDF3] placeholder:text-[#E6EDF3]/30 focus-visible:ring-[#4F8EF7]/30 focus-visible:border-[#2EA043]"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-[#F8F8F8]/80">
+            <Label htmlFor="password" className="text-[#E6EDF3]/80">
               Password
             </Label>
             <div className="relative">
@@ -149,12 +149,12 @@ function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="h-11 bg-[#0A0A0A] border-white/8 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30 focus-visible:border-[#4F8EF7] pr-12"
+                className="h-11 bg-[#0D1117] border-[rgba(240,246,252,0.10)] text-[#E6EDF3] placeholder:text-[#E6EDF3]/30 focus-visible:ring-[#4F8EF7]/30 focus-visible:border-[#2EA043] pr-12"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4F8EF7]/70 hover:text-[#F8F8F8] transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#2EA043]/70 hover:text-[#E6EDF3] transition-colors"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
@@ -167,7 +167,7 @@ function LoginForm() {
             <div className="flex justify-end">
               <Link
                 href="/forgot-password"
-                className="text-sm text-[#4F8EF7] hover:underline"
+                className="text-sm text-[#2EA043] hover:underline"
               >
                 Forgot password?
               </Link>
@@ -186,11 +186,11 @@ function LoginForm() {
       </div>
 
       {/* Sign up link */}
-      <p className="text-center text-sm text-[#F8F8F8]/50">
+      <p className="text-center text-sm text-[#E6EDF3]/50">
         Don&apos;t have an account?{" "}
         <Link
           href="/signup"
-          className="font-semibold text-[#4F8EF7] hover:underline"
+          className="font-semibold text-[#2EA043] hover:underline"
         >
           Sign up
         </Link>
@@ -201,11 +201,11 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-dvh bg-[#0A0A0A] flex items-center justify-center px-4">
+    <div className="min-h-dvh bg-[#0D1117] flex items-center justify-center px-4">
       <Suspense
         fallback={
           <div className="flex items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-[#4F8EF7]" />
+            <Loader2 className="h-8 w-8 animate-spin text-[#2EA043]" />
           </div>
         }
       >

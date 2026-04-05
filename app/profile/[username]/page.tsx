@@ -77,29 +77,29 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
     .slice(0, 2);
 
   return (
-    <div className="min-h-dvh bg-[#0A0A0A] text-[#F8F8F8]">
+    <div className="min-h-dvh bg-[#0D1117] text-[#E6EDF3]">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-white/80 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-[rgba(240,246,252,0.10)] bg-[#161B22]/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-5xl items-center px-4 sm:px-6 lg:px-8">
           <Link
             href="/"
             className="flex items-center gap-2 transition-opacity hover:opacity-80"
           >
-            <div className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-[#4F8EF7] to-[#00D4FF] shadow-lg shadow-[#4F8EF7]/20">
-              <Sparkles className="h-4 w-4 text-white" />
+            <div className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-primary shadow-lg shadow-[#4F8EF7]/20">
+              <Sparkles className="h-4 w-4 text-[#E6EDF3]" />
             </div>
             <span className="text-lg font-bold tracking-tight">Toolvise</span>
           </Link>
           <div className="ml-auto flex items-center gap-4">
             <Link
               href="/leaderboard"
-              className="text-sm text-[#F8F8F8]/50 hover:text-[#F8F8F8] transition-colors hidden sm:block"
+              className="text-sm text-[#E6EDF3]/50 hover:text-[#E6EDF3] transition-colors hidden sm:block"
             >
               Leaderboard
             </Link>
             <Link
               href="/dashboard"
-              className="text-sm font-medium text-[#F8F8F8]/60 hover:text-[#F8F8F8] flex items-center gap-2 transition-colors"
+              className="text-sm font-medium text-[#E6EDF3]/60 hover:text-[#E6EDF3] flex items-center gap-2 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" /> Dashboard
             </Link>
@@ -109,10 +109,10 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
       <main className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Profile Header */}
-        <section className="rounded-2xl border border-white/10 bg-[#0A0A0A] p-8 mb-10">
+        <section className="card-3d p-8 mb-10">
           <div className="flex flex-col sm:flex-row items-start gap-6">
             {/* Avatar */}
-            <Avatar className="h-20 w-20 border-2 border-white/10">
+            <Avatar className="h-20 w-20 border-2 border-[rgba(240,246,252,0.10)]">
               {profile.avatar_url && (
                 <AvatarImage
                   src={profile.avatar_url}
@@ -120,7 +120,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                   className="object-cover"
                 />
               )}
-              <AvatarFallback className="bg-gradient-to-br from-[#4F8EF7] to-[#00D4FF] text-white text-2xl font-bold">
+              <AvatarFallback className="bg-gradient-primary text-[#E6EDF3] text-2xl font-bold">
                 {initials}
               </AvatarFallback>
             </Avatar>
@@ -134,12 +134,12 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                       {profile.display_name || profile.username}
                     </h1>
                     {profile.skill_level && (
-                      <Badge className="border border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/70 text-xs">
+                      <Badge className="border card-3d text-[#E6EDF3]/70 text-xs">
                         {profile.skill_level}
                       </Badge>
                     )}
                   </div>
-                  <p className="text-sm text-[#F8F8F8]/50">@{profile.username}</p>
+                  <p className="text-sm text-[#E6EDF3]/50">@{profile.username}</p>
                 </div>
 
                 {/* Follow button (only for other profiles) */}
@@ -157,7 +157,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                   <Link href="/settings">
                     <Button
                       variant="outline"
-                      className="border-white/10 text-[#F8F8F8]/70 hover:bg-[#0A0A0A] hover:text-[#F8F8F8] rounded-xl"
+                      className="btn-ghost"
                     >
                       <Pencil className="mr-2 h-4 w-4" />
                       Edit Profile
@@ -167,7 +167,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               </div>
 
               {profile.bio && (
-                <p className="text-sm text-[#F8F8F8]/70 leading-relaxed max-w-xl">
+                <p className="text-sm text-[#E6EDF3]/70 leading-relaxed max-w-xl">
                   {profile.bio}
                 </p>
               )}
@@ -175,22 +175,22 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               {/* Stats: Stacks / Followers / Following */}
               <div className="flex gap-6 text-sm pt-1">
                 <div>
-                  <span className="font-bold text-[#F8F8F8]">
+                  <span className="font-bold text-[#E6EDF3]">
                     {profile.stacks_count ?? 0}
                   </span>
-                  <span className="text-[#4F8EF7]/70 ml-1">Stacks</span>
+                  <span className="text-[#2EA043]/70 ml-1">Stacks</span>
                 </div>
                 <div>
-                  <span className="font-bold text-[#F8F8F8]">
+                  <span className="font-bold text-[#E6EDF3]">
                     {profile.followers_count ?? 0}
                   </span>
-                  <span className="text-[#4F8EF7]/70 ml-1">Followers</span>
+                  <span className="text-[#2EA043]/70 ml-1">Followers</span>
                 </div>
                 <div>
-                  <span className="font-bold text-[#F8F8F8]">
+                  <span className="font-bold text-[#E6EDF3]">
                     {profile.following_count ?? 0}
                   </span>
-                  <span className="text-[#4F8EF7]/70 ml-1">Following</span>
+                  <span className="text-[#2EA043]/70 ml-1">Following</span>
                 </div>
               </div>
 
@@ -204,17 +204,17 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                     }
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-sm text-[#4F8EF7] hover:text-[#4F8EF7] transition-colors"
+                    className="flex items-center gap-1 text-sm text-[#2EA043] hover:text-[#2EA043] transition-colors"
                   >
                     <Globe className="h-3.5 w-3.5" />
                     {profile.website.replace(/^https?:\/\//, "")}
                   </a>
                 )}
-                <span className="flex items-center gap-1 text-xs text-[#F8F8F8]/40">
+                <span className="flex items-center gap-1 text-xs text-[#E6EDF3]/40">
                   <Calendar className="h-3.5 w-3.5" />
                   Builder since {joinDate}
                 </span>
-                <span className="flex items-center gap-1 text-xs text-[#F8F8F8]/40">
+                <span className="flex items-center gap-1 text-xs text-[#E6EDF3]/40">
                   <Layers className="h-3.5 w-3.5" />
                   {profile.stacks_count || 0} stacks
                 </span>
@@ -231,10 +231,10 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               {stacks.map((stack: Record<string, unknown>) => (
                 <Card
                   key={stack.id as string}
-                  className="border-white/10 bg-[#0A0A0A] hover:shadow-lg transition-all rounded-2xl"
+                  className="card-3d hover:shadow-lg transition-all rounded-2xl"
                 >
                   <CardContent className="p-5 space-y-3">
-                    <p className="text-sm font-medium text-[#F8F8F8] line-clamp-2">
+                    <p className="text-sm font-medium text-[#E6EDF3] line-clamp-2">
                       &quot;{stack.user_input as string}&quot;
                     </p>
                     <div className="flex flex-wrap gap-1.5">
@@ -243,7 +243,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                         .map((t: { name: string }, idx: number) => (
                           <Badge
                             key={idx}
-                            className="border border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/70 text-xs"
+                            className="border card-3d text-[#E6EDF3]/70 text-xs"
                           >
                             {t.name}
                           </Badge>
@@ -251,7 +251,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                     </div>
                     <Link
                       href={`/result?slug=${stack.share_slug}`}
-                      className="flex items-center gap-1 text-sm font-semibold text-[#4F8EF7] hover:text-[#4F8EF7] transition-colors pt-1"
+                      className="flex items-center gap-1 text-sm font-semibold text-[#2EA043] hover:text-[#2EA043] transition-colors pt-1"
                     >
                       View Stack
                       <ArrowUpRight className="h-3.5 w-3.5" />
@@ -261,19 +261,19 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               ))}
             </div>
           ) : (
-            <div className="rounded-2xl border border-white/10 bg-[#0A0A0A] p-12 text-center">
-              <Layers className="h-10 w-10 text-[#F8F8F8]/20 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-[#F8F8F8] mb-1">
+            <div className="card-3d p-12 text-center">
+              <Layers className="h-10 w-10 text-[#E6EDF3]/20 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-[#E6EDF3] mb-1">
                 No public stacks yet
               </h3>
-              <p className="text-sm text-[#F8F8F8]/50">
+              <p className="text-sm text-[#E6EDF3]/50">
                 {isOwnProfile
                   ? "Generate your first stack with the AI advisor!"
                   : "This builder hasn't shared any stacks yet."}
               </p>
               {isOwnProfile && (
                 <Link href="/advisor">
-                  <Button className="mt-6 bg-[#0A0A0A] text-white hover:bg-[#4F8EF7] rounded-xl">
+                  <Button className="mt-6 btn-primary">
                     <Sparkles className="mr-2 h-4 w-4" />
                     Create a Stack
                   </Button>

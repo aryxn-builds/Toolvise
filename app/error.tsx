@@ -14,15 +14,15 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="min-h-dvh bg-[#0A0A0A] 
+    <div className="min-h-dvh bg-[#0D1117] 
       flex flex-col items-center 
       justify-center p-8 text-center">
       <div className="text-5xl mb-6">😅</div>
       <h2 className="text-2xl font-bold 
-        text-[#F8F8F8] mb-3">
+        text-[#E6EDF3] mb-3">
         Something went wrong
       </h2>
-      <p className="text-[#4F8EF7]/70 mb-8 
+      <p className="text-[#2EA043]/70 mb-8 
         max-w-md">
         Don&apos;t worry — your data is safe.
         Try refreshing or go back home.
@@ -31,16 +31,16 @@ export default function Error({
         <button
           onClick={reset}
           className="px-6 py-3 rounded-xl 
-          bg-[#0A0A0A] text-white font-semibold
-          hover:bg-[#4F8EF7] transition-colors"
+          bg-[#0D1117] text-[#E6EDF3] font-semibold
+          hover:bg-[#2EA043] transition-colors"
         >
           Try Again
         </button>
         <Link href="/">
           <button className="px-6 py-3 
-            rounded-xl border border-white/10 
-            bg-[#0A0A0A] text-[#F8F8F8] font-semibold
-            hover:bg-[#0A0A0A] transition-colors">
+            rounded-xl border border-[rgba(240,246,252,0.10)] 
+            bg-[#0D1117] text-[#E6EDF3] font-semibold
+            hover:bg-[#0D1117] transition-colors">
             Go Home
           </button>
         </Link>

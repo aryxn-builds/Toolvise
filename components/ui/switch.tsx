@@ -43,7 +43,7 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         <span
           data-slot="switch-thumb"
           className={cn(
-            "pointer-events-none block rounded-full bg-[#0A0A0A] ring-0 transition-transform shadow-sm",
+            "pointer-events-none block rounded-full bg-[#0D1117] ring-0 transition-transform shadow-sm",
             size === "default" ? "size-4" : "size-3",
             current
               ? "translate-x-[calc(100%-2px)]"

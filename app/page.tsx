@@ -96,7 +96,7 @@ function CommunityCards() {
     return (
       <div className="grid gap-4 md:grid-cols-3">
         {[1, 2, 3].map(n => (
-          <Card key={n} className="h-48 bg-[#0A0A0A] border-white/10 animate-pulse rounded-2xl" />
+          <Card key={n} className="h-48 bg-[#0D1117] border-[rgba(240,246,252,0.10)] animate-pulse rounded-2xl" />
         ))}
       </div>
     )
@@ -107,7 +107,7 @@ function CommunityCards() {
       {cards.map((card, idx) => (
         <Card
           key={idx}
-          className="glass rounded-2xl group hover:glow-blue hover:-translate-y-0.5"
+          className="card-3d group"
         >
           <CardHeader className="space-y-2">
             <div className="flex items-start justify-between gap-4">
@@ -116,9 +116,9 @@ function CommunityCards() {
               </CardTitle>
               <Badge
                 variant="secondary"
-                className="border border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/80 shrink-0"
+                className="border border-[rgba(240,246,252,0.10)] bg-[#0D1117] text-[#E6EDF3]/80 shrink-0"
               >
-                <Sparkles className="mr-1 h-3.5 w-3.5 text-[#4F8EF7]" />
+                <Sparkles className="mr-1 h-3.5 w-3.5 text-[#2EA043]" />
                 AI Stack
               </Badge>
             </div>
@@ -128,7 +128,7 @@ function CommunityCards() {
               {card.tools.map((t) => (
                 <Badge
                   key={t}
-                  className="border border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/80 hover:bg-black/45"
+                  className="border border-[rgba(240,246,252,0.10)] bg-[#0D1117] text-[#E6EDF3]/80 hover:bg-black/45"
                 >
                   {t}
                 </Badge>
@@ -136,7 +136,7 @@ function CommunityCards() {
             </div>
 
             {card.goal && (
-              <Badge variant="outline" className="border-[#4F8EF7]/25 bg-[#0A0A0A]/10 text-[#A0A0A0] text-[10px] uppercase tracking-wider font-bold">
+              <Badge variant="outline" className="border-[#2EA043]/25 bg-[#0D1117]/10 text-[#8B949E] text-[10px] uppercase tracking-wider font-bold">
                 {card.goal}
               </Badge>
             )}
@@ -145,7 +145,7 @@ function CommunityCards() {
               {card.slug ? (
                 <Link
                   href={`/result?slug=${card.slug}`}
-                  className="flex items-center gap-1.5 text-sm font-semibold text-[#4F8EF7] hover:text-[#4F8EF7] transition-colors"
+                  className="flex items-center gap-1.5 text-sm font-semibold text-[#2EA043] hover:text-[#2EA043] transition-colors"
                 >
                   View Stack
                   <ArrowUpRight className="h-4 w-4" />
@@ -153,7 +153,7 @@ function CommunityCards() {
               ) : (
                 <Link
                   href="/advisor"
-                  className="flex items-center gap-1.5 text-sm font-semibold text-[#4F8EF7] hover:text-[#4F8EF7] transition-colors"
+                  className="flex items-center gap-1.5 text-sm font-semibold text-[#2EA043] hover:text-[#2EA043] transition-colors"
                 >
                   Build Yours
                   <ArrowUpRight className="h-4 w-4" />
@@ -180,22 +180,22 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="mesh-bg min-h-dvh text-white">
+    <div className="mesh-bg min-h-dvh text-[#E6EDF3]">
       <Navbar />
       <AnnouncementBanner />
 
       <main>
         <section className="relative overflow-hidden">
-          <div className="pointer-events-none absolute inset-0 bg-[#0A0A0A] bg-opacity-0" />
+          <div className="pointer-events-none absolute inset-0 bg-[#0D1117] bg-opacity-0" />
           <div className="relative mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
             <div className="max-w-2xl space-y-6">
-              <Badge className="w-fit bg-white/5 border border-[#4F8EF7]/30 text-[#4F8EF7] rounded-full text-sm font-medium">
+              <Badge className="w-fit bg-[#2EA043]/10 border-[#2EA043]/25 text-[#2EA043] rounded-full text-sm font-medium">
                 AI-Powered Stack Advisor
               </Badge>
               <h1 className="text-4xl sm:text-5xl gradient-text font-heading tracking-tight">
                 Stop Guessing. Start Building.
               </h1>
-              <p className="text-base leading-relaxed text-white/60 sm:text-lg">
+              <p className="text-base leading-relaxed text-[#8B949E] sm:text-lg">
                 Tell us what you&apos;re building — Toolvise finds the perfect
                 tools, stack, and learning path for you. Free.
               </p>
@@ -232,7 +232,7 @@ export default function Home() {
                 </div>
               )}
 
-              <p className="text-xs leading-relaxed text-white/40 sm:text-sm">
+              <p className="text-xs leading-relaxed text-[#484F58] sm:text-sm">
                 {isLoggedIn
                   ? "Welcome back! Continue building your stack."
                   : "Free to use • No credit card needed"}
@@ -240,26 +240,26 @@ export default function Home() {
             </div>
 
             <div className="mt-12 grid gap-4 md:grid-cols-2 lg:mt-16">
-              <Card className="glass rounded-2xl hover:shadow-glass-hover hover:border-white/15 transition-all">
+              <Card className="card-3d">
                 <CardHeader className="space-y-3">
-                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#4F8EF7]/10 text-[#4F8EF7]">
+                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#2EA043]/10 text-[#2EA043]">
                     <Layers3 className="h-5 w-5" />
                   </div>
-                  <CardTitle className="text-base font-heading text-white">Clarity, instantly</CardTitle>
+                  <CardTitle className="text-base font-heading text-[#E6EDF3]">Clarity, instantly</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/60">
+                <CardContent className="text-sm text-[#8B949E]">
                   A clean, opinionated stack with reasoning and trade-offs — not
                   a list of links.
                 </CardContent>
               </Card>
-              <Card className="glass rounded-2xl hover:shadow-glass-hover hover:border-white/15 transition-all">
+              <Card className="card-3d">
                 <CardHeader className="space-y-3">
-                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#00D4FF]/10 text-[#00D4FF]">
+                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#1ABC9C]/10 text-[#1ABC9C]">
                     <Compass className="h-5 w-5" />
                   </div>
-                  <CardTitle className="text-base font-heading text-white">A path to ship</CardTitle>
+                  <CardTitle className="text-base font-heading text-[#E6EDF3]">A path to ship</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/60">
+                <CardContent className="text-sm text-[#8B949E]">
                   Tools plus a learning roadmap so you can build with confidence
                   from day one.
                 </CardContent>
@@ -271,8 +271,8 @@ export default function Home() {
         <section className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
           <div className="mb-8 flex items-end justify-between gap-4">
             <div className="space-y-2">
-              <h2 className="text-xl font-heading text-white tracking-tight">How it works</h2>
-              <p className="text-sm text-white/50">3 steps to a confident stack</p>
+              <h2 className="text-xl font-heading text-[#E6EDF3] tracking-tight">How it works</h2>
+              <p className="text-sm text-[#8B949E]/80">3 steps to a confident stack</p>
             </div>
           </div>
 
@@ -282,37 +282,37 @@ export default function Home() {
                 n: "01",
                 title: "Describe Your Project",
                 text: "Tell us what you're building in plain English",
-                icon: <Sparkles className="h-5 w-5 text-[#4F8EF7]" />,
+                icon: <Sparkles className="h-5 w-5 text-[#2EA043]" />,
               },
               {
                 n: "02",
                 title: "AI Analyzes & Recommends",
                 text: "Gemini AI finds your perfect stack",
-                icon: <Layers3 className="h-5 w-5 text-[#A0A0A0]" />,
+                icon: <Layers3 className="h-5 w-5 text-[#8B949E]" />,
               },
               {
                 n: "03",
                 title: "Build With Confidence",
                 text: "Get tools, resources and roadmap instantly",
-                icon: <ArrowRight className="h-5 w-5 text-[#F8F8F8]" />,
+                icon: <ArrowRight className="h-5 w-5 text-[#E6EDF3]" />,
               },
             ].map((s) => (
               <Card
                 key={s.n}
-                className="glass rounded-2xl hover:shadow-glass-hover hover:border-white/15 transition-all"
+                className="card-3d relative"
               >
                 <CardHeader className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-[#4F8EF7]">
+                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#161B22]/5 text-[#2EA043]">
                       {s.icon}
                     </div>
-                    <span className="flex items-center justify-center shrink-0 w-8 h-8 rounded-xl bg-gradient-to-br from-[#4F8EF7] to-[#00D4FF] text-white font-bold text-xs">
+                    <span className="flex items-center justify-center shrink-0 w-8 h-8 rounded-xl bg-gradient-to-br from-[#2EA043] to-[#1ABC9C] text-white font-bold text-xs" style={{ boxShadow: "0 3px 0 #1a6b2e, 0 5px 12px rgba(46,160,67,0.25)" }}>
                       {s.n.replace('0','')}
                     </span>
                   </div>
-                  <CardTitle className="text-base font-heading text-white">{s.title}</CardTitle>
+                  <CardTitle className="text-base font-heading text-[#E6EDF3]">{s.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/60">{s.text}</CardContent>
+                <CardContent className="text-sm text-[#8B949E]">{s.text}</CardContent>
               </Card>
             ))}
           </div>
@@ -320,7 +320,7 @@ export default function Home() {
 
         <section className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6 lg:px-8">
           <div className="mb-6 flex items-center justify-between gap-4">
-            <h2 className="text-xl font-heading text-white tracking-tight">
+            <h2 className="text-xl font-heading text-[#E6EDF3] tracking-tight">
               See What Others Are Building
             </h2>
             <Link
@@ -331,27 +331,27 @@ export default function Home() {
             </Link>
           </div>
           <CommunityCards />
-          <Separator className="mt-14 bg-white/6" />
+          <Separator className="mt-14 bg-[#161B22]/6" />
         </section>
       </main>
 
-      <footer className="bg-[#0A0A0A] border-t border-white/6">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-10 text-sm text-white/40 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+      <footer className="bg-[#0D1117] border-t border-[rgba(240,246,252,0.06)]">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-10 text-sm text-[#484F58] sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>Toolvise © 2025 • Built for builders</p>
           <div className="flex items-center gap-4">
-            <Link className="transition-colors hover:text-[#F8F8F8]" href="/">
+            <Link className="transition-colors hover:text-[#E6EDF3]" href="/">
               Home
             </Link>
-            <Link className="transition-colors hover:text-[#F8F8F8]" href="/explore">
+            <Link className="transition-colors hover:text-[#E6EDF3]" href="/explore">
               Explore
             </Link>
-            <Link className="transition-colors hover:text-[#F8F8F8]" href="/leaderboard">
+            <Link className="transition-colors hover:text-[#E6EDF3]" href="/leaderboard">
               Leaderboard
             </Link>
-            <Link className="transition-colors hover:text-[#F8F8F8]" href="/about">
+            <Link className="transition-colors hover:text-[#E6EDF3]" href="/about">
               About
             </Link>
-            <Link className="transition-colors hover:text-[#F8F8F8] flex items-center gap-1" href="/report">
+            <Link className="transition-colors hover:text-[#E6EDF3] flex items-center gap-1" href="/report">
               Report a Bug 🐛
             </Link>
           </div>

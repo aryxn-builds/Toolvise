@@ -19,7 +19,7 @@ const SelectTrigger = React.forwardRef<
     ref={ref}
     data-slot="select-trigger"
     className={cn(
-      "flex w-full min-w-0 items-center justify-between gap-1.5 rounded-lg border border-input bg-[#0A0A0A] py-2 pr-3 pl-3 text-sm whitespace-nowrap transition-all duration-200 outline-none select-none focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-sm disabled:cursor-not-allowed disabled:bg-white/10 disabled:opacity-50 data-[placeholder]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      "flex w-full min-w-0 items-center justify-between gap-1.5 rounded-lg border border-input bg-[#0D1117] py-2 pr-3 pl-3 text-sm whitespace-nowrap transition-all duration-200 outline-none select-none focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-sm disabled:cursor-not-allowed disabled:bg-[#161B22]/10 disabled:opacity-50 data-[placeholder]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
       size === "default" ? "h-10" : "h-8 rounded-md",
       className
     )}
@@ -72,7 +72,7 @@ const SelectContent = React.forwardRef<
       ref={ref}
       data-slot="select-content"
       className={cn(
-        "relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-lg border border-white/10 bg-[#0A0A0A] text-white/80 shadow-nav data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-lg border border-[rgba(240,246,252,0.10)] bg-[#0D1117] text-[#E6EDF3]/80 shadow-nav data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         position === "popper" &&
           "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
         className
@@ -103,7 +103,7 @@ const SelectLabel = React.forwardRef<
   <SelectPrimitive.Label
     ref={ref}
     data-slot="select-label"
-    className={cn("px-2 py-1.5 text-xs font-semibold text-white/40", className)}
+    className={cn("px-2 py-1.5 text-xs font-semibold text-[#484F58]", className)}
     {...props}
   />
 ))

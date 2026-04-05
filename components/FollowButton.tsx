@@ -74,14 +74,14 @@ export function FollowButton({
           "rounded-xl px-6 py-2.5 text-sm font-semibold transition-all flex items-center gap-2",
           "disabled:opacity-60 disabled:cursor-not-allowed",
           isFollowing
-            ? "border border-white/10 bg-[#0A0A0A] text-[#F8F8F8] hover:bg-red-50 hover:text-red-600 hover:border-red-200"
-            : "bg-[#0A0A0A] text-white hover:bg-[#4F8EF7] shadow-sm shadow-[#4F8EF7]/30"
+            ? "border border-[rgba(240,246,252,0.10)] bg-[#0D1117] text-[#E6EDF3] hover:bg-red-900/20 hover:text-red-400 hover:border-red-500/30"
+            : "bg-[#0D1117] text-[#E6EDF3] hover:bg-[#2EA043] shadow-sm shadow-[#4F8EF7]/30"
         )}
       >
         {loading && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
         {isFollowing ? "Following ✓" : "+ Follow"}
       </button>
-      <span className="text-xs text-[#F8F8F8]/40">
+      <span className="text-xs text-[#E6EDF3]/40">
         {followersCount} follower{followersCount !== 1 ? "s" : ""}
       </span>
     </div>

@@ -23,7 +23,7 @@ export function StackCard({
   tools?: Tool[];
 }) {
   return (
-    <Card className="break-inside-avoid border-white/10 bg-transparent text-white shadow-glass hover:shadow-glass-hover hover:-translate-y-0.5 rounded-xl transition-all">
+    <Card className="break-inside-avoid border-[rgba(240,246,252,0.10)] bg-transparent text-[#E6EDF3] shadow-glass hover:shadow-glass-hover hover:-translate-y-0.5 rounded-xl transition-all">
       <CardHeader className="space-y-2">
         <div className="flex items-start justify-between gap-4">
           <CardTitle className="text-base font-semibold tracking-tight">
@@ -32,9 +32,9 @@ export function StackCard({
           <div className="flex items-center gap-2">
             <Badge
               variant="secondary"
-              className="border border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/80"
+              className="border border-[rgba(240,246,252,0.10)] bg-[#0D1117] text-[#E6EDF3]/80"
             >
-              <Sparkles className="mr-1 h-3.5 w-3.5 text-[#4F8EF7]" />
+              <Sparkles className="mr-1 h-3.5 w-3.5 text-[#2EA043]" />
               AI Stack
             </Badge>
           </div>
@@ -45,7 +45,7 @@ export function StackCard({
           {tools.slice(0, 6).map((t) => (
             <Badge
               key={t.name}
-              className="border border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/80 hover:bg-black/45"
+              className="border border-[rgba(240,246,252,0.10)] bg-[#0D1117] text-[#E6EDF3]/80 hover:bg-black/45"
             >
               {t.name}
             </Badge>
@@ -56,13 +56,13 @@ export function StackCard({
           <Button
             type="button"
             variant="outline"
-            className="border-white/10 bg-transparent text-[#F8F8F8]/85 hover:bg-[#0A0A0A] hover:text-[#F8F8F8]"
+            className="border-[rgba(240,246,252,0.10)] bg-transparent text-[#E6EDF3]/85 hover:bg-[#0D1117] hover:text-[#E6EDF3]"
           >
             Upvote
           </Button>
           <Button
             type="button"
-            className="bg-[#4F8EF7] text-[#F8F8F8] hover:bg-[#EA7C28]"
+            className="bg-[#2EA043] text-[#E6EDF3] hover:bg-[#EA7C28]"
           >
             View
             <ArrowUpRight className="ml-2 h-4 w-4" />

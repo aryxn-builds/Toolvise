@@ -171,7 +171,7 @@ export default function AdvisorPage() {
   const charCount = form.description.length
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#F8F8F8]">
+    <div className="min-h-screen bg-[#0D1117] text-[#E6EDF3]">
       <Navbar />
 
       {/* ── Main ── */}
@@ -189,20 +189,20 @@ export default function AdvisorPage() {
         </div>
 
         {/* Form card */}
-        <div className="rounded-2xl border border-white/10 bg-[#0A0A0A] p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_32px_80px_rgba(0,0,0,0.6)] sm:p-8">
+        <div className="glass-strong rounded-2xl p-6 sm:p-8">
           <form onSubmit={handleSubmit} noValidate className="space-y-7">
 
             {/* ── Field 1: Project Description ── */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="description" className="text-[#F8F8F8]/90">
+                <Label htmlFor="description" className="text-[#E6EDF3]/90">
                   Project Description
-                  <span className="ml-1 text-[#4F8EF7]">*</span>
+                  <span className="ml-1 text-[#2EA043]">*</span>
                 </Label>
                 <span
                   className={cn(
                     "text-xs tabular-nums transition-colors",
-                    charCount < 20 ? "text-[#F8F8F8]/30" : "text-[#F8F8F8]/50"
+                    charCount < 20 ? "text-[#E6EDF3]/30" : "text-[#E6EDF3]/50"
                   )}
                 >
                   {charCount} chars {charCount < 20 && charCount > 0 && `(${20 - charCount} more)`}
@@ -215,7 +215,7 @@ export default function AdvisorPage() {
                 placeholder="e.g. I want to build a task management app for students..."
                 rows={4}
                 className={cn(
-                  "resize-none bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/25 focus-visible:border-[#4F8EF7] focus-visible:ring-[#4F8EF7]/30/20",
+                  "input-dark resize-none placeholder:text-[#E6EDF3]/25",
                   errors.description && "border-red-500/60 focus-visible:border-red-500 focus-visible:ring-red-500/20"
                 )}
                 aria-describedby={errors.description ? "description-error" : undefined}
@@ -227,9 +227,9 @@ export default function AdvisorPage() {
 
             {/* ── Field 2: Skill Level ── */}
             <div className="space-y-2">
-              <Label htmlFor="skillLevel" className="text-[#F8F8F8]/90">
+              <Label htmlFor="skillLevel" className="text-[#E6EDF3]/90">
                 Skill Level
-                <span className="ml-1 text-[#4F8EF7]">*</span>
+                <span className="ml-1 text-[#2EA043]">*</span>
               </Label>
               <Select
                 value={form.skillLevel}
@@ -238,15 +238,15 @@ export default function AdvisorPage() {
                 <SelectTrigger
                   id="skillLevel"
                   className={cn(
-                    "w-full h-10 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] data-[placeholder]:text-[#F8F8F8]/30 focus:border-[#4F8EF7] focus:ring-[#4F8EF7]/30/20",
+                    "input-dark h-10 data-[placeholder]:text-[#E6EDF3]/30",
                     errors.skillLevel && "border-red-500/60"
                   )}
                 >
                   <SelectValue placeholder="Select your skill level…" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#0A0A0A] border-white/10 text-[#F8F8F8]">
+                <SelectContent className="bg-[#0D1117] border-[rgba(240,246,252,0.10)] text-[#E6EDF3]">
                   {SKILL_OPTIONS.map((o) => (
-                    <SelectItem key={o.value} value={o.value} className="focus:bg-[#0A0A0A] focus:text-[#F8F8F8]">
+                    <SelectItem key={o.value} value={o.value} className="focus:bg-[#0D1117] focus:text-[#E6EDF3]">
                       {o.label}
                     </SelectItem>
                   ))}
@@ -259,9 +259,9 @@ export default function AdvisorPage() {
 
             {/* ── Field 3: Budget (toggle buttons) ── */}
             <div className="space-y-2">
-              <Label className="text-[#F8F8F8]/90">
+              <Label className="text-[#E6EDF3]/90">
                 Budget
-                <span className="ml-1 text-[#4F8EF7]">*</span>
+                <span className="ml-1 text-[#2EA043]">*</span>
               </Label>
               <div
                 className="grid grid-cols-1 gap-2 sm:grid-cols-3"
@@ -279,14 +279,14 @@ export default function AdvisorPage() {
                       className={cn(
                         "relative rounded-xl border px-3 py-3 text-sm font-medium transition-all duration-150 text-center select-none",
                         selected
-                          ? "border-[#4F8EF7] bg-[#0A0A0A]/15 text-[#F8F8F8] shadow-[0_0_0_1px_rgba(0,212,255,0.5)]"
-                          : "border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/60 hover:border-white/10 hover:bg-[#0A0A0A] hover:text-[#F8F8F8]/85",
+                          ? "border-[#2EA043] bg-[#0D1117]/15 text-[#E6EDF3] shadow-[0_0_0_1px_rgba(0,212,255,0.5)]"
+                          : "border-[rgba(240,246,252,0.10)] bg-[#0D1117] text-[#E6EDF3]/60 hover:border-[rgba(240,246,252,0.10)] hover:bg-[#0D1117] hover:text-[#E6EDF3]/85",
                         errors.budget && !selected && "border-red-500/30"
                       )}
                     >
                       {selected && (
-                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#0A0A0A]">
-                          <svg className="h-2.5 w-2.5 text-[#F8F8F8]" viewBox="0 0 10 8" fill="none">
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#0D1117]">
+                          <svg className="h-2.5 w-2.5 text-[#E6EDF3]" viewBox="0 0 10 8" fill="none">
                             <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         </span>
@@ -303,9 +303,9 @@ export default function AdvisorPage() {
 
             {/* ── Field 4: Goal ── */}
             <div className="space-y-2">
-              <Label htmlFor="goal" className="text-[#F8F8F8]/90">
+              <Label htmlFor="goal" className="text-[#E6EDF3]/90">
                 Goal
-                <span className="ml-1 text-[#4F8EF7]">*</span>
+                <span className="ml-1 text-[#2EA043]">*</span>
               </Label>
               <Select
                 value={form.goal}
@@ -314,15 +314,15 @@ export default function AdvisorPage() {
                 <SelectTrigger
                   id="goal"
                   className={cn(
-                    "w-full h-10 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] data-[placeholder]:text-[#F8F8F8]/30 focus:border-[#4F8EF7] focus:ring-[#4F8EF7]/30/20",
+                    "input-dark h-10 data-[placeholder]:text-[#E6EDF3]/30",
                     errors.goal && "border-red-500/60"
                   )}
                 >
                   <SelectValue placeholder="What are you building towards?" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#0A0A0A] border-white/10 text-[#F8F8F8]">
+                <SelectContent className="bg-[#0D1117] border-[rgba(240,246,252,0.10)] text-[#E6EDF3]">
                   {GOAL_OPTIONS.map((o) => (
-                    <SelectItem key={o.value} value={o.value} className="focus:bg-[#0A0A0A] focus:text-[#F8F8F8]">
+                    <SelectItem key={o.value} value={o.value} className="focus:bg-[#0D1117] focus:text-[#E6EDF3]">
                       {o.label}
                     </SelectItem>
                   ))}
@@ -335,9 +335,9 @@ export default function AdvisorPage() {
 
             {/* ── Field 5: Detail Level (toggle buttons) ── */}
             <div className="space-y-2">
-              <Label className="text-[#F8F8F8]/90">
+              <Label className="text-[#E6EDF3]/90">
                 How deep should we go?
-                <span className="ml-1 text-[#4F8EF7]">*</span>
+                <span className="ml-1 text-[#2EA043]">*</span>
               </Label>
               <div
                 className="grid grid-cols-1 gap-2 sm:grid-cols-3"
@@ -355,20 +355,20 @@ export default function AdvisorPage() {
                       className={cn(
                         "relative rounded-xl border px-3 py-3 text-sm font-medium transition-all duration-150 text-center select-none",
                         selected
-                          ? "border-[#4F8EF7] bg-[#0A0A0A]/15 text-[#F8F8F8] shadow-[0_0_0_1px_rgba(0,212,255,0.5)]"
-                          : "border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/60 hover:border-white/10 hover:bg-[#0A0A0A] hover:text-[#F8F8F8]/85",
+                          ? "border-[#2EA043] bg-[#0D1117]/15 text-[#E6EDF3] shadow-[0_0_0_1px_rgba(0,212,255,0.5)]"
+                          : "border-[rgba(240,246,252,0.10)] bg-[#0D1117] text-[#E6EDF3]/60 hover:border-[rgba(240,246,252,0.10)] hover:bg-[#0D1117] hover:text-[#E6EDF3]/85",
                         errors.detailLevel && !selected && "border-red-500/30"
                       )}
                     >
                       {selected && (
-                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#0A0A0A]">
-                          <svg className="h-2.5 w-2.5 text-[#F8F8F8]" viewBox="0 0 10 8" fill="none">
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#0D1117]">
+                          <svg className="h-2.5 w-2.5 text-[#E6EDF3]" viewBox="0 0 10 8" fill="none">
                             <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         </span>
                       )}
                       {o.label}
-                      <span className="block text-[11px] text-[#F8F8F8]/40 font-normal mt-0.5">{o.subtitle}</span>
+                      <span className="block text-[11px] text-[#E6EDF3]/40 font-normal mt-0.5">{o.subtitle}</span>
                     </button>
                   )
                 })}
@@ -380,9 +380,9 @@ export default function AdvisorPage() {
 
             {/* ── Field 6: Build Style (toggle buttons) ── */}
             <div className="space-y-2">
-              <Label className="text-[#F8F8F8]/90">
+              <Label className="text-[#E6EDF3]/90">
                 How do you want to build this?
-                <span className="ml-1 text-[#4F8EF7]">*</span>
+                <span className="ml-1 text-[#2EA043]">*</span>
               </Label>
               <div
                 className="grid grid-cols-1 gap-2 sm:grid-cols-3"
@@ -400,14 +400,14 @@ export default function AdvisorPage() {
                       className={cn(
                         "relative rounded-xl border px-3 py-3 text-sm font-medium transition-all duration-150 text-center select-none",
                         selected
-                          ? "border-[#4F8EF7] bg-[#0A0A0A]/15 text-[#F8F8F8] shadow-[0_0_0_1px_rgba(0,212,255,0.5)]"
-                          : "border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/60 hover:border-white/10 hover:bg-[#0A0A0A] hover:text-[#F8F8F8]/85",
+                          ? "border-[#2EA043] bg-[#0D1117]/15 text-[#E6EDF3] shadow-[0_0_0_1px_rgba(0,212,255,0.5)]"
+                          : "border-[rgba(240,246,252,0.10)] bg-[#0D1117] text-[#E6EDF3]/60 hover:border-[rgba(240,246,252,0.10)] hover:bg-[#0D1117] hover:text-[#E6EDF3]/85",
                         errors.buildStyle && !selected && "border-red-500/30"
                       )}
                     >
                       {selected && (
-                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#0A0A0A]">
-                          <svg className="h-2.5 w-2.5 text-[#F8F8F8]" viewBox="0 0 10 8" fill="none">
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#0D1117]">
+                          <svg className="h-2.5 w-2.5 text-[#E6EDF3]" viewBox="0 0 10 8" fill="none">
                             <path d="M1 4l2.5 2.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         </span>
@@ -435,12 +435,8 @@ export default function AdvisorPage() {
               type="submit"
               disabled={loading}
               className={cn(
-                "relative w-full rounded-xl px-5 py-3 text-sm font-semibold text-[#F8F8F8] transition-all duration-150",
-                "bg-[#0A0A0A] shadow-[0_12px_40px_rgba(0,212,255,0.28)]",
-                "hover:-translate-y-0.5 hover:bg-[#4F8EF7] hover:shadow-[0_16px_48px_rgba(0,212,255,0.38)]",
-                "active:translate-y-0 active:shadow-none",
-                "disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0",
-                "flex items-center justify-center gap-2"
+                "btn-primary glow-green w-full py-3 flex items-center justify-center gap-2 relative",
+                "disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
               )}
             >
               {loading ? (
@@ -456,7 +452,7 @@ export default function AdvisorPage() {
               )}
             </button>
 
-            <p className="text-center text-xs text-[#F8F8F8]/30">
+            <p className="text-center text-xs text-[#E6EDF3]/30">
               Powered by Gemini AI · Usually takes 5–10 seconds
             </p>
           </form>

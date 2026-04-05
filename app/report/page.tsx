@@ -68,33 +68,33 @@ export default function ReportBugPage() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#0A0A0A] bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(232,162,78,0.12)_0%,transparent_70%)] font-sans text-[#F8F8F8]/90 selection:bg-white/2">
+    <div className="min-h-dvh bg-[#0D1117] bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(232,162,78,0.12)_0%,transparent_70%)] font-sans text-[#E6EDF3]/90 selection:bg-[#161B22]/2">
       <Navbar />
 
       <main className="mx-auto max-w-2xl px-4 pt-24 pb-24 sm:px-6 lg:px-8">
         <div className="mb-10 text-center">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0A0A0A]/10 mb-6">
-            <Bug className="h-6 w-6 text-[#A0A0A0]" />
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0D1117]/10 mb-6">
+            <Bug className="h-6 w-6 text-[#8B949E]" />
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-[#F8F8F8] sm:text-4xl mb-3">
+          <h1 className="text-3xl font-bold tracking-tight text-[#E6EDF3] sm:text-4xl mb-3">
             Report a Bug 🐛
           </h1>
-          <p className="text-lg text-[#F8F8F8]/60">
+          <p className="text-lg text-[#E6EDF3]/60">
             Found something broken? Tell us and we&apos;ll fix it fast.
           </p>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-[#0A0A0A] p-6 backdrop-blur-xl sm:p-8">
+        <div className="card-3d p-6 backdrop-blur-xl sm:p-8">
           {success ? (
             <div className="flex flex-col items-center justify-center py-12 text-center animate-in fade-in zoom-in duration-500">
-              <div className="mb-4 rounded-full bg-[#00D4FF]/100/20 p-3">
+              <div className="mb-4 rounded-full bg-[#1ABC9C]/100/20 p-3">
                 <CheckCircle2 className="h-10 w-10 text-green-400" />
               </div>
-              <h3 className="text-xl font-semibold text-[#F8F8F8] mb-2">Thanks! We&apos;ll look into this ASAP. 🙏</h3>
-              <p className="text-[#F8F8F8]/60 mb-8 max-w-sm">
+              <h3 className="text-xl font-semibold text-[#E6EDF3] mb-2">Thanks! We&apos;ll look into this ASAP. 🙏</h3>
+              <p className="text-[#E6EDF3]/60 mb-8 max-w-sm">
                 Your report helps us make Toolvise better for everyone.
               </p>
-              <Link href="/" className={buttonVariants({ className: "h-11 rounded-full bg-[#0A0A0A] text-black hover:bg-white/90 px-8 font-semibold" })}>
+              <Link href="/" className={buttonVariants({ className: "h-11 rounded-full bg-[#0D1117] text-black hover:bg-[#161B22]/90 px-8 font-semibold" })}>
                 Return to Home
               </Link>
             </div>
@@ -108,23 +108,23 @@ export default function ReportBugPage() {
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-[#F8F8F8]/80">Your Name <span className="text-[#F8F8F8]/40 font-normal">(optional)</span></Label>
-                  <Input id="name" name="name" placeholder="John Doe" className="h-11 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30" />
+                  <Label htmlFor="name" className="text-[#E6EDF3]/80">Your Name <span className="text-[#E6EDF3]/40 font-normal">(optional)</span></Label>
+                  <Input id="name" name="name" placeholder="John Doe" className="h-11 bg-[#0D1117] border-[rgba(240,246,252,0.10)] text-[#E6EDF3] placeholder:text-[#E6EDF3]/30 focus-visible:ring-[#4F8EF7]/30" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-[#F8F8F8]/80">Email <span className="text-[#F8F8F8]/40 font-normal">(optional)</span></Label>
-                  <Input id="email" name="email" type="email" placeholder="john@example.com" className="h-11 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30" />
+                  <Label htmlFor="email" className="text-[#E6EDF3]/80">Email <span className="text-[#E6EDF3]/40 font-normal">(optional)</span></Label>
+                  <Input id="email" name="email" type="email" placeholder="john@example.com" className="h-11 bg-[#0D1117] border-[rgba(240,246,252,0.10)] text-[#E6EDF3] placeholder:text-[#E6EDF3]/30 focus-visible:ring-[#4F8EF7]/30" />
                 </div>
               </div>
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="bug_type" className="text-[#F8F8F8]/80">Bug Type <span className="text-red-400">*</span></Label>
+                  <Label htmlFor="bug_type" className="text-[#E6EDF3]/80">Bug Type <span className="text-red-400">*</span></Label>
                   <Select name="bug_type" required>
-                    <SelectTrigger className="h-11 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] focus:ring-[#4F8EF7]/30">
+                    <SelectTrigger className="h-11 bg-[#0D1117] border-[rgba(240,246,252,0.10)] text-[#E6EDF3] focus:ring-[#4F8EF7]/30">
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#0A0A0A] border-white/10 text-[#F8F8F8]">
+                    <SelectContent className="bg-[#0D1117] border-[rgba(240,246,252,0.10)] text-[#E6EDF3]">
                       <SelectItem value="UI/Design Issue">UI/Design Issue</SelectItem>
                       <SelectItem value="AI Result Problem">AI Result Problem</SelectItem>
                       <SelectItem value="Page Not Loading">Page Not Loading</SelectItem>
@@ -134,12 +134,12 @@ export default function ReportBugPage() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="page_name" className="text-[#F8F8F8]/80">Page Where Bug Occurred <span className="text-red-400">*</span></Label>
+                  <Label htmlFor="page_name" className="text-[#E6EDF3]/80">Page Where Bug Occurred <span className="text-red-400">*</span></Label>
                   <Select name="page_name" required>
-                    <SelectTrigger className="h-11 bg-[#0A0A0A] border-white/10 text-[#F8F8F8] focus:ring-[#4F8EF7]/30">
+                    <SelectTrigger className="h-11 bg-[#0D1117] border-[rgba(240,246,252,0.10)] text-[#E6EDF3] focus:ring-[#4F8EF7]/30">
                       <SelectValue placeholder="Select page" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#0A0A0A] border-white/10 text-[#F8F8F8]">
+                    <SelectContent className="bg-[#0D1117] border-[rgba(240,246,252,0.10)] text-[#E6EDF3]">
                       <SelectItem value="Landing Page">Landing Page</SelectItem>
                       <SelectItem value="Advisor Form">Advisor Form</SelectItem>
                       <SelectItem value="Result Page">Result Page</SelectItem>
@@ -151,21 +151,21 @@ export default function ReportBugPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description" className="text-[#F8F8F8]/80">Bug Description <span className="text-red-400">*</span></Label>
+                <Label htmlFor="description" className="text-[#E6EDF3]/80">Bug Description <span className="text-red-400">*</span></Label>
                 <Textarea 
                   id="description" 
                   name="description" 
                   required
                   rows={5}
                   placeholder="Describe what happened, what you expected, and steps to reproduce..." 
-                  className="resize-none bg-[#0A0A0A] border-white/10 text-[#F8F8F8] placeholder:text-[#F8F8F8]/30 focus-visible:ring-[#4F8EF7]/30" 
+                  className="resize-none bg-[#0D1117] border-[rgba(240,246,252,0.10)] text-[#E6EDF3] placeholder:text-[#E6EDF3]/30 focus-visible:ring-[#4F8EF7]/30" 
                 />
               </div>
 
               <Button 
                 type="submit" 
                 disabled={loading}
-                className="h-12 w-full rounded-xl bg-[#4F8EF7] hover:bg-[#4F8EF7] text-[#F8F8F8] font-semibold shadow-lg shadow-[#4F8EF7]/25 transition-all active:scale-[0.98]"
+                className="h-12 w-full rounded-xl bg-[#2EA043] hover:bg-[#2EA043] text-[#E6EDF3] font-semibold shadow-lg shadow-[#4F8EF7]/25 transition-all active:scale-[0.98]"
               >
                 {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <Bug className="mr-2 h-5 w-5" />}
                 {loading ? "Submitting..." : "Submit Report 🐛"}
@@ -178,16 +178,16 @@ export default function ReportBugPage() {
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-10 text-sm text-neutral-300 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>Toolvise © 2025 • Built for builders</p>
           <div className="flex items-center gap-4">
-            <Link className="transition-colors hover:text-[#F8F8F8]" href="/">
+            <Link className="transition-colors hover:text-[#E6EDF3]" href="/">
               Home
             </Link>
-            <Link className="transition-colors hover:text-[#F8F8F8]" href="/explore">
+            <Link className="transition-colors hover:text-[#E6EDF3]" href="/explore">
               Explore
             </Link>
-            <Link className="transition-colors hover:text-[#F8F8F8]" href="/about">
+            <Link className="transition-colors hover:text-[#E6EDF3]" href="/about">
               About
             </Link>
-            <Link className="transition-colors hover:text-[#F8F8F8] flex items-center gap-1" href="/report">
+            <Link className="transition-colors hover:text-[#E6EDF3] flex items-center gap-1" href="/report">
               Report a Bug 🐛
             </Link>
           </div>

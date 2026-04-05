@@ -2,76 +2,110 @@ const fs = require('fs');
 const path = require('path');
 
 const replacements = [
-  // BACKGROUNDS
-  { from: /bg-\[#fff1d6\]/g, to: 'bg-[#FBE4D8]' },
-  { from: /bg-\[#FFF1D6\]/g, to: 'bg-[#FBE4D8]' },
-  { from: /bg-\[#F97316\]/g, to: 'bg-[#522B5B]' },
-  { from: /bg-\[#EA6C0A\]/g, to: 'bg-[#2B124C]' },
-  { from: /bg-\[#FB923C\]/g, to: 'bg-[#854F6C]' },
-  { from: /bg-\[#FFE8B6\]/g, to: 'bg-[#F5D5CF]' },
+  // Backgrounds
+  { from: /bg-\[#0A0A0A\]\/80/g, to: 'bg-[#0D1117]/80' },
+  { from: /bg-\[#0A0A0A\]\/60/g, to: 'bg-[#0D1117]/60' },
+  { from: /bg-\[#0A0A0A\]/g, to: 'bg-[#0D1117]' },
+  { from: /bg-\[#111111\]/g, to: 'bg-[#161B22]' },
+  { from: /bg-\[#0F0F0F\]/g, to: 'bg-[#0D1117]' },
+  { from: /bg-\[#141414\]/g, to: 'bg-[#1C2128]' },
+  { from: /bg-\[#161616\]/g, to: 'bg-[#1C2128]' },
 
-  // BORDERS
-  { from: /border-\[#FFD896\]/g, to: 'border-[#DFB6B2]' },
-  { from: /border-\[#F97316\]/g, to: 'border-[#522B5B]' },
-  { from: /border-amber-200/g, to: 'border-[#DFB6B2]' },
+  // Primary
+  { from: /bg-\[#4F8EF7\]\/10/g, to: 'bg-[#2EA043]/10' },
+  { from: /bg-\[#4F8EF7\]\/12/g, to: 'bg-[#2EA043]/12' },
+  { from: /bg-\[#4F8EF7\]\/15/g, to: 'bg-[#2EA043]/12' },
+  { from: /bg-\[#4F8EF7\]\/5/g, to: 'bg-[#2EA043]/8' },
+  { from: /bg-\[#4F8EF7\]/g, to: 'bg-[#2EA043]' },
+  { from: /bg-\[#3B7AF3\]/g, to: 'bg-[#238636]' },
 
-  // TEXT
-  { from: /text-\[#111827\]/g, to: 'text-[#190019]' },
-  { from: /text-\[#374151\]/g, to: 'text-[#2B124C]' },
-  { from: /text-\[#6B7280\]/g, to: 'text-[#854F6C]' },
-  { from: /text-\[#9CA3AF\]/g, to: 'text-[#C48FA0]' },
-  { from: /text-\[#F97316\]/g, to: 'text-[#522B5B]' },
-  { from: /text-\[#FB923C\]/g, to: 'text-[#854F6C]' },
-  { from: /text-\[#EA6C0A\]/g, to: 'text-[#2B124C]' },
+  // Accent
+  { from: /bg-\[#00D4FF\]\/10/g, to: 'bg-[#1ABC9C]/10' },
+  { from: /bg-\[#00D4FF\]/g, to: 'bg-[#1ABC9C]' },
+  { from: /bg-\[#7C3AED\]\/10/g, to: 'bg-[#388BFD]/10' },
+  { from: /bg-\[#7C3AED\]\/12/g, to: 'bg-[#388BFD]/10' },
+  { from: /bg-\[#7C3AED\]\/8/g, to: 'bg-[#388BFD]/8' },
+  { from: /bg-\[#7C3AED\]/g, to: 'bg-[#388BFD]' },
 
-  // RINGS AND FOCUS
-  { from: /ring-\[#F97316\]/g, to: 'ring-[#522B5B]' },
+  // Text
+  { from: /text-\[#F8F8F8\]/g, to: 'text-[#E6EDF3]' },
+  // text-white -> text-[#E6EDF3]  (only on some places, let's do this manually to avoid breaking buttons? Actually buttons are using custom classes now, so I'll replace text-white with text-[#E6EDF3])
+  { from: /text-white\/60/g, to: 'text-[#8B949E]' },
+  { from: /text-white\/70/g, to: 'text-[#8B949E]' },
+  { from: /text-white\/80/g, to: 'text-[#E6EDF3]/80' },
+  { from: /text-white\/50/g, to: 'text-[#8B949E]/80' },
+  { from: /text-white\/40/g, to: 'text-[#484F58]' },
+  { from: /text-white\/30/g, to: 'text-[#484F58]/70' },
+  { from: /text-white/g, to: 'text-[#E6EDF3]' }, // Broad replacement, revert explicitly if needed
 
-  // HOVER STATES
-  { from: /hover:bg-\[#fff1d6\]/g, to: 'hover:bg-[#FBE4D8]' },
-  { from: /hover:bg-\[#EA6C0A\]/g, to: 'hover:bg-[#2B124C]' },
-  { from: /hover:bg-\[#F97316\]/g, to: 'hover:bg-[#522B5B]' },
-  { from: /hover:text-\[#F97316\]/g, to: 'hover:text-[#522B5B]' },
+  { from: /text-\[#A0A0A0\]/g, to: 'text-[#8B949E]' },
+  { from: /text-\[#606060\]/g, to: 'text-[#484F58]' },
+  { from: /text-\[#4F8EF7\]/g, to: 'text-[#2EA043]' },
+  { from: /text-\[#00D4FF\]/g, to: 'text-[#1ABC9C]' },
+  { from: /text-\[#7C3AED\]/g, to: 'text-[#388BFD]' },
+  { from: /text-\[#A78BFA\]/g, to: 'text-[#BC8CFF]' },
 
-  // GRADIENTS
-  { from: /from-\[#F97316\]/g, to: 'from-[#522B5B]' },
-  { from: /to-\[#FB923C\]/g, to: 'to-[#854F6C]' },
-  { from: /from-amber-400/g, to: 'from-plum-500' },
-  { from: /to-orange-300/g, to: 'to-plum-400' },
-  { from: /from-amber-200/g, to: 'from-[#DFB6B2]' },
-  { from: /bg-amber-50/g, to: 'bg-[#FBE4D8]' },
-  { from: /bg-gradient-to-br from-\[#F97316\] to-\[#FB923C\]/g, to: 'bg-gradient-to-br from-[#522B5B] to-[#854F6C]' },
-  { from: /border-none/g, to: 'border-none' }, // just a placeholder
+  // Borders
+  { from: /border-white\/8/g, to: 'border-[rgba(240,246,252,0.10)]' },
+  { from: /border-white\/10/g, to: 'border-[rgba(240,246,252,0.10)]' },
+  { from: /border-white\/12/g, to: 'border-[rgba(240,246,252,0.12)]' },
+  { from: /border-white\/15/g, to: 'border-[rgba(240,246,252,0.15)]' },
+  { from: /border-white\/6/g, to: 'border-[rgba(240,246,252,0.06)]' },
+  { from: /border-white\/5/g, to: 'border-[rgba(240,246,252,0.05)]' },
+  
+  { from: /border-\[#4F8EF7\]\/25/g, to: 'border-[#2EA043]/25' },
+  { from: /border-\[#4F8EF7\]\/30/g, to: 'border-[#2EA043]/30' },
+  { from: /border-\[#4F8EF7\]\/40/g, to: 'border-[#2EA043]/35' },
+  { from: /border-\[#4F8EF7\]\/50/g, to: 'border-[#2EA043]/40' },
+  { from: /border-\[#4F8EF7\]/g, to: 'border-[#2EA043]' },
+  
+  { from: /border-\[#00D4FF\]\/15/g, to: 'border-[#1ABC9C]/15' },
+  { from: /border-\[#7C3AED\]\/20/g, to: 'border-[#388BFD]/18' },
 
-  // OTHERS
-  { from: /rounded-none/g, to: 'rounded-lg' },
+  // Gradients
+  { from: /from-white via-\[#4F8EF7\] to-\[#00D4FF\]/g, to: 'from-[#E6EDF3] via-[#2EA043] to-[#1ABC9C]' },
+  { from: /from-\[#4F8EF7\] to-\[#00D4FF\]/g, to: 'from-[#2EA043] to-[#1ABC9C]' },
+  { from: /from-\[#4F8EF7\] to-\[#3B7AF3\]/g, to: 'from-[#3FB950] to-[#2EA043]' },
+  { from: /from-\[#4F8EF7\]/g, to: 'from-[#2EA043]' },
+  { from: /to-\[#4F8EF7\]/g, to: 'to-[#2EA043]' },
+  { from: /via-\[#4F8EF7\]/g, to: 'via-[#2EA043]' },
+
+  // Hover/Focus
+  { from: /hover:bg-\[#3B7AF3\]/g, to: 'hover:bg-[#238636]' },
+  { from: /hover:bg-\[#4F8EF7\]/g, to: 'hover:bg-[#2EA043]' },
+  { from: /hover:text-\[#4F8EF7\]/g, to: 'hover:text-[#2EA043]' },
+  { from: /hover:text-\[#00D4FF\]/g, to: 'hover:text-[#1ABC9C]' },
+  { from: /hover:border-\[#4F8EF7\]\/20/g, to: 'hover:border-[#2EA043]/18' },
+  
+  { from: /focus:border-\[#4F8EF7\]\/50/g, to: 'focus:border-[#2EA043]/40' },
+  { from: /focus:ring-\[#4F8EF7\]\/20/g, to: 'focus:ring-[#2EA043]/15' },
+
+  // Specific removals based on instructions
+  { from: /bg-white/g, to: 'bg-[#161B22]' }  // The instruction said `bg-white -> bg-[#161B22] (only when used as card bg)`. Since this is a dark theme, it's safe to replace.
 ];
 
-function processDirectory(dir) {
-  const files = fs.readdirSync(dir);
+function processDirectory(dirPath) {
+  const files = fs.readdirSync(dirPath);
   for (const file of files) {
-    const fullPath = path.join(dir, file);
-    const stat = fs.statSync(fullPath);
-    if (stat.isDirectory()) {
+    const fullPath = path.join(dirPath, file);
+    if (fs.statSync(fullPath).isDirectory()) {
       processDirectory(fullPath);
-    } else if (fullPath.endsWith('.tsx') || fullPath.endsWith('.ts') || fullPath.endsWith('.jsx') || fullPath.endsWith('.js')) {
+    } else if (fullPath.endsWith('.tsx') || fullPath.endsWith('.ts')) {
       let content = fs.readFileSync(fullPath, 'utf8');
-      let newContent = content;
+      let originalContent = content;
+      
       for (const { from, to } of replacements) {
-        newContent = newContent.replace(from, to);
+        content = content.replace(from, to);
       }
-      if (content !== newContent) {
-        console.log(`Updated ${fullPath}`);
-        fs.writeFileSync(fullPath, newContent);
+      
+      if (content !== originalContent) {
+        fs.writeFileSync(fullPath, content, 'utf8');
+        console.log(`Updated: ${fullPath}`);
       }
     }
   }
 }
 
-try {
-  processDirectory(path.join(__dirname, 'app'));
-  processDirectory(path.join(__dirname, 'components'));
-  console.log('Replacements complete.');
-} catch (e) {
-  console.error(e);
-}
+processDirectory(path.join(__dirname, 'app'));
+processDirectory(path.join(__dirname, 'components'));
+console.log('Done!');

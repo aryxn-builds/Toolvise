@@ -90,37 +90,37 @@ export function Navbar() {
     .slice(0, 2);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/8 bg-[#0A0A0A]/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-[rgba(240,246,252,0.10)] bg-[#0D1117]/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-r from-[#4F8EF7] to-[#00D4FF]">
+          <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-r from-[#2EA043] to-[#1ABC9C]">
             <Sparkles className="h-4 w-4 text-white" />
           </div>
-          <span className="text-xl font-heading font-semibold text-white tracking-tight">
+          <span className="text-xl font-heading font-semibold text-[#E6EDF3] tracking-tight">
             Toolvise
           </span>
         </Link>
 
         {/* Nav links */}
-        <nav className="hidden items-center gap-6 text-sm md:flex font-sans font-medium text-white/60">
-          <Link className="transition-colors hover:text-white px-1 py-5" href="/">
+        <nav className="hidden items-center gap-6 text-sm md:flex font-sans font-medium text-[#8B949E]">
+          <Link className="transition-colors hover:text-[#E6EDF3] px-1 py-5" href="/">
             Home
           </Link>
           <Link
-            className="transition-colors hover:text-white px-1 py-5"
+            className="transition-colors hover:text-[#E6EDF3] px-1 py-5"
             href="/explore"
           >
             Explore
           </Link>
           <Link
-            className="transition-colors hover:text-white px-1 py-5"
+            className="transition-colors hover:text-[#E6EDF3] px-1 py-5"
             href="/leaderboard"
           >
             Leaderboard
           </Link>
           <Link
-            className="transition-colors hover:text-white px-1 py-5"
+            className="transition-colors hover:text-[#E6EDF3] px-1 py-5"
             href="/about"
           >
             About
@@ -134,7 +134,7 @@ export function Navbar() {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2 rounded-full border border-white/10 bg-[#0A0A0A] px-2 py-1.5 transition-all hover:bg-[#0A0A0A]"
+                className="flex items-center gap-2 rounded-full border border-[rgba(240,246,252,0.10)] bg-[#0D1117] px-2 py-1.5 transition-all hover:bg-[#0D1117]"
               >
                 {profile?.avatar_url ? (
                   <img
@@ -143,13 +143,13 @@ export function Navbar() {
                     className="h-7 w-7 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#4F8EF7] to-[#00D4FF] flex items-center justify-center text-white text-xs font-bold">
+                  <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#2EA043] to-[#1ABC9C] flex items-center justify-center text-[#E6EDF3] text-xs font-bold">
                     {initials}
                   </div>
                 )}
                 <ChevronDown
                   className={cn(
-                    "h-3.5 w-3.5 text-[#F8F8F8]/50 transition-transform",
+                    "h-3.5 w-3.5 text-[#E6EDF3]/50 transition-transform",
                     dropdownOpen && "rotate-180"
                   )}
                 />
@@ -157,12 +157,12 @@ export function Navbar() {
 
               {/* Dropdown */}
               {dropdownOpen && (
-                <div className="absolute right-0 top-full mt-2 w-56 rounded-xl border border-white/10 bg-[#0A0A0A] shadow-glass py-1 animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="px-4 py-3 border-b border-white/10/50">
-                    <p className="text-sm font-semibold text-white/80 truncate">
+                <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl border border-[rgba(240,246,252,0.10)] bg-[#161B22] shadow-glass py-1 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="px-4 py-3 border-b border-[rgba(240,246,252,0.10)]/50">
+                    <p className="text-sm font-semibold text-[#E6EDF3]/80 truncate">
                       {profile?.display_name || profile?.username}
                     </p>
-                    <p className="text-xs text-white/40 truncate">
+                    <p className="text-xs text-[#484F58] truncate">
                       {user.email}
                     </p>
                   </div>
@@ -170,7 +170,7 @@ export function Navbar() {
                   <Link
                     href="/dashboard"
                     onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#F8F8F8]/70 hover:bg-[#0A0A0A] hover:text-[#F8F8F8] transition-colors"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#E6EDF3]/70 hover:bg-[#0D1117] hover:text-[#E6EDF3] transition-colors"
                   >
                     <LayoutDashboard className="h-4 w-4" />
                     My Dashboard
@@ -178,7 +178,7 @@ export function Navbar() {
                   <Link
                     href={`/profile/${profile?.username || ""}`}
                     onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#F8F8F8]/70 hover:bg-[#0A0A0A] hover:text-[#F8F8F8] transition-colors"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#E6EDF3]/70 hover:bg-[#0D1117] hover:text-[#E6EDF3] transition-colors"
                   >
                     <User className="h-4 w-4" />
                     My Profile
@@ -186,16 +186,16 @@ export function Navbar() {
                   <Link
                     href="/settings"
                     onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#F8F8F8]/70 hover:bg-[#0A0A0A] hover:text-[#F8F8F8] transition-colors"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#E6EDF3]/70 hover:bg-[#0D1117] hover:text-[#E6EDF3] transition-colors"
                   >
                     <Settings className="h-4 w-4" />
                     Settings
                   </Link>
 
-                  <div className="border-t border-white/10/50 mt-1 pt-1">
+                  <div className="border-t border-[rgba(240,246,252,0.10)]/50 mt-1 pt-1">
                     <button
                       onClick={handleSignOut}
-                      className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-900/20 hover:text-red-400 transition-colors"
                     >
                       <LogOut className="h-4 w-4" />
                       Sign Out
@@ -209,13 +209,13 @@ export function Navbar() {
             <>
               <Link
                 href="/login"
-                className="bg-white/5 border border-white/10 text-white hover:bg-white/8 hover:border-white/15 rounded-lg px-4 py-2 text-sm hidden sm:inline-flex transition-colors font-medium"
+                className="btn-ghost px-4 py-2 text-sm hidden sm:inline-flex"
               >
                 Sign In
               </Link>
               <Link
                 href="/signup"
-                className="btn-primary px-5 py-2 text-sm font-semibold rounded-lg hidden sm:inline-flex"
+                className="btn-primary px-5 py-2 text-sm hidden sm:inline-flex"
               >
                 Sign Up
               </Link>

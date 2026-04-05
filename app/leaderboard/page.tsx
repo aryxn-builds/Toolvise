@@ -54,24 +54,24 @@ type TimeFilter = "all" | "month" | "week";
 function RankBadge({ rank }: { rank: number }) {
   if (rank === 1)
     return (
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-400 text-white text-base shadow-sm">
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-400 text-[#E6EDF3] text-base shadow-sm">
         🥇
       </span>
     );
   if (rank === 2)
     return (
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 text-white text-base shadow-sm">
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 text-[#E6EDF3] text-base shadow-sm">
         🥈
       </span>
     );
   if (rank === 3)
     return (
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#4F8EF7] text-white text-base shadow-sm">
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2EA043] text-[#E6EDF3] text-base shadow-sm">
         🥉
       </span>
     );
   return (
-    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0A0A0A] border border-white/10 text-[#F8F8F8]/60 text-xs font-bold">
+    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0D1117] border border-[rgba(240,246,252,0.10)] text-[#E6EDF3]/60 text-xs font-bold">
       {rank}
     </span>
   );
@@ -93,9 +93,9 @@ function UserAvatar({
     .slice(0, 2);
 
   return (
-    <Avatar className="h-10 w-10 border border-white/10">
+    <Avatar className="h-10 w-10 border border-[rgba(240,246,252,0.10)]">
       {url && <AvatarImage src={url} alt={name ?? ""} className="object-cover" />}
-      <AvatarFallback className="bg-gradient-to-br from-[#4F8EF7] to-[#00D4FF] text-white text-sm font-bold">
+      <AvatarFallback className="bg-gradient-primary text-[#E6EDF3] text-sm font-bold">
         {initials}
       </AvatarFallback>
     </Avatar>
@@ -109,7 +109,7 @@ function LeaderboardSkeleton() {
       {[1, 2, 3, 4, 5].map((n) => (
         <div
           key={n}
-          className="h-16 rounded-xl bg-[#0A0A0A] border border-white/10"
+          className="h-16 rounded-xl bg-[#0D1117] border border-[rgba(240,246,252,0.10)]"
         />
       ))}
     </div>
@@ -189,7 +189,7 @@ export default function LeaderboardPage() {
   ];
 
   return (
-    <div className="min-h-dvh bg-[#0A0A0A] text-[#F8F8F8]">
+    <div className="min-h-dvh bg-[#0D1117] text-[#E6EDF3]">
       <Navbar />
 
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8 space-y-8">
@@ -199,13 +199,13 @@ export default function LeaderboardPage() {
             <Trophy className="h-6 w-6 text-yellow-500" />
             <h1 className="text-2xl font-bold">Leaderboard</h1>
           </div>
-          <p className="text-sm text-[#F8F8F8]/50">
+          <p className="text-sm text-[#E6EDF3]/50">
             Top builders and most-upvoted stacks on Toolvise.
           </p>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 rounded-xl bg-[#0A0A0A] border border-white/10 p-1 w-fit">
+        <div className="flex gap-1 rounded-xl bg-[#0D1117] border border-[rgba(240,246,252,0.10)] p-1 w-fit">
           {(
             [
               { key: "builders", label: "🏆 Top Builders", icon: Users },
@@ -218,8 +218,8 @@ export default function LeaderboardPage() {
               className={cn(
                 "px-5 py-2 rounded-lg text-sm font-semibold transition-all",
                 tab === key
-                  ? "bg-[#0A0A0A] text-white shadow-sm"
-                  : "text-[#F8F8F8]/60 hover:text-[#F8F8F8] hover:bg-[#0A0A0A]"
+                  ? "bg-[#0D1117] text-[#E6EDF3] shadow-sm"
+                  : "text-[#E6EDF3]/60 hover:text-[#E6EDF3] hover:bg-[#0D1117]"
               )}
             >
               {label}
@@ -237,8 +237,8 @@ export default function LeaderboardPage() {
                 className={cn(
                   "px-4 py-1.5 rounded-full text-xs font-semibold border transition-all",
                   timeFilter === key
-                    ? "bg-neutral-900 text-white border-neutral-900"
-                    : "bg-[#0A0A0A] border-white/10 text-[#F8F8F8]/60 hover:border-neutral-900/30"
+                    ? "bg-neutral-900 text-[#E6EDF3] border-neutral-900"
+                    : "bg-[#0D1117] border-[rgba(240,246,252,0.10)] text-[#E6EDF3]/60 hover:border-neutral-900/30"
                 )}
               >
                 {label}
@@ -254,7 +254,7 @@ export default function LeaderboardPage() {
           /* ── Top Builders ──────────────────────────── */
           <div className="space-y-2">
             {builders.length === 0 ? (
-              <div className="text-center py-16 text-[#F8F8F8]/40">
+              <div className="text-center py-16 text-[#E6EDF3]/40">
                 <Users className="h-10 w-10 mx-auto mb-3 opacity-30" />
                 <p className="text-sm">No builders yet. Be the first!</p>
               </div>
@@ -263,8 +263,8 @@ export default function LeaderboardPage() {
                 <Card
                   key={builder.id}
                   className={cn(
-                    "border-white/10 bg-[#0A0A0A] hover:shadow-md transition-all",
-                    idx < 3 && "border-white/10 ring-1 ring-[#4F8EF7]/30/60"
+                    "card-3d hover:shadow-md transition-all",
+                    idx < 3 && "border-[rgba(240,246,252,0.10)] ring-1 ring-[#4F8EF7]/30/60"
                   )}
                 >
                   <CardContent className="p-4 flex items-center gap-4">
@@ -276,11 +276,11 @@ export default function LeaderboardPage() {
                     />
 
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm text-[#F8F8F8] truncate">
+                      <p className="font-semibold text-sm text-[#E6EDF3] truncate">
                         {builder.display_name || builder.username || "Anonymous"}
                       </p>
                       {builder.username && (
-                        <p className="text-xs text-[#F8F8F8]/40 truncate">
+                        <p className="text-xs text-[#E6EDF3]/40 truncate">
                           @{builder.username}
                         </p>
                       )}
@@ -288,22 +288,22 @@ export default function LeaderboardPage() {
 
                     <div className="flex items-center gap-4 shrink-0">
                       <div className="text-center hidden sm:block">
-                        <p className="text-sm font-bold text-[#F8F8F8]">
+                        <p className="text-sm font-bold text-[#E6EDF3]">
                           {builder.stacks_count ?? 0}
                         </p>
-                        <p className="text-xs text-[#F8F8F8]/40">Stacks</p>
+                        <p className="text-xs text-[#E6EDF3]/40">Stacks</p>
                       </div>
                       <div className="text-center hidden sm:block">
-                        <p className="text-sm font-bold text-[#F8F8F8]">
+                        <p className="text-sm font-bold text-[#E6EDF3]">
                           {builder.followers_count ?? 0}
                         </p>
-                        <p className="text-xs text-[#F8F8F8]/40">Followers</p>
+                        <p className="text-xs text-[#E6EDF3]/40">Followers</p>
                       </div>
 
                       {builder.username && (
                         <Link
                           href={`/profile/${builder.username}`}
-                          className="flex items-center gap-1 text-xs font-semibold text-[#4F8EF7] hover:text-[#4F8EF7] transition-colors whitespace-nowrap"
+                          className="flex items-center gap-1 text-xs font-semibold text-[#2EA043] hover:text-[#2EA043] transition-colors whitespace-nowrap"
                         >
                           View Profile
                           <ArrowUpRight className="h-3.5 w-3.5" />
@@ -319,7 +319,7 @@ export default function LeaderboardPage() {
           /* ── Top Stacks ────────────────────────────── */
           <div className="space-y-2">
             {stacks.length === 0 ? (
-              <div className="text-center py-16 text-[#F8F8F8]/40">
+              <div className="text-center py-16 text-[#E6EDF3]/40">
                 <Layers className="h-10 w-10 mx-auto mb-3 opacity-30" />
                 <p className="text-sm">No stacks found for this time period.</p>
               </div>
@@ -332,7 +332,7 @@ export default function LeaderboardPage() {
                   <Card
                     key={stack.id}
                     className={cn(
-                      "border-white/10 bg-[#0A0A0A] hover:shadow-md transition-all",
+                      "card-3d hover:shadow-md transition-all",
                       idx < 3 && "ring-1 ring-[#4F8EF7]/30/60"
                     )}
                   >
@@ -340,7 +340,7 @@ export default function LeaderboardPage() {
                       <RankBadge rank={idx + 1} />
 
                       <div className="flex-1 min-w-0 space-y-1.5">
-                        <p className="text-sm font-semibold text-[#F8F8F8] line-clamp-2">
+                        <p className="text-sm font-semibold text-[#E6EDF3] line-clamp-2">
                           &quot;{stack.user_input}&quot;
                         </p>
                         <div className="flex items-center gap-2 flex-wrap">
@@ -351,13 +351,13 @@ export default function LeaderboardPage() {
                                 url={profile.avatar_url}
                                 name={profile.display_name || profile.username}
                               />
-                              <span className="text-xs text-[#F8F8F8]/50">
+                              <span className="text-xs text-[#E6EDF3]/50">
                                 {profile.display_name || profile.username || "Anonymous"}
                               </span>
                             </div>
                           )}
                           {stack.build_style && (
-                            <Badge className="text-[10px] border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/60">
+                            <Badge className="text-[10px] card-3d text-[#E6EDF3]/60">
                               {stack.build_style}
                             </Badge>
                           )}
@@ -368,19 +368,19 @@ export default function LeaderboardPage() {
                         {/* Upvotes */}
                         <div className="text-center">
                           <div className="flex items-center gap-1 justify-center">
-                            <Flame className="h-3.5 w-3.5 text-[#4F8EF7]" />
-                            <span className="text-sm font-bold text-[#F8F8F8]">
+                            <Flame className="h-3.5 w-3.5 text-[#2EA043]" />
+                            <span className="text-sm font-bold text-[#E6EDF3]">
                               {stack.upvotes ?? 0}
                             </span>
                           </div>
-                          <p className="text-xs text-[#F8F8F8]/40">upvotes</p>
+                          <p className="text-xs text-[#E6EDF3]/40">upvotes</p>
                         </div>
 
                         {/* Score intentionally hidden from public leaderboard */}
 
                         <Link
                           href={`/result?slug=${stack.share_slug}`}
-                          className="flex items-center gap-1 text-xs font-semibold text-[#4F8EF7] hover:text-[#4F8EF7] transition-colors whitespace-nowrap"
+                          className="flex items-center gap-1 text-xs font-semibold text-[#2EA043] hover:text-[#2EA043] transition-colors whitespace-nowrap"
                         >
                           View Stack
                           <ArrowUpRight className="h-3.5 w-3.5" />

@@ -10,7 +10,7 @@ const badgeVariants = cva(
         default: "bg-primary-light text-primary border-primary-muted hover:bg-primary-muted",
         secondary: "bg-primary-muted text-primary-hover hover:bg-neutral-lighter",
         destructive: "bg-destructive/10 text-destructive",
-        outline: "border-white/10 text-[#F8F8F8]",
+        outline: "border-[rgba(240,246,252,0.10)] text-[#E6EDF3]",
         ghost: "hover:bg-primary-light hover:text-primary",
         link: "text-primary underline-offset-4 hover:underline",
       },

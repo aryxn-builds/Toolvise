@@ -65,11 +65,11 @@ function ScoreBar({
 }) {
   return (
     <div className="flex items-center gap-2 flex-1">
-      <div className="flex-1 h-2 rounded-full bg-[#4F8EF7]/40 overflow-hidden">
+      <div className="flex-1 h-2 rounded-full bg-[#2EA043]/40 overflow-hidden">
         <div
           className={cn(
             "h-full rounded-full transition-all duration-300",
-            isWinner ? "bg-[#0A0A0A]" : "bg-neutral-900/20"
+            isWinner ? "bg-[#0D1117]" : "bg-neutral-900/20"
           )}
           style={{ width: `${(value / 10) * 100}%` }}
         />
@@ -77,7 +77,7 @@ function ScoreBar({
       <span
         className={cn(
           "text-sm font-bold w-8 text-right",
-          isWinner ? "text-[#4F8EF7]" : "text-[#F8F8F8]/50"
+          isWinner ? "text-[#2EA043]" : "text-[#E6EDF3]/50"
         )}
       >
         {value}/10
@@ -91,7 +91,7 @@ function CompareSkeleton() {
   return (
     <div className="animate-pulse space-y-4">
       {[1, 2, 3, 4, 5].map((n) => (
-        <div key={n} className="h-14 bg-[#0A0A0A] rounded-xl border border-white/10" />
+        <div key={n} className="h-14 bg-[#0D1117] rounded-xl border border-[rgba(240,246,252,0.10)]" />
       ))}
     </div>
   );
@@ -266,31 +266,31 @@ function CompareContent() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#0A0A0A] text-[#F8F8F8]">
+    <div className="min-h-dvh bg-[#0D1117] text-[#E6EDF3]">
       <Navbar />
 
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 space-y-8">
         {/* Page title */}
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <GitCompare className="h-6 w-6 text-[#4F8EF7]" />
+            <GitCompare className="h-6 w-6 text-[#2EA043]" />
             <h1 className="text-2xl font-bold">Stack Comparison</h1>
           </div>
-          <p className="text-sm text-[#F8F8F8]/50">
+          <p className="text-sm text-[#E6EDF3]/50">
             Compare two Toolvise stacks side by side to see which one fits your needs better.
           </p>
         </div>
 
         {/* ── SECTION 1: Input ─────────────────────────────────────────── */}
-        <section className="rounded-2xl border border-white/10 bg-[#0A0A0A] p-6 space-y-6">
+        <section className="card-3d p-6 space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="font-semibold text-[#F8F8F8]">Select Stacks to Compare</h2>
+            <h2 className="font-semibold text-[#E6EDF3]">Select Stacks to Compare</h2>
           </div>
 
           <div className="flex flex-col sm:flex-row items-stretch gap-6 relative">
             <div className="space-y-2 flex-1">
-              <label className="text-xs font-bold text-[#4F8EF7] uppercase tracking-wider flex items-center gap-1.5">
-                <Badge className="h-2 w-2 rounded-full bg-[#0A0A0A] p-0" /> Stack A
+              <label className="text-xs font-bold text-[#2EA043] uppercase tracking-wider flex items-center gap-1.5">
+                <Badge className="h-2 w-2 rounded-full bg-[#0D1117] p-0" /> Stack A
               </label>
               <div className="relative group">
                 <input
@@ -298,12 +298,12 @@ function CompareContent() {
                   value={slugA}
                   onChange={(e) => setSlugA(e.target.value)}
                   placeholder="Paste URL or select from below"
-                  className="w-full rounded-xl border border-white/10 bg-[#0A0A0A]/20 px-4 py-3.5 text-sm outline-none focus:border-[#4F8EF7] focus:ring-4 focus:ring-[#4F8EF7]/30/10 transition-all font-mono"
+                  className="w-full card-3d/20 px-4 py-3.5 text-sm outline-none focus:border-[#2EA043] focus:ring-4 focus:ring-[#4F8EF7]/30/10 transition-all font-mono"
                 />
                 {slugA && (
                   <button 
                     onClick={() => setSlugA("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#F8F8F8]/20 hover:text-[#F8F8F8]/60"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#E6EDF3]/20 hover:text-[#E6EDF3]/60"
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
                   </button>
@@ -314,7 +314,7 @@ function CompareContent() {
             <div className="flex items-center justify-center pt-6">
               <button 
                 onClick={handleSwap}
-                className="h-10 w-10 flex items-center justify-center rounded-full bg-[#0A0A0A] border border-white/10 hover:border-[#4F8EF7] hover:scale-110 active:scale-95 text-[#4F8EF7] transition-all shadow-md z-10 group"
+                className="h-10 w-10 flex items-center justify-center rounded-full bg-[#0D1117] border border-[rgba(240,246,252,0.10)] hover:border-[#2EA043] hover:scale-110 active:scale-95 text-[#2EA043] transition-all shadow-md z-10 group"
                 title="Swap stacks"
               >
                 <GitCompare className="h-5 w-5 group-hover:rotate-180 transition-transform duration-500" />
@@ -322,7 +322,7 @@ function CompareContent() {
             </div>
             
             <div className="space-y-2 flex-1">
-              <label className="text-xs font-bold text-[#4F8EF7] uppercase tracking-wider flex items-center gap-1.5">
+              <label className="text-xs font-bold text-[#2EA043] uppercase tracking-wider flex items-center gap-1.5">
                 <Badge className="h-2 w-2 rounded-full bg-blue-600 p-0" /> Stack B
               </label>
               <div className="relative group">
@@ -331,12 +331,12 @@ function CompareContent() {
                   value={slugB}
                   onChange={(e) => setSlugB(e.target.value)}
                   placeholder="Paste URL or select from below"
-                  className="w-full rounded-xl border border-white/10 bg-[#0A0A0A]/20 px-4 py-3.5 text-sm outline-none focus:border-[#4F8EF7] focus:ring-4 focus:ring-[#4F8EF7]/30/10 transition-all font-mono"
+                  className="w-full card-3d/20 px-4 py-3.5 text-sm outline-none focus:border-[#2EA043] focus:ring-4 focus:ring-[#4F8EF7]/30/10 transition-all font-mono"
                 />
                 {slugB && (
                   <button 
                     onClick={() => setSlugB("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#F8F8F8]/20 hover:text-[#F8F8F8]/60"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#E6EDF3]/20 hover:text-[#E6EDF3]/60"
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
                   </button>
@@ -346,7 +346,7 @@ function CompareContent() {
           </div>
 
           {errorMsg && (
-            <p className="text-sm text-red-500 bg-red-50 border border-red-100 rounded-xl px-4 py-2.5">
+            <p className="text-sm text-red-500 bg-red-900/20 border border-red-500/30 rounded-xl px-4 py-2.5">
               ⚠️ {errorMsg}
             </p>
           )}
@@ -354,7 +354,7 @@ function CompareContent() {
           <Button
             onClick={() => handleCompare()}
             disabled={loading}
-            className="bg-[#0A0A0A] text-white hover:bg-[#4F8EF7] rounded-xl px-6 h-11 font-semibold shadow-sm"
+            className="btn-primary px-6 h-11 font-semibold shadow-sm"
           >
             {loading ? (
               <>
@@ -371,8 +371,8 @@ function CompareContent() {
 
           {/* Recent stacks quick-picks */}
           {recentSlugs.length > 0 && (
-            <div className="space-y-3 pt-4 border-t border-white/10/50">
-              <p className="text-xs font-bold text-[#F8F8F8]/30 uppercase tracking-widest">Your Recent Generations</p>
+            <div className="space-y-3 pt-4 border-t border-[rgba(240,246,252,0.10)]/50">
+              <p className="text-xs font-bold text-[#E6EDF3]/30 uppercase tracking-widest">Your Recent Generations</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                 {recentSlugs.map((r) => (
                   <button
@@ -381,10 +381,10 @@ function CompareContent() {
                       if (!slugA) setSlugA(r.slug);
                       else if (!slugB && r.slug !== slugA) setSlugB(r.slug);
                     }}
-                    className="group text-left text-xs p-3 rounded-xl border border-white/10 bg-[#0A0A0A]/20 text-[#F8F8F8] hover:border-[#4F8EF7] hover:bg-[#0A0A0A] transition-all flex items-center justify-between"
+                    className="group text-left text-xs p-3 card-3d/20 text-[#E6EDF3] hover:border-[#2EA043] hover:bg-[#0D1117] transition-all flex items-center justify-between"
                   >
                     <span className="truncate pr-2 font-medium">{r.label || r.slug}</span>
-                    <Badge className="bg-[#4F8EF7]/40 text-[#F8F8F8]/40 p-0 px-1.5 group-hover:bg-[#0A0A0A]/10 group-hover:text-[#4F8EF7] transition-colors">Select</Badge>
+                    <Badge className="bg-[#2EA043]/40 text-[#E6EDF3]/40 p-0 px-1.5 group-hover:bg-[#0D1117]/10 group-hover:text-[#2EA043] transition-colors">Select</Badge>
                   </button>
                 ))}
               </div>
@@ -402,17 +402,17 @@ function CompareContent() {
               {[stackA, stackB].map((stack, i) => (
                 <div
                   key={i}
-                  className="rounded-2xl border border-white/10 bg-[#0A0A0A] p-5 space-y-2"
+                  className="card-3d p-5 space-y-2"
                 >
-                  <Badge className="bg-[#0A0A0A]/10 border-[#4F8EF7]/25 text-[#4F8EF7] text-xs font-bold">
+                  <Badge className="bg-[#0D1117]/10 border-[#2EA043]/25 text-[#2EA043] text-xs font-bold">
                     Stack {i === 0 ? "A" : "B"}
                   </Badge>
-                  <p className="text-sm font-semibold text-[#F8F8F8] line-clamp-2">
+                  <p className="text-sm font-semibold text-[#E6EDF3] line-clamp-2">
                     &quot;{stack.userInput}&quot;
                   </p>
                   <Link
                     href={`/result?slug=${stack.shareSlug}`}
-                    className="flex items-center gap-1 text-xs text-[#4F8EF7] hover:underline"
+                    className="flex items-center gap-1 text-xs text-[#2EA043] hover:underline"
                   >
                     View full stack <ArrowUpRight className="h-3 w-3" />
                   </Link>
@@ -422,15 +422,15 @@ function CompareContent() {
 
             {/* Score Card Comparison */}
             {(stackA.scoreCard || stackB.scoreCard) && (
-              <Card className="border-white/10 bg-[#0A0A0A] overflow-hidden shadow-sm">
-                <div className="h-1.5 bg-gradient-to-r from-[#4F8EF7] to-[#00D4FF]" />
+              <Card className="card-3d overflow-hidden shadow-sm">
+                <div className="h-1.5 bg-gradient-primary" />
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg font-bold flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Trophy className="h-5 w-5 text-[#4F8EF7]" />
+                      <Trophy className="h-5 w-5 text-[#2EA043]" />
                       Performance Metrics
                     </div>
-                    <Badge variant="outline" className="text-[10px] uppercase font-bold text-[#4F8EF7] border-[#4F8EF7]/15 bg-[#0A0A0A]/5">
+                    <Badge variant="outline" className="text-[10px] uppercase font-bold text-[#2EA043] border-[#2EA043]/15 bg-[#0D1117]/5">
                       {verdictData?.winner === 'Tie' ? 'Tie Matchup' : 'Side-by-Side'}
                     </Badge>
                   </CardTitle>
@@ -446,13 +446,13 @@ function CompareContent() {
                     return (
                       <div key={label} className="space-y-2">
                         <div className="flex justify-between items-center px-1">
-                          <p className="text-xs font-bold text-[#F8F8F8] uppercase tracking-wider">{label}</p>
+                          <p className="text-xs font-bold text-[#E6EDF3] uppercase tracking-wider">{label}</p>
                           {isTie ? (
-                            <span className="text-[10px] font-bold text-[#F8F8F8]/30">TIE</span>
+                            <span className="text-[10px] font-bold text-[#E6EDF3]/30">TIE</span>
                           ) : (
                             <span className={cn(
                               "text-[10px] font-bold uppercase",
-                              aWins ? "text-[#4F8EF7]" : "text-[#4F8EF7]"
+                              aWins ? "text-[#2EA043]" : "text-[#2EA043]"
                             )}>
                               {aWins ? "Stack A favored" : "Stack B favored"}
                             </span>
@@ -461,13 +461,13 @@ function CompareContent() {
                         <div className="grid grid-cols-2 gap-6">
                           <div className={cn(
                             "rounded-xl px-4 py-3 transition-all",
-                            aWins ? "bg-[#0A0A0A]/5 border-2 border-[#4F8EF7]/15" : "bg-white/5/50 border border-transparent"
+                            aWins ? "bg-[#0D1117]/5 border-2 border-[#2EA043]/15" : "bg-[#161B22]/5/50 border border-transparent"
                           )}>
                             <ScoreBar value={vA} isWinner={aWins} />
                           </div>
                           <div className={cn(
                             "rounded-xl px-4 py-3 transition-all",
-                            bWins ? "bg-[#4F8EF7]/10 border-2 border-[#4F8EF7]/30" : "bg-white/5/50 border border-transparent"
+                            bWins ? "bg-[#2EA043]/10 border-2 border-[#2EA043]/30" : "bg-[#161B22]/5/50 border border-transparent"
                           )}>
                             <ScoreBar value={vB} isWinner={bWins} />
                           </div>
@@ -477,39 +477,39 @@ function CompareContent() {
                   })}
 
                   {/* Overall Summary Row */}
-                  <div className="pt-6 border-t border-white/10/50 grid grid-cols-2 gap-6">
+                  <div className="pt-6 border-t border-[rgba(240,246,252,0.10)]/50 grid grid-cols-2 gap-6">
                     {[stackA, stackB].map((stack, i) => {
                       const isWinner = verdictData?.winner === (i === 0 ? "A" : "B");
                       return (
                         <div key={i} className={cn(
                           "relative text-center rounded-2xl p-6 transition-all duration-500",
                           i === 0 
-                            ? (isWinner ? "bg-[#0F0F0F] border-2 border-[#4F8EF7] shadow-[0_0_20px_rgba(0,212,255,0.15)] ring-1 ring-[#4F8EF7]/50" : "bg-[#0A0A0A] border-2 border-white/10") 
-                            : (isWinner ? "bg-[#4F8EF7]/10 border-2 border-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.15)] ring-1 ring-blue-400/50" : "bg-[#4F8EF7]/10/50 border-2 border-[#4F8EF7]/20")
+                            ? (isWinner ? "bg-[#0D1117] border-2 border-[#2EA043] shadow-[0_0_20px_rgba(0,212,255,0.15)] ring-1 ring-[#4F8EF7]/50" : "bg-[#0D1117] border-2 border-[rgba(240,246,252,0.10)]") 
+                            : (isWinner ? "bg-[#2EA043]/10 border-2 border-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.15)] ring-1 ring-blue-400/50" : "bg-[#2EA043]/10/50 border-2 border-[#2EA043]/20")
                         )}>
                           {isWinner && (
                             <div className={cn(
                               "absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest shadow-sm",
-                              i === 0 ? "bg-[#0F0F0F] border-[#4F8EF7] text-white" : "bg-blue-600 border-blue-400 text-white"
+                              i === 0 ? "bg-[#0D1117] border-[#2EA043] text-[#E6EDF3]" : "bg-blue-600 border-blue-400 text-[#E6EDF3]"
                             )}>
                               Overall Winner
                             </div>
                           )}
                           {!isWinner && (
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[#0A0A0A] border border-inherit text-[10px] font-bold uppercase tracking-widest text-[#F8F8F8]/40">
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[#0D1117] border border-inherit text-[10px] font-bold uppercase tracking-widest text-[#E6EDF3]/40">
                               Final Weight
                             </div>
                           )}
                           <p className={cn(
                             "text-4xl font-black mb-1",
-                            isWinner ? (i === 0 ? "text-[#4F8EF7]" : "text-[#4F8EF7]") : "text-[#F8F8F8]"
+                            isWinner ? (i === 0 ? "text-[#2EA043]" : "text-[#2EA043]") : "text-[#E6EDF3]"
                           )}>
                             {stack.scoreCard?.overallScore ?? "—"}
                             <span className="text-lg font-normal opacity-30">/10</span>
                           </p>
                           <p className={cn(
                             "text-xs font-bold uppercase tracking-wider",
-                            i === 0 ? "text-[#4F8EF7]" : "text-[#4F8EF7]"
+                            i === 0 ? "text-[#2EA043]" : "text-[#2EA043]"
                           )}>
                             Stack {i === 0 ? "A" : "B"}
                           </p>
@@ -522,10 +522,10 @@ function CompareContent() {
             )}
 
             {/* Tools Comparison */}
-            <Card className="border-white/10 bg-[#0A0A0A] shadow-sm overflow-hidden">
-              <CardHeader className="bg-[#0A0A0A]/20 border-b border-white/10/30">
+            <Card className="card-3d shadow-sm overflow-hidden">
+              <CardHeader className="bg-[#0D1117]/20 border-b border-[rgba(240,246,252,0.10)]/30">
                 <CardTitle className="text-base font-bold flex items-center gap-2">
-                  <Zap className="h-4 w-4 text-[#4F8EF7]" />
+                  <Zap className="h-4 w-4 text-[#2EA043]" />
                   Architecture Comparison
                 </CardTitle>
               </CardHeader>
@@ -537,18 +537,18 @@ function CompareContent() {
                   return (
                     <div className="grid grid-cols-2 gap-8 relative">
                       {/* Divider line */}
-                      <div className="absolute left-1/2 top-0 bottom-0 w-px bg-[#4F8EF7]/50 hidden sm:block" />
+                      <div className="absolute left-1/2 top-0 bottom-0 w-px bg-[#2EA043]/80 hidden sm:block" />
                       
                       {[
-                        { stack: stackA, otherSet: toolNamesB, label: "A", color: "text-[#4F8EF7]" },
-                        { stack: stackB, otherSet: toolNamesA, label: "B", color: "text-[#4F8EF7]" },
+                        { stack: stackA, otherSet: toolNamesB, label: "A", color: "text-[#2EA043]" },
+                        { stack: stackB, otherSet: toolNamesA, label: "B", color: "text-[#2EA043]" },
                       ].map(({ stack, otherSet, label, color }) => (
                         <div key={label} className="space-y-4">
                           <p className={cn("text-sm font-black uppercase tracking-widest", color)}>Stack {label}</p>
                           <div className="space-y-4">
                             {getGroupedTools(stack.tools).map((group) => (
                               <div key={group.category} className="space-y-1.5">
-                                <p className="text-[10px] font-bold text-[#F8F8F8]/40 uppercase tracking-tighter">{group.category}</p>
+                                <p className="text-[10px] font-bold text-[#E6EDF3]/40 uppercase tracking-tighter">{group.category}</p>
                                 <div className="flex flex-wrap gap-1.5">
                                   {group.tools.map((tool) => {
                                     const inCommon = otherSet.has(tool.name.toLowerCase());
@@ -559,8 +559,8 @@ function CompareContent() {
                                         className={cn(
                                           "px-2 py-1 text-xs font-medium transition-all",
                                           inCommon
-                                            ? "bg-[#00D4FF]/10 border-[#00D4FF]/30 text-[#00D4FF] font-bold"
-                                            : "border-white/10 bg-[#0A0A0A] text-[#F8F8F8]/70"
+                                            ? "bg-[#1ABC9C]/10 border-[#00D4FF]/30 text-[#1ABC9C] font-bold"
+                                            : "card-3d text-[#E6EDF3]/70"
                                         )}
                                       >
                                         {inCommon && <Check className="mr-1 h-3 w-3 stroke-[3]" />}
@@ -578,9 +578,9 @@ function CompareContent() {
                   );
                 })()}
                 <div className="mt-8 flex items-center justify-center">
-                  <div className="bg-[#00D4FF]/10 border border-[#00D4FF]/20 rounded-full px-4 py-1.5 flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-[#00D4FF]/100 animate-pulse" />
-                    <p className="text-[10px] font-bold text-[#00D4FF] uppercase tracking-wider">
+                  <div className="bg-[#1ABC9C]/10 border border-[#00D4FF]/20 rounded-full px-4 py-1.5 flex items-center gap-2">
+                    <div className="h-2 w-2 rounded-full bg-[#1ABC9C]/100 animate-pulse" />
+                    <p className="text-[10px] font-bold text-[#1ABC9C] uppercase tracking-wider">
                       Shared tools are highlighted in bold green
                     </p>
                   </div>
@@ -591,18 +591,18 @@ function CompareContent() {
             {/* Estimated Time + Build Style */}
             <div className="grid sm:grid-cols-2 gap-4">
               {[stackA, stackB].map((stack, i) => (
-                <Card key={i} className="border-white/10 bg-[#0A0A0A]">
+                <Card key={i} className="card-3d">
                   <CardContent className="p-5 space-y-3">
-                    <Badge className="bg-[#0A0A0A]/10 border-[#4F8EF7]/25 text-[#4F8EF7] text-xs">
+                    <Badge className="bg-[#0D1117]/10 border-[#2EA043]/25 text-[#2EA043] text-xs">
                       Stack {i === 0 ? "A" : "B"}
                     </Badge>
                     <div>
-                      <p className="text-xs text-[#F8F8F8]/50 mb-0.5">⏱ Estimated Time</p>
+                      <p className="text-xs text-[#E6EDF3]/50 mb-0.5">⏱ Estimated Time</p>
                       <p className="text-sm font-semibold">{stack.estimatedTime || "—"}</p>
                     </div>
                     {stack.buildStyle && (
                       <div>
-                        <p className="text-xs text-[#F8F8F8]/50 mb-0.5">🏗 Build Style</p>
+                        <p className="text-xs text-[#E6EDF3]/50 mb-0.5">🏗 Build Style</p>
                         <p className="text-sm font-semibold">{stack.buildStyle}</p>
                       </div>
                     )}
@@ -612,8 +612,8 @@ function CompareContent() {
             </div>
 
             {/* AI Verdict */}
-            <Card className="border-white/10 bg-[#0A0A0A] overflow-hidden">
-              <div className="h-1 bg-gradient-to-r from-[#4F8EF7] to-[#00D4FF]" />
+            <Card className="card-3d overflow-hidden">
+              <div className="h-1 bg-gradient-primary" />
               <CardHeader>
                 <CardTitle className="text-base font-bold flex items-center gap-2">
                   🤖 AI Verdict
@@ -624,7 +624,7 @@ function CompareContent() {
                   <Button
                     onClick={handleGetVerdict}
                     disabled={verdictLoading}
-                    className="bg-[#0A0A0A] text-white hover:bg-[#4F8EF7] rounded-xl font-semibold"
+                    className="btn-primary font-semibold"
                   >
                     {verdictLoading ? (
                       <>
@@ -642,9 +642,9 @@ function CompareContent() {
                   <div className="space-y-4">
                     {/* Winner badge */}
                     <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-2 bg-[#0A0A0A]/10 border border-[#4F8EF7]/25 rounded-xl px-4 py-2">
-                        <Trophy className="h-5 w-5 text-[#4F8EF7]" />
-                        <span className="font-bold text-[#4F8EF7]">
+                      <div className="flex items-center gap-2 bg-[#0D1117]/10 border border-[#2EA043]/25 rounded-xl px-4 py-2">
+                        <Trophy className="h-5 w-5 text-[#2EA043]" />
+                        <span className="font-bold text-[#2EA043]">
                           {verdictData.winner === "Tie"
                             ? "It's a Tie!"
                             : `Stack ${verdictData.winner} Wins`}
@@ -652,12 +652,12 @@ function CompareContent() {
                       </div>
                     </div>
 
-                    <p className="text-sm text-[#F8F8F8]/80 leading-relaxed">{verdictData.verdict}</p>
+                    <p className="text-sm text-[#E6EDF3]/80 leading-relaxed">{verdictData.verdict}</p>
 
                     <ul className="space-y-2">
                       {verdictData.reasons.map((r, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm text-[#F8F8F8]/70">
-                          <span className="mt-0.5 h-4 w-4 rounded-full bg-[#0A0A0A]/20 text-[#4F8EF7] text-xs flex items-center justify-center shrink-0 font-bold">
+                        <li key={i} className="flex items-start gap-2 text-sm text-[#E6EDF3]/70">
+                          <span className="mt-0.5 h-4 w-4 rounded-full bg-[#0D1117]/20 text-[#2EA043] text-xs flex items-center justify-center shrink-0 font-bold">
                             {i + 1}
                           </span>
                           {r}
@@ -668,15 +668,15 @@ function CompareContent() {
                     {(verdictData.bestForA || verdictData.bestForB) && (
                       <div className="grid sm:grid-cols-2 gap-3 pt-2">
                         {verdictData.bestForA && (
-                          <div className="rounded-xl bg-[#0A0A0A] border border-white/10 p-3">
-                            <p className="text-xs font-bold text-[#F8F8F8]/50 mb-1">Best for Stack A:</p>
-                            <p className="text-xs text-[#F8F8F8]/70">{verdictData.bestForA}</p>
+                          <div className="rounded-xl bg-[#0D1117] border border-[rgba(240,246,252,0.10)] p-3">
+                            <p className="text-xs font-bold text-[#E6EDF3]/50 mb-1">Best for Stack A:</p>
+                            <p className="text-xs text-[#E6EDF3]/70">{verdictData.bestForA}</p>
                           </div>
                         )}
                         {verdictData.bestForB && (
-                          <div className="rounded-xl bg-[#0A0A0A] border border-white/10 p-3">
-                            <p className="text-xs font-bold text-[#F8F8F8]/50 mb-1">Best for Stack B:</p>
-                            <p className="text-xs text-[#F8F8F8]/70">{verdictData.bestForB}</p>
+                          <div className="rounded-xl bg-[#0D1117] border border-[rgba(240,246,252,0.10)] p-3">
+                            <p className="text-xs font-bold text-[#E6EDF3]/50 mb-1">Best for Stack B:</p>
+                            <p className="text-xs text-[#E6EDF3]/70">{verdictData.bestForB}</p>
                           </div>
                         )}
                       </div>
@@ -691,7 +691,7 @@ function CompareContent() {
               <Button
                 onClick={handleShare}
                 variant="outline"
-                className="border-white/10 bg-[#0A0A0A] text-[#F8F8F8] hover:bg-[#0A0A0A] rounded-xl font-semibold w-full sm:w-auto"
+                className="card-3d text-[#E6EDF3] hover:bg-[#0D1117] rounded-xl font-semibold w-full sm:w-auto"
               >
                 {copied ? (
                   <>
@@ -700,12 +700,12 @@ function CompareContent() {
                   </>
                 ) : (
                   <>
-                    <Share2 className="mr-2 h-4 w-4 text-[#4F8EF7]" />
+                    <Share2 className="mr-2 h-4 w-4 text-[#2EA043]" />
                     Share this Comparison
                   </>
                 )}
               </Button>
-              <Link href="/explore" className="text-sm text-[#F8F8F8]/50 hover:text-[#F8F8F8] transition-colors">
+              <Link href="/explore" className="text-sm text-[#E6EDF3]/50 hover:text-[#E6EDF3] transition-colors">
                 Browse more stacks →
               </Link>
             </div>
@@ -721,8 +721,8 @@ export default function ComparePage() {
   return (
     <React.Suspense
       fallback={
-        <div className="flex min-h-dvh items-center justify-center bg-[#0A0A0A]">
-          <Loader2 className="h-8 w-8 animate-spin text-[#4F8EF7]" />
+        <div className="flex min-h-dvh items-center justify-center bg-[#0D1117]">
+          <Loader2 className="h-8 w-8 animate-spin text-[#2EA043]" />
         </div>
       }
     >
