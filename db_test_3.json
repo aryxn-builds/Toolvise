@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "id": "7037c6d9-9a6d-4be9-9525-46b6d8515d9f",
+      "user_input": "test insert from node script",
+      "project_type": null,
+      "skill_level": "beginner",
+      "budget": "free",
+      "goal": "production",
+      "tools": null,
+      "stack_summary": null,
+      "share_slug": "testhaha123",
+      "upvotes": 0,
+      "created_at": "2026-04-06T22:01:54.973331+00:00",
+      "summary": null,
+      "roadmap": null,
+      "estimated_time": null,
+      "pro_tip": null,
+      "build_style": "vibe",
+      "vibe_coding": null,
+      "score_card": null,
+      "detail_level": null,
+      "user_id": null,
+      "is_public": true,
+      "is_featured": false
+    }
+  ],
+  "error": null
+}

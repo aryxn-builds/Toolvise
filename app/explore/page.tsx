@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { createClient } from "@/lib/supabase/client"
 import { cn } from "@/lib/utils"
 import { Navbar } from "@/components/Navbar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 const FILTERS = ["All", "Frontend", "Backend", "AI", "Mobile", "Full Stack"]
 
@@ -31,6 +32,12 @@ interface StackDB {
   budget: string
   goal: string
   tools: Tool[]
+  user_id: string
+  profiles?: {
+    username: string | null
+    display_name: string | null
+    avatar_url: string | null
+  } | null
   upvotes: number
   _voted?: boolean // local optimistic flag
 }
@@ -92,7 +99,10 @@ export default function ExplorePage() {
     else setLoading(true)
 
     const supabase = createClient()
-    let query = supabase.from("stacks").select("*", { count: "exact" }).eq("is_public", true)
+    let query = supabase
+      .from("stacks")
+      .select("*, profiles(username, avatar_url, display_name)", { count: "exact" })
+      .eq("is_public", true)
 
     // Build standard PostgREST matching logic
     if (search.trim()) {
@@ -301,11 +311,21 @@ export default function ExplorePage() {
                   
                   <CardContent className="flex flex-1 flex-col p-6 h-full">
                     {/* Top Badges */}
-                    <div className="flex items-start justify-between gap-2 mb-4 shrink-0">
-                      <Badge className="bg-[#0D1117] text-[#E6EDF3]/80 border-0 uppercase tracking-wider text-[10px] font-bold">
-                        {stack.skill_level}
-                      </Badge>
-                      <Badge className="bg-[#0D1117]/20 text-[#8B949E] border-0 text-[10px] font-bold uppercase tracking-wider">
+                    <div className="flex items-start justify-between gap-2 mb-4 shrink-0 px-2">
+                       <div className="flex items-center gap-2 overflow-hidden">
+                        <Avatar className="h-6 w-6 border border-white/10">
+                          {stack.profiles?.avatar_url && (
+                            <AvatarImage src={stack.profiles.avatar_url} />
+                          )}
+                          <AvatarFallback className="bg-gradient-primary text-[8px] font-bold text-white uppercase">
+                            {(stack.profiles?.display_name || stack.profiles?.username || "A")[0]}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="truncate text-xs font-medium text-[#8B949E]">
+                          {stack.profiles?.display_name || (stack.profiles?.username ? `@${stack.profiles.username}` : "Anonymous")}
+                        </span>
+                      </div>
+                      <Badge className="bg-[#0D1117]/20 text-[#8B949E] border-0 text-[9px] font-bold uppercase tracking-wider h-fit mt-1 shrink-0">
                         {stack.goal}
                       </Badge>
                     </div>

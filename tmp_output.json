@@ -1,0 +1,680 @@
+{
+  "error": null,
+  "count": 80,
+  "data": [
+    {
+      "id": "a58f90fd-9fa6-4294-8248-f13294eb20f8",
+      "user_input": "i want to make a chess game",
+      "project_type": null,
+      "skill_level": "beginner",
+      "budget": "mix",
+      "goal": "freelance",
+      "tools": [
+        {
+          "name": "React",
+          "isFree": true,
+          "reason": "React is a leading JavaScript library for building user interfaces, highly in-demand for freelancing. Its component-based architecture makes it ideal for managing complex UIs like a chessboard, and it integrates well with AI coding tools for rapid development.",
+          "category": "Frontend",
+          "learnUrl": "https://react.dev/learn",
+          "difficulty": "Beginner"
+        },
+        {
+          "name": "Vite",
+          "isFree": true,
+          "reason": "Vite is a next-generation frontend tooling that provides an incredibly fast development server and build process. It makes setting up a React project simple and significantly speeds up your development workflow, which is perfect for a beginner and 'vibe coding'.",
+          "category": "DevOps",
+          "learnUrl": "https://vitejs.dev/guide/",
+          "difficulty": "Beginner"
+        },
+        {
+          "name": "Tailwind CSS",
+          "isFree": true,
+          "reason": "Tailwind CSS is a utility-first CSS framework that allows you to build custom designs directly in your HTML. It's excellent for quickly styling components and achieving a professional look without writing traditional CSS, which AI tools excel at generating.",
+          "category": "Frontend",
+          "learnUrl": "https://tailwindcss.com/docs/installation",
+          "difficulty": "Beginner"
+        },
+        {
+          "name": "JavaScript",
+          "isFree": true,
+          "reason": "As the core language for web development and React, a solid understanding of JavaScript is crucial. Most of your game logic (piece movements, turn management) will be implemented in JavaScript, with AI assisting you in writing clean and efficient code.",
+          "category": "Frontend",
+          "learnUrl": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+          "difficulty": "Beginner"
+        },
+        {
+          "name": "Vercel",
+          "isFree": true,
+          "reason": "Vercel offers incredibly simple and fast deployment for frontend projects, especially those built with React/Vite. It provides continuous deployment directly from your Git repository, making it easy to showcase your project online for freelancing.",
+          "category": "DevOps",
+          "learnUrl": "https://vercel.com/docs",
+          "difficulty": "Beginner"
+        }
+      ],
+      "stack_summary": null,
+      "share_slug": "VZqmdroU6E",
+      "upvotes": 1,
+      "created_at": "2026-04-02T12:10:23.721557+00:00",
+      "summary": "You're looking to build a client-side chess game as a beginner with a 'vibe coding' approach for freelancing. This stack focuses on rapid development and a highly marketable set of frontend technologies, allowing you to leverage AI for most of the coding. The goal is to create a functional MVP where a user can play chess.",
+      "roadmap": [
+        "Initialize a new React project using Vite and configure Tailwind CSS for styling.",
+        "Design and implement the chessboard UI as a React component, including squares and basic piece placeholders, leveraging AI for layout and initial styling.",
+        "Develop the core chess game logic in JavaScript: piece representation, board state management, and basic piece movement validation for pawns, rooks, and knights with AI assistance.",
+        "Implement player turns, basic move execution, and a mechanism to update the UI visually after each move.",
+        "Deploy your interactive chess game MVP to Vercel to share your progress and get feedback."
+      ],
+      "estimated_time": "3-4 weeks",
+      "pro_tip": "Break down complex chess rules into small, manageable features (e.g., start with pawn movement, then rooks, etc.). Leverage AI to generate initial boilerplate code and then iteratively refine the logic. Don't aim for a perfect engine from day one; focus on a playable MVP.",
+      "build_style": "vibe",
+      "vibe_coding": {
+        "aiTools": [
+          {
+            "tip": "When stuck on a specific function or algorithm (e.g., 'how to validate a knight's move'), highlight the relevant code and ask Cursor directly for suggestions or improvements.",
+            "name": "Cursor",
+            "purpose": "Use it as your primary IDE for writing code, generating components, debugging, and getting instant explanations. Its integrated AI chat can guide you through complex logic."
+          },
+          {
+            "tip": "For higher-level architectural decisions or when you need a creative solution to a game rule, use these tools to 'rubber duck' your ideas and explore different implementations.",
+            "name": "ChatGPT / GitHub Copilot",
+            "purpose": "Utilize these for generating code snippets, understanding complex JavaScript concepts, brainstorming game logic approaches, and writing documentation or comments for your code."
+          },
+          {
+            "tip": "Provide v0.dev with clear descriptions like 'A 8x8 grid representing a chessboard with alternating light and dark squares, styled with Tailwind CSS' to get highly relevant UI components.",
+            "name": "v0.dev",
+            "purpose": "Use v0.dev for quickly generating React UI components, especially for the chessboard grid, piece representations, or even game controls. It helps translate your design ideas into working code rapidly."
+          }
+        ],
+        "workflow": [
+          "**Initiate Project with AI:** Use your AI coding tool (e.g., Cursor) to scaffold a new React project with Vite and Tailwind CSS. Prompt it to set up the basic file structure.",
+          "**Design UI Components:** Prompt v0.dev or your AI coding assistant to create the `Chessboard` and `Piece` React components, focusing on the visual layout and basic styling with Tailwind.",
+          "**Implement Core Game Logic:** Work iteratively with your AI assistant to build the game state (board array, current turn) and initial piece movement logic (e.g., pawn moves, capturing). Ask for functions like `isValidPawnMove(start, end, board)`.",
+          "**Connect UI and Logic:** Use AI to help you connect user interactions (clicking a square/piece) to your game logic, updating the board state, and re-rendering the React UI.",
+          "**Iterate & Refine:** Continuously use AI to add more complex rules (castling, en passant, check/checkmate detection) and to refactor or optimize your existing code. Ask for testing suggestions.",
+          "**Prepare for Deployment:** Get AI's help to ensure your project is production-ready (e.g., `npm run build` commands, setting up environment variables if needed) before deploying to Vercel."
+        ],
+        "starterPrompt": "Create a new React project using Vite. Integrate Tailwind CSS for styling. Design a functional 8x8 chessboard UI with alternating light and dark squares. Each square should be clickable. For now, represent pieces with simple text or SVG placeholders (e.g., 'P' for pawn, 'R' for rook) in their starting positions. Provide the basic React component structure for the `App`, `Chessboard`, and `Square` components, with Tailwind CSS classes applied for responsive layout and styling."
+      },
+      "score_card": {
+        "verdict": "An excellent, beginner-friendly stack for rapid development of an interactive chess game with strong freelancing potential.",
+        "flexibility": 8,
+        "scalability": 7,
+        "speedToShip": 9,
+        "overallScore": 86,
+        "costEfficiency": 10,
+        "beginnerFriendly": 9
+      },
+      "detail_level": null,
+      "user_id": "bdaff3f7-754e-41f2-b77d-283b8de4c48c",
+      "is_public": true,
+      "is_featured": false
+    },
+    {
+      "id": "f33ae853-f164-4a14-b060-528f1c771225",
+      "user_input": "i want to make a e commerce website",
+      "project_type": null,
+      "skill_level": "beginner",
+      "budget": "mix",
+      "goal": "mvp",
+      "tools": [
+        {
+          "name": "Next.js",
+          "isFree": true,
+          "reason": "Next.js is a powerful React framework perfect for building modern web applications. Its file-system routing simplifies page creation, and its server-side rendering capabilities are great for e-commerce SEO. It's also well-supported by AI tools for generating components.",
+          "category": "Frontend",
+          "learnUrl": "https://nextjs.org/learn/dashboard-app",
+          "difficulty": "Beginner"
+        },
+        {
+          "name": "Tailwind CSS",
+          "isFree": true,
+          "reason": "Tailwind CSS is a utility-first CSS framework that allows for rapid UI development directly in your HTML/JSX. It removes the need for writing custom CSS files for most components, making it very efficient for beginners and highly compatible with AI code generation.",
+          "category": "Frontend",
+          "learnUrl": "https://tailwindcss.com/docs/installation",
+          "difficulty": "Beginner"
+        },
+        {
+          "name": "Supabase",
+          "isFree": true,
+          "reason": "Supabase provides a complete backend-as-a-service solution, offering a PostgreSQL database, authentication, real-time subscriptions, and storage. It greatly simplifies backend development for beginners, allowing you to focus on the frontend, and its clear API is easy to interact with.",
+          "category": "Backend/Database",
+          "learnUrl": "https://supabase.com/docs/guides/getting-started",
+          "difficulty": "Beginner"
+        },
+        {
+          "name": "Stripe",
+          "isFree": false,
+          "reason": "Stripe is the leading platform for online payments, offering robust and developer-friendly APIs to handle transactions, subscriptions, and more. Integrating Stripe will provide a secure and reliable way to process payments for your e-commerce store.",
+          "category": "Payments",
+          "learnUrl": "https://stripe.com/docs/payments",
+          "difficulty": "Beginner"
+        },
+        {
+          "name": "Vercel",
+          "isFree": true,
+          "reason": "Vercel offers seamless deployment for Next.js applications, connecting directly to your Git repository. It provides automatic deployments, continuous integration, and global CDN caching, making it incredibly easy for beginners to get their site live.",
+          "category": "DevOps",
+          "learnUrl": "https://vercel.com/docs/deployments/overview",
+          "difficulty": "Beginner"
+        }
+      ],
+      "stack_summary": null,
+      "share_slug": "vkW_oAWjtK",
+      "upvotes": 0,
+      "created_at": "2026-04-02T11:12:44.27713+00:00",
+      "summary": "This project aims to build a beginner-friendly e-commerce MVP website. The stack focuses on rapid development and ease of use, leveraging modern tools that integrate well with AI-assisted coding to help you quickly bring your vision to life.",
+      "roadmap": [
+        "Set up a new Next.js project with Tailwind CSS and configure basic routing (home, products, cart).",
+        "Initialize Supabase project, create 'products' and 'users' tables, and set up basic authentication.",
+        "Develop product listing and detail pages, integrating data from Supabase and implementing basic add-to-cart functionality.",
+        "Build the shopping cart and checkout pages, integrating Stripe for payment processing.",
+        "Deploy the application to Vercel and connect it to your Supabase project."
+      ],
+      "estimated_time": "3-5 weeks",
+      "pro_tip": "Focus on the core user journey for your MVP: browsing products, adding to cart, and checking out. Don't get sidetracked by complex features initially; simplicity is key for a successful first launch.",
+      "build_style": "vibe",
+      "vibe_coding": {
+        "aiTools": [
+          {
+            "tip": "Leverage Cursor's 'fix errors' and 'generate tests' features frequently to maintain code quality and understand issues faster.",
+            "name": "Cursor",
+            "purpose": "Use Cursor as your primary IDE for writing, debugging, and refactoring code. Its integrated AI chat and code generation features will accelerate every development task."
+          },
+          {
+            "tip": "Start with high-level descriptions for v0.dev (e.g., 'a product card with image, title, price, and add to cart button'), then refine the generated code with Cursor if needed.",
+            "name": "v0.dev",
+            "purpose": "Utilize v0.dev to quickly generate beautiful, pre-built UI components (like product cards, navigation bars, checkout forms) with React and Tailwind CSS, saving significant design and coding time."
+          },
+          {
+            "tip": "Don't just accept suggestions blindly; try to understand the code Copilot generates. This will help you learn and catch potential mistakes early.",
+            "name": "GitHub Copilot",
+            "purpose": "As you type in your editor, Copilot will provide intelligent code suggestions and auto-completions, especially useful for repetitive tasks or when integrating APIs like Supabase and Stripe."
+          },
+          {
+            "tip": "Be specific with your questions and provide context (e.g., 'How do I fetch all products from a Supabase table named 'products' in a Next.js component?').",
+            "name": "ChatGPT (or other LLM)",
+            "purpose": "Use ChatGPT for conceptual guidance, understanding new APIs (like Supabase or Stripe's payment intent flow), troubleshooting errors, or generating small, isolated code snippets."
+          }
+        ],
+        "workflow": [
+          "**Initial Project Setup:** Use Cursor and ChatGPT to set up your Next.js project with Tailwind CSS. Prompt for basic file structure for an e-commerce site (pages, components, API calls).",
+          "**UI Generation & Integration:** Use v0.dev to generate core UI components (e.g., product card, navigation, cart item). Paste them into your Next.js project and use Cursor to integrate them and refine Tailwind styling.",
+          "**Backend with Supabase:** Consult ChatGPT for setting up your Supabase project and defining schema. Use Cursor to write the Supabase client-side code for fetching products, handling user authentication, and managing the cart.",
+          "**Payment Integration:** Ask ChatGPT for a step-by-step guide on integrating Stripe with Next.js and Supabase. Use Cursor and Copilot to implement the Stripe checkout flow, handling payment intents and success/failure states.",
+          "**Testing & Debugging:** Regularly use Cursor's AI features to identify and fix bugs, generate unit tests for critical components, and refactor code for better readability and performance.",
+          "**Deployment Prep:** Use Cursor to review your project structure and environment variables. Consult ChatGPT for any Vercel deployment best practices specific to Next.js and Supabase."
+        ],
+        "starterPrompt": "I'm building an e-commerce MVP. My tech stack is Next.js 14 (App Router), Tailwind CSS, and Supabase for the backend. I need the following core features: 1. A product listing page with dummy product data (image, name, price, description). 2. A dynamic product detail page for each product. 3. A shopping cart that allows adding/removing items and updates totals. 4. A basic checkout page with a 'Pay' button (no actual payment integration needed for now, just the UI). Structure the project with clear components, use Tailwind for styling, and ensure Supabase integration is ready for future data fetching. Generate the initial file structure and a simple product card component."
+      },
+      "score_card": {
+        "verdict": "An excellent, beginner-friendly stack for rapid e-commerce MVP development, leveraging modern tools and AI assistance.",
+        "flexibility": 8,
+        "scalability": 7,
+        "speedToShip": 9,
+        "overallScore": 84,
+        "costEfficiency": 9,
+        "beginnerFriendly": 9
+      },
+      "detail_level": null,
+      "user_id": "bdaff3f7-754e-41f2-b77d-283b8de4c48c",
+      "is_public": true,
+      "is_featured": false
+    },
+    {
+      "id": "a844ecd9-ca97-4359-b0e7-c7af235e6c2a",
+      "user_input": "i want to make a chess game",
+      "project_type": null,
+      "skill_level": "advanced",
+      "budget": "mix",
+      "goal": "mvp",
+      "tools": [
+        {
+          "name": "Next.js",
+          "isFree": true,
+          "reason": "Next.js is a powerful React framework ideal for building fast, scalable, and highly interactive web applications like a chess game. Its features like server-side rendering (SSR) or static site generation (SSG) can enhance performance and SEO, which is beneficial for potential public-facing aspects. Its file-system based routing simplifies component organization and page management, allowing for efficient development of a rich user experience.",
+          "bestFor": "Applications requiring performance optimizations, strong routing capabilities, and a structured approach to building complex user interfaces, especially those with dynamic content or SEO needs.",
+          "category": "Frontend",
+          "learnUrl": "https://nextjs.org/learn",
+          "warnings": "The comprehensive features of Next.js, while powerful, can introduce a slightly steeper learning curve compared to plain React. Optimizing data fetching strategies (SSR, SSG, ISR, client-side) requires careful consideration for different parts of the application.",
+          "difficulty": "Intermediate",
+          "alternatives": [
+            "React (Create React App)",
+            "Vue.js"
+          ]
+        },
+        {
+          "name": "Socket.IO",
+          "isFree": true,
+          "reason": "Socket.IO is the industry standard for establishing real-time, bidirectional, and event-based communication between clients and servers. For a multiplayer chess game, it's indispensable for instantly broadcasting player moves, chat messages, and game state updates across all connected clients. This ensures a fluid and responsive gameplay experience, eliminating the need for constant client polling.",
+          "bestFor": "Any application demanding instant, low-latency communication between users, such as online games, chat applications, collaborative tools, or live dashboards.",
+          "category": "Backend",
+          "learnUrl": "https://socket.io/get-started/chat",
+          "warnings": "Implementing Socket.IO effectively requires careful state management on both the client and server to prevent desynchronization. For scaling beyond a single server instance, a Redis adapter is necessary to coordinate events across multiple Socket.IO servers.",
+          "difficulty": "Intermediate",
+          "alternatives": [
+            "WebSockets API (raw)",
+            "Pusher"
+          ]
+        },
+        {
+          "name": "Node.js with Express.js",
+          "isFree": true,
+          "reason": "Node.js provides an efficient, non-blocking I/O runtime perfectly suited for the concurrent connections required by a real-time game server. Express.js, a lightweight and flexible Node.js web application framework, simplifies the development of API endpoints, routing, and middleware. This combination offers a powerful and scalable backend foundation for managing game logic, user authentication, and database interactions.",
+          "bestFor": "High-performance, scalable backend services, especially those with real-time features, microservices architectures, or a need for JavaScript across the entire stack.",
+          "category": "Backend",
+          "learnUrl": "https://expressjs.com/",
+          "warnings": "Node.js's asynchronous nature can lead to complex callback or promise chains if not managed properly. While excellent for I/O-bound tasks, it might not be the optimal choice for heavily CPU-bound operations without implementing worker threads.",
+          "difficulty": "Intermediate",
+          "alternatives": [
+            "Python (Django/Flask)",
+            "Go (Gin/Echo)"
+          ]
+        },
+        {
+          "name": "PostgreSQL",
+          "isFree": true,
+          "reason": "PostgreSQL is a robust, open-source relational database renowned for its reliability, data integrity, and advanced features. It's an ideal choice for storing structured data such as user accounts, game states, move histories, and matchmaking queues. Its strong transactional capabilities and support for complex queries make it perfect for managing the intricate data requirements of a chess game, including game replays and analytics.",
+          "bestFor": "Applications requiring strong data consistency, complex querying capabilities, and reliable storage of structured or relational data, where data integrity is paramount.",
+          "category": "Database",
+          "learnUrl": "https://www.postgresql.org/docs/",
+          "warnings": "Effective use of PostgreSQL requires careful schema design to optimize performance and ensure data integrity. While powerful, it can be more resource-intensive and require more setup than simpler NoSQL databases for very basic data storage needs.",
+          "difficulty": "Intermediate",
+          "alternatives": [
+            "MySQL",
+            "MongoDB"
+          ]
+        },
+        {
+          "name": "Render",
+          "isFree": false,
+          "reason": "Render is a modern cloud platform that simplifies the deployment and scaling of full-stack applications, databases, and services. It offers seamless integration for deploying Node.js backends and managed PostgreSQL databases, providing automatic builds, continuous deployment from Git, and simplified scaling. This reduces the operational overhead and complexity typically associated with cloud infrastructure, allowing you to focus more on development.",
+          "bestFor": "Developers and teams seeking a user-friendly, opinionated platform for quick deployment and scaling of web services and databases without extensive DevOps expertise.",
+          "category": "DevOps",
+          "learnUrl": "https://render.com/docs/deploy-node",
+          "warnings": "While Render offers a generous free tier, larger scale or continuous usage will incur costs, which need to be monitored. The free tier might also have spin-up delays for inactive services, affecting initial load times for casual users.",
+          "difficulty": "Beginner",
+          "alternatives": [
+            "Heroku",
+            "AWS Elastic Beanstalk"
+          ]
+        },
+        {
+          "name": "chess.js",
+          "isFree": true,
+          "reason": "chess.js is an essential JavaScript chess library that provides comprehensive functionality for chess move generation, validation, and board manipulation according to FIDE rules. It handles complex aspects like castling, en passant, pawn promotion, check, checkmate, and stalemate. Integrating this library significantly simplifies the implementation of accurate core game logic, allowing developers to focus on the multiplayer and UI aspects rather than reinventing the entire chess engine.",
+          "bestFor": "Implementing the core rules and logic of chess with high accuracy and adherence to FIDE standards, minimizing the effort required for fundamental game mechanics.",
+          "category": "Game Logic",
+          "learnUrl": "https://github.com/jhlywa/chess.js",
+          "warnings": "This library is purely for game logic; it does not provide any visual components for the chessboard. You will need a separate UI library (like `react-chessboard`) or custom React components to display the board and pieces visually.",
+          "difficulty": "Beginner",
+          "alternatives": [
+            "chess-engine (npm)",
+            "Custom implementation"
+          ]
+        }
+      ],
+      "stack_summary": null,
+      "share_slug": "uuObxdrH-F",
+      "upvotes": 0,
+      "created_at": "2026-04-02T08:53:37.158076+00:00",
+      "summary": "This tech stack is optimized for developing a robust, real-time multiplayer chess game, catering to an advanced developer's skillset and a mixed budget. It leverages a Next.js frontend for a dynamic user interface and client-side game logic with `chess.js`. The backend, powered by Node.js with Express, handles core game mechanics, user authentication, and real-time communication via Socket.IO, all backed by a PostgreSQL database for persistent data storage. This setup ensures a scalable and efficient foundation for your MVP.",
+      "roadmap": [
+        "Initialize the monorepo structure, setting up a Next.js frontend project and a Node.js/Express backend project.",
+        "Develop the Next.js frontend: create basic React components for the chessboard UI, squares, and pieces, and integrate `chess.js` for client-side move validation and board state management.",
+        "Set up the Node.js/Express backend: define initial API routes for user authentication and game creation, and configure Socket.IO for real-time connection handling.",
+        "Design the PostgreSQL database schema for users, game sessions, and move histories, then integrate an ORM (e.g., Prisma) with the Express backend to manage data.",
+        "Implement real-time multiplayer logic: use Socket.IO to synchronize moves between players, handle game state updates on the server, and manage game outcomes (checkmate, stalemate).",
+        "Develop user authentication (e.g., JWT-based) and profile management features on the backend, securing API routes.",
+        "Add game features like a matchmaking system, in-game chat using Socket.IO, and spectator mode.",
+        "Prepare for deployment: configure environment variables and deploy the Next.js frontend to Vercel and the Node.js backend with PostgreSQL to Render."
+      ],
+      "estimated_time": "2-3 months",
+      "pro_tip": "For a real-time multiplayer chess game, server-side validation of every game move is absolutely critical to prevent cheating and ensure game state consistency. While `chess.js` can be used on the client for optimistic UI updates, the server must be the ultimate authority. Implement robust server-side logic to re-validate every incoming move against the current authoritative game state stored on the backend before broadcasting it to other players. Additionally, design your game state to gracefully handle player disconnections and reconnections, allowing users to rejoin active games seamlessly to enhance the overall user experience and game integrity.",
+      "build_style": "vibe",
+      "vibe_coding": {
+        "aiTools": [
+          {
+            "tip": "Leverage Cursor's 'chat with selected code' feature to deeply understand or refine specific `chess.js` interactions and complex game state logic.",
+            "name": "Cursor",
+            "purpose": "Generate boilerplate code for Next.js components, Express routes, Socket.IO handlers, and database models. Debugging code and refactoring existing logic."
+          },
+          {
+            "tip": "Use Copilot to quickly generate comprehensive unit tests for your `chess.js` integrations and backend API endpoints, saving significant time on testing.",
+            "name": "GitHub Copilot",
+            "purpose": "Autocompleting complex game logic functions, suggesting database queries, and accelerating routine coding tasks like setting up API endpoints or frontend state management boilerplate."
+          },
+          {
+            "tip": "When encountering a tricky chess rule implementation (e.g., three-fold repetition draw or fifty-move rule), describe the scenario to ChatGPT/Claude to get conceptual algorithms or illustrative code snippets.",
+            "name": "ChatGPT/Claude",
+            "purpose": "Brainstorming architectural patterns for multiplayer game state synchronization, getting explanations on advanced `chess.js` features, generating documentation, or overcoming complex coding challenges and specific chess rule implementations."
+          }
+        ],
+        "workflow": [
+          "**Initial Project Scaffolding**: Prompt your AI to generate the basic monorepo structure (client/server), including `package.json` for Next.js, Express, Socket.IO, and `chess.js` with initial dependency lists.",
+          "**Frontend UI & Logic**: Ask AI to create core React components for the chessboard, squares, and pieces. Then, prompt for the integration of `chess.js` to manage client-side board state and local move validation.",
+          "**Backend Setup & Real-time Integration**: Have the AI generate basic Express routes for user management and game creation, alongside initial Socket.IO server-side handlers for connection events and simple message broadcasting.",
+          "**Database Modeling**: Provide the AI with your data requirements (users, games, moves) and ask it to generate a PostgreSQL schema and corresponding ORM models (e.g., Prisma schema) for your backend.",
+          "**Multiplayer Game Logic**: Prompt the AI to assist in developing the complex server-side game logic using `chess.js`, focusing on move validation, game state updates, turn management, and detecting game outcomes like checkmate or stalemate.",
+          "**Deployment Configuration**: Ask the AI to help generate `.env` configurations, build scripts, and deployment settings tailored for Vercel (frontend) and Render (backend/DB)."
+        ],
+        "starterPrompt": "I am an advanced developer building a real-time multiplayer online chess game. My tech stack is Next.js for the frontend, Node.js with Express for the backend, Socket.IO for real-time communication, and PostgreSQL for the database. I will be using the `chess.js` library for all core game logic. Please generate the foundational project structure as a monorepo, with separate `client` (Next.js) and `server` (Node.js/Express) directories. For the `client`, include a basic Next.js setup with `tailwind-css` configured and a placeholder `ChessBoard.tsx` component. For the `server`, provide a basic Express app with a `server.ts` file, a `socket.ts` file for Socket.IO setup, and initial `package.json` files for both client and server including essential dependencies like `react`, `next`, `express`, `socket.io`, `socket.io-client`, and `chess.js`. Also, include boilerplate code in `ChessBoard.tsx` to initialize `chess.js` and display a static board, and basic Socket.IO connection logic on both the client and server."
+      },
+      "score_card": {
+        "verdict": "A robust, scalable, and highly flexible stack perfect for an advanced developer to build a real-time multiplayer chess game efficiently.",
+        "flexibility": 9,
+        "scalability": 8,
+        "speedToShip": 8,
+        "overallScore": 76,
+        "costEfficiency": 7,
+        "beginnerFriendly": 6
+      },
+      "detail_level": null,
+      "user_id": "bdaff3f7-754e-41f2-b77d-283b8de4c48c",
+      "is_public": true,
+      "is_featured": false
+    },
+    {
+      "id": "95315dc1-80d0-4505-85d8-ff0e3f46d6ea",
+      "user_input": "i want  to make a portfolio website",
+      "project_type": null,
+      "skill_level": "beginner",
+      "budget": "free",
+      "goal": "learn",
+      "tools": [
+        {
+          "name": "Next.js",
+          "isFree": true,
+          "reason": "It's a React framework that simplifies building modern web applications and static sites, offering a structured approach ideal for learning.",
+          "category": "Frontend",
+          "learnUrl": "https://nextjs.org/learn",
+          "difficulty": "Beginner"
+        },
+        {
+          "name": "Tailwind CSS",
+          "isFree": true,
+          "reason": "A utility-first CSS framework that enables rapid UI development with pre-defined classes, making styling efficient and easy to learn.",
+          "category": "Frontend",
+          "learnUrl": "https://tailwindcss.com/docs/installation",
+          "difficulty": "Beginner"
+        },
+        {
+          "name": "Vercel",
+          "isFree": true,
+          "reason": "Provides seamless, free hosting for Next.js applications, making deployment incredibly simple and integrated directly with your GitHub repository.",
+          "category": "DevOps",
+          "learnUrl": "https://vercel.com/docs",
+          "difficulty": "Beginner"
+        }
+      ],
+      "stack_summary": null,
+      "share_slug": "mGvyYEFZWt",
+      "upvotes": 0,
+      "created_at": "2026-04-01T18:56:26.477173+00:00",
+      "summary": "This stack is perfect for beginners wanting to build a modern portfolio website quickly and learn the basics of web development. It leverages popular, free tools for a smooth 'vibe coding' experience.",
+      "roadmap": [
+        "Set up a new Next.js project with Tailwind CSS integration.",
+        "Design and implement key portfolio sections (Hero, About, Projects, Contact).",
+        "Deploy your portfolio website to Vercel using Git integration."
+      ],
+      "estimated_time": "1-2 weeks",
+      "pro_tip": "Start by outlining the content for each section before diving into coding; this clarity will guide your 'vibe coding' effectively.",
+      "build_style": "vibe",
+      "vibe_coding": {
+        "aiTools": [
+          {
+            "tip": "Be specific with your prompts, clearly stating the technology (Next.js, Tailwind CSS) and desired output format.",
+            "name": "ChatGPT / GitHub Copilot Chat",
+            "purpose": "Generate code snippets, explain concepts, and debug issues. Ideal for getting quick answers and iterating on ideas."
+          },
+          {
+            "tip": "Use v0.dev for initial component ideas, then copy and adapt the generated code into your Next.js project, refining it with Tailwind.",
+            "name": "v0.dev",
+            "purpose": "Rapidly generate beautiful UI components and sections based on text prompts, providing a great starting point for your portfolio layout."
+          }
+        ],
+        "workflow": [
+          "Outline your portfolio sections and content in plain language.",
+          "Use v0.dev to generate initial Tailwind CSS components for your Hero, About, Projects, and Contact sections.",
+          "Integrate the generated components into your Next.js project's pages and components.",
+          "Use ChatGPT/Copilot Chat to refine styling, add interactivity, and generate missing code snippets (e.g., project card layouts).",
+          "Review and debug your code with AI assistance, asking for improvements or explanations.",
+          "Deploy your refined portfolio to Vercel."
+        ],
+        "starterPrompt": "I want to build a personal portfolio website using Next.js and Tailwind CSS. The site should have a clean, modern design. Create a responsive `Hero` section component that includes a title 'Hi, I'm [Your Name]', a short intro paragraph, and a call-to-action button linking to a 'Projects' section. Provide the full Next.js React component code with Tailwind CSS classes directly applied for styling."
+      },
+      "score_card": {
+        "verdict": "An excellent, cost-effective stack for beginners to quickly build and learn modern web development.",
+        "flexibility": 8,
+        "scalability": 7,
+        "speedToShip": 9,
+        "overallScore": 86,
+        "costEfficiency": 10,
+        "beginnerFriendly": 9
+      },
+      "detail_level": null,
+      "user_id": "3cd394d9-9361-47b9-b4b0-98c0a92f5bdf",
+      "is_public": true,
+      "is_featured": false
+    },
+    {
+      "id": "7bb4dc03-5ef8-4791-946e-d574ddfe8928",
+      "user_input": "how to make a 3d website for product presentation",
+      "project_type": null,
+      "skill_level": "intermediate",
+      "budget": "mix",
+      "goal": "learn",
+      "tools": [
+        {
+          "name": "Next.js",
+          "isFree": true,
+          "reason": "Next.js is a React framework that offers powerful features like Server-Side Rendering (SSR) and Static Site Generation (SSG), crucial for SEO and initial load performance, which are beneficial for product presentation sites. It provides a structured way to build complex web applications and integrates seamlessly with React and its ecosystem, including 3D libraries.",
+          "bestFor": "Building performant, SEO-friendly, and scalable React applications, especially when content needs to be pre-rendered.",
+          "category": "Frontend",
+          "learnUrl": "https://nextjs.org/learn",
+          "warnings": "Has a learning curve if you're new to React or its opinionated file-system routing. Development workflow requires careful consideration of data fetching strategies.",
+          "difficulty": "Intermediate",
+          "alternatives": [
+            "Astro",
+            "SvelteKit"
+          ]
+        },
+        {
+          "name": "React Three Fiber (R3F)",
+          "isFree": true,
+          "reason": "R3F is a declarative React renderer for Three.js, allowing you to build 3D scenes using React components. This significantly simplifies state management, component composition, and reactivity compared to raw Three.js, making the development of interactive 3D experiences more accessible and maintainable for React developers.",
+          "bestFor": "Seamlessly integrating complex and interactive 3D scenes into existing React applications with a declarative API.",
+          "category": "Frontend",
+          "learnUrl": "https://docs.pmnd.rs/react-three-fiber/getting-started/introduction",
+          "warnings": "Requires a good understanding of React hooks and component lifecycle. While simplifying Three.js, it still requires familiarity with core 3D concepts like cameras, lights, and materials.",
+          "difficulty": "Intermediate",
+          "alternatives": [
+            "React-GL (WebGL wrapper)",
+            "Babylon.js (with React wrappers)"
+          ]
+        },
+        {
+          "name": "Three.js",
+          "isFree": true,
+          "reason": "As the underlying 3D graphics library for R3F, Three.js provides the powerful foundation for rendering 3D graphics in the browser using WebGL. Learning Three.js alongside R3F gives you direct access to low-level controls, enabling advanced customizations, custom shaders, and a deeper understanding of web 3D fundamentals when R3F abstractions aren't enough.",
+          "bestFor": "Creating highly customized and optimized 3D experiences on the web, offering extensive control over rendering and scene manipulation.",
+          "category": "Frontend",
+          "learnUrl": "https://threejs.org/docs/",
+          "warnings": "Has a steeper learning curve if you interact with it directly without R3F, requiring manual object management and rendering loops. Performance optimization can be challenging for complex scenes.",
+          "difficulty": "Intermediate",
+          "alternatives": [
+            "Babylon.js",
+            "PlayCanvas"
+          ]
+        },
+        {
+          "name": "Tailwind CSS",
+          "isFree": true,
+          "reason": "Tailwind CSS is a utility-first CSS framework that enables rapid UI development by providing a comprehensive set of low-level utility classes. This allows for highly customizable designs without writing custom CSS, promoting consistency and reducing styling overhead, perfect for creating a clean and responsive product presentation UI.",
+          "bestFor": "Rapidly building custom user interfaces with direct control over styling and a focus on consistency and responsiveness.",
+          "category": "Frontend",
+          "learnUrl": "https://tailwindcss.com/docs",
+          "warnings": "Can lead to very verbose HTML in component templates if not managed well with React components. Initial setup might feel different than traditional CSS frameworks.",
+          "difficulty": "Beginner",
+          "alternatives": [
+            "Styled Components",
+            "Chakra UI",
+            "Material UI"
+          ]
+        },
+        {
+          "name": "Blender",
+          "isFree": true,
+          "reason": "Blender is a powerful, free, and open-source 3D creation suite. It's essential for creating, editing, optimizing, and exporting high-quality 3D product models in formats like glTF (which is ideal for web usage). Mastering Blender allows you to control the visual fidelity and performance of your 3D assets directly.",
+          "bestFor": "Professional-grade 3D asset creation, sculpting, animation, and comprehensive optimization for various platforms, including the web.",
+          "category": "Design",
+          "learnUrl": "https://www.blender.org/support/tutorials/",
+          "warnings": "Blender has a significant learning curve, especially for those new to 3D modeling and animation. Optimizing models for web performance (poly count, textures) requires specific knowledge.",
+          "difficulty": "Advanced",
+          "alternatives": [
+            "Autodesk Maya (paid)",
+            "Cinema 4D (paid)",
+            "SketchUp"
+          ]
+        },
+        {
+          "name": "Vercel",
+          "isFree": true,
+          "reason": "Vercel is a cloud platform optimized for deploying Next.js applications, offering seamless continuous deployment, a global CDN, and serverless functions with zero configuration. It simplifies the deployment process, ensures high performance, and provides automatic scaling, making it ideal for quickly getting your product presentation website online.",
+          "bestFor": "Deploying Next.js and other frontend frameworks with excellent performance, scalability, and developer experience.",
+          "category": "DevOps",
+          "learnUrl": "https://vercel.com/docs",
+          "warnings": "While the free tier is generous, larger projects or high traffic might incur costs. Integrates best with Git-based workflows.",
+          "difficulty": "Beginner",
+          "alternatives": [
+            "Netlify",
+            "AWS Amplify",
+            "Render"
+          ]
+        }
+      ],
+      "stack_summary": null,
+      "share_slug": "36_X9jGl2Z",
+      "upvotes": 0,
+      "created_at": "2026-04-01T18:55:08.449268+00:00",
+      "summary": "This stack provides an excellent foundation for building an interactive 3D product presentation website. It leverages Next.js for a robust, performant frontend with React Three Fiber (R3F) and Three.js for declarative and powerful 3D rendering. Blender is included for creating and optimizing the essential 3D assets, while Tailwind CSS ensures a modern and responsive UI. The entire application can be easily deployed and scaled using Vercel, making it a comprehensive and learnable stack for an intermediate developer.",
+      "roadmap": [
+        "**Phase 1: Project Setup (Est. 1-2 days)**: Initialize a new Next.js project using `create-next-app`. Install React Three Fiber (`@react-three/fiber`, `@react-three/drei`), Three.js (`three`), and Tailwind CSS with PostCSS and Autoprefixer. Configure `tailwind.config.js` and `globals.css`.",
+        "**Phase 2: 3D Model Preparation (Est. 3-5 days)**: Using Blender, create or optimize your product's 3D model. Ensure it has optimized geometry, textures, and materials. Export the model as a glTF (`.glb` or `.gltf`) file, ensuring it's web-ready (low poly, compressed textures).",
+        "**Phase 3: Basic 3D Scene Implementation (Est. 3-4 days)**: Create a React component that wraps an R3F `<Canvas>`. Inside the canvas, load your glTF product model using `useLoader` from `@react-three/fiber/loaders`. Add basic lighting (e.g., `ambientLight`, `directionalLight`) and camera controls (e.g., `OrbitControls` from `@react-three/drei`) to allow rotation and zoom.",
+        "**Phase 4: Interactive Enhancements (Est. 2-3 days)**: Implement basic interactivity for the 3D model, such as drag-to-rotate, click-to-zoom on specific parts, or highlighting features. Explore adding annotations or 'hotspots' on the model that trigger information pop-ups using R3F's event handling.",
+        "**Phase 5: Product Information and UI Integration (Est. 2-3 days)**: Design and build the 2D UI components using Tailwind CSS to display product name, description, features, and other relevant information. Integrate these components alongside your 3D canvas, ensuring data for the 2D UI is either static (JSON file) or fetched from a simple API.",
+        "**Phase 6: Styling, Responsiveness, and Deployment (Est. 2 days)**: Apply a consistent design aesthetic using Tailwind CSS across all UI elements. Ensure the website is fully responsive for various screen sizes. Set up a Git repository and deploy your Next.js application to Vercel, linking it to your repository for continuous deployment. Test thoroughly across devices and browsers.",
+        "**Phase 7: Performance Optimization (Ongoing)**: Focus on optimizing 3D asset loading (lazy loading, Draco compression), reducing draw calls, and improving overall WebGL performance. Implement image optimization for 2D assets and consider advanced Next.js optimizations like image components and code splitting."
+      ],
+      "estimated_time": "3-4 weeks for MVP",
+      "pro_tip": "To truly excel in building an interactive 3D product presentation, prioritize the optimization of your 3D assets from the very beginning. Complex models with high polygon counts and unoptimized textures are the biggest performance killers on the web. Utilize Blender's capabilities for retopology, baking normal maps, and compressing textures. When exporting to glTF, use tools like `gltf-pipeline` for further compression and optimization. A visually stunning but laggy 3D experience will deter users, so aim for a balance between visual fidelity and smooth performance, ensuring your 3D models are as lightweight and efficient as possible for web consumption.",
+      "build_style": "vibe",
+      "vibe_coding": {
+        "aiTools": [
+          {
+            "tip": "Use Cursor's chat feature to ask for detailed explanations of Three.js concepts or to debug tricky R3F component issues. Provide specific context from your codebase for better suggestions.",
+            "name": "Cursor",
+            "purpose": "For generating initial boilerplate code, setting up Next.js components with R3F canvases, and writing Three.js helper functions. Also great for refactoring and understanding complex 3D rendering logic."
+          },
+          {
+            "tip": "Leverage Copilot for immediate suggestions as you type, especially when dealing with repetitive R3F setup code (e.g., adding lights, cameras) or when trying to quickly apply Tailwind classes to elements.",
+            "name": "GitHub Copilot",
+            "purpose": "Provides intelligent code autocompletion for React components, R3F props, and Tailwind CSS classes, significantly speeding up development. Useful for generating common utility functions or minor code snippets."
+          },
+          {
+            "tip": "Start by prompting v0.dev with specific UI component needs, like 'a responsive product info card with image placeholder, title, description, and buy button' or 'a top navigation bar with logo and three links'. Then integrate these into your Next.js pages.",
+            "name": "v0.dev",
+            "purpose": "To rapidly generate visually appealing 2D UI components (e.g., product cards, navigation bars, feature lists) using Tailwind CSS. This allows you to focus more on the 3D aspect while ensuring a professional-looking interface."
+          },
+          {
+            "tip": "When encountering a challenging 3D problem, describe the desired outcome and your current approach to ChatGPT. It can often provide alternative solutions, relevant code snippets, or deeper explanations of the underlying principles.",
+            "name": "ChatGPT (GPT-4/Plus)",
+            "purpose": "For brainstorming interactive 3D ideas, explaining complex Three.js/WebGL concepts, or generating example code for specific R3F effects (e.g., custom shaders, post-processing effects). Also useful for debugging error messages."
+          }
+        ],
+        "workflow": [
+          "**Initialize Project & Core Structure**: Use Cursor with a detailed prompt to set up the Next.js project, install R3F/Three.js/Tailwind, and create the initial `page.tsx` with a basic R3F `<Canvas>` and `OrbitControls`.",
+          "**Generate 2D UI Components**: Prompt v0.dev for product information display cards, navigation, and other static UI elements using Tailwind CSS. Integrate these generated components into your Next.js pages around the 3D canvas.",
+          "**Build Basic 3D Scene**: Iteratively develop the R3F scene using Cursor and Copilot. Start by prompting for loading a glTF model, adding various lights (ambient, directional, spot), and setting up a camera. Ask for common 3D scene elements like a floor plane or background.",
+          "**Implement Interactivity**: Use Cursor to generate code for specific interactions, such as drag-to-rotate the model, click-to-highlight parts, or creating annotations. Provide clear descriptions of the desired user experience.",
+          "**Refine Styling & Responsiveness**: Apply and refine Tailwind CSS classes for your 2D UI. Use Copilot for class suggestions and prompt Cursor to help with responsive design patterns or complex layout adjustments.",
+          "**Debug & Optimize**: When encountering errors or performance issues in your 3D scene, copy the error messages or describe the problem to Cursor or ChatGPT for debugging assistance and optimization suggestions, especially for Three.js specific issues."
+        ],
+        "starterPrompt": "I want to build a 3D product presentation website using Next.js 14, React Three Fiber (R3F) for 3D rendering, Three.js as the core 3D library, and Tailwind CSS for styling. My first goal is to set up the project and display a basic interactive 3D model. \n\nHere's what I need:\n1.  A new Next.js project with TypeScript enabled.\n2.  Installation of `@react-three/fiber`, `three`, `@react-three/drei`, `tailwindcss`, `postcss`, and `autoprefixer`.\n3.  Configuration for Tailwind CSS in `tailwind.config.ts` and `globals.css` to include base styles and utility classes.\n4.  A basic `page.tsx` that includes a full-viewport `<Canvas>` component from R3F.\n5.  Inside the `<Canvas>`, add a simple `mesh` (e.g., a `BoxGeometry` or `SphereGeometry`) with a basic `meshStandardMaterial`.\n6.  Include essential lighting: `ambientLight` and `directionalLight` (with a position and intensity).\n7.  Add `OrbitControls` from `@react-three/drei` to enable interactive camera rotation and zoom.\n8.  Provide instructions on how to run the project locally.\n9.  Structure the code in a way that is ready for loading a glTF model (e.g., a placeholder `ProductModel` component).\n\nAssume I have a basic understanding of React and Next.js. Focus on getting the 3D setup running with interactive controls."
+      },
+      "score_card": {
+        "verdict": "An excellent, flexible stack for creating high-performance, interactive 3D product presentations with a moderate learning curve.",
+        "flexibility": 9,
+        "scalability": 8,
+        "speedToShip": 7,
+        "overallScore": 78,
+        "costEfficiency": 9,
+        "beginnerFriendly": 6
+      },
+      "detail_level": null,
+      "user_id": "3cd394d9-9361-47b9-b4b0-98c0a92f5bdf",
+      "is_public": true,
+      "is_featured": false
+    },
+    {
+      "id": "d0b254e4-f764-40a2-98bc-42dcbf4d6202",
+      "user_input": "i want to build chess game",
+      "project_type": null,
+      "skill_level": "advanced",
+      "budget": "mix",
+      "goal": "production",
+      "tools": [
+        {
+          "name": "Bubble",
+          "isFree": false,
+          "reason": "Bubble is the leading no-code platform capable of handling complex game logic, real-time updates for multiplayer, user authentication, and a flexible UI to build a production-ready chess game.",
+          "category": "Frontend/Backend/Database/DevOps",
+          "learnUrl": "https://learn.bubble.io/",
+          "difficulty": "Intermediate"
+        },
+        {
+          "name": "Figma",
+          "isFree": true,
+          "reason": "Figma will allow you to design the chessboard, pieces, and overall user interface elements with precision before implementing them in Bubble, ensuring a polished look for your production game.",
+          "category": "Design",
+          "learnUrl": "https://www.figma.com/resource-library/getting-started-with-figma/",
+          "difficulty": "Beginner"
+        },
+        {
+          "name": "OpenAI API",
+          "isFree": false,
+          "reason": "Integrating the OpenAI API can provide a robust AI opponent for single-player matches, enhancing the game's depth and aligning with a production-level goal through API calls from Bubble.",
+          "category": "AI",
+          "learnUrl": "https://platform.openai.com/docs/api-reference",
+          "difficulty": "Intermediate"
+        }
+      ],
+      "stack_summary": null,
+      "share_slug": "7FJoTXqO2C",
+      "upvotes": 0,
+      "created_at": "2026-04-01T18:15:44.280155+00:00",
+      "summary": "You're looking to build a no-code chess game for production with an advanced skill level. This stack leverages a powerful no-code platform for game logic and UI, paired with essential design tools and an option for AI integration.",
+      "roadmap": [
+        "Design the chess board layout, pieces, and UI elements in Figma.",
+        "Set up your Bubble project and build the core game logic for piece movements, validation, and turn management.",
+        "Implement real-time features for multiplayer or integrate an AI opponent via the OpenAI API."
+      ],
+      "estimated_time": "3-4 weeks",
+      "pro_tip": "Start by building a functional single-player game with basic rules before expanding to multiplayer or AI integration.",
+      "build_style": "nocode",
+      "vibe_coding": null,
+      "score_card": {
+        "verdict": "An excellent no-code stack for an advanced user aiming for a production-ready chess game with strong flexibility.",
+        "flexibility": 9,
+        "scalability": 8,
+        "speedToShip": 9,
+        "overallScore": 82,
+        "costEfficiency": 7,
+        "beginnerFriendly": 8
+      },
+      "detail_level": null,
+      "user_id": "bb05128c-4fb9-49af-813a-12bc82e33808",
+      "is_public": true,
+      "is_featured": false
+    }
+  ]
+}

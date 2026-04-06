@@ -1,0 +1,54 @@
+{
+  "authData": {
+    "user": {
+      "id": "764fd578-fb23-47e5-a383-4db204e0a199",
+      "aud": "authenticated",
+      "role": "authenticated",
+      "email": "test_user_toolvise_1775513417501@gmail.com",
+      "phone": "",
+      "confirmation_sent_at": "2026-04-06T22:10:19.821083307Z",
+      "app_metadata": {
+        "provider": "email",
+        "providers": [
+          "email"
+        ]
+      },
+      "user_metadata": {
+        "email": "test_user_toolvise_1775513417501@gmail.com",
+        "email_verified": false,
+        "phone_verified": false,
+        "sub": "764fd578-fb23-47e5-a383-4db204e0a199"
+      },
+      "identities": [
+        {
+          "identity_id": "c73e307c-10c6-4a5a-b1d7-51ec010c5813",
+          "id": "764fd578-fb23-47e5-a383-4db204e0a199",
+          "user_id": "764fd578-fb23-47e5-a383-4db204e0a199",
+          "identity_data": {
+            "email": "test_user_toolvise_1775513417501@gmail.com",
+            "email_verified": false,
+            "phone_verified": false,
+            "sub": "764fd578-fb23-47e5-a383-4db204e0a199"
+          },
+          "provider": "email",
+          "last_sign_in_at": "2026-04-06T22:10:19.819050795Z",
+          "created_at": "2026-04-06T22:10:19.819098Z",
+          "updated_at": "2026-04-06T22:10:19.819098Z",
+          "email": "test_user_toolvise_1775513417501@gmail.com"
+        }
+      ],
+      "created_at": "2026-04-06T22:10:19.812403Z",
+      "updated_at": "2026-04-06T22:10:21.011475Z",
+      "is_anonymous": false
+    },
+    "session": null
+  },
+  "authErr": null,
+  "comment": null,
+  "commentErr": {
+    "code": "42501",
+    "details": null,
+    "hint": null,
+    "message": "new row violates row-level security policy for table \"comments\""
+  }
+}
