@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
-import { ArrowRight, Loader2, AlertCircle } from "lucide-react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { ArrowRight, Loader2, AlertCircle, GitFork } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Navbar } from "@/components/Navbar"
+import { createClient } from "@/lib/supabase/client"
 
 // ── Types ──────────────────────────────────────────────────────────────────
 interface FormState {
@@ -69,6 +70,8 @@ const BUILD_STYLE_OPTIONS = [
 // ── Main Component ─────────────────────────────────────────────────────────
 export default function AdvisorPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const remixSlug = searchParams.get("remix")
 
   const [form, setForm] = React.useState<FormState>({
     description: "",
@@ -79,9 +82,40 @@ export default function AdvisorPage() {
     buildStyle: "",
   })
 
+  const [remixSource, setRemixSource] = React.useState<string | null>(null)
   const [errors, setErrors] = React.useState<FormErrors>({})
   const [loading, setLoading] = React.useState(false)
   const [submitError, setSubmitError] = React.useState<string | null>(null)
+
+  // ── Remix prefill ────────────────────────────────────────────────────────
+  React.useEffect(() => {
+    if (!remixSlug) return
+    async function fetchRemixData() {
+      try {
+        const supabase = createClient()
+        const { data } = await supabase
+          .from("stacks")
+          .select("user_input, skill_level, budget, goal, build_style")
+          .eq("share_slug", remixSlug)
+          .maybeSingle()
+
+        if (data) {
+          setForm({
+            description: data.user_input || "",
+            skillLevel: data.skill_level || "",
+            budget: data.budget || "",
+            goal: data.goal || "",
+            detailLevel: "balanced",
+            buildStyle: data.build_style || "",
+          })
+          setRemixSource(data.user_input || "another stack")
+        }
+      } catch {
+        // Silently ignore — remix is non-critical
+      }
+    }
+    fetchRemixData()
+  }, [remixSlug])
 
   // ── Validation ────────────────────────────────────────────────────────
   function validate(): boolean {
@@ -187,6 +221,19 @@ export default function AdvisorPage() {
             frameworks, and resources — tailored just for you.
           </p>
         </div>
+
+        {/* Remix banner */}
+        {remixSource && (
+          <div className="mb-6 flex items-start gap-3 rounded-2xl border border-[#1ABC9C]/30 bg-[#1ABC9C]/5 px-5 py-4">
+            <GitFork className="mt-0.5 h-4 w-4 shrink-0 text-[#1ABC9C]" />
+            <div>
+              <p className="text-sm font-semibold text-[#1ABC9C]">Remixing a stack</p>
+              <p className="text-xs text-[#E6EDF3]/50 mt-0.5 line-clamp-1">
+                Starting from: &ldquo;{remixSource}&rdquo;
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Form card */}
         <div className="glass-strong rounded-2xl p-6 sm:p-8">

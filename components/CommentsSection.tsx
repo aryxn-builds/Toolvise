@@ -210,6 +210,30 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
           profile,
         }]);
         setNewComment("");
+
+        // Fire comment notification (non-blocking)
+        (async () => {
+          try {
+            const { data: stackData } = await supabase
+              .from("stacks")
+              .select("user_id, title")
+              .eq("id", sid)
+              .maybeSingle();
+
+            if (stackData?.user_id && stackData.user_id !== currentUser.id) {
+              const { createNotification } = await import("@/lib/notifications");
+              await createNotification({
+                userId: stackData.user_id,
+                actorId: currentUser.id,
+                type: "comment",
+                stackId: sid,
+                message: `${profile?.display_name || profile?.username || "Someone"} commented on your stack "${stackData.title || "Untitled"}".`,
+              });
+            }
+          } catch {
+            /* silently ignore */
+          }
+        })();
       }
     } catch (err) {
       console.error("[CommentsSection] unexpected post error:", err);

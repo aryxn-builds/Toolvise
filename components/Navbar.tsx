@@ -10,10 +10,12 @@ import {
   LogOut,
   LayoutDashboard,
   ChevronDown,
+  Bell,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button-variants";
+import { getUnreadCount } from "@/lib/notifications";
 
 interface Profile {
   username: string;
@@ -27,7 +29,9 @@ export function Navbar() {
   const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     // Get initial session
@@ -43,6 +47,14 @@ export function Navbar() {
           .then(({ data }) => {
             if (data) setProfile(data as Profile);
           });
+
+        // Initial unread count fetch
+        getUnreadCount(u.id).then(setUnreadCount);
+
+        // Poll every 30 seconds
+        pollRef.current = setInterval(() => {
+          getUnreadCount(u.id).then(setUnreadCount);
+        }, 30_000);
       }
     });
 
@@ -55,10 +67,15 @@ export function Navbar() {
       } else {
         setUser(null);
         setProfile(null);
+        setUnreadCount(0);
+        if (pollRef.current) clearInterval(pollRef.current);
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
   }, [supabase]);
 
   // Close dropdown on outside click
@@ -130,80 +147,109 @@ export function Navbar() {
         {/* Auth section */}
         <div className="flex items-center gap-3">
           {user ? (
-            /* Logged in — avatar dropdown */
-            <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2 rounded-full border border-[rgba(240,246,252,0.10)] bg-[#0D1117] px-2 py-1.5 transition-all hover:bg-[#0D1117]"
+            <>
+              {/* Notification bell */}
+              <Link
+                href="/notifications"
+                className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-[rgba(240,246,252,0.10)] bg-[#161B22] text-[#8B949E] transition-all hover:bg-[#0D1117] hover:text-[#E6EDF3]"
+                aria-label="Notifications"
               >
-                {profile?.avatar_url ? (
-                  <img
-                    src={profile.avatar_url}
-                    alt=""
-                    className="h-7 w-7 rounded-full object-cover"
+                <Bell className="h-4 w-4" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#2EA043] text-[9px] font-bold text-white shadow-lg">
+                    {unreadCount > 9 ? "9+" : unreadCount}
+                  </span>
+                )}
+              </Link>
+
+              {/* Logged in — avatar dropdown */}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="flex items-center gap-2 rounded-full border border-[rgba(240,246,252,0.10)] bg-[#0D1117] px-2 py-1.5 transition-all hover:bg-[#0D1117]"
+                >
+                  {profile?.avatar_url ? (
+                    <img
+                      src={profile.avatar_url}
+                      alt=""
+                      className="h-7 w-7 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#2EA043] to-[#1ABC9C] flex items-center justify-center text-[#E6EDF3] text-xs font-bold">
+                      {initials}
+                    </div>
+                  )}
+                  <ChevronDown
+                    className={cn(
+                      "h-3.5 w-3.5 text-[#E6EDF3]/50 transition-transform",
+                      dropdownOpen && "rotate-180"
+                    )}
                   />
-                ) : (
-                  <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#2EA043] to-[#1ABC9C] flex items-center justify-center text-[#E6EDF3] text-xs font-bold">
-                    {initials}
+                </button>
+
+                {/* Dropdown */}
+                {dropdownOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl border border-[rgba(240,246,252,0.10)] bg-[#161B22] shadow-glass py-1 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="px-4 py-3 border-b border-[rgba(240,246,252,0.10)]/50">
+                      <p className="text-sm font-semibold text-[#E6EDF3]/80 truncate">
+                        {profile?.display_name || profile?.username}
+                      </p>
+                      <p className="text-xs text-[#484F58] truncate">
+                        {user.email}
+                      </p>
+                    </div>
+
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#E6EDF3]/70 hover:bg-[#0D1117] hover:text-[#E6EDF3] transition-colors"
+                    >
+                      <LayoutDashboard className="h-4 w-4" />
+                      My Dashboard
+                    </Link>
+                    <Link
+                      href={`/profile/${profile?.username || ""}`}
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#E6EDF3]/70 hover:bg-[#0D1117] hover:text-[#E6EDF3] transition-colors"
+                    >
+                      <User className="h-4 w-4" />
+                      My Profile
+                    </Link>
+                    <Link
+                      href="/notifications"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#E6EDF3]/70 hover:bg-[#0D1117] hover:text-[#E6EDF3] transition-colors"
+                    >
+                      <Bell className="h-4 w-4" />
+                      Notifications
+                      {unreadCount > 0 && (
+                        <span className="ml-auto flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[#2EA043] px-1 text-[10px] font-bold text-white">
+                          {unreadCount > 9 ? "9+" : unreadCount}
+                        </span>
+                      )}
+                    </Link>
+                    <Link
+                      href="/settings"
+                      onClick={() => setDropdownOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#E6EDF3]/70 hover:bg-[#0D1117] hover:text-[#E6EDF3] transition-colors"
+                    >
+                      <Settings className="h-4 w-4" />
+                      Settings
+                    </Link>
+
+                    <div className="border-t border-[rgba(240,246,252,0.10)]/50 mt-1 pt-1">
+                      <button
+                        onClick={handleSignOut}
+                        className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-900/20 hover:text-red-400 transition-colors"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        Sign Out
+                      </button>
+                    </div>
                   </div>
                 )}
-                <ChevronDown
-                  className={cn(
-                    "h-3.5 w-3.5 text-[#E6EDF3]/50 transition-transform",
-                    dropdownOpen && "rotate-180"
-                  )}
-                />
-              </button>
-
-              {/* Dropdown */}
-              {dropdownOpen && (
-                <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl border border-[rgba(240,246,252,0.10)] bg-[#161B22] shadow-glass py-1 animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="px-4 py-3 border-b border-[rgba(240,246,252,0.10)]/50">
-                    <p className="text-sm font-semibold text-[#E6EDF3]/80 truncate">
-                      {profile?.display_name || profile?.username}
-                    </p>
-                    <p className="text-xs text-[#484F58] truncate">
-                      {user.email}
-                    </p>
-                  </div>
-
-                  <Link
-                    href="/dashboard"
-                    onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#E6EDF3]/70 hover:bg-[#0D1117] hover:text-[#E6EDF3] transition-colors"
-                  >
-                    <LayoutDashboard className="h-4 w-4" />
-                    My Dashboard
-                  </Link>
-                  <Link
-                    href={`/profile/${profile?.username || ""}`}
-                    onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#E6EDF3]/70 hover:bg-[#0D1117] hover:text-[#E6EDF3] transition-colors"
-                  >
-                    <User className="h-4 w-4" />
-                    My Profile
-                  </Link>
-                  <Link
-                    href="/settings"
-                    onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#E6EDF3]/70 hover:bg-[#0D1117] hover:text-[#E6EDF3] transition-colors"
-                  >
-                    <Settings className="h-4 w-4" />
-                    Settings
-                  </Link>
-
-                  <div className="border-t border-[rgba(240,246,252,0.10)]/50 mt-1 pt-1">
-                    <button
-                      onClick={handleSignOut}
-                      className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-900/20 hover:text-red-400 transition-colors"
-                    >
-                      <LogOut className="h-4 w-4" />
-                      Sign Out
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+              </div>
+            </>
           ) : (
             /* Not logged in — Sign In / Sign Up */
             <>

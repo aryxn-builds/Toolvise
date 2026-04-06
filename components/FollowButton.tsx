@@ -5,12 +5,15 @@ import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import { createNotification } from "@/lib/notifications";
 
 interface FollowButtonProps {
   profileUserId: string;
   currentUserId: string | null;
   initialIsFollowing: boolean;
   initialFollowersCount: number;
+  /** Optional display name of the follower, used in the notification message. */
+  followerDisplayName?: string;
 }
 
 export function FollowButton({
@@ -18,6 +21,7 @@ export function FollowButton({
   currentUserId,
   initialIsFollowing,
   initialFollowersCount,
+  followerDisplayName,
 }: FollowButtonProps) {
   const router = useRouter();
   const supabase = createClient();
@@ -55,6 +59,14 @@ export function FollowButton({
         if (!error) {
           setIsFollowing(true);
           setFollowersCount((prev) => prev + 1);
+
+          // Fire follow notification (non-blocking)
+          createNotification({
+            userId: profileUserId,
+            actorId: currentUserId,
+            type: "follow",
+            message: `${followerDisplayName ?? "Someone"} started following you.`,
+          }).catch(() => {/* silently ignore */});
         }
       }
     } catch {

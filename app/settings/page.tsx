@@ -17,6 +17,10 @@ import {
   Globe,
   Clock,
   Code2,
+  Bell,
+  UserPlus,
+  Heart,
+  MessageSquare,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Navbar } from "@/components/Navbar";
@@ -76,6 +80,12 @@ export default function SettingsPage() {
   const [preferredLanguages, setPreferredLanguages] = useState("");
   const [timezone, setTimezone] = useState("");
 
+  // Notification preferences
+  const [notifFollows, setNotifFollows] = useState(true);
+  const [notifUpvotes, setNotifUpvotes] = useState(true);
+  const [notifComments, setNotifComments] = useState(true);
+  const [savingNotifs, setSavingNotifs] = useState(false);
+
   useEffect(() => {
     async function loadProfile() {
       const { data: { user } } = await supabase.auth.getUser();
@@ -106,6 +116,9 @@ export default function SettingsPage() {
         setLocation(profile.location || "");
         setPreferredLanguages(profile.preferred_languages || "");
         setTimezone(profile.timezone || "");
+        setNotifFollows(profile.notif_follows ?? true);
+        setNotifUpvotes(profile.notif_upvotes ?? true);
+        setNotifComments(profile.notif_comments ?? true);
       }
       setLoading(false);
     }
@@ -180,6 +193,21 @@ export default function SettingsPage() {
       setTimeout(() => setSuccess(false), 3000);
     }
     setSaving(false);
+  };
+
+  // Save notification preferences
+  const handleSaveNotifs = async () => {
+    if (!userId) return;
+    setSavingNotifs(true);
+    await supabase
+      .from("profiles")
+      .update({
+        notif_follows: notifFollows,
+        notif_upvotes: notifUpvotes,
+        notif_comments: notifComments,
+      })
+      .eq("id", userId);
+    setSavingNotifs(false);
   };
 
   const handleSignOut = async () => {
@@ -457,6 +485,85 @@ export default function SettingsPage() {
             </Button>
           </div>
         </form>
+
+        {/* ── Notification Preferences ── */}
+        <div className="rounded-2xl border border-[rgba(240,246,252,0.10)] bg-[#161B22] p-6 sm:p-8 space-y-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-[#E6EDF3] flex items-center gap-2">
+                <Bell className="h-5 w-5 text-[#2EA043]" />
+                Notification Preferences
+              </h2>
+              <p className="text-sm text-[#8B949E] mt-1">Choose what you want to be notified about.</p>
+            </div>
+            <button
+              type="button"
+              onClick={handleSaveNotifs}
+              disabled={savingNotifs}
+              className="flex items-center gap-2 rounded-xl bg-[#2EA043]/10 border border-[#2EA043]/30 px-4 py-2 text-sm font-semibold text-[#2EA043] hover:bg-[#2EA043]/20 transition-all disabled:opacity-50"
+            >
+              {savingNotifs ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
+              Save
+            </button>
+          </div>
+
+          {[
+            {
+              label: "New Followers",
+              description: "When someone follows you",
+              icon: <UserPlus className="h-4 w-4 text-blue-400" />,
+              value: notifFollows,
+              onChange: setNotifFollows,
+            },
+            {
+              label: "Stack Upvotes",
+              description: "When someone upvotes your stack",
+              icon: <Heart className="h-4 w-4 text-[#2EA043]" />,
+              value: notifUpvotes,
+              onChange: setNotifUpvotes,
+            },
+            {
+              label: "New Comments",
+              description: "When someone comments on your stack",
+              icon: <MessageSquare className="h-4 w-4 text-purple-400" />,
+              value: notifComments,
+              onChange: setNotifComments,
+            },
+          ].map((pref) => (
+            <div
+              key={pref.label}
+              className="flex items-center justify-between gap-4 rounded-xl border border-[rgba(240,246,252,0.08)] bg-[#0D1117] px-5 py-4"
+            >
+              <div className="flex items-center gap-3">
+                <div className="grid h-9 w-9 place-items-center rounded-xl border border-[rgba(240,246,252,0.10)] bg-[#161B22]">
+                  {pref.icon}
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-[#E6EDF3]">{pref.label}</p>
+                  <p className="text-xs text-[#8B949E]">{pref.description}</p>
+                </div>
+              </div>
+              {/* Toggle switch */}
+              <button
+                type="button"
+                role="switch"
+                aria-checked={pref.value}
+                onClick={() => pref.onChange(!pref.value)}
+                className={`relative h-6 w-11 shrink-0 rounded-full border transition-all duration-200 focus:outline-none ${
+                  pref.value
+                    ? "bg-[#2EA043] border-[#2EA043]"
+                    : "bg-[#161B22] border-[rgba(240,246,252,0.15)]"
+                }`}
+              >
+                <span
+                  className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform duration-200 ${
+                    pref.value ? "translate-x-5" : "translate-x-0"
+                  }`}
+                />
+              </button>
+            </div>
+          ))}
+        </div>
 
         {/* ── Danger Zone ── */}
         <div className="rounded-2xl border border-red-500/30 bg-red-900/10 p-6 sm:p-8">
