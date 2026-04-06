@@ -68,7 +68,7 @@ const BUILD_STYLE_OPTIONS = [
 ]
 
 // ── Main Component ─────────────────────────────────────────────────────────
-export default function AdvisorPage() {
+function AdvisorForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const remixSlug = searchParams.get("remix")
@@ -520,5 +520,20 @@ function FieldError({ id, message }: { id?: string; message: string }) {
       <AlertCircle className="h-3.5 w-3.5 shrink-0" />
       {message}
     </p>
+  )
+}
+
+// ── Page export (wrapped in Suspense for useSearchParams) ─────────────────────
+export default function AdvisorPage() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="flex min-h-dvh items-center justify-center bg-[#0D1117]">
+          <Loader2 className="h-8 w-8 animate-spin text-[#2EA043]" />
+        </div>
+      }
+    >
+      <AdvisorForm />
+    </React.Suspense>
   )
 }
