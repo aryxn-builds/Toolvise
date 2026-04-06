@@ -40,3 +40,10 @@ next-env.d.ts
 test-*.js
 *-out.json
 *.test.js
+
+# Local scripts
+fix*.js
+fix_theme*.js
+rebrand.js
+test-.mjs
+test_.js
