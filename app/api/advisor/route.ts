@@ -499,6 +499,7 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
       // Get current user (null if not logged in — that's fine)
       const { data: { user } } = await supabase.auth.getUser();
 
+      // 10. Persist to Supabase Stacks
       const { data: insertedRow, error: dbError } = await supabase.from("stacks").insert({
         share_slug: shareSlug,
         user_id: user?.id ?? null,
@@ -509,19 +510,21 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
         goal: goal,
         build_style: buildStyle,
         summary: normalizedData.summary || null,
-        tools: normalizedData.tools.length ? normalizedData.tools : null,
-        roadmap: normalizedData.roadmap.length ? normalizedData.roadmap : null,
+        tools: (normalizedData.tools && normalizedData.tools.length) ? normalizedData.tools : null,
+        roadmap: (normalizedData.roadmap && normalizedData.roadmap.length) ? normalizedData.roadmap : null,
         estimated_time: normalizedData.estimatedTime || null,
         pro_tip: normalizedData.proTip || null,
         vibe_coding: normalizedData.vibeCoding || null,
         score_card: normalizedData.scoreCard || null,
-        comparison_engine: normalizedData.comparisonEngine || null,
+        // Removed: comparison_engine (non-existent in DB)
       }).select("id").single();
 
       if (dbError) {
-        console.error("[advisor] Supabase insert error:", dbError);
+        console.error("[advisor] Supabase insert error (Check your schema!):", dbError);
+        // We still return normalizedData so the frontend can see the result via localStorage
       } else if (insertedRow?.id) {
         (normalizedData as Record<string, unknown>).stackId = insertedRow.id;
+        console.log("[advisor] Stack created successfully in DB:", insertedRow.id);
       }
     } catch (dbErr) {
       console.error("[advisor] Supabase connection error:", dbErr);
