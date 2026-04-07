@@ -81,31 +81,45 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
     let cancelled = false;
 
     async function init() {
+      if (typeof window === "undefined") return;
+      setLoadingComments(true);
+      setFetchError(null);
+
       // Step 1: Get current user
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!cancelled && user) {
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (!cancelled && user && !authError) {
+          console.log("[CommentsSection] Authenticated user:", user.id);
           setCurrentUser({ id: user.id, email: user.email ?? "" });
+        } else {
+          console.log("[CommentsSection] No authenticated user.");
         }
-      } catch {
-        // not logged in — fine
+      } catch (authErr) {
+        console.error("[CommentsSection] Auth check failed:", authErr);
       }
 
       // Step 2: Resolve stackId from shareSlug if not provided
       let sid = stackId;
+      console.log("[CommentsSection] Initial stackId:", stackId, "shareSlug:", shareSlug);
+      
       if (!sid && shareSlug) {
         try {
-          const { data: row } = await supabase
+          const { data: row, error: slugError } = await supabase
             .from("stacks")
             .select("id")
             .eq("share_slug", shareSlug)
             .maybeSingle();
+          
+          if (slugError) {
+            console.error("[CommentsSection] Slug resolution error:", slugError);
+          }
           if (row?.id) {
+            console.log("[CommentsSection] Resolved stackId:", row.id);
             sid = row.id;
             if (!cancelled) setResolvedStackId(sid);
           }
-        } catch {
-          /* ignore */
+        } catch (slugErr) {
+          console.error("[CommentsSection] Unexpected slug resolution error:", slugErr);
         }
       }
 
@@ -189,13 +203,13 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
       if (error) {
         console.error("[CommentsSection] post error:", error);
         if (error.code === "42501" || (error.message && error.message.includes("policy"))) {
-          setPostError("Permission denied. Please sign out and sign back in.");
+          setPostError("Permission denied. Ensure you are signed in and that your session is valid.");
         } else if (error.message && error.message.includes("foreign key")) {
-          setPostError("Session error. Please sign in again.");
+          setPostError("Invalid discussion context. Please refresh the page.");
         } else if (error.code === "42P01") {
-          setPostError("Comments table not set up. Run comments-migration.sql in Supabase.");
+          setPostError("Comments feature is temporarily unavailable (DB error).");
         } else {
-          setPostError(`Failed to post: ${error.message}`);
+          setPostError(error.message || "Failed to post comment.");
         }
         return;
       }
@@ -253,10 +267,14 @@ export function CommentsSection({ stackId, shareSlug }: CommentsSectionProps) {
         .delete()
         .eq("id", commentId)
         .eq("user_id", currentUser.id);
-      if (!error) {
+      if (error) {
+        console.error("[CommentsSection] Delete error:", error);
+      } else {
         setComments((prev) => prev.filter((c) => c.id !== commentId));
       }
-    } catch { /* silent */ } finally {
+    } catch (err) {
+      console.error("[CommentsSection] Unexpected delete error:", err);
+    } finally {
       setDeletingId(null);
     }
   }
