@@ -249,7 +249,7 @@ export default function AdminDashboard() {
         supabase.from("bug_reports").select("*", { count: "exact", head: true }).eq("status", "open"),
         supabase.from("stacks").select("build_style").order("created_at", { ascending: false }).limit(100),
         supabase.from("stacks").select("goal"),
-        supabase.from("profiles").select("id, username, display_name, email, avatar_url, is_admin, is_owner, created_at, stacks_count, followers_count, following_count").order("created_at", { ascending: false }).limit(50),
+        supabase.from("profiles").select("id, username, display_name, email, avatar_url, is_admin, created_at, stacks_count, followers_count, following_count").order("created_at", { ascending: false }).limit(50),
         supabase.from("stacks").select("id, user_input, build_style, goal, is_public, is_featured, upvotes, score_card, created_at, share_slug, user_id").order("created_at", { ascending: false }).limit(50),
         supabase.from("bug_reports").select("*").order("created_at", { ascending: false }),
         supabase.from("announcements").select("*").order("created_at", { ascending: false }),
