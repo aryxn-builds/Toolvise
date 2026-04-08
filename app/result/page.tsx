@@ -80,6 +80,7 @@ interface Tool {
   alternatives?: string[]
   warnings?: string
   bestFor?: string
+  isTrending?: boolean
 }
 
 interface Comparison {
@@ -529,6 +530,10 @@ function ResultContent() {
   const [learningMode, setLearningMode] = React.useState(false)
   const [exportOpen, setExportOpen] = React.useState(false)
   const exportRef = React.useRef<HTMLDivElement>(null)
+  const [badgeOpen, setBadgeOpen] = React.useState(false)
+  const [badgeCopiedMd, setBadgeCopiedMd] = React.useState(false)
+  const [badgeCopiedHtml, setBadgeCopiedHtml] = React.useState(false)
+  const badgeRef = React.useRef<HTMLDivElement>(null)
   
   const [criticData, setCriticData] = React.useState<any>(null)
   const [criticLoading, setCriticLoading] = React.useState(false)
@@ -665,6 +670,7 @@ function ResultContent() {
               parsed.score_card || null,
             architecture: parsed.architecture || 
               null,
+            comparisonEngine: parsed.comparisonEngine || parsed.comparison_engine || parsed.ComparisonEngine || null,
             shareSlug: parsed.shareSlug || 
               parsed.share_slug || "",
             stackUserId: parsed.stackUserId || 
@@ -700,10 +706,28 @@ function ResultContent() {
       if (exportRef.current && !exportRef.current.contains(e.target as Node)) {
         setExportOpen(false)
       }
+      if (badgeRef.current && !badgeRef.current.contains(e.target as Node)) {
+        setBadgeOpen(false)
+      }
     }
     document.addEventListener("mousedown", handler)
     return () => document.removeEventListener("mousedown", handler)
   }, [])
+
+  const handleCopyBadge = (type: "md" | "html") => {
+    const slug = data?.shareSlug || ""
+    const url = `https://toolvise.vercel.app/result?slug=${slug}`
+    const imgUrl = `https://toolvise.vercel.app/badge.svg`
+    if (type === "md") {
+      navigator.clipboard.writeText(`[![Built with Toolvise](${imgUrl})](${url})`)
+      setBadgeCopiedMd(true)
+      setTimeout(() => setBadgeCopiedMd(false), 2000)
+    } else {
+      navigator.clipboard.writeText(`<a href="${url}"><img src="${imgUrl}" alt="Built with Toolvise"></a>`)
+      setBadgeCopiedHtml(true)
+      setTimeout(() => setBadgeCopiedHtml(false), 2000)
+    }
+  }
 
   const handleShare = () => {
     if (!data?.shareSlug) return
@@ -1001,15 +1025,21 @@ function ResultContent() {
 
         {/* Tools grouping */}
         <div className="space-y-8">
-          {Object.entries(
-            (data.tools || []).reduce((acc: Record<string, Tool[]>, tool) => {
-              if (tool && tool.category) {
-                if (!acc[tool.category]) acc[tool.category] = []
-                acc[tool.category].push(tool)
-              }
-              return acc
-            }, {})
-          ).map(([category, catTools]) => {
+          {((): React.ReactNode => {
+            const CATEGORY_ORDER = ["Frontend", "Backend", "Database", "AI", "Design", "DevOps"]
+            return Object.entries(
+              (data.tools || []).reduce((acc: Record<string, Tool[]>, tool) => {
+                if (tool && tool.category) {
+                  if (!acc[tool.category]) acc[tool.category] = []
+                  acc[tool.category].push(tool)
+                }
+                return acc
+              }, {})
+            ).sort(([a], [b]) => {
+              const ai = CATEGORY_ORDER.indexOf(a)
+              const bi = CATEGORY_ORDER.indexOf(b)
+              return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi)
+            }).map(([category, catTools]) => {
             const categoryObj = CATEGORY_COLORS[category] || "border-[rgba(240,246,252,0.10)] bg-[#0D1117] text-[#2EA043]/70"
             // extract the text-color from category object
             const textColorMatch = categoryObj.match(/text-([a-z]+-\d+)/)
@@ -1036,8 +1066,7 @@ function ResultContent() {
                               {tool.difficulty === 'Industry Standard' && (
                                 <span title="Industry Standard" className="text-xs">⭐</span>
                               )}
-                              {['next.js', 'react', 'tailwind css', 'supabase', 'vercel', 'prisma', 'stripe', 'clerk']
-                                .includes(String(tool.name).toLowerCase()) && (
+                              {tool.isTrending && (
                                 <span title="Trending Tool" className="inline-flex items-center rounded bg-red-900/30 px-1.5 py-0.5 text-[10px] font-bold text-red-300 select-none">
                                   Trending 🔥
                                 </span>
@@ -1123,7 +1152,8 @@ function ResultContent() {
                 </div>
               </div>
             )
-          })}
+          })
+            })()}
         </div>
       </section>
 
@@ -1408,34 +1438,34 @@ function ResultContent() {
         </div>
 
         {criticData && (
-          <div className="mt-4 rounded-xl border border-purple-200 bg-purple-50 p-6 animate-in fade-in slide-in-from-top-4">
+          <div className="mt-4 rounded-xl border border-purple-500/30 bg-[#1a0a2e] p-6 animate-in fade-in slide-in-from-top-4">
             <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-100 text-2xl">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-900/40 text-2xl">
                  🧑‍⚖️
               </div>
               <div className="space-y-5 flex-1">
                 <div>
-                  <h3 className="font-bold text-purple-900 mb-1">The Verdict</h3>
-                  <p className="text-sm text-purple-800 leading-relaxed">{criticData.verdict}</p>
+                  <h3 className="font-bold text-[#E6EDF3] mb-1">The Verdict</h3>
+                  <p className="text-sm text-purple-300 leading-relaxed">{criticData.verdict}</p>
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="bg-[#0D1117] rounded-lg p-4 border border-purple-100">
+                  <div className="bg-[#0D1117] rounded-lg p-4 border border-purple-500/20">
                     <h4 className="text-xs font-bold text-red-400 uppercase mb-2 flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> Missing Pieces</h4>
                     <p className="text-sm text-[#E6EDF3]/80">{criticData.missingPiece}</p>
                   </div>
-                  <div className="bg-[#0D1117] rounded-lg p-4 border border-purple-100">
+                  <div className="bg-[#0D1117] rounded-lg p-4 border border-purple-500/20">
                     <h4 className="text-xs font-bold text-[#2EA043] uppercase mb-2 flex items-center gap-1"><Zap className="h-3 w-3" /> Scaling Bottlenecks</h4>
                     <p className="text-sm text-[#E6EDF3]/80">{criticData.scalingBottleneck}</p>
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-bold text-purple-900 mb-2">Key Tradeoffs</h4>
+                  <h4 className="font-bold text-[#E6EDF3] mb-2">Key Tradeoffs</h4>
                   <div className="space-y-2">
-                    {criticData.tradeoffs?.map((t: any, i: number) => (
-                      <div key={i} className="flex gap-2 items-start text-sm bg-[#0D1117] rounded-lg p-3 border border-purple-100">
-                        <span className="shrink-0 bg-purple-100 text-purple-700 px-2 py-0.5 rounded text-xs font-semibold">{t.aspect}</span>
+                    {criticData.tradeoffs?.map((t: {aspect: string; comment: string}, i: number) => (
+                      <div key={i} className="flex gap-2 items-start text-sm bg-[#0D1117] rounded-lg p-3 border border-purple-500/20">
+                        <span className="shrink-0 bg-purple-900/30 text-purple-300 px-2 py-0.5 rounded text-xs font-semibold">{t.aspect}</span>
                         <span className="text-[#E6EDF3]/80">{t.comment}</span>
                       </div>
                     ))}
@@ -1502,6 +1532,57 @@ function ResultContent() {
             <Share2 className="mr-2 h-5 w-5" />
             {copied ? "Copied Link!" : "Share Stack"}
           </Button>
+
+          {/* Get Badge button */}
+          {data.shareSlug && (
+            <div className="relative" ref={badgeRef}>
+              <Button
+                onClick={() => setBadgeOpen(o => !o)}
+                variant="outline"
+                className="h-12 px-8 rounded-xl border-[rgba(240,246,252,0.10)] bg-[#0D1117] text-[#E6EDF3] hover:bg-[#0D1117] font-semibold w-full sm:w-auto text-base"
+              >
+                ⚡ Get Badge
+              </Button>
+              {badgeOpen && (
+                <div className="absolute bottom-full mb-2 right-0 w-80 rounded-xl border border-[rgba(240,246,252,0.10)] bg-[#161B22] p-4 shadow-2xl z-30 animate-in fade-in zoom-in-95 duration-150">
+                  <p className="text-xs font-bold text-[#E6EDF3]/60 uppercase tracking-wider mb-3">Built with Toolvise Badge</p>
+                  {/* Badge preview */}
+                  <div className="flex items-center justify-center bg-[#0D1117] rounded-lg p-3 mb-4 border border-[rgba(240,246,252,0.10)]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/badge.svg" alt="Built with Toolvise" width={160} height={20} />
+                  </div>
+                  {/* Markdown copy */}
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold text-[#8B949E]">Markdown</p>
+                    <div className="flex items-center gap-2">
+                      <code className="flex-1 text-[10px] text-[#E6EDF3]/60 bg-[#0D1117] rounded px-2 py-1.5 overflow-hidden text-ellipsis whitespace-nowrap border border-[rgba(240,246,252,0.10)]">
+                        [![Built with Toolvise](https://toolvise.vercel.app/badge.svg)]
+                      </code>
+                      <button
+                        onClick={() => handleCopyBadge("md")}
+                        className="shrink-0 rounded-lg bg-[#2EA043]/20 border border-[#2EA043]/30 px-3 py-1.5 text-xs font-semibold text-[#2EA043] hover:bg-[#2EA043]/30 transition-colors"
+                      >
+                        {badgeCopiedMd ? "Copied!" : "Copy"}
+                      </button>
+                    </div>
+                    {/* HTML copy */}
+                    <p className="text-xs font-semibold text-[#8B949E] mt-2">HTML</p>
+                    <div className="flex items-center gap-2">
+                      <code className="flex-1 text-[10px] text-[#E6EDF3]/60 bg-[#0D1117] rounded px-2 py-1.5 overflow-hidden text-ellipsis whitespace-nowrap border border-[rgba(240,246,252,0.10)]">
+                        &lt;a href="…"&gt;&lt;img src="badge.svg"&gt;&lt;/a&gt;
+                      </code>
+                      <button
+                        onClick={() => handleCopyBadge("html")}
+                        className="shrink-0 rounded-lg bg-[#2EA043]/20 border border-[#2EA043]/30 px-3 py-1.5 text-xs font-semibold text-[#2EA043] hover:bg-[#2EA043]/30 transition-colors"
+                      >
+                        {badgeCopiedHtml ? "Copied!" : "Copy"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
           
           <Button
             onClick={() => router.push('/advisor')}

@@ -249,7 +249,7 @@ export default function AdminDashboard() {
         supabase.from("bug_reports").select("*", { count: "exact", head: true }).eq("status", "open"),
         supabase.from("stacks").select("build_style").order("created_at", { ascending: false }).limit(100),
         supabase.from("stacks").select("goal"),
-        supabase.from("profiles").select("id, username, display_name, email, avatar_url, is_admin, created_at, stacks_count, followers_count, following_count").order("created_at", { ascending: false }).limit(50),
+        supabase.from("profiles").select("id, username, display_name, email, avatar_url, is_admin, is_owner, created_at, stacks_count, followers_count, following_count").order("created_at", { ascending: false }).limit(50),
         supabase.from("stacks").select("id, user_input, build_style, goal, is_public, is_featured, upvotes, score_card, created_at, share_slug, user_id").order("created_at", { ascending: false }).limit(50),
         supabase.from("bug_reports").select("*").order("created_at", { ascending: false }),
         supabase.from("announcements").select("*").order("created_at", { ascending: false }),
@@ -350,8 +350,15 @@ export default function AdminDashboard() {
   }
 
   async function handleToggleAdmin(userId: string, currentStatus: boolean, username: string) {
+    // Guard: cannot remove the last admin
     if (users.filter(u => u.is_admin).length === 1 && currentStatus) {
       showToast("Cannot remove the last admin", false)
+      return
+    }
+    // Guard: cannot revoke the site owner's admin rights
+    const target = users.find(u => u.id === userId)
+    if (target?.is_owner) {
+      showToast("Cannot revoke admin from the site owner", false)
       return
     }
     openConfirm(
@@ -1855,7 +1862,9 @@ export default function AdminDashboard() {
                       {/* Role Management Actions */}
                       <div className="flex items-center gap-2">
                         {admin.is_owner || admin.email === 'ay6033756@gmail.com' ? (
-                           <span className="text-xs font-semibold text-gray-400 px-3">Primary Owner</span>
+                           <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-400 px-3">
+                             👑 Owner
+                           </span>
                         ) : admin.id === currentUserId ? (
                            <span className="text-xs font-semibold text-gray-400 px-3">Current Session</span>
                         ) : (

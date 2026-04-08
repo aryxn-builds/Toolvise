@@ -54,7 +54,8 @@ Always respond in this exact JSON format:
       "reason": "string (why this tool for their project)",
       "isFree": true/false,
       "learnUrl": "string (best free learning resource URL)",
-      "difficulty": "string (Beginner/Intermediate/Advanced)"
+      "difficulty": "string (Beginner/Intermediate/Advanced)",
+      "isTrending": true/false (true if this tool is currently widely adopted and growing in 2024-2025 ecosystem)
     }
   ],
   "roadmap": [
@@ -127,6 +128,7 @@ interface AITool {
   difficulty?: string; Difficulty?: string; level?: string;
   alternatives?: string[]; warnings?: string; bestFor?: string;
   best_for?: string; Warnings?: string; Alternatives?: string[];
+  isTrending?: boolean; is_trending?: boolean; IsTrending?: boolean;
 }
 
 interface ScoreCardRaw {
@@ -467,6 +469,7 @@ Based on this, recommend me the perfect tech stack.${vibeAddon}`;
         isFree: t.isFree ?? t.is_free ?? t.IsFree ?? true,
         learnUrl: t.learnUrl || t.learn_url || t.LearnUrl || t.url || t.link || "#",
         difficulty: t.difficulty || t.Difficulty || t.level || "Beginner",
+        isTrending: t.isTrending ?? t.is_trending ?? t.IsTrending ?? false,
         ...(detailLevel === "deep" ? {
           alternatives: t.alternatives || t.Alternatives || [],
           warnings: t.warnings || t.Warnings || "",

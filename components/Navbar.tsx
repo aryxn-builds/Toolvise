@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   ChevronDown,
   Bell,
+  Activity,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
@@ -136,6 +137,15 @@ export function Navbar() {
           >
             Leaderboard
           </Link>
+          {user && (
+            <Link
+              className="transition-colors hover:text-[#E6EDF3] px-1 py-5 flex items-center gap-1.5"
+              href="/activity"
+            >
+              <Activity className="h-3.5 w-3.5" />
+              Activity
+            </Link>
+          )}
           <Link
             className="transition-colors hover:text-[#E6EDF3] px-1 py-5"
             href="/about"
