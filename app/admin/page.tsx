@@ -36,6 +36,7 @@ interface Profile {
   display_name: string | null
   avatar_url: string | null
   is_admin: boolean
+  admin_rank?: number | null
   stacks_count: number
   followers_count: number
   following_count: number
@@ -43,7 +44,6 @@ interface Profile {
   email?: string
   profile_picture_url?: string
   name?: string
-  is_owner?: boolean
 }
 
 interface Stack {
@@ -222,82 +222,106 @@ export default function AdminDashboard() {
   }, [])
 
   async function loadAllData() {
+    const supabase = createClient()
+    const todayISO = new Date().toISOString().split("T")[0]
+
+    async function safeQuery(
+      label: string, 
+      query: any, 
+      defaultValue: { data: any; count: number | null } = { data: null, count: 0 }
+    ): Promise<{ data: any; count: number | null; error?: any }> {
+      try {
+        const result = await query
+        if (result.error) {
+          console.error(`[Admin Dashboard] Error fetching ${label}:`, result.error)
+          return defaultValue
+        }
+        return result
+      } catch (err) {
+        console.error(`[Admin Dashboard] Exception fetching ${label}:`, err)
+        return defaultValue
+      }
+    }
+
+    // Load critical data first or in parallel with safety
+    const [
+      usersCount,
+      stacksCount,
+      todayCount,
+      bugsCount,
+      recent,
+      goals,
+      usersData,
+      stacksData,
+      bugsData,
+      announcementsData,
+      apiLogsData,
+      totalApiLogsData,
+      totalGeminiData,
+      totalGroqData,
+      totalFailedData,
+    ] = await Promise.all([
+      safeQuery("usersCount", supabase.from("profiles").select("*", { count: "exact", head: true }) as any),
+      safeQuery("stacksCount", supabase.from("stacks").select("*", { count: "exact", head: true }) as any),
+      safeQuery("todayCount", supabase.from("stacks").select("*", { count: "exact", head: true }).gte("created_at", todayISO) as any),
+      safeQuery("bugsCount", supabase.from("bug_reports").select("*", { count: "exact", head: true }).eq("status", "open") as any),
+      safeQuery("recentStacks", supabase.from("stacks").select("build_style").order("created_at", { ascending: false }).limit(100) as any),
+      safeQuery("goals", supabase.from("stacks").select("goal") as any),
+      safeQuery("usersData", supabase.from("profiles").select("id, username, display_name, email, avatar_url, is_admin, admin_rank, created_at, stacks_count, followers_count, following_count").order("created_at", { ascending: false }).limit(50) as any),
+      safeQuery("stacksData", supabase.from("stacks").select("id, user_input, build_style, goal, is_public, is_featured, upvotes, score_card, created_at, share_slug, user_id").order("created_at", { ascending: false }).limit(50) as any),
+      safeQuery("bugsData", supabase.from("bug_reports").select("*").order("created_at", { ascending: false }) as any),
+      safeQuery("announcementsData", supabase.from("announcements").select("*").order("created_at", { ascending: false }) as any),
+      safeQuery("apiLogsData", supabase.from('api_usage_logs').select('*').order('created_at', { ascending: false }).limit(100) as any),
+      safeQuery("totalApiLogs", supabase.from('api_usage_logs').select('id', { count: 'exact', head: true }) as any),
+      safeQuery("totalGemini", supabase.from('api_usage_logs').select('id', { count: 'exact', head: true }).eq('provider', 'gemini') as any),
+      safeQuery("totalGroq", supabase.from('api_usage_logs').select('id', { count: 'exact', head: true }).eq('provider', 'groq') as any),
+      safeQuery("totalFailed", supabase.from('api_usage_logs').select('id', { count: 'exact', head: true }).eq('success', false) as any),
+    ])
+
+    // Update states - each one checks for null/undefined from its specific safeQuery result
+    if (usersCount) setTotalUsers(usersCount.count ?? 0)
+    if (stacksCount) setTotalStacks(stacksCount.count ?? 0)
+    if (todayCount) setTodayStacks(todayCount.count ?? 0)
+    if (bugsCount) setOpenBugs(bugsCount.count ?? 0)
+    
+    setRecentStacks((recent?.data as { build_style: string | null }[]) || [])
+    setGoalStats((goals?.data as { goal: string | null }[]) || [])
+    setUsers((usersData?.data as Profile[]) || [])
+    setStacks((stacksData?.data as Stack[]) || [])
+    setBugs((bugsData?.data as BugReport[]) || [])
+    setAnnouncements((announcementsData?.data as Announcement[]) || [])
+    setApiLogs((apiLogsData?.data as ApiLog[]) || [])
+    
+    setTotalApiLogs(totalApiLogsData?.count ?? 0)
+    setTotalGemini(totalGeminiData?.count ?? 0)
+    setTotalGroq(totalGroqData?.count ?? 0)
+    setTotalFailed(totalFailedData?.count ?? 0)
+
+    // Fetch last 7 days daily counts with resilience
+    const last7Days = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date()
+      d.setUTCDate(d.getUTCDate() - (6 - i))
+      return d.toISOString().split("T")[0]
+    })
+
     try {
-      const supabase = createClient()
-      const todayISO = new Date().toISOString().split("T")[0]
-
-      const [
-        usersCount,
-        stacksCount,
-        todayCount,
-        bugsCount,
-        recent,
-        goals,
-        usersData,
-        stacksData,
-        bugsData,
-        announcementsData,
-        apiLogsData,
-        totalApiLogsData,
-        totalGeminiData,
-        totalGroqData,
-        totalFailedData,
-      ] = await Promise.all([
-        supabase.from("profiles").select("*", { count: "exact", head: true }),
-        supabase.from("stacks").select("*", { count: "exact", head: true }),
-        supabase.from("stacks").select("*", { count: "exact", head: true }).gte("created_at", todayISO),
-        supabase.from("bug_reports").select("*", { count: "exact", head: true }).eq("status", "open"),
-        supabase.from("stacks").select("build_style").order("created_at", { ascending: false }).limit(100),
-        supabase.from("stacks").select("goal"),
-        supabase.from("profiles").select("id, username, display_name, email, avatar_url, is_admin, created_at, stacks_count, followers_count, following_count").order("created_at", { ascending: false }).limit(50),
-        supabase.from("stacks").select("id, user_input, build_style, goal, is_public, is_featured, upvotes, score_card, created_at, share_slug, user_id").order("created_at", { ascending: false }).limit(50),
-        supabase.from("bug_reports").select("*").order("created_at", { ascending: false }),
-        supabase.from("announcements").select("*").order("created_at", { ascending: false }),
-        supabase.from('api_usage_logs').select('*').order('created_at', { ascending: false }).limit(100),
-        supabase.from('api_usage_logs').select('id', { count: 'exact', head: true }),
-        supabase.from('api_usage_logs').select('id', { count: 'exact', head: true }).eq('provider', 'gemini'),
-        supabase.from('api_usage_logs').select('id', { count: 'exact', head: true }).eq('provider', 'groq'),
-        supabase.from('api_usage_logs').select('id', { count: 'exact', head: true }).eq('success', false),
-      ])
-
-      // Fetch last 7 days daily counts
-      const last7Days = Array.from({ length: 7 }, (_, i) => {
-        const d = new Date()
-        d.setUTCDate(d.getUTCDate() - (6 - i))
-        return d.toISOString().split("T")[0]
-      })
-
       const dailyCounts = await Promise.all(
-        last7Days.map(date => 
-          supabase
+        last7Days.map((date, idx) => 
+          safeQuery(`dailyCount-${idx}`, supabase
             .from('api_usage_logs')
             .select('id', { count: 'exact', head: true })
             .gte('created_at', `${date}T00:00:00Z`)
-            .lte('created_at', `${date}T23:59:59Z`)
+            .lte('created_at', `${date}T23:59:59Z`) as any
+          )
         )
       )
-      setDailyUsage(dailyCounts.map(res => res.count || 0))
-
-      setTotalUsers(usersCount.count ?? 0)
-      setTotalStacks(stacksCount.count ?? 0)
-      setTodayStacks(todayCount.count ?? 0)
-      setOpenBugs(bugsCount.count ?? 0)
-      setRecentStacks((recent.data as { build_style: string | null }[]) || [])
-      setGoalStats((goals.data as { goal: string | null }[]) || [])
-      setUsers((usersData.data as Profile[]) || [])
-      setStacks((stacksData.data as Stack[]) || [])
-      setBugs((bugsData.data as BugReport[]) || [])
-      setAnnouncements((announcementsData.data as Announcement[]) || [])
-      setApiLogs((apiLogsData?.data as ApiLog[]) || [])
-      setTotalApiLogs(totalApiLogsData?.count ?? 0)
-      setTotalGemini(totalGeminiData?.count ?? 0)
-      setTotalGroq(totalGroqData?.count ?? 0)
-      setTotalFailed(totalFailedData?.count ?? 0)
+      setDailyUsage(dailyCounts.map(res => res?.count || 0))
     } catch (err) {
-      console.error("Failed to load data:", err)
-      showToast("Failed to load data", false)
+      console.error("[Admin Dashboard] Daily counts fallback error:", err)
+      setDailyUsage(new Array(7).fill(0))
     }
   }
+
 
   // ── Stack Actions ───────────────────────────────────────────────────────
 
@@ -355,9 +379,9 @@ export default function AdminDashboard() {
       showToast("Cannot remove the last admin", false)
       return
     }
-    // Guard: cannot revoke the site owner's admin rights
+    // Guard: cannot revoke the site owner's admin rights (admin_rank 100+)
     const target = users.find(u => u.id === userId)
-    if (target?.is_owner) {
+    if (target?.admin_rank === 100) {
       showToast("Cannot revoke admin from the site owner", false)
       return
     }
@@ -915,19 +939,27 @@ export default function AdminDashboard() {
                           </td>
                           <td className="py-3 px-4 text-[#2EA043]/70 text-xs">{formatDate(user.created_at)}</td>
                           <td className="py-3 px-4" onClick={e => e.stopPropagation()}>
-                            <button
-                              onClick={() => handleToggleAdmin(user.id, !!user.is_admin, user.username || 'unknown')}
-                              className={cn(
-                                "group inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold transition-all",
-                                user.is_admin 
-                                  ? "bg-[#0D1117]/10 text-[#2EA043] hover:bg-red-900/20 hover:text-red-400" 
-                                  : "text-[#2EA043]/70 bg-[#161B22]/10 hover:bg-[#0D1117]/10 hover:text-[#2EA043]"
+                            <div className="flex flex-col gap-1 items-start">
+                              <button
+                                onClick={() => handleToggleAdmin(user.id, !!user.is_admin, user.username || 'unknown')}
+                                className={cn(
+                                  "group inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold transition-all",
+                                  user.is_admin 
+                                    ? "bg-[#0D1117]/10 text-[#2EA043] hover:bg-red-900/20 hover:text-red-400" 
+                                    : "text-[#2EA043]/70 bg-[#161B22]/10 hover:bg-[#0D1117]/10 hover:text-[#2EA043]"
+                                )}
+                                title={user.is_admin ? "Remove admin rights" : "Make admin"}
+                              >
+                                <Shield className={cn("h-3 w-3", user.is_admin ? "fill-[#00D4FF]/20 group-hover:fill-red-500/20" : "")} />
+                                {user.is_admin ? "Admin" : "User"}
+                              </button>
+                              {user.admin_rank === 100 && (
+                                <span className="inline-flex items-center gap-1 rounded-full bg-[#FB923C]/10 px-2.5 py-0.5 text-[10px] font-black text-[#FB923C] uppercase tracking-tighter">
+                                  <Star className="h-2.5 w-2.5 fill-current" />
+                                  Owner
+                                </span>
                               )}
-                              title={user.is_admin ? "Remove admin rights" : "Make admin"}
-                            >
-                              <Shield className={cn("h-3 w-3", user.is_admin ? "fill-[#00D4FF]/20 group-hover:fill-red-500/20" : "")} />
-                              {user.is_admin ? "Admin" : "User"}
-                            </button>
+                            </div>
                           </td>
                           <td className="py-3 px-4" onClick={e => e.stopPropagation()}>
                             <div className="flex items-center gap-3">
@@ -1861,7 +1893,7 @@ export default function AdminDashboard() {
 
                       {/* Role Management Actions */}
                       <div className="flex items-center gap-2">
-                        {admin.is_owner || admin.email === 'ay6033756@gmail.com' ? (
+                        {admin.admin_rank === 100 || admin.email === 'ay6033756@gmail.com' ? (
                            <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-400 px-3">
                              👑 Owner
                            </span>
