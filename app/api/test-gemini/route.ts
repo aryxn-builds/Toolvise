@@ -8,7 +8,7 @@ export async function GET() {
 
   try {
     const genAI = new GoogleGenerativeAI(key)
-    const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" }, { customHeaders: { "Referer": "https://toolvise.vercel.app/" } })
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" }, { customHeaders: { "Referer": "https://toolvise.vercel.app/" } })
     const result = await model.generateContent({
       contents: [{ role: "user", parts: [{ text: "Say 'System Online' in one word" }] }],
       systemInstruction: "You are a helpful assistant.",
@@ -16,7 +16,7 @@ export async function GET() {
     
     return NextResponse.json({ 
       success: true,
-      model: "gemini-2.5-flash",
+      model: "gemini-2.5-flash-lite",
       response: result.response.text(),
       keyPrefix: key.substring(0, 8) + "..."
     })
