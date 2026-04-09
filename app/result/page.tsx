@@ -998,7 +998,7 @@ function ResultContent() {
               className={cn(
                 "hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition-colors border",
                 learningMode 
-                  ? "bg-purple-100 text-purple-700 border-purple-300" 
+                  ? "bg-purple-900/40 text-purple-300 border-purple-500/30" 
                   : "bg-[#0D1117] text-[#2EA043]/70 border-[rgba(240,246,252,0.10)]"
               )}
             >
@@ -1099,12 +1099,12 @@ function ResultContent() {
 
                         {/* Learning Mode Extender */}
                         {learningMode && (
-                          <div className="bg-purple-50/50 border border-purple-100 rounded-lg p-3 mt-1 animate-in fade-in slide-in-from-top-2">
+                          <div className="bg-[#130a1e] border border-purple-500/20 rounded-lg p-3 mt-1 animate-in fade-in slide-in-from-top-2">
                             <p className="text-xs font-semibold text-purple-600 mb-1 flex items-center gap-1">
                               <Lightbulb className="h-3 w-3" />
                               Why this choice?
                             </p>
-                            <p className="text-xs text-purple-900/70 leading-relaxed">
+                            <p className="text-xs text-[#8B949E] leading-relaxed">
                               This tool strongly fits your prompt constraints, keeping {tool.isFree ? "costs down" : "features high"} while offering {tool.difficulty.toLowerCase()} level accessibility.
                             </p>
                           </div>
@@ -1126,7 +1126,7 @@ function ResultContent() {
 
                         {/* Deep dive extras */}
                         {tool.bestFor && learningMode && (
-                          <p className="text-xs text-emerald-600 bg-emerald-50 rounded-lg px-3 py-2">
+                          <p className="text-xs text-emerald-400 bg-emerald-900/20 rounded-lg px-3 py-2">
                             ✨ Best for: {tool.bestFor}
                           </p>
                         )}

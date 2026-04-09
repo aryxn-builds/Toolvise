@@ -1893,7 +1893,7 @@ export default function AdminDashboard() {
 
                       {/* Role Management Actions */}
                       <div className="flex items-center gap-2">
-                        {admin.admin_rank === 100 || admin.email === 'ay6033756@gmail.com' ? (
+                        {admin.admin_rank === 100 ? (
                            <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-400 px-3">
                              👑 Owner
                            </span>

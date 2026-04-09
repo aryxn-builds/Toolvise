@@ -39,6 +39,8 @@ interface StackDB {
     avatar_url: string | null
   } | null
   upvotes: number
+  score_card?: { overallScore?: number } | null
+  is_featured?: boolean
   _voted?: boolean // local optimistic flag
 }
 
@@ -53,9 +55,11 @@ export default function ExplorePage() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false)
 
   const [activeFilter, setActiveFilter] = React.useState("All")
+  const [activeSort, setActiveSort] = React.useState<"newest" | "top" | "upvotes">("newest")
   const [searchQuery, setSearchQuery] = React.useState("")
   const [debouncedSearch, setDebouncedSearch] = React.useState("")
   const [bookmarked, setBookmarked] = React.useState<Set<string>>(new Set())
+  const [featuredStacks, setFeaturedStacks] = React.useState<StackDB[]>([])
 
   React.useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(searchQuery), 400)
@@ -83,18 +87,42 @@ export default function ExplorePage() {
     checkAuth()
   }, [])
 
-  // Initial Fetch & Filter Changes
+  // Featured stacks — load once on mount
+  React.useEffect(() => {
+    let mounted = true
+    async function loadFeatured() {
+      try {
+        const supabase = createClient()
+        const { data } = await supabase
+          .from("stacks")
+          .select("*, profiles(username, avatar_url, display_name)")
+          .eq("is_public", true)
+          .eq("is_featured", true)
+          .order("upvotes", { ascending: false })
+          .limit(6)
+        if (mounted && data && data.length > 0) {
+          setFeaturedStacks(data as StackDB[])
+        }
+      } catch {
+        // silent — featured is non-critical
+      }
+    }
+    loadFeatured()
+    return () => { mounted = false }
+  }, [])
+
+  // Initial Fetch & Filter/Sort Changes
   React.useEffect(() => {
     setPage(0)
-    fetchStacks(0, activeFilter, debouncedSearch, false)
+    fetchStacks(0, activeFilter, debouncedSearch, activeSort, false)
     // check local votes
     const localVotes = JSON.parse(localStorage.getItem("toolvise_voted") || "[]")
     setVotedCache(localVotes)
-  }, [activeFilter, debouncedSearch])
+  }, [activeFilter, debouncedSearch, activeSort])
 
   const [votedCache, setVotedCache] = React.useState<string[]>([])
 
-  const fetchStacks = async (pageIndex: number, filter: string, search: string, isLoadMore = false) => {
+  const fetchStacks = async (pageIndex: number, filter: string, search: string, sort: "newest" | "top" | "upvotes", isLoadMore = false) => {
     if (isLoadMore) setLoadingMore(true)
     else setLoading(true)
 
@@ -131,7 +159,15 @@ export default function ExplorePage() {
 
     const from = pageIndex * 20
     const to = from + 19
-    query = query.order("created_at", { ascending: false }).range(from, to)
+
+    if (sort === "newest") {
+      query = query.order("created_at", { ascending: false })
+    } else if (sort === "upvotes") {
+      query = query.order("upvotes", { ascending: false })
+    } else if (sort === "top") {
+      query = query.order("upvotes", { ascending: false })
+    }
+    query = query.range(from, to)
 
     const { data, count, error } = await query
 
@@ -163,7 +199,7 @@ export default function ExplorePage() {
   const handleLoadMore = () => {
     const nextPage = page + 1
     setPage(nextPage)
-    fetchStacks(nextPage, activeFilter, debouncedSearch, true)
+    fetchStacks(nextPage, activeFilter, debouncedSearch, activeSort, true)
   }
 
   const [toastError, setToastError] = React.useState<string | null>(null)
@@ -288,7 +324,70 @@ export default function ExplorePage() {
               </Button>
             ))}
           </div>
+
+          {/* Sort options */}
+          <div className="flex items-center gap-2 flex-wrap justify-center">
+            <span className="text-xs text-[#484F58] font-medium">Sort:</span>
+            {([
+              { key: "newest", label: "Newest" },
+              { key: "upvotes", label: "Most Voted" },
+              { key: "top", label: "Top Scored" },
+            ] as const).map(({ key, label }) => (
+              <button
+                key={key}
+                onClick={() => setActiveSort(key)}
+                className={cn(
+                  "text-xs px-3 py-1.5 rounded-full border transition-all font-medium",
+                  activeSort === key
+                    ? "bg-[#2EA043] border-[#2EA043] text-white"
+                    : "border-[rgba(240,246,252,0.10)] text-[#8B949E] hover:text-[#E6EDF3] hover:border-[rgba(240,246,252,0.25)]"
+                )}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
+
+        {/* Featured stacks */}
+        {featuredStacks.length > 0 && (
+          <div className="mb-10">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xs font-semibold text-[#DFB6B2] uppercase tracking-wider flex items-center gap-1.5">
+                <span className="text-sm">⭐</span> Featured Stacks
+              </span>
+            </div>
+            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none -mx-1 px-1">
+              {featuredStacks.map((stack) => (
+                <Link
+                  key={stack.id}
+                  href={`/result?slug=${stack.share_slug}`}
+                  className="shrink-0 w-56 rounded-xl border border-[rgba(240,246,252,0.12)] bg-[#161B22] p-4 hover:border-[#2EA043]/40 transition-all group"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    {stack.profiles?.avatar_url ? (
+                      <img src={stack.profiles.avatar_url} alt="" className="h-5 w-5 rounded-full object-cover" />
+                    ) : (
+                      <div className="h-5 w-5 rounded-full bg-gradient-to-br from-[#2EA043] to-[#1ABC9C] flex items-center justify-center text-white text-[8px] font-bold">
+                        {(stack.profiles?.display_name || stack.profiles?.username || "?")[0].toUpperCase()}
+                      </div>
+                    )}
+                    <span className="text-[11px] text-[#8B949E] truncate">@{stack.profiles?.username || "user"}</span>
+                  </div>
+                  <p className="text-xs font-medium text-[#E6EDF3] line-clamp-2 mb-2 leading-snug group-hover:text-[#2EA043] transition-colors">
+                    {stack.user_input?.slice(0, 70) || "Untitled stack"}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] text-[#2EA043] font-semibold">
+                      {(stack.score_card as { overallScore?: number } | null)?.overallScore ?? "—"}/100
+                    </span>
+                    <span className="text-[10px] text-[#484F58]">⬆ {stack.upvotes ?? 0}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* 3. STACKS GRID */}
         {loading ? (

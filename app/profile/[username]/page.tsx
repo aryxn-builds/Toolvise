@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FollowButton } from "@/components/FollowButton";
+import { FollowersPanel } from "@/components/FollowersPanel";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface ProfilePageProps {
@@ -173,26 +174,12 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               )}
 
               {/* Stats: Stacks / Followers / Following */}
-              <div className="flex gap-6 text-sm pt-1">
-                <div>
-                  <span className="font-bold text-[#E6EDF3]">
-                    {profile.stacks_count ?? 0}
-                  </span>
-                  <span className="text-[#2EA043]/70 ml-1">Stacks</span>
-                </div>
-                <div>
-                  <span className="font-bold text-[#E6EDF3]">
-                    {profile.followers_count ?? 0}
-                  </span>
-                  <span className="text-[#2EA043]/70 ml-1">Followers</span>
-                </div>
-                <div>
-                  <span className="font-bold text-[#E6EDF3]">
-                    {profile.following_count ?? 0}
-                  </span>
-                  <span className="text-[#2EA043]/70 ml-1">Following</span>
-                </div>
-              </div>
+              <FollowersPanel
+                profileId={profile.id}
+                followersCount={profile.followers_count ?? 0}
+                followingCount={profile.following_count ?? 0}
+                stacksCount={profile.stacks_count ?? 0}
+              />
 
               <div className="flex items-center gap-4 flex-wrap">
                 {profile.website && (

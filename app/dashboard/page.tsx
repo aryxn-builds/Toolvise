@@ -25,6 +25,8 @@ import {
   Check,
   Copy,
   BookmarkMinus,
+  ArrowUp,
+  Users,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Navbar } from "@/components/Navbar";
@@ -67,6 +69,8 @@ interface Profile {
   display_name: string | null;
   avatar_url: string | null;
   stacks_count: number | null;
+  followers_count: number | null;
+  following_count: number | null;
 }
 
 type SortKey = "newest" | "score" | "upvotes";
@@ -433,6 +437,11 @@ export default function DashboardPage() {
     [stacks]
   );
 
+  const totalUpvotes = React.useMemo(
+    () => stacks.reduce((sum, s) => sum + (s.upvotes ?? 0), 0),
+    [stacks]
+  );
+
   // ── Filtered + sorted my stacks ───────────────────────────────────────
   const filteredStacks = React.useMemo(() => {
     let result = [...stacks];
@@ -590,7 +599,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Stats row */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {[
               {
                 label: "My Stacks",
@@ -609,6 +618,18 @@ export default function DashboardPage() {
                 value: topScore > 0 ? `${topScore}/100` : "—",
                 icon: <BarChart3 className="h-5 w-5 text-[#2EA043]" />,
                 sub: "Best stack score",
+              },
+              {
+                label: "Upvotes Received",
+                value: totalUpvotes,
+                icon: <ArrowUp className="h-5 w-5 text-[#2EA043]" />,
+                sub: "Across all your stacks",
+              },
+              {
+                label: "Followers",
+                value: profile?.followers_count ?? 0,
+                icon: <Users className="h-5 w-5 text-[#2EA043]" />,
+                sub: "People following you",
               },
             ].map((stat) => (
               <div
