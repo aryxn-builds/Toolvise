@@ -133,6 +133,12 @@ export function Navbar() {
           </Link>
           <Link
             className="transition-colors hover:text-[#E6EDF3] px-1 py-5"
+            href="/people"
+          >
+            People
+          </Link>
+          <Link
+            className="transition-colors hover:text-[#E6EDF3] px-1 py-5"
             href="/leaderboard"
           >
             Leaderboard

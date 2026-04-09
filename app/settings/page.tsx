@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Loader2,
@@ -24,6 +25,7 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Navbar } from "@/components/Navbar";
+import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,6 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const SKILL_LEVELS = ["Beginner", "Intermediate", "Advanced", "Expert"];
@@ -74,11 +77,22 @@ export default function SettingsPage() {
   const [twitterUrl, setTwitterUrl] = useState("");
   const [linkedinUrl, setLinkedinUrl] = useState("");
 
-  // New fields
+  // New demographic fields
   const [gender, setGender] = useState("");
   const [location, setLocation] = useState("");
   const [preferredLanguages, setPreferredLanguages] = useState("");
   const [timezone, setTimezone] = useState("");
+
+  // Phase 6 identity fields
+  const [headline, setHeadline] = useState("");
+  const [accountType, setAccountType] = useState<string>("developer");
+  const [openTo, setOpenTo] = useState<string[]>([]);
+  const [companyName, setCompanyName] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [companySize, setCompanySize] = useState("");
+  const [fundingStage, setFundingStage] = useState("");
+  const [isHiring, setIsHiring] = useState(false);
+  const [coverUrl, setCoverUrl] = useState("");
 
   // Notification preferences
   const [notifFollows, setNotifFollows] = useState(true);
@@ -119,6 +133,16 @@ export default function SettingsPage() {
         setNotifFollows(profile.notif_follows ?? true);
         setNotifUpvotes(profile.notif_upvotes ?? true);
         setNotifComments(profile.notif_comments ?? true);
+        // Phase 6 identity fields
+        setHeadline(profile.headline || "");
+        setAccountType(profile.account_type || "developer");
+        setOpenTo(profile.open_to || []);
+        setCompanyName(profile.company_name || "");
+        setIndustry(profile.industry || "");
+        setCompanySize(profile.company_size || "");
+        setFundingStage(profile.funding_stage || "");
+        setIsHiring(profile.is_hiring ?? false);
+        setCoverUrl(profile.cover_url || "");
       }
       setLoading(false);
     }
@@ -183,6 +207,16 @@ export default function SettingsPage() {
         location: location.trim() || null,
         preferred_languages: preferredLanguages.trim() || null,
         timezone: timezone || null,
+        // Phase 6 identity fields
+        headline: headline.trim().slice(0, 120) || null,
+        account_type: accountType,
+        open_to: openTo,
+        company_name: companyName.trim() || null,
+        industry: industry.trim() || null,
+        company_size: companySize || null,
+        funding_stage: fundingStage || null,
+        is_hiring: isHiring,
+        cover_url: coverUrl || null,
       })
       .eq("id", userId);
 
@@ -238,6 +272,22 @@ export default function SettingsPage() {
           <p className="text-[#E6EDF3]/60 mt-2">Manage your profile and account preferences.</p>
         </div>
 
+        {/* Sub-page navigation */}
+        <div className="flex flex-wrap gap-2">
+          {[
+            { href: "/settings/experience", label: "Work Experience" },
+            { href: "/settings/education", label: "Education" },
+          ].map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[rgba(240,246,252,0.10)] bg-[#161B22] text-sm text-[#8B949E] hover:text-[#E6EDF3] hover:border-[rgba(240,246,252,0.20)] transition-all"
+            >
+              {label} →
+            </Link>
+          ))}
+        </div>
+
         <form onSubmit={handleSave} className="space-y-8">
 
           {/* ── Account Info ── */}
@@ -252,6 +302,118 @@ export default function SettingsPage() {
               </div>
               <p className="text-xs text-[#E6EDF3]/50 mt-1">Your email cannot be changed at this time.</p>
             </div>
+          </div>
+
+          {/* ── Identity Section (Phase 6) ── */}
+          <div className="card-3d p-6 space-y-5">
+            <h2 className="text-base font-semibold text-[#E6EDF3] font-heading">Identity</h2>
+
+            {/* Account type */}
+            <div className="space-y-2">
+              <Label className="text-[#E6EDF3]/80 text-sm">I am a</Label>
+              <div className="flex flex-wrap gap-2">
+                {(['developer', 'student', 'company', 'startup'] as const).map(type => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => setAccountType(type)}
+                    className={cn(
+                      "px-4 py-2 rounded-xl text-sm font-medium border transition-all capitalize",
+                      accountType === type
+                        ? "bg-[#2EA043] border-[#2EA043] text-white"
+                        : "border-[rgba(240,246,252,0.10)] text-[#8B949E] hover:text-[#E6EDF3] hover:border-[rgba(240,246,252,0.20)]"
+                    )}
+                  >
+                    {type === 'developer' ? '👨‍💻 Developer' : type === 'student' ? '🎓 Student' : type === 'company' ? '🏢 Company' : '🚀 Startup'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Headline */}
+            <div className="space-y-2">
+              <Label className="text-[#E6EDF3]/80 text-sm">Headline <span className="text-[#484F58] font-normal">({headline.length}/120)</span></Label>
+              <Input
+                value={headline}
+                onChange={e => setHeadline(e.target.value.slice(0, 120))}
+                placeholder="e.g. Full-stack developer building AI products"
+                className="input-dark"
+              />
+            </div>
+
+            {/* Open to */}
+            <div className="space-y-2">
+              <Label className="text-[#E6EDF3]/80 text-sm">Open to</Label>
+              <div className="flex flex-wrap gap-2">
+                {(['fulltime', 'internship', 'freelance', 'cofounding', 'mentoring', 'hiring'] as const).map(opt => {
+                  const labels: Record<string, string> = {
+                    fulltime: 'Full-time', internship: 'Internship', freelance: 'Freelance',
+                    cofounding: 'Co-founding', mentoring: 'Mentoring', hiring: 'Hiring'
+                  }
+                  const selected = openTo.includes(opt)
+                  return (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => setOpenTo(prev => selected ? prev.filter(o => o !== opt) : [...prev, opt])}
+                      className={cn(
+                        "px-3 py-1.5 rounded-full text-xs font-medium border transition-all",
+                        selected
+                          ? "bg-[#2EA043]/20 border-[#2EA043]/50 text-[#2EA043]"
+                          : "border-[rgba(240,246,252,0.10)] text-[#8B949E] hover:text-[#E6EDF3]"
+                      )}
+                    >
+                      {labels[opt]}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Company/Startup fields */}
+            {(accountType === 'company' || accountType === 'startup') && (
+              <div className="space-y-4 pt-2 border-t border-[rgba(240,246,252,0.08)]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-[#E6EDF3]/80 text-sm">Company / Startup Name</Label>
+                    <Input value={companyName} onChange={e => setCompanyName(e.target.value)} placeholder="Acme Corp" className="input-dark" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[#E6EDF3]/80 text-sm">Industry</Label>
+                    <Input value={industry} onChange={e => setIndustry(e.target.value)} placeholder="SaaS, Fintech, EdTech..." className="input-dark" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[#E6EDF3]/80 text-sm">Company Size</Label>
+                    <Select value={companySize} onValueChange={setCompanySize}>
+                      <SelectTrigger className="input-dark"><SelectValue placeholder="Select size" /></SelectTrigger>
+                      <SelectContent className="bg-[#0D1117] border-[rgba(240,246,252,0.10)] text-[#E6EDF3]">
+                        {['1-10', '11-50', '51-200', '201-500', '500+'].map(s => (
+                          <SelectItem key={s} value={s}>{s} employees</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[#E6EDF3]/80 text-sm">Funding Stage</Label>
+                    <Select value={fundingStage} onValueChange={setFundingStage}>
+                      <SelectTrigger className="input-dark"><SelectValue placeholder="Select stage" /></SelectTrigger>
+                      <SelectContent className="bg-[#0D1117] border-[rgba(240,246,252,0.10)] text-[#E6EDF3]">
+                        {['Bootstrapped', 'Pre-seed', 'Seed', 'Series A', 'Series B+'].map(s => (
+                          <SelectItem key={s} value={s}>{s}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between p-4 rounded-xl bg-[#0D1117] border border-[rgba(240,246,252,0.08)]">
+                  <div>
+                    <p className="text-sm font-medium text-[#E6EDF3]">Currently Hiring</p>
+                    <p className="text-xs text-[#8B949E]">Show a hiring badge on your profile</p>
+                  </div>
+                  <Switch checked={isHiring} onCheckedChange={setIsHiring} />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* ── Profile Information ── */}

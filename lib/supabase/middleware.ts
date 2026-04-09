@@ -38,6 +38,7 @@ export async function updateSession(request: NextRequest) {
     "/profile",
     "/settings",
     "/admin",
+    "/portfolio",
   ];
   const pathname = request.nextUrl.pathname;
 
