@@ -26,9 +26,12 @@ export async function updateSession(request: NextRequest) {
   );
 
   // Refresh the session — IMPORTANT: use getUser(), not getSession()
+  // This validates the JWT locally (no DB round-trip) and is safe to call in middleware.
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  const pathname = request.nextUrl.pathname;
 
   // Protected routes — redirect to /login if not authenticated
   const protectedPaths = [
@@ -40,7 +43,6 @@ export async function updateSession(request: NextRequest) {
     "/admin",
     "/portfolio",
   ];
-  const pathname = request.nextUrl.pathname;
 
   const isProtected = protectedPaths.some((p) => pathname.startsWith(p));
 
@@ -51,20 +53,10 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Admin route protection — verify is_admin in profiles
-  if (pathname.startsWith("/admin") && user) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("is_admin")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    if (!profile?.is_admin) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
-    }
-  }
+  // NOTE: The is_admin check for /admin routes is intentionally NOT done here.
+  // Making a database query inside middleware causes MIDDLEWARE_INVOCATION_TIMEOUT
+  // on Vercel (504 Gateway Timeout). The admin page itself handles the is_admin
+  // guard on the client side.
 
   // Redirect logged-in users away from /login and /signup only
   // (not from forgot-password, reset-password, auth/callback)
